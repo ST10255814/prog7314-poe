@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
     <ImageButton
         android:id="@+id/btn_open_drawer"
@@ -23,6 +25,139 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/custom_drawer"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:background="@drawable/drawer_background"
+        android:visibility="gone"
+        android:elevation="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/darkish_blue"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/drawer_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_item_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/drawer_item_background"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/profile_icon"
+                app:tint="@color/darkish_blue"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/menu_item_1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile Management"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_item_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/drawer_item_background"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/settings_icon"
+                app:tint="@color/darkish_blue"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/menu_item_2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#CCCCCC" />
+
+        <LinearLayout
+            android:id="@+id/menu_item_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/drawer_item_background"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/logout_icon"
+                app:tint="@color/darkish_blue"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/menu_item_3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/drawer_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/custom_nav_card"
