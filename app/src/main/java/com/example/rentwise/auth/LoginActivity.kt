@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.rentwise.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.databinding.ActivityLoginBinding
 
@@ -93,6 +94,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.registerText.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.loginBtn.setOnClickListener {
+            val intent = Intent(this, HomeScreen::class.java)
             startActivity(intent)
             finish()
         }

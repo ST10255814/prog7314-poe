@@ -12,7 +12,6 @@
     android:clipToPadding="false"
     android:background="@drawable/background_main">
 
-
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
@@ -44,8 +43,7 @@
         <eightbitlab.com.blurview.BlurView
             android:id="@+id/blurView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/glassy_background" />
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:id="@+id/glassyForm"
@@ -53,6 +51,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <TextView
+                android:id="@+id/register_title"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/goldman"
+                android:layout_marginBottom="10dp"
+                android:text="@string/let_s_get_you_an_account"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkish_blue" />
 
             <EditText
                 android:id="@+id/regEmail"
@@ -78,7 +88,7 @@
                 android:background="@drawable/round_white_input"
                 android:drawableEnd="@drawable/password_icon"
                 android:drawablePadding="12dp"
-                android:fontFamily="sans-serif"
+                android:fontFamily="@font/anek_latin_medium"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
                 android:paddingStart="16dp"
@@ -90,15 +100,14 @@
                 android:id="@+id/registerBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/goldman"
                 android:text="@string/register_button"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:backgroundTint="@drawable/button_background_states"
+                app:backgroundTint="@color/button_background_states"
                 app:cornerRadius="12dp"
-                app:strokeColor="@drawable/button_stroke_states"
+                app:strokeColor="@color/button_stroke_states"
                 app:strokeWidth="2dp"/>
 
             <TextView
@@ -109,7 +118,7 @@
                 android:text="@string/login_message"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="10dp" />
         </LinearLayout>
     </FrameLayout>

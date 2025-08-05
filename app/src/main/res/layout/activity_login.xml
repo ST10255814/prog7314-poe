@@ -52,8 +52,7 @@
         <eightbitlab.com.blurview.BlurView
             android:id="@+id/blurView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/glassy_background" />
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:id="@+id/glassyForm"
@@ -61,6 +60,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <TextView
+                android:id="@+id/welcomeTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/goldman"
+                android:text="@string/welcome_message"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkish_blue" />
+
+            <TextView
+                android:id="@+id/loginSubHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/goldman"
+                android:text="@string/login_to_enjoy_rentwise"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/edtEmail"
@@ -86,7 +108,7 @@
                 android:background="@drawable/round_white_input"
                 android:drawableEnd="@drawable/password_icon"
                 android:drawablePadding="12dp"
-                android:fontFamily="sans-serif"
+                android:fontFamily="@font/anek_latin_medium"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
                 android:paddingStart="16dp"
@@ -105,9 +127,9 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:backgroundTint="@drawable/button_background_states"
+                app:backgroundTint="@color/button_background_states"
                 app:cornerRadius="12dp"
-                app:strokeColor="@drawable/button_stroke_states"
+                app:strokeColor="@color/button_stroke_states"
                 app:strokeWidth="2dp" />
 
             <TextView
@@ -130,9 +152,9 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:backgroundTint="@drawable/button_background_states"
+                app:backgroundTint="@color/button_background_states"
                 app:cornerRadius="12dp"
-                app:strokeColor="@drawable/button_stroke_states"
+                app:strokeColor="@color/button_stroke_states"
                 app:strokeWidth="2dp"/>
 
             <TextView
@@ -143,7 +165,7 @@
                 android:text="@string/register_text"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="10dp" />
         </LinearLayout>
     </FrameLayout>

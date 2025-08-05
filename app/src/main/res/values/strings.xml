@@ -5,11 +5,12 @@
     <string name="password_hint">Password</string>
     <string name="login_to_enjoy_rentwise">Login to enjoy RentWise</string>
     <string name="welcome_message">Welcome</string>
-    <string name="login_header">Login</string>
+    <string name="login_header">Sign In</string>
     <string name="email_address_hint">Email Address</string>
     <string name="or_condition">OR</string>
     <string name="register_text">Don\'t have an account? Register</string>
     <string name="register_subtitle">is better with an account</string>
-    <string name="register_button">Register</string>
+    <string name="register_button">Create Account</string>
     <string name="login_message">Already have an account? Login</string>
+    <string name="let_s_get_you_an_account">Let\'s get you an account</string>
 </resources>
