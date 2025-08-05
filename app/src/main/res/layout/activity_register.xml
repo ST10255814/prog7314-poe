@@ -1,10 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.RegisterActivity">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="52dp"
+    android:paddingBottom="48dp"
+    android:clipToPadding="false"
+    android:background="@drawable/background_main">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/goldman"
+        android:text="@string/app_name"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/registerSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/goldman"
+        android:text="@string/register_subtitle"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/glassy_background" />
+
+        <LinearLayout
+            android:id="@+id/glassyForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/regEmail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="13dp"
+                android:background="@drawable/round_white_input"
+                android:drawableEnd="@drawable/email_icon"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/anek_latin_medium"
+                android:hint="@string/email_address_hint"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="#AFAFAF" />
+
+            <EditText
+                android:id="@+id/regPassword"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="13dp"
+                android:background="@drawable/round_white_input"
+                android:drawableEnd="@drawable/password_icon"
+                android:drawablePadding="12dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="#AFAFAF" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/goldman"
+                android:text="@string/register_button"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:backgroundTint="@drawable/button_background_states"
+                app:cornerRadius="12dp"
+                app:strokeColor="@drawable/button_stroke_states"
+                app:strokeWidth="2dp"/>
+
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_message"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

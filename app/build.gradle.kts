@@ -52,6 +52,7 @@ dependencies {
     //retrofit library for api implementation
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    //SSO Implementation
-    implementation ("com.google.android.gms:play-services-auth:21.0.0")
+    //BlurView for glassy look
+    implementation ("com.github.Dimezis:BlurView:version-2.0.3")
+
 }
