@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RentWise</string>
+    <string name="app_slogan">Smart Rentals. Simple Management.</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="password_hint">Password</string>
+    <string name="login_to_enjoy_rentwise">Login to enjoy RentWise</string>
+    <string name="welcome_message">Welcome</string>
+    <string name="login_header">Login</string>
+    <string name="email_address_hint">Email Address</string>
+    <string name="or_condition">OR</string>
+</resources>
