@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
 
         binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.propertiesRecyclerView.adapter = PropertyItemAdapter(sampleList) { selectedProperty ->
+
             val intent = Intent(requireContext(), PropertyDetails::class.java)
             intent.putExtra("property", selectedProperty)
             startActivity(intent)

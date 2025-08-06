@@ -1,6 +1,8 @@
 package com.example.rentwise.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -33,6 +35,7 @@ class PropertyItemAdapter(
         return properties.size
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
         val property = properties[position]
         holder.imageProperty.setImageResource(property.imageResId)
@@ -44,6 +47,18 @@ class PropertyItemAdapter(
 
         holder.itemView.setOnClickListener {
             onItemClick(property)
+        }
+
+        holder.itemView.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
         }
     }
 }
