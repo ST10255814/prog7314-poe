@@ -13,4 +13,6 @@
     <string name="register_button">Create Account</string>
     <string name="login_message">Already have an account? Login</string>
     <string name="let_s_get_you_an_account">Let\'s get you an account</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

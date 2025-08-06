@@ -8,6 +8,11 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ImageButton
         android:id="@+id/btn_open_drawer"
         android:layout_width="56dp"
@@ -21,15 +26,10 @@
         android:contentDescription="Menu"
         android:layout_gravity="top|start"/>
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <LinearLayout
         android:id="@+id/custom_drawer"
         android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_height="300dp"
         android:layout_gravity="start"
         android:orientation="vertical"
         android:background="@drawable/drawer_background"
@@ -50,7 +50,8 @@
                 android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:textSize="30sp"
+                android:textSize="26sp"
+                android:fontFamily="@font/goldman"
                 android:textAlignment="center"
                 android:layout_gravity="center"/>
         </LinearLayout>
@@ -156,7 +157,7 @@
         android:id="@+id/drawer_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000"
+        android:background="#99000000"
         android:visibility="gone" />
 
     <com.google.android.material.card.MaterialCardView
@@ -217,5 +218,7 @@
                 android:src="@drawable/notification_icon"
                 app:tint="@color/bottom_nav_icon_color_selector" />
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

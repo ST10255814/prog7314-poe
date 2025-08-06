@@ -1,4 +1,4 @@
-package com.example.rentwise
+package com.example.rentwise.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rentwise.databinding.ActivityHomeScreenBinding
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 
 class HomeScreen : AppCompatActivity() {
@@ -38,6 +38,13 @@ class HomeScreen : AppCompatActivity() {
         )
 
         setButtonListeners()
+        commitFragmentToContainer(HomeFragment())
+        selectNavButton(binding.navHome)
+        binding.btnOpenDrawer.bringToFront()
+    }
+
+    private fun commitFragmentToContainer(fragment: Fragment){
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
     }
 
     private fun openDrawer() {
@@ -61,7 +68,10 @@ class HomeScreen : AppCompatActivity() {
             .start()
     }
 
-    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
+    @Deprecated("This method has been deprecated in favor of using the\n      " +
+            "{@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      " +
+            "The OnBackPressedDispatcher controls how back button events are dispatched\n      " +
+            "to one or more {@link OnBackPressedCallback} objects.")
     override fun onBackPressed() {
         if (binding.customDrawer.isVisible) {
             closeDrawer()
@@ -74,26 +84,32 @@ class HomeScreen : AppCompatActivity() {
     private fun setButtonListeners() {
         binding.navHome.setOnClickListener {
             selectNavButton(binding.navHome)
+            commitFragmentToContainer(HomeFragment())
         }
 
         binding.navQuery.setOnClickListener {
             selectNavButton(binding.navQuery)
+            commitFragmentToContainer(HomeFragment())
         }
 
         binding.navWishlist.setOnClickListener {
             selectNavButton(binding.navWishlist)
+            commitFragmentToContainer(HomeFragment())
         }
 
         binding.navNotification.setOnClickListener {
             selectNavButton(binding.navNotification)
+            commitFragmentToContainer(HomeFragment())
         }
         binding.menuItem1.setOnClickListener {
             selectDrawerNavButton(binding.menuItem1Text)
             closeDrawer()
+            commitFragmentToContainer(HomeFragment())
         }
         binding.menuItem2.setOnClickListener {
             selectDrawerNavButton(binding.menuItem2Text)
             closeDrawer()
+            commitFragmentToContainer(HomeFragment())
         }
         binding.menuItem3.setOnClickListener {
             selectDrawerNavButton(binding.menuItem3Text)
@@ -132,6 +148,17 @@ class HomeScreen : AppCompatActivity() {
             false
         }
         binding.menuItem3.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+        binding.btnOpenDrawer.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()

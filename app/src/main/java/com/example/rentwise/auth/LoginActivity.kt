@@ -2,7 +2,6 @@ package com.example.rentwise.auth
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
@@ -14,9 +13,7 @@ import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.rentwise.HomeScreen
+import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.databinding.ActivityLoginBinding
 
