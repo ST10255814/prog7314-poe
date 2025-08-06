@@ -1,5 +1,7 @@
 package com.example.rentwise.data_classes
 
+import java.io.Serializable
+
 data class PropertyData(
     val imageResId: Int,
     val title: String,
@@ -7,4 +9,4 @@ data class PropertyData(
     val label1: String,
     val label2: String,
     val price: String
-)
+) : Serializable

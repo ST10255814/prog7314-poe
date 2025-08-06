@@ -30,7 +30,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/location_icon"
-                    app:tint="@android:color/black" />
+                    app:tint="@color/black" />
 
                 <TextView
                     android:id="@+id/search_location_text"

@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
 import com.example.rentwise.data_classes.PropertyData
 
-class PropertyItemAdapter(private val properties: List<PropertyData>) :
-    RecyclerView.Adapter<PropertyItemAdapter.PropertyViewHolder>(){
+class PropertyItemAdapter(
+    private val properties: List<PropertyData>,
+    private val onItemClick: (PropertyData) -> Unit
+) : RecyclerView.Adapter<PropertyItemAdapter.PropertyViewHolder>(){
 
     class PropertyViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         val imageProperty: ImageView = itemView.findViewById(R.id.image_property)
@@ -39,5 +41,9 @@ class PropertyItemAdapter(private val properties: List<PropertyData>) :
         holder.tvLabel1.text = property.label1
         holder.tvLabel2.text = property.label2
         holder.tvPrice.text = property.price
+
+        holder.itemView.setOnClickListener {
+            onItemClick(property)
+        }
     }
 }

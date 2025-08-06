@@ -19,8 +19,7 @@
         android:layout_height="123dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/rentwise_icon"
-        app:tint="@color/white" />
+        android:src="@drawable/rentwise_icon" />
 
     <TextView
         android:id="@+id/appName"
@@ -131,9 +130,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/button_background_states"
-                app:cornerRadius="12dp"
-                app:strokeColor="@color/button_stroke_states"
-                app:strokeWidth="2dp" />
+                app:cornerRadius="12dp" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -152,13 +149,11 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/goldman"
                 android:text="@string/sign_in_with_google"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/button_background_states"
-                app:cornerRadius="12dp"
-                app:strokeColor="@color/button_stroke_states"
-                app:strokeWidth="2dp"/>
+                app:cornerRadius="12dp"/>
 
             <TextView
                 android:id="@+id/registerText"

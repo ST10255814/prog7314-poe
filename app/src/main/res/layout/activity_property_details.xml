@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F9FB"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_main"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/house_interior_temp" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/circle_background"
+            android:padding="8dp"
+            android:src="@drawable/go_back_icon"
+            android:contentDescription="Back"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <ImageButton
+            android:id="@+id/favourite_Btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/favourite_icon"
+            android:contentDescription="Favourite"
+            app:tint="#777777"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" />
+
+        <LinearLayout
+            android:id="@+id/container_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_main"
+            android:layout_marginTop="-1dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/location_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/aldrich"
+                android:text="New York"
+                android:textColor="#888888"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/title_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/goldman"
+                android:text="The Aliso"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RENT"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#888888"
+                android:layout_marginBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/price_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$1,280"
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/goldman" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" /month"
+                    android:textColor="#777777"
+                    android:textSize="14sp"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/goldman" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/goldman"
+                android:text="This beautifully Aliso home is located in Adarsh Palm Retreat Tower 1, Adarsh Palm Retreat Tower 2 Adarsh Palm Retreat Bellandur."
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="PHOTOS"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/house_interior_temp" />
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/house_interior_temp" />
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/house_interior_temp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="FURNITURE"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="start"
+                android:orientation="horizontal"
+                android:paddingEnd="16dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingEnd="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="TV"
+                        android:src="@drawable/tv_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="TV"
+                        android:textColor="#555555"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingEnd="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="Wi-Fi"
+                        android:src="@drawable/wifi_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Wi-Fi"
+                        android:textColor="#555555"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="Bed"
+                        android:src="@drawable/bed_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Bed"
+                        android:textColor="#555555"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/estate_Agent"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="12dp"
+                    android:padding="4dp"
+                    android:src="@drawable/temp_profile" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="Mr. Lee"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10:00AM - 2:00PM"
+                        android:textColor="#777777"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/call_Button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#c2fdff"
+                    android:contentDescription="Chat"
+                    android:src="@drawable/call_icon"
+                    app:tint="@color/darkish_blue" />
+
+                <ImageButton
+                    android:id="@+id/chat_Button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#c2fdff"
+                    android:contentDescription="Chat"
+                    android:src="@drawable/message_icon"
+                    app:tint="@color/darkish_blue" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_book_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/button_background_states"
+                android:text="@string/book_now"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/goldman"
+                app:strokeColor="@color/button_stroke_states"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
