@@ -21,14 +21,18 @@
             android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/circle_background"
+            android:contentDescription="Back"
             android:padding="8dp"
             android:src="@drawable/go_back_icon"
-            android:contentDescription="Back"
-            app:tint="@color/white"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            app:tint="@color/white" />
 
         <ImageButton
             android:id="@+id/favourite_Btn"
@@ -334,8 +338,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/goldman"
-                app:strokeColor="@color/button_stroke_states"/>
+                android:fontFamily="@font/goldman"/>
 
         </LinearLayout>
 

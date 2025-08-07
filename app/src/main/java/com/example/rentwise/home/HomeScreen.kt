@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.settings.MainSettingsFragment
+import com.example.rentwise.settings.ProfileSettings
 
 class HomeScreen : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
@@ -105,7 +106,9 @@ class HomeScreen : AppCompatActivity() {
         binding.profileSettingsTab.setOnClickListener {
             selectDrawerNavButton(binding.profileSettingsText)
             closeDrawer()
-            commitFragmentToContainer(HomeFragment())
+            val intent = Intent(this, ProfileSettings::class.java)
+            startActivity(intent)
+            finish()
         }
         binding.settingsTab.setOnClickListener {
             selectDrawerNavButton(binding.settingsTabText)

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.RentWise"
         tools:targetApi="31">
         <activity
+            android:name=".settings.ProfileSettings"
+            android:exported="false" />
+        <activity
             android:name=".recyclerview_itemclick_views.PropertyDetails"
             android:exported="false" />
         <activity
