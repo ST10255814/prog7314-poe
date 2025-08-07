@@ -4,8 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue">#5ef2f7</color>
     <color name="darkish_blue">#173667</color>
+    <color name="blue">#2962FF</color>
     <color name="light_grey">#B8B8B8</color>
     <color name="darker_grey">#8a8a8a</color>
     <color name="grey">#777777</color>
     <color name="red">#E53935</color>
+    <color name="light_grey_bg">#F6F6F6</color>
+    <color name="card_shadow">#11000000</color>
+    <color name="very_light_blue">#94d6ff</color>
 </resources>

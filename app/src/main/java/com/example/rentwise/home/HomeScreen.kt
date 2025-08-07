@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.settings.MainSettingsFragment
 
 class HomeScreen : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
@@ -33,8 +34,8 @@ class HomeScreen : AppCompatActivity() {
         )
 
         drawerNavButtons = listOf(
-            binding.menuItem1Text,
-            binding.menuItem2Text
+            binding.profileSettingsText,
+            binding.settingsTabText
         )
 
         setButtonListeners()
@@ -101,18 +102,18 @@ class HomeScreen : AppCompatActivity() {
             selectNavButton(binding.navNotification)
             commitFragmentToContainer(HomeFragment())
         }
-        binding.menuItem1.setOnClickListener {
-            selectDrawerNavButton(binding.menuItem1Text)
+        binding.profileSettingsTab.setOnClickListener {
+            selectDrawerNavButton(binding.profileSettingsText)
             closeDrawer()
             commitFragmentToContainer(HomeFragment())
         }
-        binding.menuItem2.setOnClickListener {
-            selectDrawerNavButton(binding.menuItem2Text)
+        binding.settingsTab.setOnClickListener {
+            selectDrawerNavButton(binding.settingsTabText)
             closeDrawer()
-            commitFragmentToContainer(HomeFragment())
+            commitFragmentToContainer(MainSettingsFragment())
         }
-        binding.menuItem3.setOnClickListener {
-            selectDrawerNavButton(binding.menuItem3Text)
+        binding.logoutTab.setOnClickListener {
+            selectDrawerNavButton(binding.logoutText)
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -125,7 +126,7 @@ class HomeScreen : AppCompatActivity() {
         binding.drawerOverlay.setOnClickListener {
             closeDrawer()
         }
-        binding.menuItem1.setOnTouchListener { v, event ->
+        binding.profileSettingsTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -136,7 +137,7 @@ class HomeScreen : AppCompatActivity() {
             }
             false
         }
-        binding.menuItem2.setOnTouchListener { v, event ->
+        binding.settingsTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -147,7 +148,7 @@ class HomeScreen : AppCompatActivity() {
             }
             false
         }
-        binding.menuItem3.setOnTouchListener { v, event ->
+        binding.logoutTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()

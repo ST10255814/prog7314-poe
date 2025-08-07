@@ -13,7 +13,36 @@
     <string name="register_button">Create Account</string>
     <string name="login_message">Already have an account? Login</string>
     <string name="let_s_get_you_an_account">Let\'s get you an account</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_now">Book Now</string>
+    <string name="footer">© 2025 RentWise</string>
+    <string-array name="language_options">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Zulu</item>
+    </string-array>
+    <string-array name="location_options">
+        <item>Area</item>
+        <item>JHB</item>
+        <item>KZN</item>
+        <item>CPT</item>
+        <item>LP</item>
+        <item>PTA</item>
+    </string-array>
+    <string-array name="room_options">
+        <item>Rooms</item>
+        <item>1+ Rooms</item>
+        <item>2+ Rooms</item>
+        <item>3+ Rooms</item>
+    </string-array>
+
+    <string-array name="price_options">
+        <item>Price</item>
+        <item>Any</item>
+        <item>>R5000</item>
+        <item>R5000-R10000</item>
+        <item>R10000+</item>
+    </string-array>
 </resources>

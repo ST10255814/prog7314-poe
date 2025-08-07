@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
+import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.PropertyItemAdapter
 import com.example.rentwise.data_classes.PropertyData
 import com.example.rentwise.databinding.FragmentHomeBinding
@@ -37,10 +39,6 @@ class HomeFragment : Fragment() {
             .circleCrop()
             .into(binding.profileDisplay)
 
-        val locations = listOf("Areas","New York", "Los Angeles", "Chicago", "Houston")
-        val roomOptions = listOf("Rooms", "Studio", "1 Room", "2 Rooms", "3+ Rooms")
-        val priceOptions = listOf("Prices", "Any", "$500 - $1000", "$1000 - $1500", "$1500+")
-
         val sampleList = listOf(
             PropertyData(R.drawable.house_interior_temp, "The Aliso", "950 E 3rd St, Los Angeles, CA", "2 Rooms", "Heating", "R4,280"),
             PropertyData(R.drawable.house_interior_temp, "Sunset Villa", "123 Main St, LA", "4 Rooms", "Cooling", "R7,490"),
@@ -56,10 +54,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-
-        updateSpinner(locations, binding.spinnerLocation)
-        updateSpinner(roomOptions, binding.spinnerRooms)
-        updateSpinner(priceOptions, binding.spinnerPrices)
+        updateSpinners()
     }
 
     override fun onDestroyView() {
@@ -67,10 +62,19 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateSpinner(categories: List<String>, spinner: Spinner) {
+    private fun updateSpinners() {
         if (!isAdded || _binding == null) return
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+
+        val locations = resources.getStringArray(R.array.location_options).toList()
+        val rooms = resources.getStringArray(R.array.room_options).toList()
+        val prices = resources.getStringArray(R.array.price_options).toList()
+
+        val locationAdapter = CustomSpinnerAdapter(requireContext(), locations)
+        val roomsAdapter = CustomSpinnerAdapter(requireContext(), rooms)
+        val pricesAdapter = CustomSpinnerAdapter(requireContext(), prices)
+
+        binding.spinnerRooms.adapter = roomsAdapter
+        binding.spinnerLocation.adapter = locationAdapter
+        binding.spinnerPrices.adapter = pricesAdapter
     }
 }

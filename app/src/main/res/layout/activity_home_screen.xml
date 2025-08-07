@@ -57,7 +57,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/menu_item_1"
+            android:id="@+id/profile_Settings_Tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -74,7 +74,7 @@
                 android:layout_marginEnd="16dp" />
 
             <TextView
-                android:id="@+id/menu_item_1_text"
+                android:id="@+id/profile_Settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile Management"
@@ -85,7 +85,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/menu_item_2"
+            android:id="@+id/settings_Tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -102,7 +102,7 @@
                 android:layout_marginEnd="16dp" />
 
             <TextView
-                android:id="@+id/menu_item_2_text"
+                android:id="@+id/settings_Tab_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Settings"
@@ -125,7 +125,7 @@
             android:background="#CCCCCC" />
 
         <LinearLayout
-            android:id="@+id/menu_item_3"
+            android:id="@+id/logout_Tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -142,7 +142,7 @@
                 android:layout_marginEnd="16dp" />
 
             <TextView
-                android:id="@+id/menu_item_3_text"
+                android:id="@+id/logout_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Logout"

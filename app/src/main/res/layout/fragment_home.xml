@@ -68,7 +68,7 @@
             android:id="@+id/spinner_location"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/spinner_rooms"
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
