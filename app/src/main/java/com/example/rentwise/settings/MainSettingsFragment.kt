@@ -1,6 +1,7 @@
 package com.example.rentwise.settings
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.example.rentwise.R
 import com.example.rentwise.databinding.FragmentMainSettingsBinding
+import com.example.rentwise.faq.FAQChatBot
 
 class MainSettingsFragment : Fragment() {
     private var _binding: FragmentMainSettingsBinding? = null
@@ -69,6 +71,10 @@ class MainSettingsFragment : Fragment() {
                 }
             }
             false
+        }
+        binding.helpAndSupportTab.setOnClickListener {
+            val intent = Intent(requireContext(), FAQChatBot::class.java)
+            startActivity(intent)
         }
         binding.aboutTab.setOnTouchListener { v, event ->
             when (event.action) {

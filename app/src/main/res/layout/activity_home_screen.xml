@@ -29,7 +29,7 @@
     <LinearLayout
         android:id="@+id/custom_drawer"
         android:layout_width="280dp"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_gravity="start"
         android:orientation="vertical"
         android:background="@drawable/drawer_background"
@@ -106,6 +106,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Settings"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/faq_chatbot_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/drawer_item_background"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/help_icon"
+                app:tint="@color/darkish_blue"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/faq_chatbot_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FAQ Chatbot"
                 android:textColor="@color/drawer_item_text_selector"
                 android:textSize="16sp"
                 android:fontFamily="@font/goldman"

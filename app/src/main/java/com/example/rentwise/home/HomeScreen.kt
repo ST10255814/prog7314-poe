@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.faq.FAQChatBot
 import com.example.rentwise.settings.MainSettingsFragment
 import com.example.rentwise.settings.ProfileSettings
 
@@ -94,6 +95,13 @@ class HomeScreen : AppCompatActivity() {
             commitFragmentToContainer(HomeFragment())
         }
 
+        binding.faqChatbotTab.setOnClickListener {
+            selectDrawerNavButton(binding.faqChatbotText)
+            val intent = Intent(this, FAQChatBot::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         binding.navWishlist.setOnClickListener {
             selectNavButton(binding.navWishlist)
             commitFragmentToContainer(HomeFragment())
@@ -130,6 +138,18 @@ class HomeScreen : AppCompatActivity() {
             closeDrawer()
         }
         binding.profileSettingsTab.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+
+        binding.faqChatbotTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
