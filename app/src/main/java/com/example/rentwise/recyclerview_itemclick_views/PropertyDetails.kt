@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
+import com.example.rentwise.booking.Booking
 import com.example.rentwise.data_classes.PropertyData
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
@@ -113,7 +114,11 @@ class PropertyDetails : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
+        binding.buttonBookNow.setOnClickListener {
+            val intent = Intent(this, Booking::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun bindPassedData(){

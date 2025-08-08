@@ -15,6 +15,9 @@
         android:theme="@style/Theme.RentWise"
         tools:targetApi="31">
         <activity
+            android:name=".booking.Booking"
+            android:exported="false" />
+        <activity
             android:name=".settings.ProfileSettings"
             android:exported="false" />
         <activity

@@ -16,6 +16,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_now">Book Now</string>
     <string name="footer">© 2025 RentWise</string>
+    <string name="file_upload_subText">Please upload a copy of your ID, rental/lease agreement and proof of income for validation by the agent.</string>
     <string-array name="language_options">
         <item>English</item>
         <item>Spanish</item>
