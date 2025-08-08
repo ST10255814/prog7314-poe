@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import com.example.rentwise.PrivacyPolicyFragment
 import com.example.rentwise.R
 import com.example.rentwise.databinding.FragmentMainSettingsBinding
 import com.example.rentwise.faq.FAQChatBot
@@ -98,5 +99,14 @@ class MainSettingsFragment : Fragment() {
             }
             false
         }
+        binding.privacyPolicyTab.setOnClickListener {
+            commitFragmentToContainer(PrivacyPolicyFragment())
+        }
+    }
+    private fun commitFragmentToContainer(fragment: Fragment) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
