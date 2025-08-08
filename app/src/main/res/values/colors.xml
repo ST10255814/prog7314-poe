@@ -12,4 +12,5 @@
     <color name="light_grey_bg">#F6F6F6</color>
     <color name="card_shadow">#11000000</color>
     <color name="very_light_blue">#94d6ff</color>
+    <color name="golden_yellow">#FFD700</color>
 </resources>

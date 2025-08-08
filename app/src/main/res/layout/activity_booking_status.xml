@@ -1,0 +1,121 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingTop="20dp"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none"
+    android:fadeScrollbars="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="6dp"
+            app:strokeWidth="0dp"
+            android:backgroundTint="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/progressTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Booking Progress"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkish_blue"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true" />
+
+                    <ImageButton
+                        android:id="@+id/backButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Go Back"
+                        android:src="@drawable/go_back_icon"
+                        app:tint="@color/darkish_blue" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:progress="25"
+                    android:progressTint="@color/darkish_blue"
+                    android:progressBackgroundTint="@color/light_grey"
+                    android:max="100" />
+
+                <TextView
+                    android:id="@+id/progressSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Step 1 of 8: Requested"
+                    android:textSize="14sp"
+                    android:textColor="@color/darker_grey"
+                    android:layout_marginBottom="20dp" />
+
+                <LinearLayout
+                    android:id="@+id/checkpoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_grey"
+                    android:showDividers="middle">
+
+                    <include layout="@layout/progress_step_item" android:id="@+id/step1" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step2" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step3" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step4" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step5" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step6" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step7" />
+                    <include layout="@layout/progress_step_item" android:id="@+id/step8" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/footerNoteHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="NOTICE TO TENANTS"
+                    android:textSize="22sp"
+                    android:textColor="@color/darkish_blue"
+                    android:gravity="center"
+                    android:fontFamily="@font/goldman" />
+
+                <TextView
+                    android:id="@+id/footerNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/footer_booking_note"
+                    android:textSize="12sp"
+                    android:textColor="@color/darker_grey"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

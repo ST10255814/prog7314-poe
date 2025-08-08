@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.booking.BookingStatus
 import com.example.rentwise.faq.FAQChatBot
 import com.example.rentwise.notifications.NotificationsFragment
 import com.example.rentwise.settings.MainSettingsFragment
@@ -105,6 +106,13 @@ class HomeScreen : AppCompatActivity() {
             finish()
         }
 
+        binding.bookingStatusTab.setOnClickListener {
+            selectDrawerNavButton(binding.bookingStatusTabText)
+            val intent = Intent(this, BookingStatus::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         binding.navWishlist.setOnClickListener {
             selectNavButton(binding.navWishlist)
             commitFragmentToContainer(WishlistFragment())
@@ -153,6 +161,17 @@ class HomeScreen : AppCompatActivity() {
         }
 
         binding.faqChatbotTab.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+        binding.bookingStatusTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
