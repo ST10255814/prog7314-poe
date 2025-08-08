@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rentwise.databinding.ActivityHomeScreenBinding
 import androidx.core.view.isVisible
@@ -14,8 +15,10 @@ import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.faq.FAQChatBot
+import com.example.rentwise.notifications.NotificationsFragment
 import com.example.rentwise.settings.MainSettingsFragment
 import com.example.rentwise.settings.ProfileSettings
+import com.example.rentwise.wishlist.WishlistFragment
 
 class HomeScreen : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
@@ -92,7 +95,7 @@ class HomeScreen : AppCompatActivity() {
 
         binding.navQuery.setOnClickListener {
             selectNavButton(binding.navQuery)
-            commitFragmentToContainer(HomeFragment())
+            Toast.makeText(this, "To be implemented another time", Toast.LENGTH_SHORT).show()
         }
 
         binding.faqChatbotTab.setOnClickListener {
@@ -104,12 +107,12 @@ class HomeScreen : AppCompatActivity() {
 
         binding.navWishlist.setOnClickListener {
             selectNavButton(binding.navWishlist)
-            commitFragmentToContainer(HomeFragment())
+            commitFragmentToContainer(WishlistFragment())
         }
 
         binding.navNotification.setOnClickListener {
             selectNavButton(binding.navNotification)
-            commitFragmentToContainer(HomeFragment())
+            commitFragmentToContainer(NotificationsFragment())
         }
         binding.profileSettingsTab.setOnClickListener {
             selectDrawerNavButton(binding.profileSettingsText)

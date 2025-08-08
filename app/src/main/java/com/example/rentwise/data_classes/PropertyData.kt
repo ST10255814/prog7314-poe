@@ -8,5 +8,6 @@ data class PropertyData(
     val address: String,
     val label1: String,
     val label2: String,
-    val price: String
+    val price: String,
+    val isFavourite: Boolean
 ) : Serializable

@@ -63,7 +63,7 @@
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/aldrich"
                 android:text="New York"
-                android:textColor="#888888"
+                android:textColor="@color/darker_grey"
                 android:textSize="14sp" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:text="RENT"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#888888"
+                android:textColor="@color/darker_grey"
                 android:layout_marginBottom="4dp" />
 
             <LinearLayout
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" /month"
-                    android:textColor="#777777"
+                    android:textColor="@color/darker_grey"
                     android:textSize="14sp"
                     android:layout_marginStart="6dp"
                     android:fontFamily="@font/goldman" />
