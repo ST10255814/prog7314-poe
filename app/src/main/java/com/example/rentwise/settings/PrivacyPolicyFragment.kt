@@ -1,4 +1,4 @@
-package com.example.rentwise
+package com.example.rentwise.settings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
