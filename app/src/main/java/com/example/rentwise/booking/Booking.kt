@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.R
 import com.example.rentwise.adapters.FileAttachmentAdapter
+import com.example.rentwise.data_classes.PropertyData
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 
@@ -22,7 +23,9 @@ class Booking : AppCompatActivity() {
         binding = ActivityBookingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setListeners()
         populateRecyclerView()
+        bindPassedData()
     }
 
     private fun populateRecyclerView(){
@@ -78,6 +81,16 @@ class Booking : AppCompatActivity() {
                 }
             }
             false
+        }
+    }
+
+    private fun bindPassedData(){
+        val propertyName = intent.getStringExtra("property_name")
+        val propertyLocation = intent.getStringExtra("property_location")
+
+        if(propertyName != null && propertyLocation != null){
+            binding.propertyName.text = propertyName
+            binding.propertyAddress.text = propertyLocation
         }
     }
 }

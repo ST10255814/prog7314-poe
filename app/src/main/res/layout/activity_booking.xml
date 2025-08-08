@@ -31,6 +31,39 @@
             app:tint="@color/white"
             android:contentDescription="Back" />
 
+        <TextView
+            android:id="@+id/property_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_back"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Luxury Beach House"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/goldman"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
+
+        <TextView
+            android:id="@+id/property_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/property_name"
+            android:layout_alignStart="@id/property_name"
+            android:layout_marginTop="4dp"
+            android:text="123 Ocean Drive, Cape Town"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:fontFamily="@font/aldrich"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
+
         <LinearLayout
             android:id="@+id/container_details"
             android:layout_width="match_parent"
