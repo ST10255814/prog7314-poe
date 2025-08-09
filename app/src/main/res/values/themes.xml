@@ -6,4 +6,15 @@
     </style>
 
     <style name="Theme.RentWise" parent="Base.Theme.RentWise" />
+
+    <style name="Theme.RentWise.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_empty</item>
+
+        <item name="windowSplashScreenAnimationDuration">0</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.RentWise</item>
+    </style>
+
 </resources>
