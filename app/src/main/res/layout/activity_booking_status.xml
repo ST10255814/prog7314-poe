@@ -42,7 +42,8 @@
                         android:textStyle="bold"
                         android:textColor="@color/darkish_blue"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/goldman"/>
 
                     <ImageButton
                         android:id="@+id/backButton"
@@ -110,7 +111,7 @@
                     android:id="@+id/footerNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/footer_booking_note"
+                    android:text="@string/footer_tracking_note"
                     android:textSize="12sp"
                     android:textColor="@color/darker_grey"
                     android:gravity="center"

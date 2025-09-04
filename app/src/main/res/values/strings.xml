@@ -34,9 +34,9 @@
     </string-array>
     <string-array name="room_options">
         <item>Rooms</item>
-        <item>1+ Rooms</item>
-        <item>2+ Rooms</item>
-        <item>3+ Rooms</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3+</item>
     </string-array>
 
     <string-array name="price_options">
@@ -46,7 +46,13 @@
         <item>R5000-R10000</item>
         <item>R10000+</item>
     </string-array>
-    <string name="footer_booking_note">Tracking updates are refreshed in real-time. If a stage takes longer than expected, please contact our support team.</string>
+    <string-array name="priority_levels">
+        <item>Priority Level</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
+
     <string name="privacy_policy"><![CDATA[Date: August 8, 2025\n\nYour privacy is important to us. This Privacy Policy explains how we collect, use, and
     protect your information when you use our rental application (\'The App\').\n\nInformation We Collect\n- Personal Information: Name, email address,
     phone number, and profile photo when you create an account or make bookings.\n- Property & Rental Data: Listings you view, save, or book.\n- Location
@@ -55,4 +61,6 @@
     information. We only share it with:\n- Property owners or managers for bookings.\n- Service providers to process payments or deliver features.\n\nData
     Security\nWe use encryption and secure servers to protect your data.\n\nYour Rights\nYou can update or delete your information in the App at any time.\n\nContact
     Us\nIf you have questions about this Privacy Policy, please email: support@rentwise.com]]></string>
+
+    <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
 </resources>

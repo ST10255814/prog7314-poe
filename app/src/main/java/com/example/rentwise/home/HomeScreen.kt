@@ -16,6 +16,8 @@ import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.BookingStatus
 import com.example.rentwise.faq.FAQChatBot
+import com.example.rentwise.maintenance.MaintenanceFragment
+import com.example.rentwise.maintenance.MaintenanceRequest
 import com.example.rentwise.notifications.NotificationsFragment
 import com.example.rentwise.settings.MainSettingsFragment
 import com.example.rentwise.settings.ProfileSettings
@@ -36,7 +38,8 @@ class HomeScreen : AppCompatActivity() {
             binding.navHome,
             binding.navQuery,
             binding.navWishlist,
-            binding.navNotification
+            binding.navNotification,
+            binding.navMaintenance
         )
 
         drawerNavButtons = listOf(
@@ -99,6 +102,11 @@ class HomeScreen : AppCompatActivity() {
             Toast.makeText(this, "To be implemented another time", Toast.LENGTH_SHORT).show()
         }
 
+        binding.navMaintenance.setOnClickListener {
+            selectNavButton(binding.navMaintenance)
+            commitFragmentToContainer(MaintenanceFragment())
+        }
+
         binding.faqChatbotTab.setOnClickListener {
             selectDrawerNavButton(binding.faqChatbotText)
             val intent = Intent(this, FAQChatBot::class.java)
@@ -109,6 +117,14 @@ class HomeScreen : AppCompatActivity() {
         binding.bookingStatusTab.setOnClickListener {
             selectDrawerNavButton(binding.bookingStatusTabText)
             val intent = Intent(this, BookingStatus::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.maintenanceStatusTab.setOnClickListener {
+            selectDrawerNavButton(binding.maintenanceTabText)
+            closeDrawer()
+            val intent = Intent(this, MaintenanceRequest::class.java)
             startActivity(intent)
             finish()
         }

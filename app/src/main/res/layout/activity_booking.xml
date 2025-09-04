@@ -4,7 +4,7 @@
     android:id="@+id/booking_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9FB"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <RelativeLayout

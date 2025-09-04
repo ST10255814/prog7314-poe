@@ -1,0 +1,92 @@
+package com.example.rentwise.maintenance
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rentwise.R
+import com.example.rentwise.adapters.CustomSpinnerAdapter
+import com.example.rentwise.adapters.FileAttachmentAdapter
+import com.example.rentwise.databinding.FragmentMaintenanceBinding
+import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
+
+class MaintenanceFragment : Fragment() {
+    private var _binding: FragmentMaintenanceBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMaintenanceBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setListeners()
+        populateRecyclerView()
+        updateSpinner()
+    }
+
+    private fun populateRecyclerView(){
+        val fileList = mutableListOf(
+            "Lease_Agreement.pdf",
+            "Proof_of_Identity.jpg",
+            "Utility_Bill_July_2025.png",
+            "Additional_Document.docx"
+        )
+        binding.rvUploadedFiles.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvUploadedFiles.adapter = FileAttachmentAdapter(fileList) { selectedFile ->
+            fileList.removeAt(selectedFile)
+            binding.rvUploadedFiles.adapter?.notifyItemRemoved(selectedFile)
+        }
+    }
+
+    private fun updateSpinner() {
+        if (!isAdded || _binding == null) return
+
+        val priority = resources.getStringArray(R.array.priority_levels).toList()
+
+        val priorityAdapter = CustomSpinnerAdapter(requireContext(), priority)
+
+        binding.spinnerPriority.adapter = priorityAdapter
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setListeners(){
+        binding.btnUploadFile.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+        binding.btnSubmitRequest.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+    }
+}

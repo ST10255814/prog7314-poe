@@ -6,6 +6,8 @@
     android:padding="12dp"
     android:textSize="16sp"
     android:textColor="@color/black"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
     android:fontFamily="sans-serif-medium"
     android:background="@drawable/spinner_background"
     android:gravity="center_vertical"
