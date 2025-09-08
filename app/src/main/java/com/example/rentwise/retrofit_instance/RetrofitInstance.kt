@@ -1,5 +1,5 @@
 import android.content.Context
-import com.example.rentwise.api_interface_auth.UserAuth
+import com.example.rentwise.api_interface.RentWiseApi
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitInstance {
     private const val BASE_URL = "https://rentwiseapi.onrender.com/"
 
-    fun createAPIInstance(context: Context): UserAuth {
+    fun createAPIInstance(context: Context): RentWiseApi {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -37,6 +37,6 @@ object RetrofitInstance {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(UserAuth::class.java)
+            .create(RentWiseApi::class.java)
     }
 }

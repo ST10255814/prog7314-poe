@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -67,6 +68,28 @@
                     android:id="@+id/tv_label2"
                     android:background="@drawable/bg_rounded_outline"
                     android:text="Heating"
+                    android:textColor="@color/black"
+                    android:padding="6dp"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_label3"
+                    android:background="@drawable/bg_rounded_outline"
+                    android:text="Wifi"
+                    android:textColor="@color/black"
+                    android:padding="6dp"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_label4"
+                    android:background="@drawable/bg_rounded_outline"
+                    android:text="Parking"
                     android:textColor="@color/black"
                     android:padding="6dp"
                     android:textSize="12sp"
