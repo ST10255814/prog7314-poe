@@ -54,8 +54,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //retrofit library for api implementation
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     //BlurView for glassy look
     implementation ("com.github.Dimezis:BlurView:version-2.0.3")
     implementation ("com.google.android.material:material:1.12.0")

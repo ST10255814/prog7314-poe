@@ -3,19 +3,28 @@ package com.example.rentwise.auth
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.health.connect.datatypes.units.Length
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
+import com.example.rentwise.data_classes.LoginRequest
+import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
+import com.example.rentwise.retrofit_instance.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -27,6 +36,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupLoginView()
+        setListeners()
+    }
+    private fun setupLoginView(){
         //Spannable text implementation by:
         //https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov
         val appName = getString(R.string.app_name)
@@ -88,7 +101,8 @@ class LoginActivity : AppCompatActivity() {
         binding.blurView.setupWith(viewGroup)
             .setFrameClearDrawable(windowBg)
             .setBlurRadius(23f)
-
+    }
+    private fun setListeners(){
         binding.registerText.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -96,9 +110,36 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.loginBtn.setOnClickListener {
-            val intent = Intent(this, HomeScreen::class.java)
-            startActivity(intent)
-            finish()
+            //API Call
+            val request = LoginRequest(
+                email = binding.edtEmail.text.toString(),
+                password = binding.edtPassword.text.toString()
+            )
+
+            RetrofitInstance.instance.login(request).enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    val authResponse = response.body()
+                    if(response.isSuccessful) {
+                        if(authResponse != null){
+                            Log.v("Token: ", "${authResponse.token}")
+                            Toast.makeText(this@LoginActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@LoginActivity, HomeScreen::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                    }
+                    else{
+                        Toast.makeText(this@LoginActivity, "${authResponse?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable){
+                    Log.e("Login", "Error: ${t.message}")
+                }
+            })
         }
 
         //Button Animation and states followed by ChatGPT
