@@ -1,5 +1,6 @@
 package com.example.rentwise.auth
 
+import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -7,16 +8,27 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.rentwise.R
+import com.example.rentwise.data_classes.LoginResponse
+import com.example.rentwise.data_classes.RegisterRequest
+import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.databinding.ActivityRegisterBinding
+import com.example.rentwise.home.HomeScreen
+import com.example.rentwise.shared_pref_config.TokenManger
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -92,5 +104,56 @@ class RegisterActivity : AppCompatActivity() {
             }
             false
         }
+
+        binding.registerBtn.setOnClickListener{
+            val email = binding.regEmail.text.toString()
+            val password = binding.regPassword.text.toString()
+
+            RegisterAPICall(email, password)
+        }
+
+    }
+
+    private fun RegisterAPICall(email: String, password: String){
+        val request = RegisterRequest(
+            email = email,
+            password = password
+        )
+
+       val api = RetrofitInstance.createAPIInstance(applicationContext)
+        api.register(request).enqueue(object : Callback<RegisterResponse>{
+            override fun onResponse(
+                call : Call<RegisterResponse>,
+                response : Response<RegisterResponse>
+            ){
+                if(response.isSuccessful){
+                    val authResponse = response.body()
+                    if(authResponse != null){
+                        Toast.makeText(this@RegisterActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                else{
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            "Unknown error"
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    Toast.makeText(this@RegisterActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable){
+                Toast.makeText(this@RegisterActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Register", "Error: ${t.message.toString()}")
+            }
+        })
     }
 }
