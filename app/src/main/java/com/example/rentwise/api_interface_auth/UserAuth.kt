@@ -13,6 +13,6 @@ interface UserAuth {
     @POST("/api/users/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
-    @POST("api/users/register")
+    @POST("/api/users/register")
     fun register(@Body request: RegisterRequest): Call<RegisterResponse>
 }

@@ -1,5 +1,6 @@
 package com.example.rentwise.auth
 
+import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -21,7 +22,8 @@ import com.example.rentwise.R
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
-import com.example.rentwise.retrofit_instance.RetrofitInstance
+import com.example.rentwise.shared_pref_config.TokenManger
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         setupLoginView()
         setListeners()
     }
+
     private fun setupLoginView(){
         //Spannable text implementation by:
         //https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov
@@ -102,6 +105,7 @@ class LoginActivity : AppCompatActivity() {
             .setFrameClearDrawable(windowBg)
             .setBlurRadius(23f)
     }
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListeners(){
         binding.registerText.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -110,36 +114,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.loginBtn.setOnClickListener {
+            val email = binding.edtEmail.text.toString()
+            val password = binding.edtPassword.text.toString()
             //API Call
-            val request = LoginRequest(
-                email = binding.edtEmail.text.toString(),
-                password = binding.edtPassword.text.toString()
-            )
-
-            RetrofitInstance.instance.login(request).enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    val authResponse = response.body()
-                    if(response.isSuccessful) {
-                        if(authResponse != null){
-                            Log.v("Token: ", "${authResponse.token}")
-                            Toast.makeText(this@LoginActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@LoginActivity, HomeScreen::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-
-                    }
-                    else{
-                        Toast.makeText(this@LoginActivity, "${authResponse?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable){
-                    Log.e("Login", "Error: ${t.message}")
-                }
-            })
+            loginAPICall(email, password)
         }
 
         //Button Animation and states followed by ChatGPT
@@ -179,5 +157,54 @@ class LoginActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    private fun loginAPICall(email: String, password: String){
+        val request = LoginRequest(
+            email = email,
+            password = password
+        )
+
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        api.login(request).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if(response.isSuccessful) {
+                    val authResponse = response.body()
+                    if(authResponse != null){
+                        authResponse.token.let {
+                            val tokenManger = TokenManger(applicationContext)
+                            if (it != null) {
+                                tokenManger.saveToken(it)
+                            }
+                        }
+                        Toast.makeText(this@LoginActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, HomeScreen::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                else{
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            "Unknown error"
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable){
+                Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Login", "Error: ${t.message.toString()}")
+            }
+        })
     }
 }

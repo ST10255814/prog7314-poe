@@ -3,6 +3,7 @@ package com.example.rentwise.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
@@ -21,6 +22,7 @@ import com.example.rentwise.maintenance.MaintenanceRequest
 import com.example.rentwise.notifications.NotificationsFragment
 import com.example.rentwise.settings.MainSettingsFragment
 import com.example.rentwise.settings.ProfileSettings
+import com.example.rentwise.shared_pref_config.TokenManger
 import com.example.rentwise.wishlist.WishlistFragment
 
 class HomeScreen : AppCompatActivity() {
@@ -51,6 +53,9 @@ class HomeScreen : AppCompatActivity() {
         commitFragmentToContainer(HomeFragment())
         selectNavButton(binding.navHome)
         binding.btnOpenDrawer.bringToFront()
+
+        val token = TokenManger(applicationContext).getToken() ?: ""
+        Log.d("Token", token)
     }
 
     private fun commitFragmentToContainer(fragment: Fragment){
@@ -152,9 +157,16 @@ class HomeScreen : AppCompatActivity() {
         }
         binding.logoutTab.setOnClickListener {
             selectDrawerNavButton(binding.logoutText)
+
+            //Clear the token upon logging out
+            val tokenManger = TokenManger(this)
+            tokenManger.clearToken()
+
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+
+            Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show()
         }
         //Opens custom drawer when clicked on
         binding.btnOpenDrawer.setOnClickListener {
