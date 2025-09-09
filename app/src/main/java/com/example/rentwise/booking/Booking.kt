@@ -6,12 +6,8 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rentwise.R
 import com.example.rentwise.adapters.FileAttachmentAdapter
-import com.example.rentwise.data_classes.PropertyData
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 

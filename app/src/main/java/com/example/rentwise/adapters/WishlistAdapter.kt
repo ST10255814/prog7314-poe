@@ -12,12 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
-import com.example.rentwise.data_classes.PropertyData
+import com.example.rentwise.data_classes.ListingResponse
 
 class WishlistAdapter(
-    private val wishlistProperties: MutableList<PropertyData>,
-    private val onItemClick: (PropertyData) -> Unit,
-    private val onUnFavouriteClick: (PropertyData, Int) -> Unit
+    private val wishlistProperties: MutableList<ListingResponse>,
+    private val onItemClick: (ListingResponse) -> Unit,
+    private val onUnFavouriteClick: (ListingResponse, Int) -> Unit
 ) : RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder>() {
 
     class WishlistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -42,10 +42,10 @@ class WishlistAdapter(
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
         val wishlistItem = wishlistProperties[position]
 
-        holder.imageProperty.setImageResource(wishlistItem.imageResId)
+        //holder.imageProperty.setImageResource(wishlistItem.imageResId)
         holder.tvTitle.text = wishlistItem.title
         holder.tvAddress.text = wishlistItem.address
-        holder.tvPrice.text = wishlistItem.price
+        //holder.tvPrice.text = wishlistItem.price
 
         holder.itemView.setOnClickListener {
             onItemClick(wishlistItem)

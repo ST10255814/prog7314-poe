@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.R
 import com.example.rentwise.adapters.WishlistAdapter
-import com.example.rentwise.data_classes.PropertyData
+import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentWishListBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 
@@ -33,16 +33,16 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sampleList = mutableListOf(
-            PropertyData(R.drawable.house_interior_temp, "The Aliso", "950 E 3rd St, Los Angeles, CA", "2 Rooms", "Heating", "R4,280", false),
-            PropertyData(R.drawable.house_interior_temp, "Sunset Villa", "123 Main St, LA", "4 Rooms", "Cooling", "R7,490", false),
-            PropertyData(R.drawable.house_interior_temp, "Hollywood Hills", "13 Sunset St, LA", "2 Rooms", "Wi-Fi", "R6,000", false),
-            PropertyData(R.drawable.house_interior_temp, "Beverly Hills", "1045 Casper St, LA", "5 Rooms", "Solar", "R15,000", false)
+        /**val sampleList = mutableListOf(
+            ListingResponse(R.drawable.house_interior_temp, "The Aliso", "950 E 3rd St, Los Angeles, CA", "2 Rooms", "Heating", "R4,280", false),
+            ListingResponse(R.drawable.house_interior_temp, "Sunset Villa", "123 Main St, LA", "4 Rooms", "Cooling", "R7,490", false),
+            ListingResponse(R.drawable.house_interior_temp, "Hollywood Hills", "13 Sunset St, LA", "2 Rooms", "Wi-Fi", "R6,000", false),
+            ListingResponse(R.drawable.house_interior_temp, "Beverly Hills", "1045 Casper St, LA", "5 Rooms", "Solar", "R15,000", false)
         )
 
         binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.wishlistRecyclerView.adapter = WishlistAdapter(
-            wishlistProperties = sampleList,
+            //wishlistProperties = sampleList,
             onItemClick = { selectedProperty ->
                 val intent = Intent(requireContext(), PropertyDetails::class.java)
                 intent.putExtra("property", selectedProperty)
@@ -52,6 +52,6 @@ class WishlistFragment : Fragment() {
                 sampleList.removeAt(position)
                 binding.wishlistRecyclerView.adapter?.notifyItemRemoved(position)
             }
-        )
+        )**/
     }
 }
