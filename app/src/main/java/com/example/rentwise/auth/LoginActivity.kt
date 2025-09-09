@@ -174,10 +174,15 @@ class LoginActivity : AppCompatActivity() {
                 if(response.isSuccessful) {
                     val authResponse = response.body()
                     if(authResponse != null){
+                        val tokenManger = TokenManger(applicationContext)
                         authResponse.token.let {
-                            val tokenManger = TokenManger(applicationContext)
                             if (it != null) {
                                 tokenManger.saveToken(it)
+                            }
+                        }
+                        authResponse.userId.let {
+                            if(it != null){
+                                tokenManger.saveUser(it)
                             }
                         }
                         Toast.makeText(this@LoginActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()

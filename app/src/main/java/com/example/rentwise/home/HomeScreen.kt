@@ -158,9 +158,10 @@ class HomeScreen : AppCompatActivity() {
         binding.logoutTab.setOnClickListener {
             selectDrawerNavButton(binding.logoutText)
 
-            //Clear the token upon logging out
+            //Clear the token and userid upon logging out
             val tokenManger = TokenManger(this)
             tokenManger.clearToken()
+            tokenManger.clearUser()
 
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
