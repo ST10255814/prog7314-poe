@@ -142,7 +142,7 @@ class RegisterActivity : AppCompatActivity() {
                             val json = JSONObject(errorBody)
                             json.getString("error")
                         } catch (e: Exception) {
-                            "Unknown error"
+                            "Unexpected error"
                         }
                     } else {
                         "Unknown error"
