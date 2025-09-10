@@ -65,6 +65,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     //Splashscreen dependency
     implementation ("androidx.core:core-splashscreen:1.0.1")
-    implementation("com.airbnb.android:lottie:6.3.0")
-
+    implementation ("com.airbnb.android:lottie:6.3.0")
+    //Flexbox dependency
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 }
