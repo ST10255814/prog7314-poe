@@ -6,16 +6,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
 import com.example.rentwise.booking.Booking
-import com.example.rentwise.data_classes.PropertyData
+import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
 
@@ -145,14 +144,44 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindPassedData(){
-        val property = intent.getSerializableExtra("property") as? PropertyData
+        val property = intent.getSerializableExtra("property") as? ListingResponse
 
-        if(property != null){
-            binding.imageMain.setImageResource(property.imageResId)
-            binding.titleText.text = property.title
-            binding.locationText.text = property.address
-            binding.priceText.text = property.price
+        property?.let { prop ->
+            binding.titleText.text = prop.title
+            binding.locationText.text = prop.address
+            binding.priceText.text = "R${prop.price}"
+            binding.propertyDescription.text = prop.description
+
+            val images = prop.imagesURL ?: emptyList()
+
+            if (images.isNotEmpty()) {
+                Glide.with(this)
+                    .load(images[0])
+                    .placeholder(R.drawable.ic_empty)
+                    .error(R.drawable.ic_empty)
+                    .into(binding.imageMain)
+            }
+
+            val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
+
+            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
+                Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_empty)
+                    .error(R.drawable.ic_empty)
+                    .into(extraPhotos[index])
+            }
+
+            for (i in images.drop(1).size until 3) {
+                extraPhotos[i].visibility = View.GONE
+            }
+            val landlord = prop.landlordInfo
+
+            if(landlord != null){
+                binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
+            }
         }
     }
 }

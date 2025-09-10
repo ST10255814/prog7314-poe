@@ -21,10 +21,19 @@ class TokenManger (context: Context){
     fun saveToken(token: String){
         sharedPref.edit { putString("jwt_token", token) }
     }
+    fun saveUser(userId: String){
+        sharedPref.edit { putString("user_id", userId)}
+    }
     fun getToken() : String? {
         return sharedPref.getString("jwt_token", null)
     }
+    fun getUser() : String? {
+        return sharedPref.getString("user_id", null)
+    }
     fun clearToken() {
+        sharedPref.edit { clear() }
+    }
+    fun clearUser(){
         sharedPref.edit { clear() }
     }
 }
