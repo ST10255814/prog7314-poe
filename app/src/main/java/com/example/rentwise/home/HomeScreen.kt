@@ -53,9 +53,6 @@ class HomeScreen : AppCompatActivity() {
         commitFragmentToContainer(HomeFragment())
         selectNavButton(binding.navHome)
         binding.btnOpenDrawer.bringToFront()
-
-        val token = TokenManger(applicationContext).getToken() ?: ""
-        Log.d("Token", token)
     }
 
     private fun commitFragmentToContainer(fragment: Fragment){
