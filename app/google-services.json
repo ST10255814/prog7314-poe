@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "763138388558",
+    "project_id": "rentwise-prod",
+    "storage_bucket": "rentwise-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763138388558:android:4e1e57fbb5391f1b7c091f",
+        "android_client_info": {
+          "package_name": "com.example.rentwise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763138388558-uhes39tsh5fbvg3jou69broap9ga8tev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rentwise",
+            "certificate_hash": "7013c65d9dfc068e8ce01a86c728a20b0aecfec3"
+          }
+        },
+        {
+          "client_id": "763138388558-8tambelt3bsrtmghhftcnpkf05d3gco0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWnD1m_5wy6tEJKzQzj5oXYO4tCr45hnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763138388558-8tambelt3bsrtmghhftcnpkf05d3gco0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

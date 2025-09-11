@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.rentwise" />
+                  <option name="mobileSdkAppId" value="1:763138388558:android:4e1e57fbb5391f1b7c091f" />
+                  <option name="projectId" value="rentwise-prod" />
+                  <option name="projectNumber" value="763138388558" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
