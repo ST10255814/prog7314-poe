@@ -1,8 +1,7 @@
-import android.databinding.tool.writer.ViewBinding
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -50,6 +49,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,4 +70,15 @@ dependencies {
     implementation ("com.airbnb.android:lottie:6.3.0")
     //Flexbox dependency
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
+    //Google dependency
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    // Firebase: BoM controls versions for all Firebase artifacts below
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+
+
+
+
 }
