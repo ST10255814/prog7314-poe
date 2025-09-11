@@ -18,13 +18,13 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
 import com.example.rentwise.booking.Booking
+import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
 
 class PropertyDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPropertyDetailsBinding
-    private var isFavorited = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class PropertyDetails : AppCompatActivity() {
             .circleCrop()
             .into(binding.estateAgent)
 
-        bindPassedData()
+        compareWhichDataToBind()
         setButtonListeners()
     }
 
@@ -89,8 +89,7 @@ class PropertyDetails : AppCompatActivity() {
             false
         }
         binding.favouriteBtn.setOnClickListener {
-            isFavorited = !isFavorited
-            updateFavouriteIcon()
+            //updateFavouriteIcon()
 
             // TODO: call API to update DB here
 
@@ -143,8 +142,19 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    private fun compareWhichDataToBind(){
+        val property = intent.getSerializableExtra("property") as? ListingResponse
+
+        if(property != null){
+            bindPassedDataFromHomeFragment()
+        }
+        else{
+            bindDataPassedFromWishlistFragment()
+        }
+    }
+
     @SuppressLint("SetTextI18n")
-    private fun bindPassedData(){
+    private fun bindPassedDataFromHomeFragment(){
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
         property?.let { prop ->
@@ -177,15 +187,13 @@ class PropertyDetails : AppCompatActivity() {
                 extraPhotos[i].visibility = View.GONE
             }
 
-            Log.d("PropertyDetails", "DB favourite value: ${prop.isFavourite}")
-            isFavorited = prop.isFavourite ?: false
-            Log.d("PropertyDetails", "DB favourite value: ${prop.isFavourite}")
-            updateFavouriteIcon()
+            val isFavourited = prop.isFavourite ?: false
+            updateFavouriteIcon(isFavourited)
 
             val amenityIcons = mapOf(
-                "TV" to R.drawable.tv_icon,
-                "Wi-Fi" to R.drawable.wifi_icon,
-                "Bed" to R.drawable.bed_icon,
+                "tv" to R.drawable.tv_icon,
+                "wi-fi" to R.drawable.wifi_icon,
+                "bed" to R.drawable.bed_icon,
             )
 
             val amenities = prop.amenities ?: emptyList()
@@ -202,7 +210,7 @@ class PropertyDetails : AppCompatActivity() {
 
                 textView.text = amenity
 
-                val iconRes = amenityIcons[amenity] ?: R.drawable.ic_empty
+                val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
                 iconView.setImageResource(iconRes)
 
                 amenitiesContainer.addView(itemView)
@@ -215,13 +223,87 @@ class PropertyDetails : AppCompatActivity() {
             }
         }
     }
-    private fun updateFavouriteIcon() {
-        if (isFavorited) {
-            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
-            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
-        } else {
-            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
-            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
+
+    @SuppressLint("SetTextI18n")
+    private fun bindDataPassedFromWishlistFragment(){
+        val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
+
+        property?.let { prop ->
+            binding.titleText.text = prop.listingDetail?.title
+            binding.locationText.text = prop.listingDetail?.address
+            binding.priceText.text = "R${prop.listingDetail?.price}"
+            binding.propertyDescription.text = prop.listingDetail?.description
+
+
+
+            val images = prop.listingDetail?.images ?: emptyList()
+
+            if (images.isNotEmpty()) {
+                Glide.with(this)
+                    .load(images[0])
+                    .placeholder(R.drawable.ic_empty)
+                    .error(R.drawable.ic_empty)
+                    .into(binding.imageMain)
+            }
+
+            val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
+
+            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
+                Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_empty)
+                    .error(R.drawable.ic_empty)
+                    .into(extraPhotos[index])
+            }
+
+            for (i in images.drop(1).size until 3) {
+                extraPhotos[i].visibility = View.GONE
+            }
+
+            val isFavourite = prop.listingDetail?.isFavourite ?: false
+            updateFavouriteIcon(isFavourite)
+
+            val amenityIcons = mapOf(
+                "tv" to R.drawable.tv_icon,
+                "wi-fi" to R.drawable.wifi_icon,
+                "bed" to R.drawable.bed_icon,
+            )
+
+            val amenities = prop.listingDetail?.amenities ?: emptyList()
+            val amenitiesContainer = binding.amenitiesContainer
+            amenitiesContainer.removeAllViews()
+
+            val inflater = LayoutInflater.from(this)
+
+            for (amenity in amenities) {
+                val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+
+                val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
+                val textView = itemView.findViewById<TextView>(R.id.amenityText)
+
+                textView.text = amenity
+
+                val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
+                iconView.setImageResource(iconRes)
+
+                amenitiesContainer.addView(itemView)
+            }
+
+            val landlord = prop.listingDetail?.landlordInfo
+
+            if(landlord != null){
+                binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
+            }
         }
+    }
+
+    private fun updateFavouriteIcon(isFavourited: Boolean) {
+       if (isFavourited) {
+           binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
+           binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
+       } else {
+           binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
+           binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
+       }
     }
 }

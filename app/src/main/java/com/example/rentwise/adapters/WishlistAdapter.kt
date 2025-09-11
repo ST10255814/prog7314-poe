@@ -11,80 +11,84 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.rentwise.R
-import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.FavouriteListingsResponse
+import com.example.rentwise.databinding.WishlistItemBinding
 
 class WishlistAdapter(
-    private val wishlistProperties: MutableList<ListingResponse>,
-    private val onItemClick: (ListingResponse) -> Unit,
-    private val onUnFavouriteClick: (ListingResponse, Int) -> Unit
+    val wishlistProperties: MutableList<FavouriteListingsResponse>,
+    private val onItemClick: (FavouriteListingsResponse) -> Unit,
+    private val onUnFavouriteClick: (FavouriteListingsResponse, Int) -> Unit
 ) : RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder>() {
 
-    class WishlistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageProperty: ImageView = itemView.findViewById(R.id.property_image)
-        val tvTitle: TextView = itemView.findViewById(R.id.property_title)
-        val tvAddress: TextView = itemView.findViewById(R.id.property_location)
-        val tvPrice: TextView = itemView.findViewById(R.id.property_amount)
-        val favouriteBtn: ImageButton = itemView.findViewById(R.id.favourite_icon)
-    }
+    class WishlistViewHolder(val binding: WishlistItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishlistViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.wishlist_item, parent, false)
-        return WishlistViewHolder(view)
+        val binding = WishlistItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return WishlistViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return wishlistProperties.size
-    }
+    override fun getItemCount(): Int = wishlistProperties.size
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
         val wishlistItem = wishlistProperties[position]
 
-        //holder.imageProperty.setImageResource(wishlistItem.imageResId)
-        holder.tvTitle.text = wishlistItem.title
-        holder.tvAddress.text = wishlistItem.address
-        //holder.tvPrice.text = wishlistItem.price
+        with(holder.binding){
+            val firstImage = wishlistItem.listingDetail?.images?.firstOrNull()
+            Glide.with(propertyImage.context)
+                .load(firstImage ?: R.drawable.ic_empty)
+                .placeholder(R.drawable.ic_empty)
+                .error(R.drawable.ic_empty)
+                .into(propertyImage)
 
-        holder.itemView.setOnClickListener {
-            onItemClick(wishlistItem)
-        }
+            propertyTitle.text = wishlistItem.listingDetail?.title ?: "No Title"
+            propertyLocation.text = wishlistItem.listingDetail?.address ?: "No address"
+            propertyAmount.text = wishlistItem.listingDetail?.price.let { "R${it}" } ?: "Price N/A"
 
-        holder.favouriteBtn.setOnClickListener {
-            val currentPosition = holder.adapterPosition
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                ImageViewCompat.setImageTintList(
-                    holder.favouriteBtn,
-                    ContextCompat.getColorStateList(holder.itemView.context, R.color.grey)
-                )
-                holder.favouriteBtn.setImageResource(R.drawable.favourite_icon)
+            root.setOnClickListener { onItemClick(wishlistItem) }
 
-                holder.favouriteBtn.animate()
-                    .scaleX(0f)
-                    .scaleY(0f)
-                    .alpha(0f)
-                    .setDuration(200)
-                    .withEndAction {
-                        holder.favouriteBtn.scaleX = 1f
-                        holder.favouriteBtn.scaleY = 1f
-                        holder.favouriteBtn.alpha = 1f
-                        onUnFavouriteClick(wishlistItem, currentPosition)
-                    }
-                    .start()
+            root.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+                false
+            }
+
+            favouriteIcon.setOnClickListener {
+                val currentPosition = holder.adapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    ImageViewCompat.setImageTintList(
+                        favouriteIcon,
+                        ContextCompat.getColorStateList(holder.itemView.context, R.color.grey)
+                    )
+                    favouriteIcon.setImageResource(R.drawable.favourite_icon)
+
+                    favouriteIcon.animate()
+                        .scaleX(0f)
+                        .scaleY(0f)
+                        .alpha(0f)
+                        .setDuration(200)
+                        .withEndAction {
+                            favouriteIcon.scaleX = 1f
+                            favouriteIcon.scaleY = 1f
+                            favouriteIcon.alpha = 1f
+                            onUnFavouriteClick(wishlistItem, currentPosition)
+                        }
+                        .start()
+                }
             }
         }
+    }
 
-        holder.itemView.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
-            }
-            false
+    fun removeAt(position: Int) {
+        if (position in wishlistProperties.indices) {
+            wishlistProperties.removeAt(position)
+            notifyItemRemoved(position)
         }
     }
 }

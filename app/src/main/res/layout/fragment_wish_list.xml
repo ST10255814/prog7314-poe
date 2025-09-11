@@ -20,13 +20,25 @@
         android:layout_marginBottom="12dp"
         android:layout_marginTop="5dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/wishlist_recyclerView"
-        android:paddingBottom="16dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_marginBottom="80dp"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wishlist_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp"
+            android:clipToPadding="false"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/emptyWishlistView"
+            layout="@layout/empty_lisitings"
+            android:visibility="gone"/>
+    </FrameLayout>
 </LinearLayout>
