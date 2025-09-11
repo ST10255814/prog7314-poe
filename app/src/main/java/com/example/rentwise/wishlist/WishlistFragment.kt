@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.R
 import com.example.rentwise.adapters.WishlistAdapter
+import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentWishListBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class WishlistFragment : Fragment() {
     private var _binding: FragmentWishListBinding? = null
@@ -33,25 +37,45 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /**val sampleList = mutableListOf(
-            ListingResponse(R.drawable.house_interior_temp, "The Aliso", "950 E 3rd St, Los Angeles, CA", "2 Rooms", "Heating", "R4,280", false),
-            ListingResponse(R.drawable.house_interior_temp, "Sunset Villa", "123 Main St, LA", "4 Rooms", "Cooling", "R7,490", false),
-            ListingResponse(R.drawable.house_interior_temp, "Hollywood Hills", "13 Sunset St, LA", "2 Rooms", "Wi-Fi", "R6,000", false),
-            ListingResponse(R.drawable.house_interior_temp, "Beverly Hills", "1045 Casper St, LA", "5 Rooms", "Solar", "R15,000", false)
-        )
 
-        binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.wishlistRecyclerView.adapter = WishlistAdapter(
-            //wishlistProperties = sampleList,
-            onItemClick = { selectedProperty ->
-                val intent = Intent(requireContext(), PropertyDetails::class.java)
-                intent.putExtra("property", selectedProperty)
-                startActivity(intent)
-            },
-            onUnFavouriteClick = {_, position ->
-                sampleList.removeAt(position)
-                binding.wishlistRecyclerView.adapter?.notifyItemRemoved(position)
+
+
+    }
+    private fun getFavouriteListingsApiCall(){
+        val api = RetrofitInstance.createAPIInstance(requireContext())
+        api.getFavouriteListings().enqueue(object : Callback<List<FavouriteListingsResponse>> {
+            override fun onResponse(
+                call : Call<List<FavouriteListingsResponse>>,
+                response : Response<List<FavouriteListingsResponse>>
+            ) {
+                if(!isAdded || _binding == null) return
+                if(response.isSuccessful){
+                    val favouriteList = response.body() ?: emptyList()
+                    if(favouriteList.isNotEmpty()){
+                        binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        binding.wishlistRecyclerView.adapter = WishlistAdapter(
+                            wishlistProperties = favouriteList,
+                            onItemClick = { selectedProperty ->
+                                val intent = Intent(requireContext(), PropertyDetails::class.java)
+                                intent.putExtra("property", selectedProperty)
+                                startActivity(intent)
+                            },
+                            onUnFavouriteClick = {_, position ->
+                                sampleList.removeAt(position)
+                                binding.wishlistRecyclerView.adapter?.notifyItemRemoved(position)
+                            }
+                    }
+                }
             }
-        )**/
+
+            override fun onFailure(
+                call : Call<List<FavouriteListingsResponse>>,
+                t : Throwable
+            ) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.rentwise.api_interface
 
+import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
@@ -21,6 +22,9 @@ interface RentWiseApi {
 
     @GET("/api/listings")
     fun getListings(): Call<List<ListingResponse>>
+
+    @GET("/api/favourites")
+    fun getFavouriteListings(): Call<List<FavouriteListingsResponse>>
 
     @GET("/api/users/{id}")
     fun getUserById(@Path("id") userId: String): Call<UserSettingsResponse>
