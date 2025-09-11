@@ -22,6 +22,7 @@ data class ListingResponse(
     val amenities: List<String>?,
     @SerializedName("parsedPrice")
     val price: Float?,
+    @SerializedName("isFavourited")
     val isFavourite: Boolean?,
     val landlordInfo: LandLordDetails?
 ) : Serializable

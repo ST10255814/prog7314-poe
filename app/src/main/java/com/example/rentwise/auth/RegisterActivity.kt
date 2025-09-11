@@ -109,12 +109,12 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
-            RegisterAPICall(email, password)
+            registerAPICall(email, password)
         }
 
     }
 
-    private fun RegisterAPICall(email: String, password: String){
+    private fun registerAPICall(email: String, password: String){
         val request = RegisterRequest(
             email = email,
             password = password

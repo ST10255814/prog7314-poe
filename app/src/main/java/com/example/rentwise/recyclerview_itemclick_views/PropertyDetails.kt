@@ -5,9 +5,13 @@ import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -33,8 +37,8 @@ class PropertyDetails : AppCompatActivity() {
             .circleCrop()
             .into(binding.estateAgent)
 
-        setButtonListeners()
         bindPassedData()
+        setButtonListeners()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -86,14 +90,9 @@ class PropertyDetails : AppCompatActivity() {
         }
         binding.favouriteBtn.setOnClickListener {
             isFavorited = !isFavorited
+            updateFavouriteIcon()
 
-            if (isFavorited) {
-                binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
-                binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
-            } else {
-                binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
-                binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
-            }
+            // TODO: call API to update DB here
 
             val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
                 binding.favouriteBtn,
@@ -177,11 +176,52 @@ class PropertyDetails : AppCompatActivity() {
             for (i in images.drop(1).size until 3) {
                 extraPhotos[i].visibility = View.GONE
             }
+
+            Log.d("PropertyDetails", "DB favourite value: ${prop.isFavourite}")
+            isFavorited = prop.isFavourite ?: false
+            Log.d("PropertyDetails", "DB favourite value: ${prop.isFavourite}")
+            updateFavouriteIcon()
+
+            val amenityIcons = mapOf(
+                "TV" to R.drawable.tv_icon,
+                "Wi-Fi" to R.drawable.wifi_icon,
+                "Bed" to R.drawable.bed_icon,
+            )
+
+            val amenities = prop.amenities ?: emptyList()
+            val amenitiesContainer = binding.amenitiesContainer
+            amenitiesContainer.removeAllViews()
+
+            val inflater = LayoutInflater.from(this)
+
+            for (amenity in amenities) {
+                val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+
+                val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
+                val textView = itemView.findViewById<TextView>(R.id.amenityText)
+
+                textView.text = amenity
+
+                val iconRes = amenityIcons[amenity] ?: R.drawable.ic_empty
+                iconView.setImageResource(iconRes)
+
+                amenitiesContainer.addView(itemView)
+            }
+
             val landlord = prop.landlordInfo
 
             if(landlord != null){
                 binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
             }
+        }
+    }
+    private fun updateFavouriteIcon() {
+        if (isFavorited) {
+            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
+            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
+        } else {
+            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
+            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
         }
     }
 }
