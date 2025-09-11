@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rentwise.data_classes.NotificationData
+import com.example.rentwise.data_classes.NotificationResponse
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NotificationAdapter(
-    private val notifications: List<NotificationData>,
+    private val notifications: List<NotificationResponse>,
 ) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,11 +35,13 @@ class NotificationAdapter(
         val notification = notifications[position]
 
         holder.icon.setImageResource(R.drawable.notification_icon)
-        holder.title.text = notification.notificationTitle
+        holder.title.text = notification.title
         holder.message.text = notification.notificationMessage
 
-        val formatter = SimpleDateFormat("hh:mm:ss a", Locale.getDefault())
-        holder.time.text = formatter.format(notification.notificationTime)
+        val mongoTime = OffsetDateTime.parse(notification.createdAt)
+        val formatter = DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.getDefault())
+        val formattedTime = mongoTime.format(formatter)
+        holder.time.text = formattedTime
     }
 
     override fun getItemCount(): Int = notifications.size
