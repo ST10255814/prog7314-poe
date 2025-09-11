@@ -125,13 +125,13 @@ class HomeFragment : Fragment() {
                         call: Call<MutableList<FavouriteListingsResponse>>,
                         t: Throwable
                     ) {
-                        Toast.makeText(requireContext(), "Failed to fetch favourites", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
 
             override fun onFailure(call: Call<List<ListingResponse>>, t: Throwable) {
-                Toast.makeText(requireContext(), "Failed to fetch listings", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
             }
         })
     }
