@@ -7,6 +7,7 @@ import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
+import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -34,6 +35,6 @@ interface RentWiseApi {
     @POST("/api/{userID}/{listingID}/favourite")
     fun favouriteListing(@Path("userID") userId: String, @Path("listingID") listingId: String): Call<FavouriteListingPostResponse>
 
-    /**@DELETE("api/{id}/unfavourite")
-    fun deleteFavouriteListing(@Path("id") listingId: String): Call<UnfavouriteListingResponse>**/
+    @DELETE("/api/{id}/unfavourite")
+    fun deleteFavouriteListing(@Path("id") listingId: String): Call<UnfavouriteListingResponse>
 }

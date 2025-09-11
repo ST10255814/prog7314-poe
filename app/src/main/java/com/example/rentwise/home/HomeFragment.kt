@@ -2,6 +2,7 @@ package com.example.rentwise.home
 
 import RetrofitInstance
 import android.content.Intent
+import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.example.rentwise.R
 import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.PropertyItemAdapter
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentHomeBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
@@ -44,8 +46,8 @@ class HomeFragment : Fragment() {
             .circleCrop()
             .into(binding.profileDisplay)
 
-        getListingsApiCall()
         updateSpinners()
+        fetchListingsExcludingFavourites()
     }
 
     override fun onDestroyView() {
@@ -69,73 +71,67 @@ class HomeFragment : Fragment() {
         binding.spinnerPrices.adapter = pricesAdapter
     }
 
-    private fun getListingsApiCall(){
+    private fun fetchListingsExcludingFavourites() {
         val api = RetrofitInstance.createAPIInstance(requireContext())
+        val tokenManager = TokenManger(requireContext())
+        val userId = tokenManager.getUser() ?: return
+
         api.getListings().enqueue(object : Callback<List<ListingResponse>> {
             override fun onResponse(
                 call: Call<List<ListingResponse>>,
                 response: Response<List<ListingResponse>>
             ) {
                 if (!isAdded || _binding == null) return
-                if(response.isSuccessful) {
-                    val propertyList = response.body() ?: emptyList()
+                if (!response.isSuccessful) return
 
-                    if (propertyList.isNotEmpty()){
-                        binding.propertiesRecyclerView.visibility = View.VISIBLE
-                        binding.emptyView.emptyLayout.visibility = View.GONE
+                val allListings = response.body() ?: emptyList()
 
-                        binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.propertiesRecyclerView.adapter = PropertyItemAdapter(propertyList) { selectedProperty ->
+                //Fetch favourites
+                api.getFavouriteListings(userId).enqueue(object : Callback<MutableList<FavouriteListingsResponse>> {
+                    override fun onResponse(
+                        call: Call<MutableList<FavouriteListingsResponse>>,
+                        favResponse: Response<MutableList<FavouriteListingsResponse>>
+                    ) {
+                        if (!isAdded || _binding == null) return
+                        if (!favResponse.isSuccessful) return
+
+                        val favouriteIds = favResponse.body()
+                            ?.mapNotNull { it.listingDetail?.listingID }
+                            ?.toSet() ?: emptySet()
+
+                        //Filter out favourites
+                        val nonFavouriteListings = allListings.filter { it.propertyId !in favouriteIds }
+
+                        //Pass filtered list to adapter
+                        val adapter = PropertyItemAdapter(nonFavouriteListings) { selected ->
                             val intent = Intent(requireContext(), PropertyDetails::class.java)
-                            intent.putExtra("property", selectedProperty)
+                            intent.putExtra("property", selected)
                             startActivity(intent)
                         }
-                        Toast.makeText(requireContext(), "Listings Loaded", Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        binding.propertiesRecyclerView.visibility = View.GONE
-                        binding.emptyView.emptyLayout.visibility = View.VISIBLE
-                    }
-                }
-                else {
-                    binding.propertiesRecyclerView.visibility = View.GONE
-                    binding.emptyView.emptyLayout.visibility = View.VISIBLE
 
-                    val errorBody = response.errorBody()?.string()
-                    val errorMessage = if (errorBody != null) {
-                        try {
-                            val json = JSONObject(errorBody)
-                            when {
-                                json.has("message") -> json.getString("message")
-                                json.has("error") -> json.getString("error")
-                                else -> "Unknown error"
-                            }
-                        } catch (e: Exception) {
-                            "Unknown error"
+                        binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        binding.propertiesRecyclerView.adapter = adapter
+
+                        if (nonFavouriteListings.isEmpty()) {
+                            binding.propertiesRecyclerView.visibility = View.GONE
+                            binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.propertiesRecyclerView.visibility = View.VISIBLE
+                            binding.emptyView.emptyLayout.visibility = View.GONE
                         }
-                    } else {
-                        "Unknown error"
                     }
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-                    // Log out if unauthorized
-                    val tokenManger = TokenManger(requireContext())
-                    if (response.code() == 401) {
-                        tokenManger.clearToken()
-                        tokenManger.clearUser()
 
-                        val intent = Intent(requireContext(), LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
-                        startActivity(intent)
+                    override fun onFailure(
+                        call: Call<MutableList<FavouriteListingsResponse>>,
+                        t: Throwable
+                    ) {
+                        Toast.makeText(requireContext(), "Failed to fetch favourites", Toast.LENGTH_SHORT).show()
                     }
-                }
+                })
             }
 
             override fun onFailure(call: Call<List<ListingResponse>>, t: Throwable) {
-                if (!isAdded || _binding == null) return
-                binding.propertiesRecyclerView.visibility = View.GONE
-                binding.emptyView.emptyLayout.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), "${t.message}", Toast.LENGTH_SHORT).show()
-                Log.e("Home Screen", "Error: ${t.message.toString()}")
+                Toast.makeText(requireContext(), "Failed to fetch listings", Toast.LENGTH_SHORT).show()
             }
         })
     }

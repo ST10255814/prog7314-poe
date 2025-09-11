@@ -1,5 +1,6 @@
 package com.example.rentwise.recyclerview_itemclick_views
 
+import RetrofitInstance
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
@@ -12,19 +13,28 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
+import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.Booking
+import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
+import com.example.rentwise.shared_pref_config.TokenManger
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PropertyDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPropertyDetailsBinding
+    private var isFavourite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +47,12 @@ class PropertyDetails : AppCompatActivity() {
             .circleCrop()
             .into(binding.estateAgent)
 
-        compareWhichDataToBind()
-        setButtonListeners()
+        val listingId = compareWhichDataToBind()
+        setButtonListeners(listingId)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setButtonListeners(){
+    private fun setButtonListeners(listingId: String){
         binding.buttonBookNow.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -89,22 +99,71 @@ class PropertyDetails : AppCompatActivity() {
             false
         }
         binding.favouriteBtn.setOnClickListener {
-            //updateFavouriteIcon()
+            val tokenManger = TokenManger(applicationContext)
+            val userId = tokenManger.getUser()
+            if(userId != null){
+                val api = RetrofitInstance.createAPIInstance(applicationContext)
+                api.favouriteListing(userId, listingId).enqueue( object: Callback<FavouriteListingPostResponse>{
+                    override fun onResponse(
+                        call: Call<FavouriteListingPostResponse>,
+                        response: Response<FavouriteListingPostResponse>
+                    ) {
+                        if(response.isSuccessful){
+                            val apiResponse = response.body()
+                            if (apiResponse != null){
+                                Toast.makeText(this@PropertyDetails, apiResponse.message, Toast.LENGTH_SHORT).show()
+                                isFavourite = !isFavourite
+                                updateFavouriteIcon(isFavourite)
+                                val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+                                    binding.favouriteBtn,
+                                    PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+                                    PropertyValuesHolder.ofFloat("scaleY", 1.2f)
+                                ).apply {
+                                    duration = 150
+                                    interpolator = OvershootInterpolator()
+                                    repeatCount = 1
+                                    repeatMode = ObjectAnimator.REVERSE
+                                }
 
-            // TODO: call API to update DB here
+                                scaleUp.start()
+                            }
+                        }
+                        else{
+                            val errorBody = response.errorBody()?.string()
+                            val errorMessage = if (errorBody != null) {
+                                try {
+                                    val json = JSONObject(errorBody)
+                                    when {
+                                        json.has("message") -> json.getString("message")
+                                        json.has("error") -> json.getString("error")
+                                        else -> "Unknown error"
+                                    }
+                                } catch (e: Exception) {
+                                    "Unknown error"
+                                }
+                            } else {
+                                "Unknown error"
+                            }
+                            Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                            Log.e("Error", errorMessage)
+                            // Log out if unauthorized
+                            if (response.code() == 401) {
+                                tokenManger.clearToken()
+                                tokenManger.clearUser()
 
-            val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
-                binding.favouriteBtn,
-                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
-                PropertyValuesHolder.ofFloat("scaleY", 1.2f)
-            ).apply {
-                duration = 150
-                interpolator = OvershootInterpolator()
-                repeatCount = 1
-                repeatMode = ObjectAnimator.REVERSE
+                                val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                                startActivity(intent)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<FavouriteListingPostResponse>, t: Throwable) {
+                        Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                        Log.e("Error", t.message.toString())
+                    }
+                })
             }
-
-            scaleUp.start()
         }
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, HomeScreen::class.java)
@@ -142,19 +201,20 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
-    private fun compareWhichDataToBind(){
+    private fun compareWhichDataToBind() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
-        if(property != null){
+        val listingId: String = if(property != null){
             bindPassedDataFromHomeFragment()
-        }
-        else{
+        } else{
             bindDataPassedFromWishlistFragment()
         }
+
+        return listingId
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindPassedDataFromHomeFragment(){
+    private fun bindPassedDataFromHomeFragment() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
         property?.let { prop ->
@@ -187,8 +247,8 @@ class PropertyDetails : AppCompatActivity() {
                 extraPhotos[i].visibility = View.GONE
             }
 
-            val isFavourited = prop.isFavourite ?: false
-            updateFavouriteIcon(isFavourited)
+            isFavourite = prop.isFavourite ?: false
+            updateFavouriteIcon(isFavourite)
 
             val amenityIcons = mapOf(
                 "tv" to R.drawable.tv_icon,
@@ -222,10 +282,11 @@ class PropertyDetails : AppCompatActivity() {
                 binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
             }
         }
+        return property?.propertyId ?: "No Id"
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindDataPassedFromWishlistFragment(){
+    private fun bindDataPassedFromWishlistFragment() : String {
         val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
 
         property?.let { prop ->
@@ -233,8 +294,6 @@ class PropertyDetails : AppCompatActivity() {
             binding.locationText.text = prop.listingDetail?.address
             binding.priceText.text = "R${prop.listingDetail?.price}"
             binding.propertyDescription.text = prop.listingDetail?.description
-
-
 
             val images = prop.listingDetail?.images ?: emptyList()
 
@@ -295,6 +354,7 @@ class PropertyDetails : AppCompatActivity() {
                 binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
             }
         }
+        return property?.listingDetail?.listingID ?: "No Id"
     }
 
     private fun updateFavouriteIcon(isFavourited: Boolean) {
