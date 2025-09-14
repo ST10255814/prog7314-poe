@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.rentwise.R
+import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.data_classes.UserSettingsResponse
 import com.example.rentwise.databinding.ActivityProfileSettingsBinding
 import com.example.rentwise.home.HomeScreen
@@ -110,6 +111,15 @@ class ProfileSettings : AppCompatActivity() {
                             }
                         } else {
                             "Unknown error"
+                        }
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManager.clearToken()
+                            tokenManager.clearUser()
+
+                            val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
                         }
                         Toast.makeText(this@ProfileSettings, errorMessage, Toast.LENGTH_SHORT).show()
                     }

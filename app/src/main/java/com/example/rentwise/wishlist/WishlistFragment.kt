@@ -70,10 +70,17 @@ class WishlistFragment : Fragment() {
                                 },
                                 onUnFavouriteClick = {_, position ->
                                     wishlistAdapter.removeAt(position)
+                                    Toast.makeText(requireContext(), "Removed from wishlist", Toast.LENGTH_SHORT).show()
+                                    if(wishlistAdapter.itemCount == 0) {
+                                        binding.wishlistRecyclerView.visibility = View.GONE
+                                        binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+                                    }
                                 }
                             )
                             binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                             binding.wishlistRecyclerView.adapter = wishlistAdapter
+
+                            Toast.makeText(requireContext(), "Wishlist loaded", Toast.LENGTH_SHORT).show()
                         }
                         else{
                             binding.wishlistRecyclerView.visibility = View.GONE

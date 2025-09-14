@@ -74,65 +74,136 @@ class HomeFragment : Fragment() {
     private fun fetchListingsExcludingFavourites() {
         val api = RetrofitInstance.createAPIInstance(requireContext())
         val tokenManager = TokenManger(requireContext())
-        val userId = tokenManager.getUser() ?: return
+        val userId = tokenManager.getUser()
 
-        api.getListings().enqueue(object : Callback<List<ListingResponse>> {
-            override fun onResponse(
-                call: Call<List<ListingResponse>>,
-                response: Response<List<ListingResponse>>
-            ) {
-                if (!isAdded || _binding == null) return
-                if (!response.isSuccessful) return
+        if(userId != null) {
+            api.getListings().enqueue( object : Callback<List<ListingResponse>> {
+                override fun onResponse(
+                    call: Call<List<ListingResponse>>,
+                    response: Response<List<ListingResponse>>
+                ) {
+                    if(!isAdded || _binding == null) return
+                    if(response.isSuccessful){
+                        val allListings = response.body() ?: emptyList()
 
-                val allListings = response.body() ?: emptyList()
+                        //Fetch favourites for filtering
+                        api.getFavouriteListings(userId).enqueue( object : Callback<MutableList<FavouriteListingsResponse>> {
+                            override fun onResponse(
+                                call: Call<MutableList<FavouriteListingsResponse>>,
+                                favResponse: Response<MutableList<FavouriteListingsResponse>>
+                            ) {
+                                if(!isAdded || _binding == null) return
+                                if(favResponse.isSuccessful){
 
-                //Fetch favourites
-                api.getFavouriteListings(userId).enqueue(object : Callback<MutableList<FavouriteListingsResponse>> {
-                    override fun onResponse(
-                        call: Call<MutableList<FavouriteListingsResponse>>,
-                        favResponse: Response<MutableList<FavouriteListingsResponse>>
-                    ) {
-                        if (!isAdded || _binding == null) return
-                        if (!favResponse.isSuccessful) return
+                                    //Extract favourite listing IDs
+                                    val favouriteIds = favResponse.body()
+                                        ?.mapNotNull { it.listingDetail?.listingID }
+                                        ?.toSet() ?: emptySet()
 
-                        val favouriteIds = favResponse.body()
-                            ?.mapNotNull { it.listingDetail?.listingID }
-                            ?.toSet() ?: emptySet()
+                                    //Filter out favourites from all listings
+                                    val nonFavouriteListings = allListings.filter { it.propertyId !in favouriteIds }
 
-                        //Filter out favourites
-                        val nonFavouriteListings = allListings.filter { it.propertyId !in favouriteIds }
+                                    //Pass filtered list to adapter and add onClick to each item
+                                    val adapter = PropertyItemAdapter(nonFavouriteListings) { selected ->
+                                        val intent = Intent(requireContext(), PropertyDetails::class.java)
+                                        intent.putExtra("property", selected)
+                                        startActivity(intent)
+                                    }
 
-                        //Pass filtered list to adapter
-                        val adapter = PropertyItemAdapter(nonFavouriteListings) { selected ->
-                            val intent = Intent(requireContext(), PropertyDetails::class.java)
-                            intent.putExtra("property", selected)
+                                    binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                                    binding.propertiesRecyclerView.adapter = adapter
+                                    if (nonFavouriteListings.isEmpty()) {
+                                        binding.propertiesRecyclerView.visibility = View.GONE
+                                        binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                                    } else {
+                                        binding.propertiesRecyclerView.visibility = View.VISIBLE
+                                        binding.emptyView.emptyLayout.visibility = View.GONE
+                                    }
+                                    //Show success message
+                                    Toast.makeText(requireContext(), "Listings loaded", Toast.LENGTH_SHORT).show()
+                                }
+                                else{
+                                    //Handle error response for favourites and show empty view
+                                    binding.propertiesRecyclerView.visibility = View.GONE
+                                    binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                                    val errorBody = response.errorBody()?.string()
+                                    val errorMessage = if (errorBody != null) {
+                                        try {
+                                            val json = JSONObject(errorBody)
+                                            json.getString("error")
+                                        } catch (e: Exception) {
+                                            "Unknown error"
+                                        }
+                                    } else {
+                                        "Unknown error"
+                                    }
+                                    // Log out if unauthorized
+                                    if (response.code() == 401) {
+                                        tokenManager.clearToken()
+                                        tokenManager.clearUser()
+
+                                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                                        startActivity(intent)
+                                    }
+                                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<MutableList<FavouriteListingsResponse>>,
+                                t: Throwable
+                            ) {
+                                //Handle failure and show empty view
+                                if(!isAdded || _binding == null) return
+                                binding.propertiesRecyclerView.visibility = View.GONE
+                                binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                                Log.e("Error", t.message.toString())
+                            }
+
+                        })
+                    }
+                    else{
+                        //Handle listing error response and show empty view
+                        binding.propertiesRecyclerView.visibility = View.GONE
+                        binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                json.getString("error")
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManager.clearToken()
+                            tokenManager.clearUser()
+
+                            val intent = Intent(requireContext(), LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                             startActivity(intent)
                         }
-
-                        binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.propertiesRecyclerView.adapter = adapter
-
-                        if (nonFavouriteListings.isEmpty()) {
-                            binding.propertiesRecyclerView.visibility = View.GONE
-                            binding.emptyView.emptyLayout.visibility = View.VISIBLE
-                        } else {
-                            binding.propertiesRecyclerView.visibility = View.VISIBLE
-                            binding.emptyView.emptyLayout.visibility = View.GONE
-                        }
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
+                }
 
-                    override fun onFailure(
-                        call: Call<MutableList<FavouriteListingsResponse>>,
-                        t: Throwable
-                    ) {
-                        Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
-
-            override fun onFailure(call: Call<List<ListingResponse>>, t: Throwable) {
-                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(
+                    call: Call<List<ListingResponse>>,
+                    t: Throwable
+                ) {
+                    //Handle failure and show empty view
+                    if(!isAdded || _binding == null) return
+                    binding.propertiesRecyclerView.visibility = View.GONE
+                    binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                    Log.e("Error", t.message.toString())
+                }
+            })
+        }
     }
 }
