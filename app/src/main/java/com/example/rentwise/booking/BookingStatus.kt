@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.BookingStatusResponse
 import com.example.rentwise.databinding.ActivityBookingStatusBinding
 import com.example.rentwise.home.HomeScreen
@@ -157,14 +158,14 @@ class BookingStatus : AppCompatActivity() {
                             if (status != null) {
                                 prepBookingTracker(status) // Update UI based on status
                             }
-                            Toast.makeText(this@BookingStatus, "Booking status fetched!", Toast.LENGTH_SHORT).show()
+                            CustomToast.show(this@BookingStatus, "Booking status fetched!", CustomToast.Companion.ToastType.INFO)
                         }
                     }
                     else{
                         hideOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
-                        Toast.makeText(this@BookingStatus, errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@BookingStatus, errorMessage, CustomToast.Companion.ToastType.ERROR)
 
                         //Logout user if 401 Unauthorized
                         if(response.code() == 401) {
@@ -180,7 +181,7 @@ class BookingStatus : AppCompatActivity() {
                 override fun onFailure(call: Call<BookingStatusResponse>, t: Throwable) {
                     // Handle failure
                     hideOverlay()
-                    Toast.makeText(this@BookingStatus, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@BookingStatus, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Failure", "API call failed: ${t.message}" )
                 }
             })

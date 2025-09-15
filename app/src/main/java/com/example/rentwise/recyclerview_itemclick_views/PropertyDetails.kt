@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.Booking
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
@@ -195,7 +196,9 @@ class PropertyDetails : AppCompatActivity() {
                         hideFavouriteLoading()
                         val apiResponse = response.body()
                         if (apiResponse != null){
-                            Toast.makeText(this@PropertyDetails, apiResponse.message, Toast.LENGTH_SHORT).show()
+                            apiResponse.message?.let {
+                                CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
+                            }
                             isFavourite = !isFavourite
                             updateFavouriteIcon(isFavourite)
                             val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
@@ -229,7 +232,7 @@ class PropertyDetails : AppCompatActivity() {
                         } else {
                             "Unknown error"
                         }
-                        Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
                         // Log out if unauthorized
                         if (response.code() == 401) {
@@ -246,7 +249,7 @@ class PropertyDetails : AppCompatActivity() {
                 override fun onFailure(call: Call<FavouriteListingPostResponse>, t: Throwable) {
                     // Log error message
                     hideFavouriteLoading()
-                    Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
             })
@@ -324,7 +327,7 @@ class PropertyDetails : AppCompatActivity() {
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
                         }
                     }
-                    Toast.makeText(this@PropertyDetails, "Property Loaded", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
                 }
                 else {
                     hideLoading()
@@ -348,14 +351,14 @@ class PropertyDetails : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                         startActivity(intent)
                     }
-                    Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
 
             override fun onFailure(call: Call<ListingResponse>, t: Throwable) {
                 // Log error message
                 hideLoading()
-                Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Error", t.message.toString())
             }
         })
@@ -429,7 +432,7 @@ class PropertyDetails : AppCompatActivity() {
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
                         }
                     }
-                    Toast.makeText(this@PropertyDetails, "Property Loaded", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
                 }
                 else {
                     hideLoading()
@@ -453,7 +456,7 @@ class PropertyDetails : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                         startActivity(intent)
                     }
-                    Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
 
@@ -463,7 +466,7 @@ class PropertyDetails : AppCompatActivity() {
             ) {
                 // Log error message
                 hideLoading()
-                Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Error", t.message.toString())
             }
         })
@@ -485,8 +488,11 @@ class PropertyDetails : AppCompatActivity() {
                         val responseBody = response.body()
                         if (responseBody != null) {
                             // Successfully unfavourited
-                            Toast.makeText(this@PropertyDetails, responseBody.message, Toast.LENGTH_SHORT).show()
-                            updateFavouriteIcon(!isFavourite)
+                            isFavourite = !isFavourite
+                            responseBody.message?.let {
+                                CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
+                            }
+                            updateFavouriteIcon(isFavourite)
                         }
                     }
                     else{
@@ -507,7 +513,7 @@ class PropertyDetails : AppCompatActivity() {
                         } else {
                             "Unknown error"
                         }
-                        Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
                         // Log out if unauthorized
                         if (response.code() == 401) {
@@ -525,7 +531,7 @@ class PropertyDetails : AppCompatActivity() {
                     t: Throwable
                 ) {
                     hideFavouriteLoading()
-                    Toast.makeText(this@PropertyDetails, "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@PropertyDetails, "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
             })

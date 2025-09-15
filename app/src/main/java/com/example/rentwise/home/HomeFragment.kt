@@ -16,6 +16,7 @@ import com.example.rentwise.R
 import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.PropertyItemAdapter
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentHomeBinding
@@ -121,7 +122,7 @@ class HomeFragment : Fragment() {
                                         binding.emptyView.emptyLayout.visibility = View.GONE
                                     }
                                     //Show success message
-                                    Toast.makeText(requireContext(), "Listings loaded", Toast.LENGTH_SHORT).show()
+                                    CustomToast.show(requireContext(), "Listings loaded", CustomToast.Companion.ToastType.SUCCESS)
                                 }
                                 else{
                                     //Handle error response for favourites and show empty view
@@ -147,7 +148,7 @@ class HomeFragment : Fragment() {
                                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                                         startActivity(intent)
                                     }
-                                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                                    CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                                 }
                             }
 
@@ -160,7 +161,7 @@ class HomeFragment : Fragment() {
                                 if(!isAdded || _binding == null) return
                                 binding.propertiesRecyclerView.visibility = View.GONE
                                 binding.emptyView.emptyLayout.visibility = View.VISIBLE
-                                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                                CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
                                 Log.e("Error", t.message.toString())
                             }
 
@@ -190,7 +191,7 @@ class HomeFragment : Fragment() {
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                             startActivity(intent)
                         }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                     }
                 }
 
@@ -203,7 +204,7 @@ class HomeFragment : Fragment() {
                     if(!isAdded || _binding == null) return
                     binding.propertiesRecyclerView.visibility = View.GONE
                     binding.emptyView.emptyLayout.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                    CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
             })

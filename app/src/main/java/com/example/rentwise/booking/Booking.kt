@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.example.rentwise.R
 import com.example.rentwise.adapters.FileAttachmentAdapter
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.home.HomeScreen
@@ -143,7 +144,7 @@ class Booking : AppCompatActivity() {
         val totalPrice = binding.textTotalPrice.text.toString().replace("R", "").replace(",", "").trim()
 
         if (checkInDate.isEmpty() || checkOutDate.isEmpty() || numberOfGuests.isEmpty() || totalPrice.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            CustomToast.show(this, "Please fill all fields", CustomToast.Companion.ToastType.ERROR)
             return
         }
 
@@ -175,7 +176,7 @@ class Booking : AppCompatActivity() {
             override fun onResponse(call: Call<BookingResponse>, response: Response<BookingResponse>) {
                 binding.btnConfirmBooking.isEnabled = true // Re-enable button after response
                 if (response.isSuccessful) {
-                    Toast.makeText(this@Booking, response.body()?.message ?: "Booking successful", Toast.LENGTH_LONG).show()
+                    CustomToast.show(this@Booking, response.body()?.message ?: "Booking successful", CustomToast.Companion.ToastType.SUCCESS)
                     // Clear the input fields and attached files
                     binding.editCheckin.text.clear()
                     binding.editCheckout.text.clear()
@@ -186,7 +187,7 @@ class Booking : AppCompatActivity() {
                 } else {
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody ?: "Unknown error"
-                    Toast.makeText(this@Booking, errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
 
                     //Logout user if 401 Unauthorized
                     if(response.code() == 401) {
@@ -201,7 +202,7 @@ class Booking : AppCompatActivity() {
             }
             override fun onFailure(call: Call<BookingResponse>, t: Throwable) {
                 binding.btnConfirmBooking.isEnabled = true // Re-enable button on failure
-                Toast.makeText(this@Booking, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
             }
         })
     }
@@ -223,17 +224,17 @@ class Booking : AppCompatActivity() {
             val mimeType = contentResolver.getType(uri)
             // Validate MIME type
             if (mimeType !in allowedMimeTypes) {
-                Toast.makeText(this, "Invalid file type", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this, "Invalid file type", CustomToast.Companion.ToastType.ERROR)
                 return@registerForActivityResult
             }
             // Check for duplicates
             if (filesAttached.contains(uri)) {
-                Toast.makeText(this, "File already attached", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this, "File already attached", CustomToast.Companion.ToastType.ERROR)
             } else {
                 // Add new file
                 filesAttached.add(uri)
                 fileAdapter.notifyItemInserted(filesAttached.size - 1)
-                Toast.makeText(this, "Selected file: ${getFileName(uri)}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this, "Selected file: ${getFileName(uri)}", CustomToast.Companion.ToastType.INFO)
             }
         }
     }
@@ -309,7 +310,7 @@ class Booking : AppCompatActivity() {
     private fun showCheckOutPicker() {
         val checkInText = binding.editCheckin.text.toString()
         if (checkInText.isEmpty()) {
-            Toast.makeText(this, "Please select check-in date first", Toast.LENGTH_SHORT).show()
+            CustomToast.show(this, "Please select check-in date first", CustomToast.Companion.ToastType.ERROR)
             return
         }
         val checkInDate = LocalDate.parse(checkInText, formatter)
@@ -320,7 +321,7 @@ class Booking : AppCompatActivity() {
                 val diffDays = ChronoUnit.DAYS.between(checkInDate, selectedDate)
 
                 if (diffDays < 1) {
-                    Toast.makeText(this, "Checkout must be at least 1 day after check-in", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this, "Checkout must be at least 1 day after check-in", CustomToast.Companion.ToastType.ERROR)
                 } else {
                     binding.editCheckout.setText(selectedDate.format(formatter))
                     calculateTotalPrice()

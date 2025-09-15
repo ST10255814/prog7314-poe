@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.UserSettingsResponse
 import com.example.rentwise.databinding.ActivityProfileSettingsBinding
 import com.example.rentwise.home.HomeScreen
@@ -122,13 +123,13 @@ class ProfileSettings : AppCompatActivity() {
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                             startActivity(intent)
                         }
-                        Toast.makeText(this@ProfileSettings, errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@ProfileSettings, errorMessage, CustomToast.Companion.ToastType.ERROR)
                     }
                 }
 
                 override fun onFailure(p0: Call<UserSettingsResponse>, t: Throwable) {
                     hideOverlay()
-                    Toast.makeText(this@ProfileSettings, "${t.message}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@ProfileSettings, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Profile Settings", "Error: ${t.message.toString()}")
                 }
             })

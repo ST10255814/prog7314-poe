@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.NotificationAdapter
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.databinding.FragmentNotificationsBinding
 import com.example.rentwise.shared_pref_config.TokenManger
@@ -60,9 +61,9 @@ class NotificationsFragment : Fragment() {
                         )
                         binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         binding.wishlistRecyclerView.adapter = adapter
-                        Toast.makeText(requireContext(), "Notifications loaded", Toast.LENGTH_SHORT).show()
+                        CustomToast.show(requireContext(), "Notifications loaded", CustomToast.Companion.ToastType.INFO)
                     } else {
-                        Toast.makeText(requireContext(), "No notifications found", Toast.LENGTH_SHORT).show()
+                        CustomToast.show(requireContext(), "No notifications found", CustomToast.Companion.ToastType.INFO)
                     }
                 }
                 else {
@@ -82,7 +83,7 @@ class NotificationsFragment : Fragment() {
                     } else {
                         "Unknown error"
                     }
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", errorMessage)
                     // Log out if unauthorized
                     val tokenManger = TokenManger(requireContext())
@@ -100,7 +101,7 @@ class NotificationsFragment : Fragment() {
             override fun onFailure(call: Call<List<NotificationResponse>>, t: Throwable) {
                 hideOverlay()
                 if (!isAdded || _binding == null) return
-                Toast.makeText(requireContext(), "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(requireContext(), "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
             }
         })
     }

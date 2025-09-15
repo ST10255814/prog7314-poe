@@ -4,7 +4,6 @@ import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.health.connect.datatypes.units.Length
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,12 +12,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
@@ -187,7 +186,7 @@ class LoginActivity : AppCompatActivity() {
                                 tokenManger.saveUser(it)
                             }
                         }
-                        Toast.makeText(this@LoginActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@LoginActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
                         val intent = Intent(this@LoginActivity, HomeScreen::class.java)
                         startActivity(intent)
                         finish()
@@ -206,12 +205,12 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
                 hideLoginOverlay()
-                Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Login", "Error: ${t.message.toString()}")
             }
         })

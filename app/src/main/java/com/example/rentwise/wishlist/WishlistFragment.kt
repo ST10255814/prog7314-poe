@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.adapters.WishlistAdapter
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.FragmentWishListBinding
@@ -79,10 +80,10 @@ class WishlistFragment : Fragment() {
                             binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                             binding.wishlistRecyclerView.adapter = wishlistAdapter
 
-                            Toast.makeText(requireContext(), "Wishlist loaded", Toast.LENGTH_SHORT).show()
+                            CustomToast.show(requireContext(), "Wishlist loaded", CustomToast.Companion.ToastType.SUCCESS)
                         }
                         else{
-                            Toast.makeText(requireContext(), "You have no favourites", Toast.LENGTH_SHORT).show()
+                            CustomToast.show(requireContext(), "You have no favourites", CustomToast.Companion.ToastType.INFO)
                             binding.wishlistRecyclerView.visibility = View.GONE
                             binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
                         }
@@ -107,7 +108,7 @@ class WishlistFragment : Fragment() {
                         } else {
                             "Unknown error"
                         }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
                         // Log out if unauthorized
                         if (response.code() == 401) {
@@ -128,7 +129,7 @@ class WishlistFragment : Fragment() {
                     if (!isAdded || _binding == null) return
                     binding.wishlistRecyclerView.visibility = View.GONE
                     binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), "${t.message}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(requireContext(), "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
             })
@@ -153,7 +154,9 @@ class WishlistFragment : Fragment() {
                         val responseBody = response.body()
                         if (responseBody != null) {
                             // Successfully unfavourited
-                            Toast.makeText(requireContext(), responseBody.message, Toast.LENGTH_SHORT).show()
+                            responseBody.message?.let {
+                                CustomToast.show(requireContext(), it, CustomToast.Companion.ToastType.SUCCESS)
+                            }
                             wishlistAdapter.removeAt(position)
                             if(wishlistAdapter.itemCount == 0) {
                                 binding.wishlistRecyclerView.visibility = View.GONE
@@ -179,7 +182,7 @@ class WishlistFragment : Fragment() {
                         } else {
                             "Unknown error"
                         }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                        CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
                         // Log out if unauthorized
                         if (response.code() == 401) {
@@ -198,7 +201,7 @@ class WishlistFragment : Fragment() {
                 ) {
                     hideUnfavouriteOverlay()
                     if (!isAdded || _binding == null) return
-                    Toast.makeText(requireContext(), "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
+                    CustomToast.show(requireContext(), "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
             })

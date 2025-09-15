@@ -17,6 +17,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.rentwise.R
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.databinding.ActivityRegisterBinding
@@ -126,7 +127,7 @@ class RegisterActivity : AppCompatActivity() {
                     hideOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
-                        Toast.makeText(this@RegisterActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
+                        CustomToast.show(this@RegisterActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -145,12 +146,12 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    Toast.makeText(this@RegisterActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                    CustomToast.show(this@RegisterActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable){
                 hideOverlay()
-                Toast.makeText(this@RegisterActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                CustomToast.show(this@RegisterActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Register", "Error: ${t.message.toString()}")
             }
         })

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.BookingStatus
+import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.faq.FAQChatBot
 import com.example.rentwise.maintenance.MaintenanceFragment
 import com.example.rentwise.maintenance.MaintenanceRequest
@@ -101,7 +102,7 @@ class HomeScreen : AppCompatActivity() {
 
         binding.navQuery.setOnClickListener {
             selectNavButton(binding.navQuery)
-            Toast.makeText(this, "To be implemented another time", Toast.LENGTH_SHORT).show()
+            CustomToast.show(this, "To be implemented another time", CustomToast.Companion.ToastType.INFO)
         }
 
         binding.navMaintenance.setOnClickListener {
@@ -160,12 +161,12 @@ class HomeScreen : AppCompatActivity() {
             tokenManger.clearToken()
             tokenManger.clearUser()
 
+            CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
+
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
-
-            Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show()
         }
         //Opens custom drawer when clicked on
         binding.btnOpenDrawer.setOnClickListener {
