@@ -1,55 +1,50 @@
 package com.example.rentwise.adapters
 
-import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rentwise.R
+import com.example.rentwise.databinding.ItemSelectFileBinding
 
 class FileAttachmentAdapter(
-    private val filesAttached: MutableList<String>,
+    private val files: List<Uri>,
     private val onDeleteClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<FileAttachmentAdapter.FileViewHolder>() {
 
-    class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val fileName: TextView = itemView.findViewById(R.id.tv_file_name)
-        val deleteBtn: ImageButton = itemView.findViewById(R.id.btn_delete_file)
+    inner class FileViewHolder(val binding: ItemSelectFileBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(uri: Uri) {
+            val context = binding.root.context
+            var fileName: String? = null
+
+            if (uri.scheme == "content") {
+                context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        val index = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        if (index != -1) fileName = cursor.getString(index)
+                    }
+                }
+            }
+
+            if (fileName == null) {
+                fileName = uri.path?.substringAfterLast('/') ?: "unknown_file"
+            }
+
+            binding.tvFileName.text = fileName
+
+            binding.btnDeleteFile.setOnClickListener {
+                onDeleteClick(adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_select_file, parent, false)
-        return FileViewHolder(view)
+        val binding = ItemSelectFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FileViewHolder(binding)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: FileViewHolder, position: Int) {
-        val file = filesAttached[position]
-        holder.fileName.text = file
-
-        holder.deleteBtn.setOnClickListener {
-            val currentPosition = holder.adapterPosition
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                onDeleteClick(currentPosition)
-            }
-        }
-
-        holder.deleteBtn.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
-            }
-            false
-        }
+        holder.bind(files[position])
     }
 
-    override fun getItemCount(): Int = filesAttached.size
+    override fun getItemCount(): Int = files.size
 }

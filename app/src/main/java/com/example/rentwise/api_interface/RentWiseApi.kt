@@ -1,5 +1,6 @@
 package com.example.rentwise.api_interface
 
+import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
@@ -8,12 +9,17 @@ import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
+import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface RentWiseApi {
@@ -38,6 +44,17 @@ interface RentWiseApi {
     @GET("/api/notifications")
     fun getNotifications() : Call<List<NotificationResponse>>
 
-    /**@DELETE("api/{id}/unfavourite")
-    fun deleteFavouriteListing(@Path("id") listingId: String): Call<UnfavouriteListingResponse>**/
+    @DELETE("/api/{userID}/{listingID}/unfavourite")
+    fun deleteFavouriteListing(@Path("userID") userId: String, @Path("listingID") listingId: String): Call<UnfavouriteListingResponse>
+
+    @Multipart
+    @POST("/api/bookings/{userID}/{listingID}/create")
+    fun createBooking(
+        @Path("userID") userId: String,
+        @Path("listingID") listingId: String,
+        @Part("checkInDate") checkInDate: RequestBody,
+        @Part("checkOutDate") checkOutDate: RequestBody,
+        @Part("numberOfGuests") numberOfGuests: RequestBody,
+        @Part supportDocuments: List<MultipartBody.Part>
+    ): Call<BookingResponse>
 }

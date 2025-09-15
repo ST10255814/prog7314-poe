@@ -36,22 +36,7 @@ class MaintenanceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setListeners()
-        populateRecyclerView()
         updateSpinner()
-    }
-
-    private fun populateRecyclerView(){
-        val fileList = mutableListOf(
-            "Lease_Agreement.pdf",
-            "Proof_of_Identity.jpg",
-            "Utility_Bill_July_2025.png",
-            "Additional_Document.docx"
-        )
-        binding.rvUploadedFiles.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvUploadedFiles.adapter = FileAttachmentAdapter(fileList) { selectedFile ->
-            fileList.removeAt(selectedFile)
-            binding.rvUploadedFiles.adapter?.notifyItemRemoved(selectedFile)
-        }
     }
 
     private fun updateSpinner() {

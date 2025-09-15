@@ -174,6 +174,7 @@ class PropertyDetails : AppCompatActivity() {
             val intent = Intent(this, Booking::class.java)
             intent.putExtra("property_name", binding.titleText.text)
             intent.putExtra("property_location", binding.locationText.text)
+            intent.putExtra("property_id", listingId)
             startActivity(intent)
             finish()
         }

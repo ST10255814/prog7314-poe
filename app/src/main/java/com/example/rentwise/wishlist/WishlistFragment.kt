@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.adapters.WishlistAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.data_classes.FavouriteListingsResponse
+import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.FragmentWishListBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
@@ -69,8 +70,9 @@ class WishlistFragment : Fragment() {
                                     startActivity(intent)
                                 },
                                 onUnFavouriteClick = {_, position ->
+                                    val listingId = favouriteList[position].listingDetail?.listingID
+                                    deleteFavouriteItemFromDbApiCall(listingId)
                                     wishlistAdapter.removeAt(position)
-                                    Toast.makeText(requireContext(), "Removed from wishlist", Toast.LENGTH_SHORT).show()
                                     if(wishlistAdapter.itemCount == 0) {
                                         binding.wishlistRecyclerView.visibility = View.GONE
                                         binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
@@ -133,7 +135,64 @@ class WishlistFragment : Fragment() {
         }
     }
 
-    private fun deleteFavouriteItemFromDbApiCall(){
+    private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
+        val tokenManger = TokenManger(requireContext())
+        val userId = tokenManger.getUser()
 
+        val api = RetrofitInstance.createAPIInstance(requireContext())
+        if(userId != null && listingId != null){
+            api.deleteFavouriteListing(userId, listingId).enqueue(object : Callback<UnfavouriteListingResponse> {
+                override fun onResponse(
+                    call: Call<UnfavouriteListingResponse>,
+                    response: Response<UnfavouriteListingResponse>
+                ) {
+                    if (!isAdded || _binding == null) return // Fragment not attached to context
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        if (responseBody != null) {
+                            // Successfully unfavourited
+                            Toast.makeText(requireContext(), responseBody.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        // Handle error response
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                when { // Check for both "message" and "error" keys
+                                    json.has("message") -> json.getString("message")
+                                    json.has("error") -> json.getString("error")
+                                    else -> "Unknown error"
+                                }
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                        Log.e("Error", errorMessage)
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+
+                            val intent = Intent(requireContext(), LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
+                        }
+                    }
+                }
+                override fun onFailure(
+                    call: Call<UnfavouriteListingResponse>,
+                    t: Throwable
+                ) {
+                    if (!isAdded || _binding == null) return
+                    Toast.makeText(requireContext(), "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
+                    Log.e("Error", t.message.toString())
+                }
+            })
+        }
     }
 }
