@@ -1,6 +1,7 @@
 package com.example.rentwise.api_interface
 
 import com.example.rentwise.data_classes.BookingResponse
+import com.example.rentwise.data_classes.BookingStatusResponse
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
@@ -32,8 +33,14 @@ interface RentWiseApi {
     @GET("/api/listings")
     fun getListings(): Call<List<ListingResponse>>
 
+    @GET("/api/listings/{id}")
+    fun getListingById(@Path("id") listingId: String): Call<ListingResponse>
+
     @GET("/api/{userID}/favourites")
     fun getFavouriteListings(@Path("userID") userId: String): Call<MutableList<FavouriteListingsResponse>>
+
+    @GET("/api/favourite/{listingID}")
+    fun getFavouriteByListingId(@Path("listingID") listingId: String): Call<FavouriteListingsResponse>
 
     @GET("/api/users/{id}")
     fun getUserById(@Path("id") userId: String): Call<UserSettingsResponse>
@@ -55,6 +62,10 @@ interface RentWiseApi {
         @Part("checkInDate") checkInDate: RequestBody,
         @Part("checkOutDate") checkOutDate: RequestBody,
         @Part("numberOfGuests") numberOfGuests: RequestBody,
-        @Part supportDocuments: List<MultipartBody.Part>
+        @Part supportDocuments: List<MultipartBody.Part>,
+        @Part("totalPrice") totalPrice: RequestBody
     ): Call<BookingResponse>
+
+    @GET("/api/bookings/{id}")
+    fun getBookingById(@Path("id") userId: String): Call<BookingStatusResponse>
 }

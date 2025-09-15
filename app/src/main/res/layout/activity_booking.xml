@@ -118,7 +118,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:paddingTop="4dp"
-                        android:inputType="text" />
+                        android:inputType="date" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -156,7 +156,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:paddingTop="4dp"
-                        android:inputType="text" />
+                        android:inputType="date" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

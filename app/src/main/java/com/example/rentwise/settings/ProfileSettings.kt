@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +77,7 @@ class ProfileSettings : AppCompatActivity() {
         }
     }
     private fun getUserSettingsByLoggedInUserApiCall() {
+        showOverlay()
         val tokenManager = TokenManger(applicationContext)
         val userId = tokenManager.getUser()
 
@@ -87,10 +89,11 @@ class ProfileSettings : AppCompatActivity() {
                     response: Response<UserSettingsResponse>
                 ) {
                     if (response.isSuccessful){
+                        hideOverlay()
                         val userSettings = response.body()
                         if (userSettings != null){
                             binding.editUsername.setText(userSettings.username)
-                            binding.editName.setText(userSettings.firstName)
+                            binding.editFirstName.setText(userSettings.firstName)
                             binding.editSurname.setText(userSettings.surname)
                             binding.editEmail.setText(userSettings.email)
                             binding.editPhone.setText(userSettings.phone)
@@ -98,6 +101,7 @@ class ProfileSettings : AppCompatActivity() {
                         }
                     }
                     else{
+                        hideOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
@@ -123,6 +127,7 @@ class ProfileSettings : AppCompatActivity() {
                 }
 
                 override fun onFailure(p0: Call<UserSettingsResponse>, t: Throwable) {
+                    hideOverlay()
                     Toast.makeText(this@ProfileSettings, "${t.message}", Toast.LENGTH_SHORT).show()
                     Log.e("Profile Settings", "Error: ${t.message.toString()}")
                 }
@@ -141,5 +146,13 @@ class ProfileSettings : AppCompatActivity() {
         } catch (e: Exception) {
             dob ?: ""
         }
+    }
+
+    private fun showOverlay(){
+        binding.fullScreenOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideOverlay(){
+        binding.fullScreenOverlay.visibility = View.GONE
     }
 }

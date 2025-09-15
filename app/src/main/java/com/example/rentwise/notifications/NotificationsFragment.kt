@@ -23,7 +23,6 @@ class NotificationsFragment : Fragment() {
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,6 +43,7 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun fetchNotifications() {
+        showOverlay()
         val api = RetrofitInstance.createAPIInstance(requireContext())
         api.getNotifications().enqueue(object : Callback<List<NotificationResponse>> {
             override fun onResponse(
@@ -52,6 +52,7 @@ class NotificationsFragment : Fragment() {
             ) {
                 if (!isAdded || _binding == null) return
                 if (response.isSuccessful) {
+                    hideOverlay()
                     val body = response.body() ?: emptyList()
                     if (body.isNotEmpty()) {
                         val adapter = NotificationAdapter(
@@ -59,12 +60,13 @@ class NotificationsFragment : Fragment() {
                         )
                         binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         binding.wishlistRecyclerView.adapter = adapter
-                        Toast.makeText(requireContext(), "Notifications fetched successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Notifications loaded", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(requireContext(), "No notifications found", Toast.LENGTH_SHORT).show()
                     }
                 }
                 else {
+                    hideOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -96,9 +98,18 @@ class NotificationsFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<NotificationResponse>>, t: Throwable) {
+                hideOverlay()
                 if (!isAdded || _binding == null) return
                 Toast.makeText(requireContext(), "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun showOverlay() {
+        binding.recyclerViewLoadingOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideOverlay() {
+        binding.recyclerViewLoadingOverlay.visibility = View.GONE
     }
 }

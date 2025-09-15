@@ -1,44 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/wishlist_title"
+    <!-- Main LinearLayout content -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/goldman"
-        android:gravity="center"
-        android:text="My Wishlist"
-        android:textColor="@color/darkish_blue"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:fitsSystemWindows="true">
+
+        <TextView
+            android:id="@+id/wishlist_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/goldman"
+            android:gravity="center"
+            android:text="My Wishlist"
+            android:textColor="@color/darkish_blue"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="5dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wishlist_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="80dp"
+                android:clipToPadding="false"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/emptyWishlistView"
+                layout="@layout/empty_lisitings"
+                android:visibility="gone"/>
+
+            <FrameLayout
+                android:id="@+id/wishlistLoadingOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFFFF"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:indicatorSize="64dp"
+                        app:trackThickness="6dp"
+                        android:indeterminate="true"
+                        app:indicatorColor="@color/darkish_blue"
+                        app:trackColor="@color/darker_grey" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loading wishlist..."
+                        android:textColor="@color/darkish_blue"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/goldman"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
 
     <FrameLayout
+        android:id="@+id/unfavouriteOverlay"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent"
+        android:background="#88FFFFFF"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/wishlist_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"
-            android:clipToPadding="false"
-            android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center">
 
-        <include
-            android:id="@+id/emptyWishlistView"
-            layout="@layout/empty_lisitings"
-            android:visibility="gone"/>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:indicatorSize="64dp"
+                app:trackThickness="6dp"
+                android:indeterminate="true"
+                app:indicatorColor="@color/darkish_blue"
+                app:trackColor="@color/darker_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Updating favourites..."
+                android:textColor="@color/darkish_blue"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </FrameLayout>
-</LinearLayout>
+</FrameLayout>

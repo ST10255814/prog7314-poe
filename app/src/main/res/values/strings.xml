@@ -64,4 +64,5 @@
 
     <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
     <string name="amenity_icon">Amenity Icon</string>
+    <string name="refresh_text"><u>Refresh to see updates</u></string>
 </resources>

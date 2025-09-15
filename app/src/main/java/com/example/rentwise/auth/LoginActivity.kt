@@ -160,6 +160,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginAPICall(email: String, password: String){
+        showLoginOverlay()
         val request = LoginRequest(
             email = email,
             password = password
@@ -172,6 +173,7 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<LoginResponse>
             ) {
                 if(response.isSuccessful) {
+                    hideLoginOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
                         val tokenManger = TokenManger(applicationContext)
@@ -192,6 +194,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 else{
+                    hideLoginOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -207,9 +210,18 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
+                hideLoginOverlay()
                 Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Login", "Error: ${t.message.toString()}")
             }
         })
+    }
+
+    private fun showLoginOverlay(){
+        binding.loginOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideLoginOverlay(){
+        binding.loginOverlay.visibility = View.GONE
     }
 }

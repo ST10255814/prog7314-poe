@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     android:padding="20dp"
@@ -20,13 +21,58 @@
         android:layout_marginBottom="12dp"
         android:layout_marginTop="5dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/wishlist_recyclerView"
-        android:paddingBottom="16dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_marginBottom="80dp"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingBottom="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wishlist_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp"
+            android:clipToPadding="false"
+            android:visibility="visible"/>
+
+        <FrameLayout
+            android:id="@+id/recyclerViewLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:indicatorSize="64dp"
+                    app:trackThickness="6dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="@color/darkish_blue"
+                    app:trackColor="@color/darker_grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading notifications..."
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/goldman"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </FrameLayout>
 </LinearLayout>

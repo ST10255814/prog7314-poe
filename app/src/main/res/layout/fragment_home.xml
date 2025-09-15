@@ -127,6 +127,45 @@
             android:id="@+id/emptyView"
             layout="@layout/empty_lisitings"
             android:visibility="gone"/>
+
+        <FrameLayout
+            android:id="@+id/recyclerLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:indicatorSize="64dp"
+                    app:trackThickness="6dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="@color/darkish_blue"
+                    app:trackColor="@color/darker_grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading properties..."
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/goldman"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </FrameLayout>
     </FrameLayout>
 
 </LinearLayout>

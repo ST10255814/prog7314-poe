@@ -72,6 +72,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchListingsExcludingFavourites() {
+        showLoading()
         val api = RetrofitInstance.createAPIInstance(requireContext())
         val tokenManager = TokenManger(requireContext())
         val userId = tokenManager.getUser()
@@ -94,7 +95,7 @@ class HomeFragment : Fragment() {
                             ) {
                                 if(!isAdded || _binding == null) return
                                 if(favResponse.isSuccessful){
-
+                                    hideLoading()
                                     //Extract favourite listing IDs
                                     val favouriteIds = favResponse.body()
                                         ?.mapNotNull { it.listingDetail?.listingID }
@@ -155,6 +156,7 @@ class HomeFragment : Fragment() {
                                 t: Throwable
                             ) {
                                 //Handle failure and show empty view
+                                hideLoading()
                                 if(!isAdded || _binding == null) return
                                 binding.propertiesRecyclerView.visibility = View.GONE
                                 binding.emptyView.emptyLayout.visibility = View.VISIBLE
@@ -197,6 +199,7 @@ class HomeFragment : Fragment() {
                     t: Throwable
                 ) {
                     //Handle failure and show empty view
+                    hideLoading()
                     if(!isAdded || _binding == null) return
                     binding.propertiesRecyclerView.visibility = View.GONE
                     binding.emptyView.emptyLayout.visibility = View.VISIBLE
@@ -205,5 +208,12 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+    }
+    private fun showLoading() {
+        binding.recyclerLoadingOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.recyclerLoadingOverlay.visibility = View.GONE
     }
 }

@@ -16,15 +16,10 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.rentwise.R
-import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.databinding.ActivityRegisterBinding
-import com.example.rentwise.home.HomeScreen
-import com.example.rentwise.shared_pref_config.TokenManger
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -115,6 +110,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerAPICall(email: String, password: String){
+        showOverlay()
         val request = RegisterRequest(
             email = email,
             password = password
@@ -127,6 +123,7 @@ class RegisterActivity : AppCompatActivity() {
                 response : Response<RegisterResponse>
             ){
                 if(response.isSuccessful){
+                    hideOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
                         Toast.makeText(this@RegisterActivity, "${authResponse.message}", Toast.LENGTH_SHORT).show()
@@ -136,6 +133,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
                 else{
+                    hideOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -151,9 +149,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable){
+                hideOverlay()
                 Toast.makeText(this@RegisterActivity, "${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Register", "Error: ${t.message.toString()}")
             }
         })
+    }
+    private fun showOverlay(){
+        binding.fullScreenOverlay.visibility = View.VISIBLE
+    }
+    private fun hideOverlay(){
+        binding.fullScreenOverlay.visibility = View.GONE
     }
 }

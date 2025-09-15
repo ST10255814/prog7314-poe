@@ -2,21 +2,26 @@ package com.example.rentwise.booking
 
 import RetrofitInstance
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.rentwise.R
 import com.example.rentwise.adapters.FileAttachmentAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.databinding.ActivityBookingBinding
+import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -28,11 +33,20 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId.systemDefault
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.ofPattern
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Locale
 
 class Booking : AppCompatActivity() {
     private lateinit var binding: ActivityBookingBinding
     private val filesAttached = mutableListOf<Uri>()
     private lateinit var fileAdapter: FileAttachmentAdapter
+    private val formatter: DateTimeFormatter = ofPattern("dd-MM-yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +55,7 @@ class Booking : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
+        setupDatePickers()
         setListeners()
         bindPassedData()
     }
@@ -48,7 +63,7 @@ class Booking : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners(){
         binding.btnBack.setOnClickListener {
-            val intent = Intent(this, PropertyDetails::class.java)
+            val intent = Intent(this, HomeScreen::class.java)
             startActivity(intent)
             finish()
         }
@@ -99,6 +114,16 @@ class Booking : AppCompatActivity() {
     private fun bindPassedData(){
         val propertyName = intent.getStringExtra("property_name")
         val propertyLocation = intent.getStringExtra("property_location")
+        val propertyImage = intent.getStringExtra("property_image")
+
+        if (propertyImage != null) {
+            Log.d("Property Image URL", propertyImage)
+            Glide.with(this)
+                .load(propertyImage)
+                .placeholder(R.drawable.ic_empty)
+                .error(R.drawable.ic_empty)
+                .into(binding.imageMain)
+        }
 
         if(propertyName != null && propertyLocation != null){
             binding.propertyName.text = propertyName
@@ -111,12 +136,13 @@ class Booking : AppCompatActivity() {
         val userId = tokenManger.getUser() ?: return
         val listingId = intent.getStringExtra("property_id") ?: return
 
-        // Retrieve and validate input fields
+        // Retrieve and validate input fields to avoid empty submissions as well as remove leading/trailing white spaces
         val checkInDate = binding.editCheckin.text.toString().trim()
         val checkOutDate = binding.editCheckout.text.toString().trim()
         val numberOfGuests = binding.editGuests.text.toString().trim()
+        val totalPrice = binding.textTotalPrice.text.toString().replace("R", "").replace(",", "").trim()
 
-        if (checkInDate.isEmpty() || checkOutDate.isEmpty() || numberOfGuests.isEmpty()) {
+        if (checkInDate.isEmpty() || checkOutDate.isEmpty() || numberOfGuests.isEmpty() || totalPrice.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -125,6 +151,7 @@ class Booking : AppCompatActivity() {
         val checkInBody = checkInDate.toRequestBody("text/plain".toMediaTypeOrNull())
         val checkOutBody = checkOutDate.toRequestBody("text/plain".toMediaTypeOrNull())
         val guestsBody = numberOfGuests.toRequestBody("text/plain".toMediaTypeOrNull())
+        val priceBody = totalPrice.toRequestBody("text/plain".toMediaTypeOrNull())
 
         val multipartFiles = mutableListOf<MultipartBody.Part>() // Prepare list for MultipartBody.Part
         for (uri in filesAttached) { // Convert each URI to MultipartBody.Part
@@ -141,18 +168,19 @@ class Booking : AppCompatActivity() {
         }
 
         val api = RetrofitInstance.createAPIInstance(applicationContext)
-        binding.btnConfirmBooking.isEnabled = false
-        val call = api.createBooking(userId, listingId, checkInBody, checkOutBody, guestsBody, multipartFiles)
+        binding.btnConfirmBooking.isEnabled = false // Disable button to prevent multiple clicks
+        val call = api.createBooking(userId, listingId, checkInBody, checkOutBody, guestsBody, multipartFiles, priceBody)
         call.enqueue(object : Callback<BookingResponse> {
-            @SuppressLint("NotifyDataSetChanged")
+            @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
             override fun onResponse(call: Call<BookingResponse>, response: Response<BookingResponse>) {
-                binding.btnConfirmBooking.isEnabled = true
+                binding.btnConfirmBooking.isEnabled = true // Re-enable button after response
                 if (response.isSuccessful) {
                     Toast.makeText(this@Booking, response.body()?.message ?: "Booking successful", Toast.LENGTH_LONG).show()
                     // Clear the input fields and attached files
                     binding.editCheckin.text.clear()
                     binding.editCheckout.text.clear()
                     binding.editGuests.text.clear()
+                    binding.textTotalPrice.text = "R0.00"
                     filesAttached.clear()
                     fileAdapter.notifyDataSetChanged()
                 } else {
@@ -172,7 +200,7 @@ class Booking : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<BookingResponse>, t: Throwable) {
-                binding.btnConfirmBooking.isEnabled = true
+                binding.btnConfirmBooking.isEnabled = true // Re-enable button on failure
                 Toast.makeText(this@Booking, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
@@ -210,8 +238,6 @@ class Booking : AppCompatActivity() {
         }
     }
 
-
-
     // Get file name from URI
     private fun getFileName(uri: Uri): String {
         var result: String? = null
@@ -228,7 +254,6 @@ class Booking : AppCompatActivity() {
         return result ?: "unknown_file"
     }
 
-
     // Setup RecyclerView for displaying selected files
     private fun setupRecyclerView() {
         fileAdapter = FileAttachmentAdapter(filesAttached) { position ->
@@ -237,5 +262,105 @@ class Booking : AppCompatActivity() {
         }
         binding.rvSelectedFiles.layoutManager = LinearLayoutManager(this)
         binding.rvSelectedFiles.adapter = fileAdapter
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupDatePickers() {
+        // Prevent soft keyboard from opening
+        binding.editCheckin.inputType = 0
+        binding.editCheckout.inputType = 0
+
+        binding.editCheckin.setOnClickListener {
+            showCheckInPicker()
+        }
+
+        binding.editCheckout.setOnClickListener {
+            showCheckOutPicker()
+        }
+    }
+    @SuppressLint("SetTextI18n")
+    private fun showCheckInPicker() {
+        val today = LocalDate.now()
+
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                binding.editCheckin.setText(selectedDate.format(formatter))
+
+                // Reset checkout if invalid
+                val checkoutText = binding.editCheckout.text.toString()
+                if (checkoutText.isNotEmpty()) {
+                    val checkoutDate = LocalDate.parse(checkoutText, formatter)
+                    if (ChronoUnit.DAYS.between(selectedDate, checkoutDate) < 1) {
+                        binding.editCheckout.text.clear()
+                    }
+                }
+                calculateTotalPrice()
+            },
+            today.year,
+            today.monthValue - 1,
+            today.dayOfMonth
+        )
+        datePicker.datePicker.minDate = System.currentTimeMillis()
+        datePicker.show()
+    }
+
+    private fun showCheckOutPicker() {
+        val checkInText = binding.editCheckin.text.toString()
+        if (checkInText.isEmpty()) {
+            Toast.makeText(this, "Please select check-in date first", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val checkInDate = LocalDate.parse(checkInText, formatter)
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                val diffDays = ChronoUnit.DAYS.between(checkInDate, selectedDate)
+
+                if (diffDays < 1) {
+                    Toast.makeText(this, "Checkout must be at least 1 day after check-in", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.editCheckout.setText(selectedDate.format(formatter))
+                    calculateTotalPrice()
+                }
+            },
+            checkInDate.year,
+            checkInDate.monthValue - 1,
+            checkInDate.dayOfMonth + 1
+        )
+
+        val minCheckoutMillis = checkInDate.plusDays(1)
+            .atStartOfDay(systemDefault())
+            .toInstant()
+            .toEpochMilli()
+        datePicker.datePicker.minDate = minCheckoutMillis
+        datePicker.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun calculateTotalPrice() {
+        val propertyPrice = intent.getStringExtra("property_price") ?: return
+        val propertyPricePerNight = propertyPrice.toDoubleOrNull() ?: return
+
+        val checkInText = binding.editCheckin.text.toString()
+        val checkOutText = binding.editCheckout.text.toString()
+
+        if (checkInText.isEmpty() || checkOutText.isEmpty()) {
+            binding.textTotalPrice.text = "R0.00"
+            return
+        }
+
+        val checkInDate = LocalDate.parse(checkInText, formatter)
+        val checkOutDate = LocalDate.parse(checkOutText, formatter)
+
+        val nights = ChronoUnit.DAYS.between(checkInDate, checkOutDate).toInt()
+        if (nights > 0) {
+            val totalPrice = nights * propertyPricePerNight
+            binding.textTotalPrice.text = "R%.2f".format(totalPrice)
+        } else {
+            binding.textTotalPrice.text = "R0.00"
+        }
     }
 }

@@ -24,6 +24,7 @@ import com.example.rentwise.booking.Booking
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
@@ -35,12 +36,15 @@ import retrofit2.Response
 class PropertyDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPropertyDetailsBinding
     private var isFavourite = false
+    private lateinit var tokenManger: TokenManger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityPropertyDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        tokenManger = TokenManger(applicationContext)
 
         Glide.with(this)
             .load(R.drawable.temp_profile)
@@ -99,70 +103,10 @@ class PropertyDetails : AppCompatActivity() {
             false
         }
         binding.favouriteBtn.setOnClickListener {
-            val tokenManger = TokenManger(applicationContext)
-            val userId = tokenManger.getUser()
-            if(userId != null){
-                val api = RetrofitInstance.createAPIInstance(applicationContext)
-                api.favouriteListing(userId, listingId).enqueue( object: Callback<FavouriteListingPostResponse>{
-                    override fun onResponse(
-                        call: Call<FavouriteListingPostResponse>,
-                        response: Response<FavouriteListingPostResponse>
-                    ) {
-                        if(response.isSuccessful){
-                            val apiResponse = response.body()
-                            if (apiResponse != null){
-                                Toast.makeText(this@PropertyDetails, apiResponse.message, Toast.LENGTH_SHORT).show()
-                                isFavourite = !isFavourite
-                                updateFavouriteIcon(isFavourite)
-                                val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
-                                    binding.favouriteBtn,
-                                    PropertyValuesHolder.ofFloat("scaleX", 1.2f),
-                                    PropertyValuesHolder.ofFloat("scaleY", 1.2f)
-                                ).apply {
-                                    duration = 150
-                                    interpolator = OvershootInterpolator()
-                                    repeatCount = 1
-                                    repeatMode = ObjectAnimator.REVERSE
-                                }
-
-                                scaleUp.start()
-                            }
-                        }
-                        else{
-                            val errorBody = response.errorBody()?.string()
-                            val errorMessage = if (errorBody != null) {
-                                try {
-                                    val json = JSONObject(errorBody)
-                                    when {
-                                        json.has("message") -> json.getString("message")
-                                        json.has("error") -> json.getString("error")
-                                        else -> "Unknown error"
-                                    }
-                                } catch (e: Exception) {
-                                    "Unknown error"
-                                }
-                            } else {
-                                "Unknown error"
-                            }
-                            Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
-                            Log.e("Error", errorMessage)
-                            // Log out if unauthorized
-                            if (response.code() == 401) {
-                                tokenManger.clearToken()
-                                tokenManger.clearUser()
-
-                                val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
-                                startActivity(intent)
-                            }
-                        }
-                    }
-
-                    override fun onFailure(call: Call<FavouriteListingPostResponse>, t: Throwable) {
-                        Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
-                        Log.e("Error", t.message.toString())
-                    }
-                })
+            if(isFavourite){
+                deleteFavouriteItemFromDbApiCall(listingId)
+            } else{
+                favouriteListing(listingId)
             }
         }
         binding.btnBack.setOnClickListener {
@@ -172,9 +116,7 @@ class PropertyDetails : AppCompatActivity() {
         }
         binding.buttonBookNow.setOnClickListener {
             val intent = Intent(this, Booking::class.java)
-            intent.putExtra("property_name", binding.titleText.text)
-            intent.putExtra("property_location", binding.locationText.text)
-            intent.putExtra("property_id", listingId)
+            intent.putExtra("propertyId", listingId)
             startActivity(intent)
             finish()
         }
@@ -205,156 +147,27 @@ class PropertyDetails : AppCompatActivity() {
     private fun compareWhichDataToBind() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
-        val listingId: String = if(property != null){
-            bindPassedDataFromHomeFragment()
+        val listingId: String = if(property != null){ // Data passed from Home Fragment
+            loadPropertyFromHomeFragment()
         } else{
-            bindDataPassedFromWishlistFragment()
+            loadPropertyFromWishlistFragment() // Data passed from WishList Fragment
         }
-
         return listingId
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindPassedDataFromHomeFragment() : String {
+    private fun loadPropertyFromHomeFragment() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
+        getListingsAndBind(property?.propertyId ?: "")
 
-        property?.let { prop ->
-            binding.titleText.text = prop.title
-            binding.locationText.text = prop.address
-            binding.priceText.text = "R${prop.price}"
-            binding.propertyDescription.text = prop.description
-
-            val images = prop.imagesURL ?: emptyList()
-
-            if (images.isNotEmpty()) {
-                Glide.with(this)
-                    .load(images[0])
-                    .placeholder(R.drawable.ic_empty)
-                    .error(R.drawable.ic_empty)
-                    .into(binding.imageMain)
-            }
-
-            val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
-
-            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
-                Glide.with(this)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_empty)
-                    .error(R.drawable.ic_empty)
-                    .into(extraPhotos[index])
-            }
-
-            for (i in images.drop(1).size until 3) {
-                extraPhotos[i].visibility = View.GONE
-            }
-
-            isFavourite = prop.isFavourite ?: false
-            updateFavouriteIcon(isFavourite)
-
-            val amenityIcons = mapOf(
-                "tv" to R.drawable.tv_icon,
-                "wi-fi" to R.drawable.wifi_icon,
-                "bed" to R.drawable.bed_icon,
-            )
-
-            val amenities = prop.amenities ?: emptyList()
-            val amenitiesContainer = binding.amenitiesContainer
-            amenitiesContainer.removeAllViews()
-
-            val inflater = LayoutInflater.from(this)
-
-            for (amenity in amenities) {
-                val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
-
-                val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
-                val textView = itemView.findViewById<TextView>(R.id.amenityText)
-
-                textView.text = amenity
-
-                val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
-                iconView.setImageResource(iconRes)
-
-                amenitiesContainer.addView(itemView)
-            }
-
-            val landlord = prop.landlordInfo
-
-            if(landlord != null){
-                binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
-            }
-        }
         return property?.propertyId ?: "No Id"
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindDataPassedFromWishlistFragment() : String {
+    private fun loadPropertyFromWishlistFragment() : String {
         val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
+        getFavouriteListingsAndBind(property?.listingDetail?.listingID ?: "")
 
-        property?.let { prop ->
-            binding.titleText.text = prop.listingDetail?.title
-            binding.locationText.text = prop.listingDetail?.address
-            binding.priceText.text = "R${prop.listingDetail?.price}"
-            binding.propertyDescription.text = prop.listingDetail?.description
-
-            val images = prop.listingDetail?.images ?: emptyList()
-
-            if (images.isNotEmpty()) {
-                Glide.with(this)
-                    .load(images[0])
-                    .placeholder(R.drawable.ic_empty)
-                    .error(R.drawable.ic_empty)
-                    .into(binding.imageMain)
-            }
-
-            val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
-
-            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
-                Glide.with(this)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_empty)
-                    .error(R.drawable.ic_empty)
-                    .into(extraPhotos[index])
-            }
-
-            for (i in images.drop(1).size until 3) {
-                extraPhotos[i].visibility = View.GONE
-            }
-
-            val isFavourite = prop.listingDetail?.isFavourite ?: false
-            updateFavouriteIcon(isFavourite)
-
-            val amenityIcons = mapOf(
-                "tv" to R.drawable.tv_icon,
-                "wi-fi" to R.drawable.wifi_icon,
-                "bed" to R.drawable.bed_icon,
-            )
-
-            val amenities = prop.listingDetail?.amenities ?: emptyList()
-            val amenitiesContainer = binding.amenitiesContainer
-            amenitiesContainer.removeAllViews()
-
-            val inflater = LayoutInflater.from(this)
-
-            for (amenity in amenities) {
-                val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
-
-                val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
-                val textView = itemView.findViewById<TextView>(R.id.amenityText)
-
-                textView.text = amenity
-
-                val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
-                iconView.setImageResource(iconRes)
-
-                amenitiesContainer.addView(itemView)
-            }
-
-            val landlord = prop.listingDetail?.landlordInfo
-
-            if(landlord != null){
-                binding.landlordTxt.text = landlord.firstName + " " + landlord.surname
-            }
-        }
         return property?.listingDetail?.listingID ?: "No Id"
     }
 
@@ -366,5 +179,372 @@ class PropertyDetails : AppCompatActivity() {
            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
        }
+    }
+
+    private fun favouriteListing(listingId: String){
+        showFavouriteLoading()
+        val userId = tokenManger.getUser()
+        if(userId != null){
+            val api = RetrofitInstance.createAPIInstance(applicationContext)
+            api.favouriteListing(userId, listingId).enqueue( object: Callback<FavouriteListingPostResponse>{
+                override fun onResponse(
+                    call: Call<FavouriteListingPostResponse>,
+                    response: Response<FavouriteListingPostResponse>
+                ) {
+                    if(response.isSuccessful){
+                        hideFavouriteLoading()
+                        val apiResponse = response.body()
+                        if (apiResponse != null){
+                            Toast.makeText(this@PropertyDetails, apiResponse.message, Toast.LENGTH_SHORT).show()
+                            isFavourite = !isFavourite
+                            updateFavouriteIcon(isFavourite)
+                            val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+                                binding.favouriteBtn,
+                                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+                                PropertyValuesHolder.ofFloat("scaleY", 1.2f)
+                            ).apply {
+                                duration = 150
+                                interpolator = OvershootInterpolator()
+                                repeatCount = 1
+                                repeatMode = ObjectAnimator.REVERSE
+                            }
+
+                            scaleUp.start()
+                        }
+                    }
+                    else{
+                        hideFavouriteLoading()
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                when {
+                                    json.has("message") -> json.getString("message")
+                                    json.has("error") -> json.getString("error")
+                                    else -> "Unknown error"
+                                }
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                        Log.e("Error", errorMessage)
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+
+                            val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<FavouriteListingPostResponse>, t: Throwable) {
+                    // Log error message
+                    hideFavouriteLoading()
+                    Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("Error", t.message.toString())
+                }
+            })
+        }
+    }
+
+    private fun getListingsAndBind(listingId : String){
+        showLoading()
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        api.getListingById(listingId).enqueue( object : Callback<ListingResponse> {
+            @SuppressLint("SetTextI18n")
+            override fun onResponse(
+                call: Call<ListingResponse>,
+                response: Response<ListingResponse>
+            ) {
+                hideLoading()
+                if(response.isSuccessful) {
+                    response.body()?.let { listing ->
+                        //Load first image from the images array and hide the rest if not available
+                        val images = listing.imagesURL ?: emptyList()
+                        val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
+
+                        if (images.isNotEmpty()) {
+                            Glide.with(this@PropertyDetails)
+                                .load(images[0])
+                                .placeholder(R.drawable.ic_empty)
+                                .error(R.drawable.ic_empty)
+                                .into(binding.imageMain)
+
+                            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
+                                Glide.with(this@PropertyDetails)
+                                    .load(imageUrl)
+                                    .placeholder(R.drawable.ic_empty)
+                                    .error(R.drawable.ic_empty)
+                                    .into(extraPhotos[index])
+                            }
+
+                            for (i in images.drop(1).size until 3) {
+                                extraPhotos[i].visibility = View.GONE
+                            }
+                        }
+
+                        binding.locationText.text = listing.address
+                        binding.titleText.text = listing.title
+                        binding.priceText.text = "R${listing.price}"
+
+                        isFavourite = listing.isFavourite ?: false
+                        updateFavouriteIcon(isFavourite)
+
+                        val amenityIcons = mapOf(
+                            "tv" to R.drawable.tv_icon,
+                            "wi-fi" to R.drawable.wifi_icon,
+                            "bed" to R.drawable.bed_icon
+                        )
+                        val amenities = listing.amenities ?: emptyList()
+                        val amenitiesContainer = binding.amenitiesContainer
+                        amenitiesContainer.removeAllViews()
+
+                        val inflater = LayoutInflater.from(this@PropertyDetails)
+                        for (amenity in amenities) {
+                            val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+                            val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
+                            val textView = itemView.findViewById<TextView>(R.id.amenityText)
+
+                            textView.text = amenity
+
+                            val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
+                            iconView.setImageResource(iconRes)
+                            amenitiesContainer.addView(itemView)
+                        }
+
+                        val landlordInfo = listing.landlordInfo
+                        if (landlordInfo != null) {
+                            binding.landlordTxt.text =
+                                "${landlordInfo.firstName} ${landlordInfo.surname}"
+                        }
+                    }
+                    Toast.makeText(this@PropertyDetails, "Property Loaded", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    hideLoading()
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            "Unknown error"
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    // Log out if unauthorized
+                    if (response.code() == 401) {
+                        tokenManger.clearToken()
+                        tokenManger.clearUser()
+
+                        val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        startActivity(intent)
+                    }
+                    Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ListingResponse>, t: Throwable) {
+                // Log error message
+                hideLoading()
+                Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Error", t.message.toString())
+            }
+        })
+    }
+    private fun getFavouriteListingsAndBind(listingId : String){
+        showLoading()
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        api.getFavouriteByListingId(listingId).enqueue( object : Callback<FavouriteListingsResponse> {
+            @SuppressLint("SetTextI18n")
+            override fun onResponse(
+                call: Call<FavouriteListingsResponse>,
+                response: Response<FavouriteListingsResponse>
+            ) {
+                if(response.isSuccessful) {
+                    hideLoading()
+                    response.body()?.let { property ->
+                        val images = property.listingDetail?.images ?: emptyList()
+                        val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
+
+                        if (images.isNotEmpty()) {
+                            Glide.with(this@PropertyDetails)
+                                .load(images[0])
+                                .placeholder(R.drawable.ic_empty)
+                                .error(R.drawable.ic_empty)
+                                .into(binding.imageMain)
+
+                            images.drop(1).take(3).forEachIndexed { index, imageUrl ->
+                                Glide.with(this@PropertyDetails)
+                                    .load(imageUrl)
+                                    .placeholder(R.drawable.ic_empty)
+                                    .error(R.drawable.ic_empty)
+                                    .into(extraPhotos[index])
+                            }
+
+                            for (i in images.drop(1).size until 3) {
+                                extraPhotos[i].visibility = View.GONE
+                            }
+                        }
+                        binding.locationText.text = property.listingDetail?.address ?: ""
+                        binding.titleText.text = property.listingDetail?.title ?: ""
+                        binding.priceText.text = "R${property.listingDetail?.price}"
+
+                        isFavourite = property.listingDetail?.isFavourite ?: false
+                        updateFavouriteIcon(isFavourite)
+
+                        val amenityIcons = mapOf(
+                            "tv" to R.drawable.tv_icon,
+                            "wi-fi" to R.drawable.wifi_icon,
+                            "bed" to R.drawable.bed_icon
+                        )
+                        val amenities = property.listingDetail?.amenities ?: emptyList()
+                        val amenitiesContainer = binding.amenitiesContainer
+                        amenitiesContainer.removeAllViews()
+
+                        val inflater = LayoutInflater.from(this@PropertyDetails)
+                        for (amenity in amenities) {
+                            val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+                            val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
+                            val textView = itemView.findViewById<TextView>(R.id.amenityText)
+
+                            textView.text = amenity
+
+                            val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
+                            iconView.setImageResource(iconRes)
+                            amenitiesContainer.addView(itemView)
+                        }
+
+                        val landlordInfo = property.listingDetail?.landlordInfo
+                        if (landlordInfo != null) {
+                            binding.landlordTxt.text =
+                                "${landlordInfo.firstName} ${landlordInfo.surname}"
+                        }
+                    }
+                    Toast.makeText(this@PropertyDetails, "Property Loaded", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    hideLoading()
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            "Unknown error"
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    // Log out if unauthorized
+                    if (response.code() == 401) {
+                        tokenManger.clearToken()
+                        tokenManger.clearUser()
+
+                        val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        startActivity(intent)
+                    }
+                    Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(
+                call: Call<FavouriteListingsResponse>,
+                t: Throwable
+            ) {
+                // Log error message
+                hideLoading()
+                Toast.makeText(this@PropertyDetails, "${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Error", t.message.toString())
+            }
+        })
+    }
+
+    private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
+        showFavouriteLoading()
+        val userId = tokenManger.getUser()
+
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        if(userId != null && listingId != null){
+            api.deleteFavouriteListing(userId, listingId).enqueue(object : Callback<UnfavouriteListingResponse> {
+                override fun onResponse(
+                    call: Call<UnfavouriteListingResponse>,
+                    response: Response<UnfavouriteListingResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hideFavouriteLoading()
+                        val responseBody = response.body()
+                        if (responseBody != null) {
+                            // Successfully unfavourited
+                            Toast.makeText(this@PropertyDetails, responseBody.message, Toast.LENGTH_SHORT).show()
+                            updateFavouriteIcon(!isFavourite)
+                        }
+                    }
+                    else{
+                        // Handle error response
+                        hideFavouriteLoading()
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                when { // Check for both "message" and "error" keys
+                                    json.has("message") -> json.getString("message")
+                                    json.has("error") -> json.getString("error")
+                                    else -> "Unknown error"
+                                }
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        Toast.makeText(this@PropertyDetails, errorMessage, Toast.LENGTH_SHORT).show()
+                        Log.e("Error", errorMessage)
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+
+                            val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
+                        }
+                    }
+                }
+                override fun onFailure(
+                    call: Call<UnfavouriteListingResponse>,
+                    t: Throwable
+                ) {
+                    hideFavouriteLoading()
+                    Toast.makeText(this@PropertyDetails, "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
+                    Log.e("Error", t.message.toString())
+                }
+            })
+        }
+    }
+
+    private fun showLoading() {
+        binding.loadingOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.loadingOverlay.visibility = View.GONE
+    }
+
+    private fun showFavouriteLoading() {
+        binding.favouriteOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideFavouriteLoading() {
+        binding.favouriteOverlay.visibility = View.GONE
     }
 }

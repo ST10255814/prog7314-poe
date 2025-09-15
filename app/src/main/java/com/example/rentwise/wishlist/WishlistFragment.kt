@@ -47,6 +47,7 @@ class WishlistFragment : Fragment() {
     }
 
     private fun getFavouriteListingsApiCall() {
+        showOverlay()
         val tokenManger = TokenManger(requireContext())
         val userId = tokenManger.getUser()
         if(userId != null){
@@ -58,6 +59,7 @@ class WishlistFragment : Fragment() {
                 ) {
                     if(!isAdded || _binding == null) return
                     if(response.isSuccessful){
+                        hideOverlay()
                         val favouriteList = response.body()?.toMutableList() ?: mutableListOf()
                         if(favouriteList.isNotEmpty()){
                             binding.wishlistRecyclerView.visibility = View.VISIBLE
@@ -71,12 +73,7 @@ class WishlistFragment : Fragment() {
                                 },
                                 onUnFavouriteClick = {_, position ->
                                     val listingId = favouriteList[position].listingDetail?.listingID
-                                    deleteFavouriteItemFromDbApiCall(listingId)
-                                    wishlistAdapter.removeAt(position)
-                                    if(wishlistAdapter.itemCount == 0) {
-                                        binding.wishlistRecyclerView.visibility = View.GONE
-                                        binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
-                                    }
+                                    deleteFavouriteItemFromDbApiCall(listingId, position)
                                 }
                             )
                             binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -85,11 +82,13 @@ class WishlistFragment : Fragment() {
                             Toast.makeText(requireContext(), "Wishlist loaded", Toast.LENGTH_SHORT).show()
                         }
                         else{
+                            Toast.makeText(requireContext(), "You have no favourites", Toast.LENGTH_SHORT).show()
                             binding.wishlistRecyclerView.visibility = View.GONE
                             binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
                         }
                     }
                     else{
+                        hideOverlay()
                         binding.wishlistRecyclerView.visibility = View.GONE
                         binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
 
@@ -125,6 +124,7 @@ class WishlistFragment : Fragment() {
                     call: Call<MutableList<FavouriteListingsResponse>>,
                     t: Throwable
                 ) {
+                    hideOverlay()
                     if (!isAdded || _binding == null) return
                     binding.wishlistRecyclerView.visibility = View.GONE
                     binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
@@ -135,7 +135,8 @@ class WishlistFragment : Fragment() {
         }
     }
 
-    private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
+    private fun deleteFavouriteItemFromDbApiCall(listingId: String?, position: Int){
+        showUnfavouriteOverlay()
         val tokenManger = TokenManger(requireContext())
         val userId = tokenManger.getUser()
 
@@ -148,14 +149,21 @@ class WishlistFragment : Fragment() {
                 ) {
                     if (!isAdded || _binding == null) return // Fragment not attached to context
                     if (response.isSuccessful) {
+                        hideUnfavouriteOverlay()
                         val responseBody = response.body()
                         if (responseBody != null) {
                             // Successfully unfavourited
                             Toast.makeText(requireContext(), responseBody.message, Toast.LENGTH_SHORT).show()
+                            wishlistAdapter.removeAt(position)
+                            if(wishlistAdapter.itemCount == 0) {
+                                binding.wishlistRecyclerView.visibility = View.GONE
+                                binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+                            }
                         }
                     }
                     else{
                         // Handle error response
+                        hideUnfavouriteOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
@@ -188,11 +196,24 @@ class WishlistFragment : Fragment() {
                     call: Call<UnfavouriteListingResponse>,
                     t: Throwable
                 ) {
+                    hideUnfavouriteOverlay()
                     if (!isAdded || _binding == null) return
                     Toast.makeText(requireContext(), "Error: ${t.message.toString()}", Toast.LENGTH_SHORT).show()
                     Log.e("Error", t.message.toString())
                 }
             })
         }
+    }
+    private fun showOverlay() {
+        binding.wishlistLoadingOverlay.visibility = View.VISIBLE
+    }
+    private fun hideOverlay() {
+        binding.wishlistLoadingOverlay.visibility = View.GONE
+    }
+    private fun showUnfavouriteOverlay() {
+        binding.unfavouriteOverlay.visibility = View.VISIBLE
+    }
+    private fun hideUnfavouriteOverlay() {
+        binding.unfavouriteOverlay.visibility = View.GONE
     }
 }
