@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.R
-import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.FileAttachmentAdapter
 import com.example.rentwise.databinding.FragmentMaintenanceBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
@@ -36,17 +36,16 @@ class MaintenanceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setListeners()
-        updateSpinner()
+        updateDropdown()
     }
 
-    private fun updateSpinner() {
+    private fun updateDropdown() {
         if (!isAdded || _binding == null) return
-
         val priority = resources.getStringArray(R.array.priority_levels).toList()
+        val priorityAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, priority)
 
-        val priorityAdapter = CustomSpinnerAdapter(requireContext(), priority)
-
-        binding.spinnerPriority.adapter = priorityAdapter
+        binding.priorityDropdown.setAdapter(priorityAdapter)
+        binding.priorityDropdown.setText(priority[0], false)
     }
 
     @SuppressLint("ClickableViewAccessibility")

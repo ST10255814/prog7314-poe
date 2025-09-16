@@ -17,6 +17,7 @@
     <string name="book_now">Book Now</string>
     <string name="footer">© 2025 RentWise</string>
     <string name="file_upload_subText">Please upload a copy of your ID, rental/lease agreement and proof of income for validation by the agent.</string>
+    <string name="maintenance_file_upload">Please attach any supporting documents relevant to the issue being reported.</string>
     <string-array name="language_options">
         <item>English</item>
         <item>Spanish</item>
@@ -25,7 +26,6 @@
         <item>Zulu</item>
     </string-array>
     <string-array name="location_options">
-        <item>Area</item>
         <item>JHB</item>
         <item>KZN</item>
         <item>CPT</item>
@@ -33,21 +33,18 @@
         <item>PTA</item>
     </string-array>
     <string-array name="room_options">
-        <item>Rooms</item>
         <item>1</item>
         <item>2</item>
         <item>3+</item>
     </string-array>
 
     <string-array name="price_options">
-        <item>Price</item>
         <item>Any</item>
-        <item>>R5000</item>
-        <item>R5000-R10000</item>
-        <item>R10000+</item>
+        <item>Below R5k</item>
+        <item>R5k–R10k</item>
+        <item>Above R10k</item>
     </string-array>
     <string-array name="priority_levels">
-        <item>Priority Level</item>
         <item>Low</item>
         <item>Medium</item>
         <item>High</item>

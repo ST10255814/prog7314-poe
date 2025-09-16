@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -23,24 +24,25 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:layout_marginBottom="80dp"
-        android:clipToPadding="false">
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Issue Title -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,33 +53,34 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/aldrich"
                         android:text="Issue Title"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
                         android:textColor="@color/darkish_blue"
-                        android:fontFamily="@font/aldrich" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edit_issue_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="E.g. Broken tap in kitchen"
                         android:background="@null"
                         android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:hint="E.g. Broken tap in kitchen"
+                        android:inputType="text"
                         android:paddingTop="4dp"
-                        android:inputType="text" />
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Description -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,24 +91,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/aldrich"
                         android:text="Description"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
                         android:textColor="@color/darkish_blue"
-                        android:fontFamily="@font/aldrich" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edit_issue_description"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:hint="Describe the issue in detail..."
                         android:background="@null"
-                        android:gravity="top"
                         android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:gravity="top"
+                        android:hint="Describe the issue in detail..."
+                        android:inputType="textMultiLine"
                         android:paddingTop="4dp"
-                        android:inputType="textMultiLine" />
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -113,9 +116,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -126,33 +129,34 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/aldrich"
                         android:text="Location / Unit"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
                         android:textColor="@color/darkish_blue"
-                        android:fontFamily="@font/aldrich" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edit_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="E.g. Apartment 3B"
                         android:background="@null"
                         android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:hint="E.g. Apartment 3B"
+                        android:inputType="text"
                         android:paddingTop="4dp"
-                        android:inputType="text" />
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Priority Dropdown -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,27 +167,49 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/aldrich"
                         android:text="Priority"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
                         android:textColor="@color/darkish_blue"
-                        android:fontFamily="@font/aldrich" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/spinner_priority"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/priority_dropdown_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:entries="@array/priority_levels"
-                        android:spinnerMode="dropdown"/>
+                        android:hint=""
+                        app:boxBackgroundColor="@color/white"
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:endIconMode="dropdown_menu">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/priority_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/aldrich"
+                            android:inputType="none"
+                            android:popupBackground="@color/white"
+                            android:singleLine="true"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/file_upload_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@android:color/white">
+                android:elevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -194,27 +220,36 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:text="Attach Supporting Docs"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/darkish_blue"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="@string/maintenance_file_upload"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_upload_file"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose Files"
+                        android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/button_background_states"
-                        android:textColor="@color/white"
-                        android:layout_marginBottom="8dp" />
+                        android:text="Choose Files"
+                        android:textColor="@color/white" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_uploaded_files"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="120dp"
-                        android:overScrollMode="never"/>
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -223,15 +258,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="Submit Request"
                 android:backgroundTint="@color/button_background_states"
+                android:fontFamily="@font/goldman"
+                android:text="Submit Request"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/goldman" />
+                android:textStyle="bold" />
+
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

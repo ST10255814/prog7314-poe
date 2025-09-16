@@ -40,21 +40,10 @@ class MainSettingsFragment : Fragment() {
 
     private fun prepareLanguageSpinner() {
         val languages = resources.getStringArray(R.array.language_options)
+        val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, languages)
+        binding.languageDropdown.setAdapter(adapter)
 
-        val adapter = object : ArrayAdapter<String>(
-            requireContext(),
-            R.layout.custom_spinner_item,
-            languages
-        ) {
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val inflater = LayoutInflater.from(context)
-                val view = inflater.inflate(R.layout.custom_spinner_dropdown_item, parent, false)
-                val textView = view.findViewById<TextView>(android.R.id.text1)
-                textView.text = getItem(position)
-                return view
-            }
-        }
-        binding.languageSpinner.adapter = adapter
+        binding.languageDropdown.setText(languages[0], false)
     }
 
 

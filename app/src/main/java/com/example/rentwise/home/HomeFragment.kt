@@ -5,15 +5,16 @@ import android.content.Intent
 import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
-import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.PropertyItemAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
@@ -47,7 +48,8 @@ class HomeFragment : Fragment() {
             .circleCrop()
             .into(binding.profileDisplay)
 
-        updateSpinners()
+        updateDropdowns()
+        setDropdownOnItemClicks()
         fetchListingsExcludingFavourites()
     }
 
@@ -56,20 +58,39 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateSpinners() {
+    private fun updateDropdowns() {
         if (!isAdded || _binding == null) return
 
         val locations = resources.getStringArray(R.array.location_options).toList()
         val rooms = resources.getStringArray(R.array.room_options).toList()
         val prices = resources.getStringArray(R.array.price_options).toList()
 
-        val locationAdapter = CustomSpinnerAdapter(requireContext(), locations)
-        val roomsAdapter = CustomSpinnerAdapter(requireContext(), rooms)
-        val pricesAdapter = CustomSpinnerAdapter(requireContext(), prices)
+        val locationAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, locations)
+        val roomsAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, rooms)
+        val pricesAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, prices)
 
-        binding.spinnerRooms.adapter = roomsAdapter
-        binding.spinnerLocation.adapter = locationAdapter
-        binding.spinnerPrices.adapter = pricesAdapter
+        binding.dropdownLocation.setAdapter(locationAdapter)
+        binding.dropdownPrices.setAdapter(pricesAdapter)
+        binding.dropdownRooms.setAdapter(roomsAdapter)
+    }
+
+    private fun setDropdownOnItemClicks() {
+        // Set initial text size for dropdowns
+        binding.dropdownRooms.setTextSize(12.5f)
+
+        // Increase text size on item selection
+        binding.dropdownRooms.setOnItemClickListener { parent, view, position, id ->
+            binding.dropdownRooms.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+        }
+        binding.dropdownLocation.setOnItemClickListener { parent, view, position, id ->
+            binding.dropdownLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            binding.searchLocationText.visibility = View.VISIBLE
+            binding.locationIcon.visibility = View.VISIBLE
+            binding.searchLocationText.text = binding.dropdownLocation.text
+        }
+        binding.dropdownPrices.setOnItemClickListener { parent, view, position, id ->
+            binding.dropdownPrices.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+        }
     }
 
     private fun fetchListingsExcludingFavourites() {
