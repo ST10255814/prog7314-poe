@@ -7,6 +7,7 @@ import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.MaintenanceResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
@@ -68,4 +69,15 @@ interface RentWiseApi {
 
     @GET("/api/bookings/{id}")
     fun getBookingById(@Path("id") userId: String): Call<BookingStatusResponse>
+
+    @Multipart
+    @POST("/api/{userID}/{listingID}/maintenance/request/create")
+    fun createMaintenanceRequest(
+        @Path("userID") userId: String,
+        @Path("listingID") listingId: String,
+        @Part("issue") issue: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("priority") priority: RequestBody,
+        @Part documentURL: List<MultipartBody.Part>
+    ) : Call<MaintenanceResponse>
 }
