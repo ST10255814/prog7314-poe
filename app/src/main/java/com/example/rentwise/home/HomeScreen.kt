@@ -57,7 +57,10 @@ class HomeScreen : AppCompatActivity() {
     }
 
     private fun commitFragmentToContainer(fragment: Fragment){
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun openDrawer() {

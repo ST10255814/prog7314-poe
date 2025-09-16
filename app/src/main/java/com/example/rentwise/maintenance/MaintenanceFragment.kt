@@ -159,6 +159,13 @@ class MaintenanceFragment : Fragment() {
             documentParts.add(body)
         }
 
+        // Ensure at least one file is attached
+        if(documentParts.isEmpty()){
+            CustomToast.show(requireContext(), "Please attach at least one file", CustomToast.Companion.ToastType.ERROR)
+            hideSubmitLoadingOverlay()
+            return
+        }
+
         // Make API call with prepared parts
         api.createMaintenanceRequest(userID, listingID, issuePart, descriptionPart, priorityPart, documentParts)
             .enqueue(object : Callback<com.example.rentwise.data_classes.MaintenanceResponse> {
