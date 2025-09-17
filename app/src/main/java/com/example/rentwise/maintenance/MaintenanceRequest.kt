@@ -51,6 +51,9 @@ class MaintenanceRequest : AppCompatActivity() {
                         val responseBody = response.body()
                         if (responseBody != null){
                             adapter = MaintenanceRequestAdapter(requests = responseBody)
+                            binding.rvRequests.layoutManager = LinearLayoutManager(this@MaintenanceRequest)
+                            binding.rvRequests.adapter = adapter
+                            CustomToast.show(this@MaintenanceRequest, "Maintenance requests fetched", CustomToast.Companion.ToastType.SUCCESS )
                         }
                     }
                     else{
