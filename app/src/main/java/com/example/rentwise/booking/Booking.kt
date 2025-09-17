@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,7 @@ import com.example.rentwise.adapters.FileAttachmentAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.BookingResponse
+import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
@@ -48,6 +50,8 @@ class Booking : AppCompatActivity() {
     private val filesAttached = mutableListOf<Uri>()
     private lateinit var fileAdapter: FileAttachmentAdapter
     private val formatter: DateTimeFormatter = ofPattern("dd-MM-yyyy")
+    private var propertyPrice: Float? = null
+    private lateinit var tokenManger: TokenManger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +59,9 @@ class Booking : AppCompatActivity() {
         binding = ActivityBookingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        tokenManger = TokenManger(applicationContext)
+
+        getPropertyDetails()
         setupRecyclerView()
         setupDatePickers()
         setListeners()
@@ -69,17 +76,6 @@ class Booking : AppCompatActivity() {
             finish()
         }
         binding.btnBack.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
-            }
-            false
-        }
-        binding.btnConfirmBooking.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -107,9 +103,16 @@ class Booking : AppCompatActivity() {
             filePickerLauncher.launch("*/*")
         }
 
-        binding.btnConfirmBooking.setOnClickListener {
+        binding.btnConfirmBooking.setOnClickListener { v ->
+            // Click animation
+            v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(50).withEndAction {
+                v.animate().scaleX(1f).scaleY(1f).setDuration(50).start()
+            }.start()
+
+            // Call booking api after animation
             createBookingApiCall()
         }
+
     }
 
     private fun bindPassedData(){
@@ -133,9 +136,9 @@ class Booking : AppCompatActivity() {
     }
 
     private fun createBookingApiCall() {
-        val tokenManger = TokenManger(applicationContext)
+        showBookingProcessOverlay()
         val userId = tokenManger.getUser() ?: return
-        val listingId = intent.getStringExtra("property_id") ?: return
+        val listingId = intent.getStringExtra("propertyId") ?: return
 
         // Retrieve and validate input fields to avoid empty submissions as well as remove leading/trailing white spaces
         val checkInDate = binding.editCheckin.text.toString().trim()
@@ -144,6 +147,7 @@ class Booking : AppCompatActivity() {
         val totalPrice = binding.textTotalPrice.text.toString().replace("R", "").replace(",", "").trim()
 
         if (checkInDate.isEmpty() || checkOutDate.isEmpty() || numberOfGuests.isEmpty() || totalPrice.isEmpty()) {
+            hideBookingProcessOverlay()
             CustomToast.show(this, "Please fill all fields", CustomToast.Companion.ToastType.ERROR)
             return
         }
@@ -168,14 +172,19 @@ class Booking : AppCompatActivity() {
             multipartFiles.add(body)
         }
 
+        // Ensure at least one file is attached
+        if (multipartFiles.isEmpty()){
+            hideBookingProcessOverlay()
+            CustomToast.show(this, "Please attach at least one file", CustomToast.Companion.ToastType.ERROR)
+            return
+        }
+
         val api = RetrofitInstance.createAPIInstance(applicationContext)
-        binding.btnConfirmBooking.isEnabled = false // Disable button to prevent multiple clicks
-        val call = api.createBooking(userId, listingId, checkInBody, checkOutBody, guestsBody, multipartFiles, priceBody)
-        call.enqueue(object : Callback<BookingResponse> {
+        api.createBooking(userId, listingId, checkInBody, checkOutBody, guestsBody, multipartFiles, priceBody).enqueue(object : Callback<BookingResponse> {
             @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
             override fun onResponse(call: Call<BookingResponse>, response: Response<BookingResponse>) {
-                binding.btnConfirmBooking.isEnabled = true // Re-enable button after response
                 if (response.isSuccessful) {
+                    hideBookingProcessOverlay()
                     CustomToast.show(this@Booking, response.body()?.message ?: "Booking successful", CustomToast.Companion.ToastType.SUCCESS)
                     // Clear the input fields and attached files
                     binding.editCheckin.text.clear()
@@ -185,6 +194,7 @@ class Booking : AppCompatActivity() {
                     filesAttached.clear()
                     fileAdapter.notifyDataSetChanged()
                 } else {
+                    hideBookingProcessOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody ?: "Unknown error"
                     CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -201,10 +211,62 @@ class Booking : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<BookingResponse>, t: Throwable) {
-                binding.btnConfirmBooking.isEnabled = true // Re-enable button on failure
+                // Handle failure
+                hideBookingProcessOverlay()
+                Log.e("Failure", "API call failed: ${t.message}" )
                 CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
             }
         })
+    }
+
+    // Fetch property details from API
+    private fun getPropertyDetails()  {
+        showLoadingOverlay()
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        val listingId = intent.getStringExtra("propertyId")
+        if(listingId != null){
+            api.getListingById(listingId).enqueue( object : Callback<ListingResponse> {
+                override fun onResponse(call: Call<ListingResponse>, response: Response<ListingResponse>) {
+                    if(response.isSuccessful){
+                        hideLoadingOverlay()
+                        val property = response.body()
+                        binding.propertyName.text = property?.title ?: "N/A"
+                        binding.propertyAddress.text = property?.address ?: "N/A"
+                        val imageUrl = property?.imagesURL?.firstOrNull()
+                        if (imageUrl != null) {
+                            Glide.with(this@Booking)
+                                .load(imageUrl)
+                                .placeholder(R.drawable.ic_empty)
+                                .error(R.drawable.ic_empty)
+                                .into(binding.imageMain)
+                        }
+                        propertyPrice = property?.price
+                    } else {
+                        hideLoadingOverlay()
+
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody ?: "Unknown error"
+
+                        CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
+
+                        if(response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+                            val intent = Intent(this@Booking, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<ListingResponse>, t: Throwable) {
+                    // Handle failure
+                    hideLoadingOverlay()
+                    Log.e("Failure", "API call failed: ${t.message}" )
+                    CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
+                }
+            })
+        }
     }
 
 
@@ -342,8 +404,7 @@ class Booking : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun calculateTotalPrice() {
-        val propertyPrice = intent.getStringExtra("property_price") ?: return
-        val propertyPricePerNight = propertyPrice.toDoubleOrNull() ?: return
+        val propertyPricePerNight = propertyPrice ?: return
 
         val checkInText = binding.editCheckin.text.toString()
         val checkOutText = binding.editCheckout.text.toString()
@@ -363,5 +424,18 @@ class Booking : AppCompatActivity() {
         } else {
             binding.textTotalPrice.text = "R0.00"
         }
+    }
+
+    private fun showLoadingOverlay(){
+        binding.overlayLoading.visibility = View.VISIBLE
+    }
+    private fun hideLoadingOverlay(){
+        binding.overlayLoading.visibility = View.GONE
+    }
+    private fun showBookingProcessOverlay(){
+        binding.createBookingOverlay.visibility = View.VISIBLE
+    }
+    private fun hideBookingProcessOverlay() {
+        binding.createBookingOverlay.visibility = View.GONE
     }
 }

@@ -41,7 +41,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -63,7 +62,7 @@ dependencies {
     //BlurView for glassy look
     implementation ("com.github.Dimezis:BlurView:version-2.0.3")
     implementation ("com.google.android.material:material:1.12.0")
-    //Glide implementation for rounded images
+    //Glide implementation for images
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     //Splashscreen dependency
     implementation ("androidx.core:core-splashscreen:1.0.1")
@@ -72,13 +71,4 @@ dependencies {
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     //Google dependency
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-    // Firebase: BoM controls versions for all Firebase artifacts below
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-database-ktx")
-
-
-
-
 }

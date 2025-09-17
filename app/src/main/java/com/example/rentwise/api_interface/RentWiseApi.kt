@@ -7,13 +7,12 @@ import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
-import com.example.rentwise.data_classes.MaintenanceRequestResponse
+import com.example.rentwise.data_classes.MaintenanceResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
-import com.example.rentwise.maintenance.MaintenanceRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -56,16 +55,6 @@ interface RentWiseApi {
     @DELETE("/api/{userID}/{listingID}/unfavourite")
     fun deleteFavouriteListing(@Path("userID") userId: String, @Path("listingID") listingId: String): Call<UnfavouriteListingResponse>
 
-    @POST("/api/{userID}/{listingID}/maintenance/request/create")
-    fun createMaintenanceRequest(
-        @Path("userID") userId: String,
-        @Path("listingID") listingId: String,
-        @Body request: MaintenanceRequestResponse
-    ): Call<MaintenanceRequestResponse>
-
-    @GET("/api/{userID}/maintenance/request")
-    fun getMaintenanceRequestForUser(@Path("userId") userId: String): Call<List<MaintenanceRequestResponse>>
-
     @Multipart
     @POST("/api/bookings/{userID}/{listingID}/create")
     fun createBooking(
@@ -80,4 +69,15 @@ interface RentWiseApi {
 
     @GET("/api/bookings/{id}")
     fun getBookingById(@Path("id") userId: String): Call<BookingStatusResponse>
+
+    @Multipart
+    @POST("/api/{userID}/{listingID}/maintenance/request/create")
+    fun createMaintenanceRequest(
+        @Path("userID") userId: String,
+        @Path("listingID") listingId: String,
+        @Part("issue") issue: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("priority") priority: RequestBody,
+        @Part documentURL: List<MultipartBody.Part>
+    ) : Call<MaintenanceResponse>
 }

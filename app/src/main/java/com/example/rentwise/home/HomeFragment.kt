@@ -1,19 +1,20 @@
 package com.example.rentwise.home
 
 import RetrofitInstance
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.rentwise.R
-import com.example.rentwise.adapters.CustomSpinnerAdapter
 import com.example.rentwise.adapters.PropertyItemAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
@@ -30,6 +31,8 @@ import retrofit2.Response
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private var filteredListings: List<ListingResponse> = emptyList()
+    private lateinit var adapter: PropertyItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +50,9 @@ class HomeFragment : Fragment() {
             .circleCrop()
             .into(binding.profileDisplay)
 
-        updateSpinners()
+        updateDropdowns()
+        setUpPropertyAdapter()
+        setFilterClicks()
         fetchListingsExcludingFavourites()
     }
 
@@ -56,20 +61,150 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateSpinners() {
+    private fun setUpPropertyAdapter(){
+        adapter = PropertyItemAdapter(filteredListings) { selected ->
+            val intent = Intent(requireContext(), PropertyDetails::class.java)
+            intent.putExtra("property", selected)
+            startActivity(intent)
+        }
+        binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.propertiesRecyclerView.adapter = adapter
+    }
+
+    private fun updateDropdowns() {
         if (!isAdded || _binding == null) return
 
         val locations = resources.getStringArray(R.array.location_options).toList()
         val rooms = resources.getStringArray(R.array.room_options).toList()
         val prices = resources.getStringArray(R.array.price_options).toList()
 
-        val locationAdapter = CustomSpinnerAdapter(requireContext(), locations)
-        val roomsAdapter = CustomSpinnerAdapter(requireContext(), rooms)
-        val pricesAdapter = CustomSpinnerAdapter(requireContext(), prices)
+        val locationAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, locations)
+        val roomsAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, rooms)
+        val pricesAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, prices)
 
-        binding.spinnerRooms.adapter = roomsAdapter
-        binding.spinnerLocation.adapter = locationAdapter
-        binding.spinnerPrices.adapter = pricesAdapter
+        binding.dropdownLocation.setAdapter(locationAdapter)
+        binding.dropdownPrices.setAdapter(pricesAdapter)
+        binding.dropdownRooms.setAdapter(roomsAdapter)
+
+        binding.dropdownLocation.setText(locations[0], false)
+        binding.dropdownPrices.setText(prices[0], false)
+        binding.dropdownRooms.setText(rooms[0], false)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setFilterClicks() {
+        // Set initial text size for dropdowns
+        binding.dropdownRooms.setTextSize(12.5f)
+
+        // Increase text size on item selection
+        binding.dropdownRooms.setOnItemClickListener { _, _, _, _ ->
+            binding.dropdownRooms.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            applyListingFilters()
+        }
+        binding.dropdownLocation.setOnItemClickListener { _, _, _, _ ->
+            binding.dropdownLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            // Update searchLocationText with selected location
+            if(binding.dropdownLocation.text.toString().trim() != "All"){
+                binding.searchLocationText.text = binding.dropdownLocation.text
+            }
+            else{
+                binding.searchLocationText.text = "South Africa"
+            }
+            applyListingFilters()
+        }
+        binding.dropdownPrices.setOnItemClickListener { _, _, _, _ ->
+            binding.dropdownPrices.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            applyListingFilters()
+        }
+
+        // Search view listener for on text change and submission
+        binding.searchView.setOnQueryTextListener ( object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                applyListingFilters()
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                applyListingFilters()
+                return true
+            }
+        })
+    }
+
+    private fun applyListingFilters(){
+        if(!isAdded || _binding == null) return
+        showFilterLoading()
+
+        //Get filter values
+        val selectedLocation = binding.dropdownLocation.text.toString().trim()
+        val selectedRooms = binding.dropdownRooms.text.toString().trim()
+        val selectedPrice = binding.dropdownPrices.text.toString().trim()
+        val searchText = binding.searchView.query?.toString()?.trim()?.lowercase() ?: "" //Can be empty
+
+        //Apply filters and update recycler view
+        var userFilteredList = filteredListings // Start with the full list
+
+        //Location filter
+        if (selectedLocation.isNotEmpty() && !selectedLocation.equals("All", ignoreCase = true)) {
+            userFilteredList = userFilteredList.filter { listing ->
+                listing.address?.contains(selectedLocation, ignoreCase = true) == true
+            }
+        }
+        //Rooms filter
+        if (selectedRooms.isNotEmpty() && !selectedRooms.equals("Any", ignoreCase = true)) {
+            userFilteredList = userFilteredList.filter { listing ->
+                val searchParam = listing.title + " " + listing.description
+                searchParam.contains(selectedRooms, ignoreCase = true)
+            }
+        }
+        //Price filter
+        // Filter price below 5k, between 5k-10k and above 10k
+        if (selectedPrice.isNotEmpty() && !selectedPrice.equals("Any", ignoreCase = true)) {
+            userFilteredList = when {
+                selectedPrice.contains("Below", ignoreCase = true) -> {
+                    val limit = 5000f
+                    userFilteredList.filter { (it.price ?: 0f) < limit }
+                }
+                selectedPrice.contains("R5k-R10k", ignoreCase = true) -> {
+                    val lowerLimit =  5000f
+                    val upperLimit = 10000f
+                    userFilteredList.filter { (it.price ?: 0f) in lowerLimit..upperLimit }
+                }
+                selectedPrice.contains("Above", ignoreCase = true) -> {
+                    val limit = 10000f
+                    userFilteredList.filter { (it.price ?: 0f) > limit }
+                }
+                else -> userFilteredList // If "Any" or unrecognized value is entered
+            }
+        }
+
+        //Search text filter
+        if (searchText.isNotEmpty()) {
+            userFilteredList = userFilteredList.filter { listing ->
+                //Check that title, address, description and amenities matches the search text individually
+                val matchesTitle = listing.title?.contains(searchText, ignoreCase = true) == true
+                val matchesAddress = listing.address?.contains(searchText, ignoreCase = true) == true
+                val matchesDescription = listing.description?.contains(searchText, ignoreCase = true) == true
+                val matchesAmenities = listing.amenities?.any { amenity ->
+                    amenity.contains(searchText, ignoreCase = true)
+                } == true
+
+                matchesTitle || matchesAddress || matchesDescription || matchesAmenities // Return conditions to filter the list by (either or)
+            }
+        }
+        //Update adapter with filtered list
+        adapter.updateListViaFilters(userFilteredList)
+
+        //Show empty view if no results
+        if (userFilteredList.isEmpty()) {
+            binding.propertiesRecyclerView.visibility = View.GONE
+            binding.emptyView.emptyLayout.visibility = View.VISIBLE
+        } else {
+            binding.propertiesRecyclerView.visibility = View.VISIBLE
+            binding.emptyView.emptyLayout.visibility = View.GONE
+        }
+
+        hideFilterLoading()
+        CustomToast.show(requireContext(), "Filters applied", CustomToast.Companion.ToastType.SUCCESS)
     }
 
     private fun fetchListingsExcludingFavourites() {
@@ -103,18 +238,12 @@ class HomeFragment : Fragment() {
                                         ?.toSet() ?: emptySet()
 
                                     //Filter out favourites from all listings
-                                    val nonFavouriteListings = allListings.filter { it.propertyId !in favouriteIds }
+                                    filteredListings = allListings.filter { it.propertyId !in favouriteIds }
 
                                     //Pass filtered list to adapter and add onClick to each item
-                                    val adapter = PropertyItemAdapter(nonFavouriteListings) { selected ->
-                                        val intent = Intent(requireContext(), PropertyDetails::class.java)
-                                        intent.putExtra("property", selected)
-                                        startActivity(intent)
-                                    }
+                                    adapter.updateListViaFilters(filteredListings)
 
-                                    binding.propertiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                                    binding.propertiesRecyclerView.adapter = adapter
-                                    if (nonFavouriteListings.isEmpty()) {
+                                    if (filteredListings.isEmpty()) {
                                         binding.propertiesRecyclerView.visibility = View.GONE
                                         binding.emptyView.emptyLayout.visibility = View.VISIBLE
                                     } else {
@@ -216,5 +345,13 @@ class HomeFragment : Fragment() {
 
     private fun hideLoading() {
         binding.recyclerLoadingOverlay.visibility = View.GONE
+    }
+
+    private fun showFilterLoading() {
+        binding.filterLoadingOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideFilterLoading() {
+        binding.filterLoadingOverlay.visibility = View.GONE
     }
 }

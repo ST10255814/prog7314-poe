@@ -22,6 +22,10 @@ import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +33,8 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +45,13 @@ class LoginActivity : AppCompatActivity() {
 
         setupLoginView()
         setListeners()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
     private fun setupLoginView(){
@@ -145,6 +158,12 @@ class LoginActivity : AppCompatActivity() {
             false
         }
 
+        binding.googleSignInBtn.setOnClickListener {
+            // Implement Google Sign in
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+
         binding.registerText.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -222,5 +241,31 @@ class LoginActivity : AppCompatActivity() {
 
     private fun hideLoginOverlay(){
         binding.loginOverlay.visibility = View.GONE
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val idToken = account.idToken
+                if (idToken != null) {
+                    Log.d("Google Token", idToken)
+                    //sendIdTokenToBackend(idToken)
+                } else {
+                    CustomToast.show(this, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
+                }
+            } catch (e: ApiException) {
+                Log.e("Google Token Error", "${e.statusCode}", e)
+                CustomToast.show(this, "Google sign-in failed: ${e.message}", CustomToast.Companion.ToastType.ERROR)
+            }
+        }
+    }
+
+    private fun sendIdTokenToBackend(idToken: String) {
+
     }
 }
