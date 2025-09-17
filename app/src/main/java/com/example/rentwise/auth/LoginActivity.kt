@@ -1,9 +1,10 @@
 package com.example.rentwise.auth
 
 import RetrofitInstance
-import android.animation.Animator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -14,10 +15,12 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import com.airbnb.lottie.LottieDrawable
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
@@ -35,12 +38,16 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var tokenManger: TokenManger
     private val RC_SIGN_IN = 9001
+    private lateinit var executor: Executor
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
         setupLoginView()
         prepareGoogleSignIn()
+        intialiseBiometricPrompt()
         setListeners()
 
     }
@@ -125,6 +133,7 @@ class LoginActivity : AppCompatActivity() {
         binding.appSlogan.text = spannableSlogan
         binding.registerText.text = spannableRegister
     }
+    @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners(){
         binding.registerText.setOnClickListener {
@@ -162,6 +171,22 @@ class LoginActivity : AppCompatActivity() {
         binding.fingerprintAnimation.setOnClickListener {
             // Stop the idle animation
             binding.fingerprintAnimation.pauseAnimation()
+
+            if (!canUseBiometrics(this@LoginActivity)) {
+                CustomToast.show(this@LoginActivity, "No fingerprints enrolled. Please add one in Settings.",
+                    CustomToast.Companion.ToastType.ERROR)
+                val enrollIntent = Intent(android.provider.Settings.ACTION_FINGERPRINT_ENROLL)
+                startActivity(enrollIntent)
+            } else {
+                // Launch biometric login
+                promptInfo = BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Biometric login for my app")
+                    .setSubtitle("Log in using your biometric credential")
+                    .setNegativeButtonText("Use account password")
+                    .build()
+
+                biometricPrompt.authenticate(promptInfo)
+            }
 
             // Play the active animation once
             binding.fingerprintAnimation.setAnimation(R.raw.fingerprint_active)
@@ -371,5 +396,49 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("Login", "Error: ${t.message.toString()}")
             }
         })
+    }
+    //https://developer.android.com/identity/sign-in/biometric-auth
+    private fun intialiseBiometricPrompt(){
+        executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int,
+                                                   errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Log.e("Biometric Error", errString as String)
+                    CustomToast.show(this@LoginActivity, "Authentication error: $errString", CustomToast.Companion.ToastType.ERROR)
+                }
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    CustomToast.show(this@LoginActivity, "Authentication succeeded!", CustomToast.Companion.ToastType.SUCCESS)
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    CustomToast.show(this@LoginActivity, "Authentication failed", CustomToast.Companion.ToastType.ERROR)
+                }
+            })
+
+    }
+    private fun canUseBiometrics(context: Context): Boolean {
+        val biometricManager = BiometricManager.from(context)
+        return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> true
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                // Device has no fingerprint sensor
+                false
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                // Sensor temporarily unavailable
+                false
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                // No fingerprints enrolled
+                false
+            }
+            else -> false
+        }
     }
 }

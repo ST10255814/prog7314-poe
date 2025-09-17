@@ -70,4 +70,6 @@ dependencies {
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     //Google dependency
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+    //Biometric dependency
+    implementation("androidx.biometric:biometric:1.4.0-alpha02")
 }
