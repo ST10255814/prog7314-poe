@@ -12,7 +12,7 @@ import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ItemPropertyCardBinding
 
 class PropertyItemAdapter(
-    private val properties: List<ListingResponse>,
+    private var properties: List<ListingResponse>,
     private val onItemClick: (ListingResponse) -> Unit
 ) : RecyclerView.Adapter<PropertyItemAdapter.PropertyViewHolder>() {
 
@@ -70,5 +70,11 @@ class PropertyItemAdapter(
             }
             false
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateListViaFilters(filteredList: List<ListingResponse>) {
+        properties = filteredList
+        notifyDataSetChanged()
     }
 }

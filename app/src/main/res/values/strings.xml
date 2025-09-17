@@ -27,6 +27,7 @@
         <item>Zulu</item>
     </string-array>
     <string-array name="location_options">
+        <item>All</item>
         <item>JHB</item>
         <item>KZN</item>
         <item>CPT</item>
@@ -34,6 +35,7 @@
         <item>PTA</item>
     </string-array>
     <string-array name="room_options">
+        <item>Any</item>
         <item>1</item>
         <item>2</item>
         <item>3+</item>
@@ -42,7 +44,7 @@
     <string-array name="price_options">
         <item>Any</item>
         <item>Below R5k</item>
-        <item>R5k–R10k</item>
+        <item>R5k-R10k</item>
         <item>Above R10k</item>
     </string-array>
     <string-array name="priority_levels">
