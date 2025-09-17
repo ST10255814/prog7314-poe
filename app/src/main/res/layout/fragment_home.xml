@@ -157,7 +157,8 @@
             android:layout_height="48dp"
             android:background="@color/white"
             android:queryHint="Search for properties"
-            app:defaultQueryHint="Search for properties"/>
+            app:defaultQueryHint="Search for properties"
+            android:theme="@style/CustomSearchViewTheme"/>
     </androidx.cardview.widget.CardView>
 
     <FrameLayout

@@ -17,7 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/white"
+            android:textColorHighlight="#CC99CCFF"
+            android:textIsSelectable="true"
+            android:textSelectHandle="@drawable/custom_handle"
+            android:textSelectHandleLeft="@drawable/custom_handle"
+            android:textSelectHandleRight="@drawable/custom_handle"
             android:textSize="14sp"
             android:fontFamily="@font/aldrich" />
     </com.google.android.material.card.MaterialCardView>

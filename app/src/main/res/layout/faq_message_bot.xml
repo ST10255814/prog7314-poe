@@ -19,6 +19,11 @@
             android:padding="12dp"
             android:textColor="@color/darkish_blue"
             android:textSize="14sp"
+            android:textIsSelectable="true"
+            android:textColorHighlight="#CC99CCFF"
+            android:textSelectHandle="@drawable/custom_handle"
+            android:textSelectHandleLeft="@drawable/custom_handle"
+            android:textSelectHandleRight="@drawable/custom_handle"
             android:fontFamily="@font/aldrich" />
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

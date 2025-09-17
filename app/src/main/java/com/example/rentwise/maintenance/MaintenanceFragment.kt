@@ -22,7 +22,6 @@ import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.ListingDropDownItem
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentMaintenanceBinding
-import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

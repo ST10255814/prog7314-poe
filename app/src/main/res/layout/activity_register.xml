@@ -91,6 +91,10 @@
                     android:inputType="textEmailAddress"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
+                    android:textColorHighlight="#CC99CCFF"
+                    android:textSelectHandle="@drawable/custom_handle"
+                    android:textSelectHandleLeft="@drawable/custom_handle"
+                    android:textSelectHandleRight="@drawable/custom_handle"
                     android:textColor="@color/black"
                     android:textColorHint="#AFAFAF" />
 
@@ -108,6 +112,10 @@
                     android:inputType="textPassword"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
+                    android:textColorHighlight="#CC99CCFF"
+                    android:textSelectHandle="@drawable/custom_handle"
+                    android:textSelectHandleLeft="@drawable/custom_handle"
+                    android:textSelectHandleRight="@drawable/custom_handle"
                     android:textColor="@color/black"
                     android:textColorHint="#AFAFAF" />
 

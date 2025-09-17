@@ -2,7 +2,6 @@ package com.example.rentwise.home
 
 import RetrofitInstance
 import android.content.Intent
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -11,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.rentwise.R

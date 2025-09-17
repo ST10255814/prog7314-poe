@@ -94,6 +94,11 @@
                 android:textColor="@color/darker_grey"
                 android:textSize="13sp"
                 android:fontFamily="sans-serif-medium"
+                android:textIsSelectable="true"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
                 android:layout_marginBottom="2dp"/>
 
             <TextView
@@ -103,6 +108,11 @@
                 android:text="Assigned: John Doe"
                 android:textColor="@color/darker_grey"
                 android:textSize="13sp"
+                android:textIsSelectable="true"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
                 android:layout_marginBottom="2dp"
                 android:fontFamily="sans-serif"/>
 
@@ -112,6 +122,11 @@
                 android:layout_height="wrap_content"
                 android:text="Submitted: 01 Sep 2025"
                 android:textColor="@color/darker_grey"
+                android:textIsSelectable="true"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
                 android:textSize="13sp"
                 android:layout_marginBottom="2dp"
                 android:fontFamily="sans-serif"/>
@@ -123,6 +138,11 @@
                 android:text="Request ID: #12345"
                 android:textColor="@color/darker_grey"
                 android:textSize="13sp"
+                android:textIsSelectable="true"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif"/>
 
