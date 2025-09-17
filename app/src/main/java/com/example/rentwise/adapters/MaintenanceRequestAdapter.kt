@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
 import com.example.rentwise.data_classes.MaintenanceRequestResponse
 import com.example.rentwise.databinding.ItemMaintenanceRequestBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 class MaintenanceRequestAdapter(
     private val requests: List<MaintenanceRequestResponse>
@@ -34,11 +37,11 @@ class MaintenanceRequestAdapter(
             tvRequestTitle.text = issue.newMaintenanceRequest?.issue ?: ""
             tvRequestDescription.text = issue.newMaintenanceRequest?.description ?: ""
             tvRequestUnit.text = "Unit: ${issue.listingDetail?.title}"
-            tvAssignedStaff.text = "Assigned Caretaker: ${issue.assignedCaretaker}"
-            tvRequestDate.text = "Submitted On: ${issue.newMaintenanceRequest?.createdAt}"
+            tvAssignedStaff.text = "Assigned Caretaker: ${issue.assignedCaretaker ?: "Unassigned"}"
+            tvRequestDate.text = "Submitted On: ${formatDate(issue.newMaintenanceRequest?.createdAt)}"
             tvRequestId.text = "Maintenance Request ID: ${issue._id}"
-            tvFollowUpRequests.text = "Follow-ups: ${issue.followUps}"
-            tvCaretakerNote.text = "Caretaker Note: ${issue.careTakerNotes}"
+            tvFollowUpRequests.text = "Follow-ups: ${issue.followUps ?: "0"}"
+            tvCaretakerNote.text = "Caretaker Note: ${issue.careTakerNotes ?: "No Notes"}"
 
             // Set Priority Badge color
             tvRequestPriority.text = issue.newMaintenanceRequest?.priority ?: ""
@@ -58,6 +61,21 @@ class MaintenanceRequestAdapter(
                 else -> R.drawable.bg_status_pending
             }
             tvRequestStatus.setBackgroundResource(statusBg)
+        }
+    }
+
+    private fun formatDate(dateString: String?): String {
+        if (dateString.isNullOrEmpty()) return ""
+
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Because 'Z' means UTC to accurately convert
+            val date = inputFormat.parse(dateString)
+
+            val outputFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss a", Locale.getDefault())
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            dateString // fallback to original if parsing fails
         }
     }
 }

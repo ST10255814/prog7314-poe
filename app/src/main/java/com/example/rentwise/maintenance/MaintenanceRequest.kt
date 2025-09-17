@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,11 +34,13 @@ class MaintenanceRequest : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
-        setListeners()
 
+        setListeners()
+        getMaintenanceRequestsForUser()
     }
     //api call
     private fun getMaintenanceRequestsForUser() {
+        showOverlay()
         val userId = tokenManger.getUser()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
 
@@ -48,8 +51,12 @@ class MaintenanceRequest : AppCompatActivity() {
                     response: Response<List<MaintenanceRequestResponse>?>
                 ) {
                     if (response.isSuccessful){
+                        hideOverlay()
                         val responseBody = response.body()
                         if (responseBody != null){
+                            binding.rvRequests.visibility = View.VISIBLE
+                            binding.emptyView.emptyLayout.visibility = View.GONE
+
                             adapter = MaintenanceRequestAdapter(requests = responseBody)
                             binding.rvRequests.layoutManager = LinearLayoutManager(this@MaintenanceRequest)
                             binding.rvRequests.adapter = adapter
@@ -57,6 +64,9 @@ class MaintenanceRequest : AppCompatActivity() {
                         }
                     }
                     else{
+                        hideOverlay()
+                        binding.rvRequests.visibility = View.GONE
+                        binding.emptyView.emptyLayout.visibility = View.VISIBLE
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
 
@@ -78,13 +88,14 @@ class MaintenanceRequest : AppCompatActivity() {
                     t: Throwable
                 ) {
                     //Log error
+                    hideOverlay()
+                    binding.rvRequests.visibility = View.GONE
+                    binding.emptyView.emptyLayout.visibility = View.VISIBLE
                     CustomToast.show(this@MaintenanceRequest, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Failure", "API call failed: ${t.message}" )
                 }
 
             })
-
-
         }
     }
 
@@ -106,5 +117,12 @@ class MaintenanceRequest : AppCompatActivity() {
             }
             false
         }
+    }
+
+    private fun showOverlay(){
+        binding.overlayLoadingRequests.visibility = View.VISIBLE
+    }
+    private fun hideOverlay(){
+        binding.overlayLoadingRequests.visibility = View.GONE
     }
 }
