@@ -56,18 +56,24 @@ class NotificationsFragment : Fragment() {
                     hideOverlay()
                     val body = response.body() ?: emptyList()
                     if (body.isNotEmpty()) {
+                        binding.notificationRecyclerView.visibility = View.VISIBLE
+                        binding.emptyNotificationView.emptyLayout.visibility = View.GONE
                         val adapter = NotificationAdapter(
                             notifications = body
                         )
-                        binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.wishlistRecyclerView.adapter = adapter
+                        binding.notificationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        binding.notificationRecyclerView.adapter = adapter
                         CustomToast.show(requireContext(), "Notifications loaded", CustomToast.Companion.ToastType.INFO)
                     } else {
+                        binding.notificationRecyclerView.visibility = View.GONE
+                        binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE
                         CustomToast.show(requireContext(), "No notifications found", CustomToast.Companion.ToastType.INFO)
                     }
                 }
                 else {
                     hideOverlay()
+                    binding.notificationRecyclerView.visibility = View.GONE
+                    binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -99,8 +105,10 @@ class NotificationsFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<NotificationResponse>>, t: Throwable) {
-                hideOverlay()
                 if (!isAdded || _binding == null) return
+                hideOverlay()
+                binding.notificationRecyclerView.visibility = View.GONE
+                binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE
                 CustomToast.show(requireContext(), "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
             }
         })

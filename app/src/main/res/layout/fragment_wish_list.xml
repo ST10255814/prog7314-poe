@@ -44,7 +44,7 @@
 
             <include
                 android:id="@+id/emptyWishlistView"
-                layout="@layout/empty_lisitings"
+                layout="@layout/empty_favourites"
                 android:visibility="gone"/>
 
             <FrameLayout

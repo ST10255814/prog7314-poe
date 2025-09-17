@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rentwise.auth.LoginActivity
@@ -53,6 +52,7 @@ class BookingStatus : AppCompatActivity() {
         }
         binding.refreshTracking.setOnClickListener {
             getBookingStatusViaUserIdApiCall()
+            CustomToast.show(this@BookingStatus, "Tracking Refreshed", CustomToast.Companion.ToastType.INFO)
         }
         binding.refreshTracking.setOnTouchListener { v, event ->
             when (event.action) {
@@ -69,7 +69,8 @@ class BookingStatus : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun prepBookingTracker(status: String) {
+    private fun prepBookingTracker(status: String, bookingId: String) {
+        binding.bookingIdText.text = "Booking ID: $bookingId"
 
         // List to map step names based on status from api
         val stepNames = listOf(
@@ -155,22 +156,24 @@ class BookingStatus : AppCompatActivity() {
                         val bookingStatusResponse = response.body()
                         if (bookingStatusResponse != null) {
                             val status = bookingStatusResponse.newBooking?.status
+                            val bookingId = bookingStatusResponse.bookingId ?: ""
                             if (status != null) {
-                                prepBookingTracker(status) // Update UI based on status
+                                prepBookingTracker(status, bookingId) // Update UI based on status
                             }
-                            CustomToast.show(this@BookingStatus, "Booking status fetched!", CustomToast.Companion.ToastType.INFO)
                         }
+                        hideMiddleOverlay()
                     }
                     else{
                         hideOverlay()
+                        showMiddleOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
-                        CustomToast.show(this@BookingStatus, errorMessage, CustomToast.Companion.ToastType.ERROR)
 
                         //Logout user if 401 Unauthorized
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            CustomToast.show(this@BookingStatus, errorMessage, CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@BookingStatus, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -181,6 +184,7 @@ class BookingStatus : AppCompatActivity() {
                 override fun onFailure(call: Call<BookingStatusResponse>, t: Throwable) {
                     // Handle failure
                     hideOverlay()
+                    showMiddleOverlay()
                     CustomToast.show(this@BookingStatus, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Failure", "API call failed: ${t.message}" )
                 }
@@ -195,5 +199,13 @@ class BookingStatus : AppCompatActivity() {
 
     private fun hideOverlay(){
         binding.fullScreenOverlay.visibility = View.GONE
+    }
+
+    private fun showMiddleOverlay(){
+        binding.middleOverlay.visibility = View.VISIBLE
+    }
+
+    private fun hideMiddleOverlay(){
+        binding.middleOverlay.visibility = View.GONE
     }
 }

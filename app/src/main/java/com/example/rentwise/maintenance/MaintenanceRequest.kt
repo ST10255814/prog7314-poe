@@ -53,14 +53,23 @@ class MaintenanceRequest : AppCompatActivity() {
                     if (response.isSuccessful){
                         hideOverlay()
                         val responseBody = response.body()
-                        if (responseBody != null){
-                            binding.rvRequests.visibility = View.VISIBLE
-                            binding.emptyView.emptyLayout.visibility = View.GONE
+                        if (responseBody != null) {
+                            if (responseBody.isNotEmpty()){
+                                binding.rvRequests.visibility = View.VISIBLE
+                                binding.emptyView.emptyLayout.visibility = View.GONE
 
-                            adapter = MaintenanceRequestAdapter(requests = responseBody)
-                            binding.rvRequests.layoutManager = LinearLayoutManager(this@MaintenanceRequest)
-                            binding.rvRequests.adapter = adapter
-                            CustomToast.show(this@MaintenanceRequest, "Maintenance requests fetched", CustomToast.Companion.ToastType.SUCCESS )
+                                adapter = MaintenanceRequestAdapter(requests = responseBody)
+                                binding.rvRequests.layoutManager = LinearLayoutManager(this@MaintenanceRequest)
+                                binding.rvRequests.adapter = adapter
+                                CustomToast.show(this@MaintenanceRequest, "Maintenance requests fetched", CustomToast.Companion.ToastType.SUCCESS )
+                            } else{
+                                binding.rvRequests.visibility = View.GONE
+                                binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                            }
+                        }
+                        else{
+                            binding.rvRequests.visibility = View.GONE
+                            binding.emptyView.emptyLayout.visibility = View.VISIBLE
                         }
                     }
                     else{
@@ -116,6 +125,22 @@ class MaintenanceRequest : AppCompatActivity() {
                 }
             }
             false
+        }
+
+        binding.refreshTracking.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }
+            }
+            false
+        }
+
+        binding.refreshTracking.setOnClickListener {
+            getMaintenanceRequestsForUser()
         }
     }
 
