@@ -7,6 +7,7 @@ import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.MaintenanceRequestResponse
 import com.example.rentwise.data_classes.MaintenanceResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
@@ -80,4 +81,7 @@ interface RentWiseApi {
         @Part("priority") priority: RequestBody,
         @Part documentURL: List<MultipartBody.Part>
     ) : Call<MaintenanceResponse>
+
+    @GET("/api/{userID}/maintenance/request")
+    fun getMaintenanceRequestForUser(@Path("userID") userId: String): Call<List<MaintenanceRequestResponse>>
 }

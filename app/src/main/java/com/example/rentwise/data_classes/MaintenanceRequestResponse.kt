@@ -5,6 +5,9 @@ data class MaintenanceRequestResponse(
     val userId: String?,
     val listingDetail: ListingResponse?,
     val bookingId: String?,
-    val newMaintenanceRequest: NewMaintenanceRequest?
+    val newMaintenanceRequest: NewMaintenanceRequest?,
+    val assignedCaretaker: String?,
+    val followUps: Int?,
+    val careTakerNotes: String?
 )
 

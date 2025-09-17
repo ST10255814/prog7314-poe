@@ -3,14 +3,15 @@ package com.example.rentwise.maintenance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.adapters.MaintenanceRequestAdapter
+import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
-import com.example.rentwise.data_classes.MaintenanceRequestData
 import com.example.rentwise.data_classes.MaintenanceRequestResponse
 import com.example.rentwise.databinding.ActivityMaintenanceRequestBinding
 import com.example.rentwise.home.HomeScreen
@@ -36,7 +37,7 @@ class MaintenanceRequest : AppCompatActivity() {
 
     }
     //api call
-    private fun getMaintenanceRequest() {
+    private fun getMaintenanceRequestsForUser() {
         val userId = tokenManger.getUser()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
 
@@ -52,14 +53,30 @@ class MaintenanceRequest : AppCompatActivity() {
                             adapter = MaintenanceRequestAdapter(requests = responseBody)
                         }
                     }
+                    else{
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody ?: "Unknown error"
 
+                        CustomToast.show(this@MaintenanceRequest, errorMessage, CustomToast.Companion.ToastType.ERROR)
+
+                        if(response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+                            val intent = Intent(this@MaintenanceRequest, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
                 }
 
                 override fun onFailure(
                     call: Call<List<MaintenanceRequestResponse>?>,
                     t: Throwable
                 ) {
+                    //Log error
                     CustomToast.show(this@MaintenanceRequest, "${t.message}", CustomToast.Companion.ToastType.ERROR)
+                    Log.e("Failure", "API call failed: ${t.message}" )
                 }
 
             })
@@ -67,53 +84,6 @@ class MaintenanceRequest : AppCompatActivity() {
 
         }
     }
-
-//
-//  //  private fun setUpTempDataAndRecyclerView(){
-//        val tempRequests = listOf(
-//            MaintenanceRequestData(
-//                id = "001",
-//                title = "Leaking Tap",
-//                description = "The kitchen tap is leaking heavily.",
-//                priority = "High",
-//                status = "Pending",
-//                unit = "Apartment 3B",
-//                assignedStaff = "Unassigned",
-//                dateSubmitted = "01 Sep 2025",
-//                followUps = 1,
-//                caretakerNote = ""
-//            ),
-//            MaintenanceRequestData(
-//                id = "002",
-//                title = "Broken Window",
-//                description = "The bedroom window pane is shattered.",
-//                priority = "Medium",
-//                status = "In Progress",
-//                unit = "Apartment 5A",
-//                assignedStaff = "Jane Smith",
-//                dateSubmitted = "28 Aug 2025",
-//                followUps = 2,
-//                caretakerNote = "Temporary cover applied"
-//            ),
-//            MaintenanceRequestData(
-//                id = "003",
-//                title = "Electric Fault",
-//                description = "Power socket not working in living room.",
-//                priority = "Low",
-//                status = "Completed",
-//                unit = "Apartment 2C",
-//                assignedStaff = "Mike Johnson",
-//                dateSubmitted = "25 Aug 2025",
-//                followUps = 0,
-//                caretakerNote = "Issue resolved, no further action"
-//            )
-//        )
-//
-//        adapter = MaintenanceRequestAdapter(tempRequests)
-//        binding.rvRequests.layoutManager = LinearLayoutManager(this)
-//        binding.rvRequests.adapter = adapter
-//    }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners(){

@@ -1,10 +1,11 @@
 package com.example.rentwise.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
-import com.example.rentwise.data_classes.MaintenanceRequestData
+import com.example.rentwise.data_classes.MaintenanceRequestResponse
 import com.example.rentwise.databinding.ItemMaintenanceRequestBinding
 
 class MaintenanceRequestAdapter(
@@ -25,22 +26,23 @@ class MaintenanceRequestAdapter(
 
     override fun getItemCount(): Int = requests.size
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val r = requests[position]
+        val issue = requests[position]
 
         holder.binding.apply {
-            tvRequestTitle.text = r.
-            tvRequestDescription.text = r.description
-            tvRequestUnit.text = "Unit: ${r.unit}"
-            tvAssignedStaff.text = "Assigned Caretaker: ${r.assignedStaff}"
-            tvRequestDate.text = "Submitted On: ${r.dateSubmitted}"
-            tvRequestId.text = "Maintenance Request ID: ${r.id}"
-            tvFollowUpRequests.text = "Follow-ups: ${r.followUps}"
-            tvCaretakerNote.text = "Caretaker Note: ${r.caretakerNote}"
+            tvRequestTitle.text = issue.newMaintenanceRequest?.issue ?: ""
+            tvRequestDescription.text = issue.newMaintenanceRequest?.description ?: ""
+            tvRequestUnit.text = "Unit: ${issue.listingDetail?.title}"
+            tvAssignedStaff.text = "Assigned Caretaker: ${issue.assignedCaretaker}"
+            tvRequestDate.text = "Submitted On: ${issue.newMaintenanceRequest?.createdAt}"
+            tvRequestId.text = "Maintenance Request ID: ${issue._id}"
+            tvFollowUpRequests.text = "Follow-ups: ${issue.followUps}"
+            tvCaretakerNote.text = "Caretaker Note: ${issue.careTakerNotes}"
 
             // Set Priority Badge color
-            tvRequestPriority.text = r.priority
-            val priorityBg = when(r.priority.lowercase()){
+            tvRequestPriority.text = issue.newMaintenanceRequest?.priority ?: ""
+            val priorityBg = when(issue.newMaintenanceRequest?.priority?.lowercase()){
                 "high" -> R.drawable.bg_priority_high
                 "medium" -> R.drawable.bg_priority_medium
                 else -> R.drawable.bg_priority_low
@@ -48,8 +50,8 @@ class MaintenanceRequestAdapter(
             tvRequestPriority.setBackgroundResource(priorityBg)
 
             // Set Status Badge color
-            tvRequestStatus.text = r.status
-            val statusBg = when(r.status.lowercase()){
+            tvRequestStatus.text = issue.newMaintenanceRequest?.status ?: "Pending"
+            val statusBg = when(issue.newMaintenanceRequest?.status?.lowercase()){
                 "pending" -> R.drawable.bg_status_pending
                 "in progress" -> R.drawable.bg_status_in_progress
                 "completed" -> R.drawable.bg_status_completed

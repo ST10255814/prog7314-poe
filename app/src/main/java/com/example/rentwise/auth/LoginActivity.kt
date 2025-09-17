@@ -256,11 +256,11 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("Google Token", idToken)
                     //sendIdTokenToBackend(idToken)
                 } else {
-                    CustomToast.show(this, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
+                    CustomToast.show(this@LoginActivity, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
                 }
             } catch (e: ApiException) {
                 Log.e("Google Token Error", "${e.statusCode}", e)
-                CustomToast.show(this, "Google sign-in failed: ${e.message}", CustomToast.Companion.ToastType.ERROR)
+                CustomToast.show(this@LoginActivity, "Google sign-in failed: ${e.message}", CustomToast.Companion.ToastType.ERROR)
             }
         }
     }

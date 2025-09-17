@@ -6,5 +6,6 @@ data class NewMaintenanceRequest(
     val description: String?,
     val priority: String?,
     val documentsURL: List<String>?,
+    val status: String?,
     val createdAt: String?
 )
