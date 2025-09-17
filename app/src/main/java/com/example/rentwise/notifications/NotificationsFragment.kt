@@ -67,7 +67,6 @@ class NotificationsFragment : Fragment() {
                     } else {
                         binding.notificationRecyclerView.visibility = View.GONE
                         binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE
-                        CustomToast.show(requireContext(), "No notifications found", CustomToast.Companion.ToastType.INFO)
                     }
                 }
                 else {

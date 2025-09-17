@@ -247,11 +247,11 @@ class HomeFragment : Fragment() {
                                         binding.propertiesRecyclerView.visibility = View.GONE
                                         binding.emptyView.emptyLayout.visibility = View.VISIBLE
                                     } else {
+                                        //Show success message
+                                        CustomToast.show(requireContext(), "Listings loaded", CustomToast.Companion.ToastType.SUCCESS)
                                         binding.propertiesRecyclerView.visibility = View.VISIBLE
                                         binding.emptyView.emptyLayout.visibility = View.GONE
                                     }
-                                    //Show success message
-                                    CustomToast.show(requireContext(), "Listings loaded", CustomToast.Companion.ToastType.SUCCESS)
                                 }
                                 else{
                                     //Handle error response for favourites and show empty view

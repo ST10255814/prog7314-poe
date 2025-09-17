@@ -83,7 +83,6 @@ class WishlistFragment : Fragment() {
                             CustomToast.show(requireContext(), "Wishlist loaded", CustomToast.Companion.ToastType.SUCCESS)
                         }
                         else{
-                            CustomToast.show(requireContext(), "You have no favourites", CustomToast.Companion.ToastType.INFO)
                             binding.wishlistRecyclerView.visibility = View.GONE
                             binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
                         }
