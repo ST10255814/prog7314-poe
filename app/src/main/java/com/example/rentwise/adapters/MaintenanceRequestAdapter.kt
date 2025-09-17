@@ -8,7 +8,7 @@ import com.example.rentwise.data_classes.MaintenanceRequestData
 import com.example.rentwise.databinding.ItemMaintenanceRequestBinding
 
 class MaintenanceRequestAdapter(
-    private val requests: List<MaintenanceRequestData>
+    private val requests: List<MaintenanceRequestResponse>
 ) : RecyclerView.Adapter<MaintenanceRequestAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemMaintenanceRequestBinding) :
@@ -29,7 +29,7 @@ class MaintenanceRequestAdapter(
         val r = requests[position]
 
         holder.binding.apply {
-            tvRequestTitle.text = r.title
+            tvRequestTitle.text = r.
             tvRequestDescription.text = r.description
             tvRequestUnit.text = "Unit: ${r.unit}"
             tvAssignedStaff.text = "Assigned Caretaker: ${r.assignedStaff}"
