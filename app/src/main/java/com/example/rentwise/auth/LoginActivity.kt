@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
@@ -69,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
         val registerText = getString(R.string.register_text)
         val registerPortion = "Register".length
 
-        val color = ContextCompat.getColor(this, R.color.light_blue)
+        val color = ContextCompat.getColor(this, R.color.darkish_blue)
 
         val spannableSlogan = SpannableString(slogan)
 
@@ -106,16 +107,6 @@ class LoginActivity : AppCompatActivity() {
         binding.appName.text = spannableAppName
         binding.appSlogan.text = spannableSlogan
         binding.registerText.text = spannableRegister
-
-        //Blurred View tutorial followed by:
-        //https://youtu.be/VEhJd1VdTcQ?si=U_C95f_xu41FSuuy
-        val decorView: View = window.decorView
-        val viewGroup: ViewGroup = decorView.findViewById(android.R.id.content)
-        val windowBg: Drawable = decorView.background
-
-        binding.blurView.setupWith(viewGroup)
-            .setFrameClearDrawable(windowBg)
-            .setBlurRadius(23f)
     }
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners(){
@@ -128,8 +119,27 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
-            //API Call
-            loginAPICall(email, password)
+
+            if(email.isNullOrEmpty() || password.isNullOrEmpty()){
+                binding.emailLayout.error = "Email can not be empty"
+                binding.passwordLayout.error = "Password can not be empty"
+            }
+            else{
+                //API Call
+                loginAPICall(email, password)
+            }
+        }
+
+        binding.edtEmail.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.emailLayout.error = null
+            }
+        }
+
+        binding.edtPassword.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.passwordLayout.error = null
+            }
         }
 
         //Button Animation and states followed by ChatGPT
@@ -224,6 +234,8 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
+                    binding.emailLayout.error = "Invalid Email"
+                    binding.passwordLayout.error = "Invalid Password"
                     CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }

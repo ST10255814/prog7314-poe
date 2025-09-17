@@ -9,10 +9,10 @@
     <string name="login_header">Sign In</string>
     <string name="email_address_hint">Email Address</string>
     <string name="or_condition">OR</string>
-    <string name="register_text">Don\'t have an account? Register</string>
+    <string name="register_text">Don\'t have an account? <u>Register</u></string>
     <string name="register_subtitle">is better with an account</string>
     <string name="register_button">Create Account</string>
-    <string name="login_message">Already have an account? Login</string>
+    <string name="login_message">Already have an account? <u>Login</u></string>
     <string name="let_s_get_you_an_account">Let\'s get you an account</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_now">Book Now</string>
@@ -65,4 +65,5 @@
     <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
     <string name="amenity_icon">Amenity Icon</string>
     <string name="refresh_text"><u>Refresh to see updates</u></string>
+    <string name="login_with_biometrics">Login with Biometrics</string>
 </resources>

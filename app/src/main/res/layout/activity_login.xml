@@ -3,183 +3,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootFrame"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:gravity="center"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="52dp"
-        android:paddingBottom="48dp"
-        android:clipToPadding="false"
-        android:background="@drawable/background_main"
-        android:fitsSystemWindows="true">
+        android:paddingTop="20dp"
+        android:paddingHorizontal="24dp">
 
         <ImageView
             android:id="@+id/appIcon"
-            android:layout_width="180dp"
-            android:layout_height="123dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/rentwise_icon" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rentwise_icon_updated" />
 
         <TextView
             android:id="@+id/appName"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/goldman"
             android:text="@string/app_name"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:textColor="@color/darkish_blue"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/appSlogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="32dp"
             android:fontFamily="@font/goldman"
             android:text="@string/app_slogan"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
 
-        <FrameLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp">
+            android:layout_marginBottom="16dp"
+            app:endIconMode="clear_text"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_input_colors"
+            app:hintTextColor="@color/text_input_colors"
+            app:errorTextColor="@color/red">
 
-            <eightbitlab.com.blurview.BlurView
-                android:id="@+id/blurView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <LinearLayout
-                android:id="@+id/glassyForm"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:fontFamily="@font/aldrich"
+                android:hint="@string/email_address_hint"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/welcomeTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/goldman"
-                    android:text="@string/welcome_message"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/darkish_blue" />
 
-                <TextView
-                    android:id="@+id/loginSubHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/goldman"
-                    android:text="@string/login_to_enjoy_rentwise"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_input_colors"
+            app:hintTextColor="@color/text_input_colors"
+            app:errorTextColor="@color/red"
+            app:endIconMode="password_toggle">
 
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="13dp"
-                    android:background="@drawable/round_white_input"
-                    android:drawableEnd="@drawable/email_icon"
-                    android:drawablePadding="12dp"
-                    android:drawableTint="@color/black"
-                    android:fontFamily="@font/anek_latin_medium"
-                    android:hint="@string/email_address_hint"
-                    android:inputType="textEmailAddress"
-                    android:textColorHighlight="#CC99CCFF"
-                    android:textSelectHandle="@drawable/custom_handle"
-                    android:textSelectHandleLeft="@drawable/custom_handle"
-                    android:textSelectHandleRight="@drawable/custom_handle"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#AFAFAF" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/aldrich"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp"
+                android:textColorHighlight="#CC99CCFF"
+                android:textSelectHandle="@drawable/custom_handle"
+                android:textSelectHandleLeft="@drawable/custom_handle"
+                android:textSelectHandleRight="@drawable/custom_handle"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="13dp"
-                    android:background="@drawable/round_white_input"
-                    android:drawableEnd="@drawable/password_icon"
-                    android:drawablePadding="12dp"
-                    android:drawableTint="@color/black"
-                    android:fontFamily="@font/anek_latin_medium"
-                    android:hint="@string/password_hint"
-                    android:inputType="textPassword"
-                    android:textColorHighlight="#CC99CCFF"
-                    android:textSelectHandle="@drawable/custom_handle"
-                    android:textSelectHandleLeft="@drawable/custom_handle"
-                    android:textSelectHandleRight="@drawable/custom_handle"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#AFAFAF" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/loginBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:elevation="4dp"
-                    android:fontFamily="@font/goldman"
-                    android:text="@string/login_header"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/button_background_states"
-                    app:cornerRadius="12dp" />
+            android:text="@string/login_header"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/darkish_blue"
+            app:cornerRadius="12dp" />
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/or_condition"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/googleSignInBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:icon="@drawable/ic_info"
+            android:text="@string/sign_in_with_google"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/darkish_blue"
+            app:cornerRadius="12dp"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp"
+            app:iconTint="@null" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/googleSignInBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/goldman"
-                    android:text="@string/sign_in_with_google"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/button_background_states"
-                    app:cornerRadius="12dp"/>
+        <LinearLayout
+            android:id="@+id/biometricContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/registerText"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/register_text"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="10dp" />
-            </LinearLayout>
-        </FrameLayout>
+            <ImageButton
+                android:id="@+id/biometricBtn"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/login_with_biometrics"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_fingerprint"
+                app:tint="@color/darkish_blue" />
+
+            <TextView
+                android:id="@+id/biometricText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_with_biometrics"
+                android:textColor="@color/darkish_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/registerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="@string/register_text"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -207,9 +202,7 @@
             android:layout_height="wrap_content"
             android:text="Logging in..."
             android:textColor="@color/white"
-            android:fontFamily="@font/goldman"
             android:textSize="16sp"
             android:layout_marginTop="12dp"/>
     </LinearLayout>
-
 </FrameLayout>

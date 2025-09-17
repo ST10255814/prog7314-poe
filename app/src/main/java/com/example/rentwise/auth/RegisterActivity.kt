@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.RegisterRequest
@@ -36,13 +37,18 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        prepareRegisterView()
+        setListeners()
+    }
+
+    private fun prepareRegisterView(){
         val appName = getString(R.string.app_name)
         val halfOfAppName = "Wise".length
 
         val loginText = getString(R.string.login_message)
         val loginPortion = "Login".length
 
-        val color = ContextCompat.getColor(this, R.color.light_blue)
+        val color = ContextCompat.getColor(this, R.color.darkish_blue)
 
         val spannableAppName = SpannableString(appName)
         spannableAppName.setSpan(
@@ -62,15 +68,9 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.appName.text = spannableAppName
         binding.loginText.text = spannableLoginText
-
-        val decorView: View = window.decorView
-        val viewGroup: ViewGroup = decorView.findViewById(android.R.id.content)
-        val windowBg: Drawable = decorView.background
-
-        binding.blurView.setupWith(viewGroup)
-            .setFrameClearDrawable(windowBg)
-            .setBlurRadius(23f)
-
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setListeners(){
         binding.loginText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -89,6 +89,18 @@ class RegisterActivity : AppCompatActivity() {
             false
         }
 
+        binding.regEmail.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.emailInputLayout.error = null
+            }
+        }
+
+        binding.regPassword.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.passwordInputLayout.error = null
+            }
+        }
+
         binding.loginText.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -105,9 +117,14 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
-            registerAPICall(email, password)
+            if(email.isNullOrEmpty() || password.isNullOrEmpty()){
+                binding.emailInputLayout.error = "Email can not be empty"
+                binding.passwordInputLayout.error = "Password can not be empty"
+            }
+            else{
+                registerAPICall(email, password)
+            }
         }
-
     }
 
     private fun registerAPICall(email: String, password: String){
