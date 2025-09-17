@@ -19,6 +19,8 @@ import androidx.core.widget.addTextChangedListener
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
+import com.example.rentwise.data_classes.GoogleRequest
+import com.example.rentwise.data_classes.GoogleResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
@@ -35,6 +37,7 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var tokenManger: TokenManger
     private val RC_SIGN_IN = 9001
 
     @SuppressLint("ClickableViewAccessibility")
@@ -43,6 +46,8 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        tokenManger = TokenManger(applicationContext)
 
         setupLoginView()
         setListeners()
@@ -204,7 +209,6 @@ class LoginActivity : AppCompatActivity() {
                     hideLoginOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
-                        val tokenManger = TokenManger(applicationContext)
                         authResponse.token.let {
                             if (it != null) {
                                 tokenManger.saveToken(it)
@@ -229,7 +233,7 @@ class LoginActivity : AppCompatActivity() {
                             val json = JSONObject(errorBody)
                             json.getString("error")
                         } catch (e: Exception) {
-                            "Unknown error"
+                            e.message.toString()
                         }
                     } else {
                         "Unknown error"
@@ -237,12 +241,13 @@ class LoginActivity : AppCompatActivity() {
                     binding.emailLayout.error = "Invalid Email"
                     binding.passwordLayout.error = "Invalid Password"
                     CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                    Log.e("Google Login API", errorMessage)
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
                 hideLoginOverlay()
                 CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
-                Log.e("Login", "Error: ${t.message.toString()}")
+                Log.e("Google Login Failure", "Error: ${t.message.toString()}")
             }
         })
     }
@@ -266,7 +271,7 @@ class LoginActivity : AppCompatActivity() {
                 val idToken = account.idToken
                 if (idToken != null) {
                     Log.d("Google Token", idToken)
-                    //sendIdTokenToBackend(idToken)
+                    sendIdTokenToBackend(idToken)
                 } else {
                     CustomToast.show(this@LoginActivity, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
                 }
@@ -278,6 +283,62 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun sendIdTokenToBackend(idToken: String) {
+        showLoginOverlay()
+        val request = GoogleRequest(
+            idToken = idToken
+        )
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        api.googleMobileLogin(request).enqueue(object : Callback<GoogleResponse> {
+            override fun onResponse(
+                call: Call<GoogleResponse?>,
+                response: Response<GoogleResponse?>
+            ) {
+                if(response.isSuccessful){
+                    hideLoginOverlay()
+                    val googleResponse = response.body()
+                    if(googleResponse != null){
+                        googleResponse.token.let {
+                            if(it != null){
+                                tokenManger.saveToken(it)
+                            }
+                        }
+                        googleResponse.user?.id.let {
+                            if(it != null){
+                                tokenManger.saveUser(it)
+                            }
+                        }
+                        CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
+                        val intent = Intent(this@LoginActivity, HomeScreen::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                else{
+                    hideLoginOverlay()
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            e.message.toString()
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                }
+            }
 
+            override fun onFailure(
+                call: Call<GoogleResponse?>,
+                t: Throwable
+            ) {
+                // Handle error
+                hideLoginOverlay()
+                CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
+                Log.e("Login", "Error: ${t.message.toString()}")
+            }
+        })
     }
 }

@@ -4,6 +4,8 @@ import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.BookingStatusResponse
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
+import com.example.rentwise.data_classes.GoogleRequest
+import com.example.rentwise.data_classes.GoogleResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
@@ -84,4 +86,7 @@ interface RentWiseApi {
 
     @GET("/api/{userID}/maintenance/request")
     fun getMaintenanceRequestForUser(@Path("userID") userId: String): Call<List<MaintenanceRequestResponse>>
+
+    @POST("/auth/google/mobile")
+    fun googleMobileLogin(@Body request: GoogleRequest): Call<GoogleResponse>
 }
