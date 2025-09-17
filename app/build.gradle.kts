@@ -59,8 +59,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation ("androidx.security:security-crypto:1.1.0-alpha03")
-    //BlurView for glassy look
-    implementation ("com.github.Dimezis:BlurView:version-2.0.3")
+    //Material views
     implementation ("com.google.android.material:material:1.12.0")
     //Glide implementation for images
     implementation ("com.github.bumptech.glide:glide:4.16.0")

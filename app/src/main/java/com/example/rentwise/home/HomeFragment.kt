@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var filteredListings: List<ListingResponse> = emptyList()
     private lateinit var adapter: PropertyItemAdapter
+    private lateinit var tokenManger: TokenManger
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +46,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Glide.with(this)
-            .load(R.drawable.temp_profile)
-            .circleCrop()
-            .into(binding.profileDisplay)
+        tokenManger = TokenManger(requireContext())
+
+        val googlePfp = tokenManger.getGooglePfp()
+        if(googlePfp != null) {
+            Glide.with(this)
+                .load(googlePfp)
+                .circleCrop()
+                .error(R.drawable.ic_empty)
+                .placeholder(R.drawable.ic_empty)
+                .into(binding.profileDisplay)
+        }
 
         updateDropdowns()
         setUpPropertyAdapter()

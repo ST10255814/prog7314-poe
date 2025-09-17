@@ -1,21 +1,23 @@
 package com.example.rentwise.auth
 
 import RetrofitInstance
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.airbnb.lottie.LottieDrawable
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
@@ -50,8 +52,12 @@ class LoginActivity : AppCompatActivity() {
         tokenManger = TokenManger(applicationContext)
 
         setupLoginView()
+        prepareGoogleSignIn()
         setListeners()
 
+    }
+
+    private fun prepareGoogleSignIn(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
@@ -103,6 +109,12 @@ class LoginActivity : AppCompatActivity() {
 
         val spannableRegister = SpannableString(registerText)
         spannableRegister.setSpan(
+            UnderlineSpan(),
+            registerText.length - registerPortion,
+            registerText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableRegister.setSpan(
             ForegroundColorSpan(color),
             registerText.length - registerPortion,
             registerText.length,
@@ -125,7 +137,7 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
-            if(email.isNullOrEmpty() || password.isNullOrEmpty()){
+            if(email.isNullOrEmpty()|| Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
                 binding.emailLayout.error = "Email can not be empty"
                 binding.passwordLayout.error = "Password can not be empty"
             }
@@ -146,6 +158,17 @@ class LoginActivity : AppCompatActivity() {
                 binding.passwordLayout.error = null
             }
         }
+
+        binding.fingerprintAnimation.setOnClickListener {
+            // Stop the idle animation
+            binding.fingerprintAnimation.pauseAnimation()
+
+            // Play the active animation once
+            binding.fingerprintAnimation.setAnimation(R.raw.fingerprint_active)
+            binding.fingerprintAnimation.repeatCount = 0
+            binding.fingerprintAnimation.playAnimation()
+        }
+
 
         //Button Animation and states followed by ChatGPT
         //https://chatgpt.com/share/689214fa-941c-800a-a9d7-81bfe8fefbf1
@@ -174,9 +197,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.googleSignInBtn.setOnClickListener {
-            // Implement Google Sign in
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
+            // Logout Currently signed in user to prompt for account everytime
+            // Then call the google sign Intent
+            googleSignInClient.signOut().addOnCompleteListener {
+                val signInIntent = googleSignInClient.signInIntent
+                startActivityForResult(signInIntent, RC_SIGN_IN)
+            }
         }
 
         binding.registerText.setOnTouchListener { v, event ->
@@ -305,6 +331,11 @@ class LoginActivity : AppCompatActivity() {
                         googleResponse.user?.id.let {
                             if(it != null){
                                 tokenManger.saveUser(it)
+                            }
+                        }
+                        googleResponse.user?.photo.let {
+                            if(it != null) {
+                                tokenManger.saveGooglePfp(it)
                             }
                         }
                         CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)

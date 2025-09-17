@@ -24,16 +24,25 @@ class TokenManger (context: Context){
     fun saveUser(userId: String){
         sharedPref.edit { putString("user_id", userId)}
     }
+    fun saveGooglePfp(photo: String) {
+        sharedPref.edit { putString("google_photo", photo) }
+    }
     fun getToken() : String? {
         return sharedPref.getString("jwt_token", null)
     }
     fun getUser() : String? {
         return sharedPref.getString("user_id", null)
     }
+    fun getGooglePfp() : String? {
+        return sharedPref.getString("google_photo", null)
+    }
     fun clearToken() {
         sharedPref.edit { clear() }
     }
     fun clearUser(){
+        sharedPref.edit { clear() }
+    }
+    fun clearGooglePfp() {
         sharedPref.edit { clear() }
     }
 }

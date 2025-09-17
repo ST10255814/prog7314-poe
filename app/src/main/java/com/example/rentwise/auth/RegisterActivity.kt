@@ -3,16 +3,15 @@ package com.example.rentwise.auth
 import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -59,6 +58,12 @@ class RegisterActivity : AppCompatActivity() {
         )
 
         val spannableLoginText = SpannableString(loginText)
+        spannableLoginText.setSpan(
+            UnderlineSpan(),
+            loginText.length - loginPortion,
+            loginText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         spannableLoginText.setSpan(
             ForegroundColorSpan(color),
             loginText.length - loginPortion,
@@ -117,7 +122,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
-            if(email.isNullOrEmpty() || password.isNullOrEmpty()){
+            if(email.isNullOrEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
                 binding.emailInputLayout.error = "Email can not be empty"
                 binding.passwordInputLayout.error = "Password can not be empty"
             }
