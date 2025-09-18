@@ -13,7 +13,6 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat

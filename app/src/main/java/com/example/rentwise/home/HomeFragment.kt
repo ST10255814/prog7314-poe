@@ -57,6 +57,13 @@ class HomeFragment : Fragment() {
                 .placeholder(R.drawable.ic_empty)
                 .into(binding.profileDisplay)
         }
+        else Glide.with(this)
+                .load(R.drawable.profile_icon)
+                .circleCrop()
+                .error(R.drawable.ic_empty)
+                .placeholder(R.drawable.ic_empty)
+                .into(binding.profileDisplay)
+
 
         updateDropdowns()
         setUpPropertyAdapter()

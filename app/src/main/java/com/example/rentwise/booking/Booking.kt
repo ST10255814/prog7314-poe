@@ -10,8 +10,6 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -25,25 +23,19 @@ import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.home.HomeScreen
-import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId.systemDefault
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
 import java.time.temporal.ChronoUnit
-import java.util.Calendar
-import java.util.Locale
 
 class Booking : AppCompatActivity() {
     private lateinit var binding: ActivityBookingBinding
@@ -203,6 +195,7 @@ class Booking : AppCompatActivity() {
                     if(response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearGooglePfp()
                         val intent = Intent(this@Booking, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -252,6 +245,7 @@ class Booking : AppCompatActivity() {
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearGooglePfp()
                             val intent = Intent(this@Booking, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -347,6 +341,7 @@ class Booking : AppCompatActivity() {
 
         val datePicker = DatePickerDialog(
             this,
+            R.style.RentWiseDatePickerTheme,
             { _, year, month, dayOfMonth ->
                 val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                 binding.editCheckin.setText(selectedDate.format(formatter))
@@ -378,6 +373,7 @@ class Booking : AppCompatActivity() {
         val checkInDate = LocalDate.parse(checkInText, formatter)
         val datePicker = DatePickerDialog(
             this,
+            R.style.RentWiseDatePickerTheme,
             { _, year, month, dayOfMonth ->
                 val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                 val diffDays = ChronoUnit.DAYS.between(checkInDate, selectedDate)

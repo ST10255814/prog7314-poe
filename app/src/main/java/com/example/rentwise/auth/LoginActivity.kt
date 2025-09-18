@@ -4,6 +4,8 @@ import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -37,13 +39,15 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var tokenManger: TokenManger
-    private val RC_SIGN_IN = 9001
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private val RC_SIGN_IN = 9001
+    private val KEY_NAME = "biometric_key"
+    private val ANDROID_KEYSTORE = "AndroidKeyStore"
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +60,8 @@ class LoginActivity : AppCompatActivity() {
 
         setupLoginView()
         prepareGoogleSignIn()
-        intialiseBiometricPrompt()
+        initBiometricPrompt()
+        createBiometricKey()
         setListeners()
 
     }
@@ -137,11 +142,12 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        // Login with email/password
         binding.loginBtn.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
-            if(email.isNullOrEmpty()|| Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
+            if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()) {
                 binding.emailLayout.error = "Email can not be empty"
                 binding.passwordLayout.error = "Password can not be empty"
             }
@@ -166,19 +172,7 @@ class LoginActivity : AppCompatActivity() {
         binding.fingerprintAnimation.setOnClickListener {
             // Stop the idle animation
             binding.fingerprintAnimation.pauseAnimation()
-
-            promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for my app")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Use account password")
-                .build()
-
-            biometricPrompt.authenticate(promptInfo)
-
-            // Play the active animation once
-            binding.fingerprintAnimation.setAnimation(R.raw.fingerprint_active)
-            binding.fingerprintAnimation.repeatCount = 0
-            binding.fingerprintAnimation.playAnimation()
+            authenticate()
         }
 
 
@@ -216,20 +210,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
         }
-
-        binding.registerText.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
-            }
-            false
-        }
     }
-
     private fun loginAPICall(email: String, password: String){
         showLoginOverlay()
         val request = LoginRequest(
@@ -384,27 +365,67 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-    //https://developer.android.com/identity/sign-in/biometric-auth
-    private fun intialiseBiometricPrompt(){
+
+    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin
+    //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
+    private fun initBiometricPrompt() {
         executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt = BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int,
-                                                   errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    CustomToast.show(this@LoginActivity, "Authentication error: $errString", CustomToast.Companion.ToastType.ERROR)
+        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                val jwt = tokenManger.getToken()
+                val userId = tokenManger.getUser()
+                if (!jwt.isNullOrEmpty() && !userId.isNullOrEmpty()){
+                    CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
+                    Log.d("BiometricJWT", "JWT=$jwt, userId=$userId")
+                    startActivity(Intent(this@LoginActivity, HomeScreen::class.java))
+                    finish()
+                }
+                else {
+                    CustomToast.show(this@LoginActivity, "No active session. Please login in manually",
+                        CustomToast.Companion.ToastType.ERROR)
                 }
 
-                override fun onAuthenticationSucceeded(
-                    result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    CustomToast.show(this@LoginActivity, "Authentication succeeded!", CustomToast.Companion.ToastType.SUCCESS)
-                }
+            }
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                CustomToast.show(this@LoginActivity, "Authentication error: $errString", CustomToast.Companion.ToastType.ERROR)
+            }
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                CustomToast.show(this@LoginActivity, "Authentication failed", CustomToast.Companion.ToastType.ERROR)
+            }
+        })
+    }
 
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    CustomToast.show(this@LoginActivity, "Authentication failed", CustomToast.Companion.ToastType.ERROR)
-                }
-            })
+    private fun createBiometricKey() {
+        val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE)
+        val keySpec = KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            .setUserAuthenticationRequired(true)
+            .build()
+        keyGenerator.init(keySpec)
+        keyGenerator.generateKey()
+    }
+
+    private fun getCipher(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
+    private fun getSecretKey(): SecretKey {
+        val keyStore = java.security.KeyStore.getInstance(ANDROID_KEYSTORE)
+        keyStore.load(null)
+        return keyStore.getKey(KEY_NAME, null) as SecretKey
+    }
+
+    private fun authenticate() {
+        val cipher = getCipher()
+        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric Authentication")
+            .setSubtitle("Access your account securely")
+            .setNegativeButtonText("Cancel")
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
     }
 }

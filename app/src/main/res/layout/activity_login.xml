@@ -122,21 +122,13 @@
             app:backgroundTint="@color/darkish_blue"
             app:cornerRadius="12dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/googleSignInBtn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="24dp"
-            android:icon="@drawable/ic_info"
-            android:text="@string/sign_in_with_google"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/darkish_blue"
-            app:cornerRadius="12dp"
-            app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconTint="@null" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:id="@+id/biometricContainer"
@@ -158,6 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_with_biometrics"
+                android:layout_marginTop="15dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />

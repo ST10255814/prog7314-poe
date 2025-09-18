@@ -37,12 +37,12 @@ class TokenManger (context: Context){
         return sharedPref.getString("google_photo", null)
     }
     fun clearToken() {
-        sharedPref.edit { clear() }
+        sharedPref.edit { remove("jwt_token") }
     }
     fun clearUser(){
-        sharedPref.edit { clear() }
+        sharedPref.edit { remove("user_id") }
     }
     fun clearGooglePfp() {
-        sharedPref.edit { clear() }
+        sharedPref.edit { remove("google_photo") }
     }
 }

@@ -236,6 +236,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="@drawable/circle_background"
                         android:backgroundTint="#c2fdff"
                         android:contentDescription="Call"
@@ -247,6 +248,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
+
                         android:background="@drawable/circle_background"
                         android:backgroundTint="#c2fdff"
                         android:contentDescription="Chat"

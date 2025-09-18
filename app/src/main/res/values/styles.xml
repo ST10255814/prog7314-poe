@@ -28,4 +28,16 @@
         <item name="android:textSelectHandleRight">@drawable/custom_handle</item>
     </style>
 
+    <style name="RentWiseDatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/darkish_blue</item>
+        <item name="colorPrimaryVariant">@color/darkish_blue</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorAccent">@color/darkish_blue</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+    </style>
+    <style name="DatePickerButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/darkish_blue</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>

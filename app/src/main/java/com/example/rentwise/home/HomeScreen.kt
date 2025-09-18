@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.example.rentwise.databinding.ActivityHomeScreenBinding
@@ -164,9 +163,8 @@ class HomeScreen : AppCompatActivity() {
 
             //Clear the token and userid upon logging out
             val tokenManger = TokenManger(this)
-            tokenManger.clearToken()
-            tokenManger.clearUser()
-
+            tokenManger.clearGooglePfp()
+            Log.d("JWT-Token After Logout", tokenManger.getToken().toString())
             CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
 
             val intent = Intent(this, LoginActivity::class.java)
