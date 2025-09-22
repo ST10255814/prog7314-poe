@@ -9,6 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.UserSettingsResponse
@@ -92,12 +94,21 @@ class ProfileSettings : AppCompatActivity() {
                         hideOverlay()
                         val userSettings = response.body()
                         if (userSettings != null){
-                            binding.editUsername.setText(userSettings.username)
-                            binding.editFirstName.setText(userSettings.firstName)
-                            binding.editSurname.setText(userSettings.surname)
-                            binding.editEmail.setText(userSettings.email)
-                            binding.editPhone.setText(userSettings.phone)
-                            binding.editDob.setText(formatDoB(userSettings.dob))
+                            with(binding){
+                                editUsername.setText(userSettings.profile?.username)
+                                editFirstName.setText(userSettings.profile?.firstName)
+                                editSurname.setText(userSettings.profile?.surname)
+                                editEmail.setText(userSettings.profile?.email)
+                                editPhone.setText(userSettings.profile?.phone)
+                                editDob.setText(userSettings.profile?.DoB)
+                            }
+
+                            Glide.with(this@ProfileSettings)
+                                .load(userSettings.profile?.pfpImage)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.ic_error)
+                                .circleCrop()
+                                .into(binding.profileImage)
                         }
                     }
                     else{
@@ -132,19 +143,6 @@ class ProfileSettings : AppCompatActivity() {
                     Log.e("Profile Settings", "Error: ${t.message.toString()}")
                 }
             })
-        }
-    }
-
-    private fun formatDoB(dob: String?): String {
-        if (dob.isNullOrEmpty()) return ""
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-
-            val date: Date? = inputFormat.parse(dob)
-            if (date != null) outputFormat.format(date) else dob
-        } catch (e: Exception) {
-            dob ?: ""
         }
     }
 

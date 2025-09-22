@@ -49,8 +49,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private val RC_SIGN_IN = 9001
-    private val KEY_NAME = "biometric_key"
-    private val ANDROID_KEYSTORE = "AndroidKeyStore"
+    //private val KEY_NAME = "biometric_key"
+    //private val ANDROID_KEYSTORE = "AndroidKeyStore"
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
