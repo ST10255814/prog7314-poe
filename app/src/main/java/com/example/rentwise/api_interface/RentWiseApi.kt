@@ -2,6 +2,7 @@ package com.example.rentwise.api_interface
 
 import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.BookingStatusResponse
+import com.example.rentwise.data_classes.CreateReviewRequest
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.GoogleRequest
@@ -14,6 +15,7 @@ import com.example.rentwise.data_classes.MaintenanceResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
+import com.example.rentwise.data_classes.ReviewResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
 import okhttp3.MultipartBody
@@ -89,4 +91,11 @@ interface RentWiseApi {
 
     @POST("/auth/google/mobile")
     fun googleMobileLogin(@Body request: GoogleRequest): Call<GoogleResponse>
+
+    @POST(value = "/api/reviews/{userID}/{listingID}/create")
+    fun createReview(
+        @Path("userID") userId: String,
+        @Path("listingID") listingId: String,
+        @Body request: CreateReviewRequest
+    ): Call<ReviewResponse>
 }

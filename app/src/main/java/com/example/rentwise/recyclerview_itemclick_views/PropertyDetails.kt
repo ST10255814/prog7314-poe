@@ -21,9 +21,11 @@ import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.Booking
 import com.example.rentwise.custom_toast.CustomToast
+import com.example.rentwise.data_classes.CreateReviewRequest
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.ReviewResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
@@ -141,6 +143,11 @@ class PropertyDetails : AppCompatActivity() {
                 }
             }
             false
+        }
+        binding.submitReviewButton.setOnClickListener {
+            val rating = binding.ratingBar.rating.toInt()
+            val comment = binding.reviewMessage.text.toString()
+            submitReview(listingId, rating, comment)
         }
     }
 
@@ -536,6 +543,77 @@ class PropertyDetails : AppCompatActivity() {
             })
         }
     }
+
+
+
+    private fun submitReview(listingId: String, rating: Int, comment: String) {
+
+        val userId = tokenManger.getUser()
+        if(userId != null){
+          val api = RetrofitInstance.createAPIInstance(applicationContext)
+          val request = CreateReviewRequest(
+              rating = rating,
+              comment = comment
+          )
+            api.createReview(userId, listingId, request).enqueue(object : Callback<ReviewResponse> {
+                override fun onResponse(
+                    call: Call<ReviewResponse?>,
+                    response: Response<ReviewResponse?>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        responseBody?.message?.let {
+                            CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
+                        }
+
+                    }
+                    else{
+                        // Handle error response
+                        hideFavouriteLoading()
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                when { // Check for both "message" and "error" keys
+                                    json.has("message") -> json.getString("message")
+                                    json.has("error") -> json.getString("error")
+                                    else -> "Unknown error"
+                                }
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                        Log.e("Error", errorMessage)
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+
+                            val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<ReviewResponse?>,
+                    t: Throwable
+                ) {
+                    hideFavouriteLoading()
+                    CustomToast.show(this@PropertyDetails, "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
+                    Log.e("Error", t.message.toString())
+                }
+
+            }
+            )
+        }
+
+    }
+
 
     private fun showLoading() {
         binding.loadingOverlay.visibility = View.VISIBLE
