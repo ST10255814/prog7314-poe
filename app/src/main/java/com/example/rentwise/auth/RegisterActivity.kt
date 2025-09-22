@@ -79,7 +79,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.loginText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         binding.registerBtn.setOnTouchListener { v, event ->

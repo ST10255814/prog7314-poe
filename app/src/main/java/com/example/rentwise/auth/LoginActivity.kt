@@ -63,10 +63,9 @@ class LoginActivity : AppCompatActivity() {
 
         setupLoginView()
         prepareGoogleSignIn()
-        initBiometricPrompt()
-        createBiometricKey()
+        //initBiometricPrompt()
+        //createBiometricKey()
         setListeners()
-
     }
 
     private fun prepareGoogleSignIn(){
@@ -142,7 +141,6 @@ class LoginActivity : AppCompatActivity() {
         binding.registerText.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         // Login with email/password
@@ -173,9 +171,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.fingerprintAnimation.setOnClickListener {
-            // Stop the idle animation
-            binding.fingerprintAnimation.pauseAnimation()
-            authenticate()
+            //authenticate()
         }
 
 
@@ -311,7 +307,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } catch (e: ApiException) {
                 Log.e("Google Token Error", "${e.statusCode}", e)
-                CustomToast.show(this@LoginActivity, "Google sign-in failed: ${e.message}", CustomToast.Companion.ToastType.ERROR)
+                CustomToast.show(this@LoginActivity, "Google sign-in failed", CustomToast.Companion.ToastType.ERROR)
             }
         }
     }
@@ -383,7 +379,7 @@ class LoginActivity : AppCompatActivity() {
 
     //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin
     //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
-    private fun initBiometricPrompt() {
+    /*private fun initBiometricPrompt() {
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -442,5 +438,5 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         biometricPrompt.authenticate(promptInfo)
-    }
+    }*/
 }
