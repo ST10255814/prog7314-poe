@@ -17,5 +17,7 @@ data class Profile(
     val phone: String?,
     val DoB: String?,
     val preferredLanguage: String?,
+    val notifications: Boolean?,
+    val offlineSync: Boolean?,
     val pfpImage: String?
 )
