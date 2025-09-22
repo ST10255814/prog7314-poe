@@ -293,6 +293,7 @@ class PropertyDetails : AppCompatActivity() {
 
                         binding.locationText.text = listing.address
                         binding.titleText.text = listing.title
+                        binding.propertyDescription.text = listing.description
                         binding.priceText.text = "R${listing.price}"
 
                         isFavourite = listing.isFavourite ?: false
