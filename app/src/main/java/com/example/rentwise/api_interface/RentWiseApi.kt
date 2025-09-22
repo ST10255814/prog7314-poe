@@ -17,6 +17,7 @@ import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.data_classes.ReviewResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
+import com.example.rentwise.data_classes.UpdateSettingsResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -98,4 +99,11 @@ interface RentWiseApi {
         @Path("listingID") listingId: String,
         @Body request: CreateReviewRequest
     ): Call<ReviewResponse>
+
+    @Multipart
+    @POST("/api/users/{id}/profile")
+    fun updateUserSettings(
+        @Path("id") userId: String,
+        @Part settingParts: MutableList<MultipartBody.Part>
+    ) : Call<UpdateSettingsResponse>
 }

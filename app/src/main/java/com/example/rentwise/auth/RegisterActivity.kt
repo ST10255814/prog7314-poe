@@ -121,7 +121,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
-            if(email.isNullOrEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
+            if(email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
                 binding.emailInputLayout.error = "Email can not be empty"
                 binding.passwordInputLayout.error = "Password can not be empty"
             }
