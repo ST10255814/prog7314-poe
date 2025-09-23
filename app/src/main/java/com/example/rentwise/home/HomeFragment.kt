@@ -200,7 +200,6 @@ class HomeFragment : Fragment() {
         }
 
         hideFilterLoading()
-        CustomToast.show(requireContext(), "Filters applied", CustomToast.Companion.ToastType.SUCCESS)
     }
 
     private fun fetchListingsExcludingFavourites() {
