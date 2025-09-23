@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 
 
 // Holds all UI data
+//Still working on this for part 3 implementation
 data class ChatUiState(
     val messages: List<ChatRequest.Message> = emptyList(),
     val isLoading: Boolean = false,

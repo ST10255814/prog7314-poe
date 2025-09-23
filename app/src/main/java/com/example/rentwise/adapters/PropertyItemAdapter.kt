@@ -32,7 +32,8 @@ class PropertyItemAdapter(
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val property = properties[position]
+        val property = properties[position] //Get current position on the property in use
+        //List for all amenities binding labels
         val amenitiesLabels = listOf(
             holder.binding.tvLabel1,
             holder.binding.tvLabel2,
@@ -40,9 +41,10 @@ class PropertyItemAdapter(
             holder.binding.tvLabel4
         )
 
+        //Bind the property data
         with(holder.binding) {
             val firstImage = property.imagesURL?.firstOrNull()
-            Glide.with(imageProperty.context)
+            Glide.with(imageProperty.context) //Glide used to display image URLs
                 .load(firstImage ?: R.drawable.ic_empty)
                 .placeholder(R.drawable.ic_empty)
                 .error(R.drawable.ic_empty)
@@ -51,18 +53,20 @@ class PropertyItemAdapter(
             tvTitle.text = property.title ?: "No Title"
             tvAddress.text = property.address ?: "No Address"
 
-            amenitiesLabels.forEach { it.visibility = View.GONE }
+            amenitiesLabels.forEach { it.visibility = View.GONE } //Hide all amenities labels at start
 
+            //Loop through the first 4 amenities and bind (only 4 amenities can be loaded within the view).
             property.amenities?.take(4)?.forEachIndexed { index, amenity ->
                 amenitiesLabels[index].text = amenity
                 amenitiesLabels[index].visibility = View.VISIBLE
             }
 
-            tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A"
+            tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A" //Format price and assign a default if null
         }
 
-        holder.binding.root.setOnClickListener { onItemClick(property) }
+        holder.binding.root.setOnClickListener { onItemClick(property) } //on click for each property view
 
+        //Animation for on touch to enhance UX
         holder.binding.root.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -72,6 +76,7 @@ class PropertyItemAdapter(
         }
     }
 
+    //Used to change the properties displayed according to filtered lists
     @SuppressLint("NotifyDataSetChanged")
     fun updateListViaFilters(filteredList: List<ListingResponse>) {
         properties = filteredList

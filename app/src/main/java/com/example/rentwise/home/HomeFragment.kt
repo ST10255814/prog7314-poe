@@ -134,6 +134,7 @@ class HomeFragment : Fragment() {
         })
     }
 
+    //Filtering methods depending on dropdowns and search query input
     private fun applyListingFilters(){
         if(!isAdded || _binding == null) return
         showFilterLoading()
@@ -169,7 +170,7 @@ class HomeFragment : Fragment() {
                     val limit = 10000f
                     userFilteredList.filter { (it.price ?: 0f) >= limit }
                 }
-                else -> userFilteredList // If "Any" or unrecognized value is entered
+                else -> userFilteredList // If "Any" or unrecognized value is entered display original
             }
         }
 

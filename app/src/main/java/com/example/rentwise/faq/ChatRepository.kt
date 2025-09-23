@@ -5,6 +5,7 @@ import com.example.rentwise.retrofit_instance.OpenRouterInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+//Still working on this for part 3 implementation
 class ChatRepository {
     private val api = OpenRouterInstance.createAPI()
 

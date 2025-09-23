@@ -33,6 +33,7 @@ class MaintenanceRequestAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val issue = requests[position]
 
+        //Apply the content to the different fields
         holder.binding.apply {
             tvRequestTitle.text = issue.newMaintenanceRequest?.issue ?: ""
             tvRequestDescription.text = issue.newMaintenanceRequest?.description ?: ""
@@ -43,7 +44,7 @@ class MaintenanceRequestAdapter(
             tvFollowUpRequests.text = "Follow-ups: ${issue.followUps ?: "0"}"
             tvCaretakerNote.text = "Caretaker Note: ${issue.careTakerNotes ?: "No Notes"}"
 
-            // Set Priority Badge color
+            // Set Priority Badge color depending on priority text
             tvRequestPriority.text = issue.newMaintenanceRequest?.priority ?: ""
             val priorityBg = when(issue.newMaintenanceRequest?.priority?.lowercase()){
                 "high" -> R.drawable.bg_priority_high
@@ -52,7 +53,7 @@ class MaintenanceRequestAdapter(
             }
             tvRequestPriority.setBackgroundResource(priorityBg)
 
-            // Set Status Badge color
+            // Set Status Badge color depending on status text
             tvRequestStatus.text = issue.newMaintenanceRequest?.status ?: "Pending"
             val statusBg = when(issue.newMaintenanceRequest?.status?.lowercase()){
                 "pending" -> R.drawable.bg_status_pending
@@ -64,16 +65,17 @@ class MaintenanceRequestAdapter(
         }
     }
 
+    //Function to display the date in the correct format opposed to the default mongo time
     private fun formatDate(dateString: String?): String {
         if (dateString.isNullOrEmpty()) return ""
 
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Because 'Z' means UTC to accurately convert
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // UTC time zone used to represent the 'Z'
             val date = inputFormat.parse(dateString)
 
             val outputFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss a", Locale.getDefault())
-            outputFormat.format(date!!)
+            outputFormat.format(date!!) //Output null assert date
         } catch (e: Exception) {
             dateString // fallback to original if parsing fails
         }

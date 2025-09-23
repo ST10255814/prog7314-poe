@@ -101,7 +101,7 @@ class ProfileSettings : AppCompatActivity() {
             false
         }
         binding.editProfileImage.setOnClickListener {
-            filePickerLauncher.launch("image/*")
+            filePickerLauncher.launch("image/*") //Image picker launcher
         }
     }
     private fun getUserSettingsByLoggedInUserApiCall() {
@@ -119,6 +119,7 @@ class ProfileSettings : AppCompatActivity() {
                         hideOverlay()
                         val userSettings = response.body()
                         if (userSettings != null){
+                            //Bind the fetched user profile data
                             userSettings.profile.let {
                                 if(it != null){
                                     with(binding){
@@ -131,6 +132,7 @@ class ProfileSettings : AppCompatActivity() {
                                     }
                                 }
                             }
+                            //Bind the users pfp if it exists if not assign a default
                             userSettings.profile?.pfpImage.let {
                                 if (it != null){
                                     Glide.with(this@ProfileSettings)
@@ -190,13 +192,14 @@ class ProfileSettings : AppCompatActivity() {
     private fun updateUserSettings(){
         val userId = tokenManger.getUser() ?: return
 
+        //Get the user inputs
         val usernameInput = binding.editUsername.text.toString().trim()
         val firstNameInput = binding.editFirstName.text.toString().trim()
         val surnameInput = binding.editSurname.text.toString().trim()
         val phoneInput = binding.editPhone.text.toString().trim()
         val dobInput = binding.editDob.text.toString().trim()
 
-        //Create the form data
+        //Create the form data for none null data
         createPart("username", usernameInput)?.let { settingsParts.add(it) }
         createPart("firstName", firstNameInput)?.let { settingsParts.add(it) }
         createPart("surname", surnameInput)?.let { settingsParts.add(it) }
@@ -208,16 +211,16 @@ class ProfileSettings : AppCompatActivity() {
             val inputStream = contentResolver.openInputStream(selectedProfilePic!!) // Open InputStream from URI
             val bytes = inputStream!!.readBytes() // Read bytes from InputStream
             val mimeType = contentResolver.getType(selectedProfilePic!!) ?: "application/octet-stream" // Fallback MIME type if null
-            // Create RequestBody and MultipartBody.Part
+            // Create RequestBody and MultipartBody.Part for the pfp
             val body = MultipartBody.Part.createFormData(
                 "profilePicture",
                 getFileName(selectedProfilePic!!),
                 RequestBody.create(mimeType.toMediaTypeOrNull(), bytes)
             )
-            settingsParts.add(body)
+            settingsParts.add(body) //add it to the list to be passed to the api
         }
 
-        val api = RetrofitInstance.createAPIInstance(applicationContext)
+        val api = RetrofitInstance.createAPIInstance(applicationContext) //Initialise the api instance
         api.updateUserSettings(userId, settingsParts).enqueue( object : Callback<UpdateSettingsResponse> {
             override fun onResponse(
                 call: Call<UpdateSettingsResponse?>,
@@ -226,6 +229,7 @@ class ProfileSettings : AppCompatActivity() {
                 if(response.isSuccessful){
                     val responseBody = response.body()
                     if(responseBody != null){
+                        //Display success message
                         CustomToast.show(this@ProfileSettings, response.body()?.message ?: "Profile Updated", CustomToast.Companion.ToastType.SUCCESS)
                         settingsParts.clear()
                         responseBody.profile?.pfpImage.let {
@@ -280,12 +284,13 @@ class ProfileSettings : AppCompatActivity() {
     }
 
 
+    //Allowed MIME types
     private val allowedMimeTypes = arrayOf(
         "image/jpeg", // jpg, jpeg
         "image/png"  // png
     )
 
-    // File picker launcher
+    // File picker launcher intent
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         // Check if a file was selected
         if (uri != null) {
@@ -329,6 +334,7 @@ class ProfileSettings : AppCompatActivity() {
         }
     }
 
+    //Modern DoB date picker with help from OpenAI
     //https://chatgpt.com/share/68d2a237-db98-8012-adab-45028f212c1c
     private fun showDatePicker() {
         // Maximum selectable date (today)

@@ -12,12 +12,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.util.Patterns
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
@@ -72,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
         setListeners()
     }
 
+    //Initialise the google pop up for SSO
     private fun prepareGoogleSignIn(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
@@ -218,7 +215,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.googleSignInBtn.setOnClickListener {
-            // Logout Currently signed in user to prompt for account everytime
+            // Logout Currently signed in user to prompt for account selection everytime
             // Then call the google sign Intent
             googleSignInClient.signOut().addOnCompleteListener {
                 val signInIntent = googleSignInClient.signInIntent
@@ -242,6 +239,7 @@ class LoginActivity : AppCompatActivity() {
                 if(response.isSuccessful) {
                     hideLoginOverlay()
                     val authResponse = response.body()
+                    //Save the jwt token and the userID in a secured shared pref for usage within the app
                     if(authResponse != null){
                         authResponse.token.let {
                             if (it != null) {
@@ -261,6 +259,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else{
                     hideLoginOverlay()
+                    //Check for error body and display error message if there is one
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -295,6 +294,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @Suppress("DEPRECATION")
+    //Google sign in Intent
+    //https://developer.android.com/identity/legacy/gsi/legacy-sign-in
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -305,7 +306,7 @@ class LoginActivity : AppCompatActivity() {
                 val idToken = account.idToken
                 if (idToken != null) {
                     Log.d("Google Token", idToken)
-                    sendIdTokenToBackend(idToken)
+                    sendIdTokenToBackend(idToken) //Send google token to the api for verification and jwt token retrieval
                 } else {
                     CustomToast.show(this@LoginActivity, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
                 }
@@ -331,6 +332,7 @@ class LoginActivity : AppCompatActivity() {
                     hideLoginOverlay()
                     val googleResponse = response.body()
                     if(googleResponse != null){
+                        //Save userId, jwt token and google photo for usage within the app
                         googleResponse.token.let {
                             if(it != null){
                                 tokenManger.saveToken(it)
@@ -382,7 +384,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin
+    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin (To be implemented properly in part 3)
     //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
     /*private fun initBiometricPrompt() {
         executor = ContextCompat.getMainExecutor(this)

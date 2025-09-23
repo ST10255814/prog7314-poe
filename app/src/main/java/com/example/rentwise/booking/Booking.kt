@@ -57,7 +57,6 @@ class Booking : AppCompatActivity() {
         setupRecyclerView()
         setupDatePickers()
         setListeners()
-        bindPassedData()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -91,7 +90,7 @@ class Booking : AppCompatActivity() {
         }
 
         binding.btnUploadFile.setOnClickListener {
-            // Code to open file picker and handle file selection
+            // open file picker and handle file selection
             filePickerLauncher.launch("*/*")
         }
 
@@ -105,26 +104,6 @@ class Booking : AppCompatActivity() {
             createBookingApiCall()
         }
 
-    }
-
-    private fun bindPassedData(){
-        val propertyName = intent.getStringExtra("property_name")
-        val propertyLocation = intent.getStringExtra("property_location")
-        val propertyImage = intent.getStringExtra("property_image")
-
-        if (propertyImage != null) {
-            Log.d("Property Image URL", propertyImage)
-            Glide.with(this)
-                .load(propertyImage)
-                .placeholder(R.drawable.ic_empty)
-                .error(R.drawable.ic_empty)
-                .into(binding.imageMain)
-        }
-
-        if(propertyName != null && propertyLocation != null){
-            binding.propertyName.text = propertyName
-            binding.propertyAddress.text = propertyLocation
-        }
     }
 
     private fun createBookingApiCall() {
@@ -212,7 +191,7 @@ class Booking : AppCompatActivity() {
         })
     }
 
-    // Fetch property details from API
+    // Fetch property details from API and bind
     private fun getPropertyDetails()  {
         showLoadingOverlay()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
@@ -323,10 +302,6 @@ class Booking : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupDatePickers() {
-        // Prevent soft keyboard from opening
-        binding.editCheckin.inputType = 0
-        binding.editCheckout.inputType = 0
-
         binding.editCheckin.setOnClickListener {
             showCheckInPicker()
         }
@@ -341,26 +316,17 @@ class Booking : AppCompatActivity() {
 
         val datePicker = DatePickerDialog(
             this,
-            R.style.RentWiseDatePickerTheme,
+            R.style.RentWiseDatePickerTheme, //Customised theme for the date picker
             { _, year, month, dayOfMonth ->
-                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                binding.editCheckin.setText(selectedDate.format(formatter))
-
-                // Reset checkout if invalid
-                val checkoutText = binding.editCheckout.text.toString()
-                if (checkoutText.isNotEmpty()) {
-                    val checkoutDate = LocalDate.parse(checkoutText, formatter)
-                    if (ChronoUnit.DAYS.between(selectedDate, checkoutDate) < 1) {
-                        binding.editCheckout.text.clear()
-                    }
-                }
-                calculateTotalPrice()
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth) //Get the selected date
+                binding.editCheckin.setText(selectedDate.format(formatter)) //Bind the selected date with the correct format
             },
+            //Set initial date after selection
             today.year,
             today.monthValue - 1,
             today.dayOfMonth
         )
-        datePicker.datePicker.minDate = System.currentTimeMillis()
+        datePicker.datePicker.minDate = System.currentTimeMillis() //Set the minimum pickable date to current date
         datePicker.show()
     }
 
@@ -376,6 +342,7 @@ class Booking : AppCompatActivity() {
             R.style.RentWiseDatePickerTheme,
             { _, year, month, dayOfMonth ->
                 val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                //Check if the difference between check-in and check out is less than 1 day
                 val diffDays = ChronoUnit.DAYS.between(checkInDate, selectedDate)
 
                 if (diffDays < 1) {
@@ -390,6 +357,7 @@ class Booking : AppCompatActivity() {
             checkInDate.dayOfMonth + 1
         )
 
+        //Calculate the minimum selected date for check-out
         val minCheckoutMillis = checkInDate.plusDays(1)
             .atStartOfDay(systemDefault())
             .toInstant()
@@ -399,6 +367,8 @@ class Booking : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    //Calculate the price based on the property price per night and difference in days
+    //between check in and check out
     private fun calculateTotalPrice() {
         val propertyPricePerNight = propertyPrice ?: return
 

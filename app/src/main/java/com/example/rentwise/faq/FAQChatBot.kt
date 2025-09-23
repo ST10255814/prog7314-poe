@@ -14,6 +14,7 @@ import com.example.rentwise.databinding.ActivityFaqchatBotBinding
 import com.example.rentwise.home.HomeScreen
 import kotlinx.coroutines.launch
 
+//Still working on this for part 3 implementation
 class FAQChatBot : AppCompatActivity() {
 
     private lateinit var binding: ActivityFaqchatBotBinding
