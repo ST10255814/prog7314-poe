@@ -33,13 +33,6 @@
         <item>LP</item>
         <item>PTA</item>
     </string-array>
-    <string-array name="room_options">
-        <item>Any</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3+</item>
-    </string-array>
-
     <string-array name="price_options">
         <item>Any</item>
         <item>Below R5k</item>

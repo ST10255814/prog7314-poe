@@ -80,37 +80,14 @@
                 android:id="@+id/dropdown_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:inputType="none"
+                android:popupBackground="@color/white"
                 android:scrollHorizontally="true"
-                android:textSize="12.5sp"
+                android:singleLine="true"
                 android:textColor="@color/black"
-                android:inputType="none"
-                android:popupBackground="@color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/CustomExposedDropdownMenu"
-            android:id="@+id/dropdownRoomsLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:background="@color/white"
-            android:hint="Rooms">
-
-            <AutoCompleteTextView
-                android:id="@+id/dropdown_rooms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:scrollHorizontally="true"
-                android:textSize="12.5sp"
-                android:inputType="none"
-                android:popupBackground="@color/white"/>
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -131,7 +108,7 @@
                 android:inputType="none"
                 android:popupBackground="@color/white"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="12.5sp"/>
+                android:textSize="14sp"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

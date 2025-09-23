@@ -91,32 +91,20 @@ class HomeFragment : Fragment() {
         if (!isAdded || _binding == null) return
 
         val locations = resources.getStringArray(R.array.location_options).toList()
-        val rooms = resources.getStringArray(R.array.room_options).toList()
         val prices = resources.getStringArray(R.array.price_options).toList()
 
         val locationAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, locations)
-        val roomsAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, rooms)
         val pricesAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, prices)
 
         binding.dropdownLocation.setAdapter(locationAdapter)
         binding.dropdownPrices.setAdapter(pricesAdapter)
-        binding.dropdownRooms.setAdapter(roomsAdapter)
 
         binding.dropdownLocation.setText(locations[0], false)
         binding.dropdownPrices.setText(prices[0], false)
-        binding.dropdownRooms.setText(rooms[0], false)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setFilterClicks() {
-        // Set initial text size for dropdowns
-        binding.dropdownRooms.textSize = 12.5f
-
-        // Increase text size on item selection
-        binding.dropdownRooms.setOnItemClickListener { _, _, _, _ ->
-            binding.dropdownRooms.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
-            applyListingFilters()
-        }
         binding.dropdownLocation.setOnItemClickListener { _, _, _, _ ->
             binding.dropdownLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             // Update searchLocationText with selected location
@@ -152,7 +140,6 @@ class HomeFragment : Fragment() {
 
         //Get filter values
         val selectedLocation = binding.dropdownLocation.text.toString().trim()
-        val selectedRooms = binding.dropdownRooms.text.toString().trim()
         val selectedPrice = binding.dropdownPrices.text.toString().trim()
         val searchText = binding.searchView.query?.toString()?.trim()?.lowercase() ?: "" //Can be empty
 
@@ -163,13 +150,6 @@ class HomeFragment : Fragment() {
         if (selectedLocation.isNotEmpty() && !selectedLocation.equals("All", ignoreCase = true)) {
             userFilteredList = userFilteredList.filter { listing ->
                 listing.address?.contains(selectedLocation, ignoreCase = true) == true
-            }
-        }
-        //Rooms filter
-        if (selectedRooms.isNotEmpty() && !selectedRooms.equals("Any", ignoreCase = true)) {
-            userFilteredList = userFilteredList.filter { listing ->
-                val searchParam = listing.title + " " + listing.description
-                searchParam.contains(selectedRooms, ignoreCase = true)
             }
         }
         //Price filter
