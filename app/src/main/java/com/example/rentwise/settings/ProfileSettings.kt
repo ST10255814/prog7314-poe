@@ -119,17 +119,20 @@ class ProfileSettings : AppCompatActivity() {
                         hideOverlay()
                         val userSettings = response.body()
                         if (userSettings != null){
-                            with(binding){
-                                editUsername.setText(userSettings.profile?.username)
-                                editFirstName.setText(userSettings.profile?.firstName)
-                                editSurname.setText(userSettings.profile?.surname)
-                                editEmail.text = userSettings.profile?.email
-                                editPhone.setText(userSettings.profile?.phone)
-                                editDob.setText(userSettings.profile?.DoB)
+                            userSettings.profile.let {
+                                if(it != null){
+                                    with(binding){
+                                        editUsername.setText(it.username)
+                                        editFirstName.setText(it.firstName)
+                                        editSurname.setText(it.surname)
+                                        editEmail.text = it.email
+                                        editPhone.setText(it.phone)
+                                        editDob.setText(it.DoB)
+                                    }
+                                }
                             }
                             userSettings.profile?.pfpImage.let {
                                 if (it != null){
-                                    tokenManger.savePfp(it)
                                     Glide.with(this@ProfileSettings)
                                         .load(it)
                                         .placeholder(R.drawable.profile_icon)
@@ -165,6 +168,7 @@ class ProfileSettings : AppCompatActivity() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -224,6 +228,11 @@ class ProfileSettings : AppCompatActivity() {
                     if(responseBody != null){
                         CustomToast.show(this@ProfileSettings, response.body()?.message ?: "Profile Updated", CustomToast.Companion.ToastType.SUCCESS)
                         settingsParts.clear()
+                        responseBody.profile?.pfpImage.let {
+                            if(it != null){
+                                tokenManger.savePfp(it)
+                            }
+                        }
                     }
                 }
                 else{
@@ -242,6 +251,7 @@ class ProfileSettings : AppCompatActivity() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -350,9 +360,6 @@ class ProfileSettings : AppCompatActivity() {
 
         datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
-
-
-
     private fun showOverlay(){
         binding.fullScreenOverlay.visibility = View.VISIBLE
     }

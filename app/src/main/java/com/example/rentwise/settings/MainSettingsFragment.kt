@@ -39,7 +39,6 @@ class MainSettingsFragment : Fragment() {
         "st" to "Sotho",
         "zu" to "Zulu"
     )
-
     private lateinit var tokenManger: TokenManger
 
     override fun onCreateView(
@@ -178,6 +177,7 @@ class MainSettingsFragment : Fragment() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -234,6 +234,7 @@ class MainSettingsFragment : Fragment() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace

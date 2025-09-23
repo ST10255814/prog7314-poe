@@ -239,6 +239,7 @@ class PropertyDetails : AppCompatActivity() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -355,6 +356,7 @@ class PropertyDetails : AppCompatActivity() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -467,6 +469,7 @@ class PropertyDetails : AppCompatActivity() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -535,6 +538,7 @@ class PropertyDetails : AppCompatActivity() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -600,6 +604,7 @@ class PropertyDetails : AppCompatActivity() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -616,13 +621,9 @@ class PropertyDetails : AppCompatActivity() {
                     CustomToast.show(this@PropertyDetails, "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
-
-            }
-            )
+            })
         }
-
     }
-
     private fun showLoading() {
         binding.loadingOverlay.visibility = View.VISIBLE
     }

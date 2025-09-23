@@ -209,6 +209,7 @@ class MaintenanceFragment : Fragment() {
                         if (response.code() == 401) {
                             tokenManager.clearToken()
                             tokenManager.clearUser()
+                            tokenManager.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -287,6 +288,7 @@ class MaintenanceFragment : Fragment() {
                     if (response.code() == 401) {
                         tokenManager.clearToken()
                         tokenManager.clearUser()
+                        tokenManager.clearPfp()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace

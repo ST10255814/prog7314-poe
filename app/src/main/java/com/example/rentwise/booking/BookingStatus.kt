@@ -21,12 +21,15 @@ import retrofit2.Response
 
 class BookingStatus : AppCompatActivity() {
     private lateinit var binding: ActivityBookingStatusBinding
+    private lateinit var tokenManger: TokenManger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityBookingStatusBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        tokenManger = TokenManger(applicationContext)
 
         setListeners()
         getBookingStatusViaUserIdApiCall()
@@ -140,7 +143,6 @@ class BookingStatus : AppCompatActivity() {
 
     private fun getBookingStatusViaUserIdApiCall(){
         showOverlay()
-        val tokenManger = TokenManger(applicationContext)
 
         val userId = tokenManger.getUser()
 

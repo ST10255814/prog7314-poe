@@ -46,8 +46,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var tokenManger: TokenManger
-    private lateinit var executor: Executor
-    private lateinit var biometricPrompt: BiometricPrompt
+    //private lateinit var executor: Executor
+    //private lateinit var biometricPrompt: BiometricPrompt
     private val RC_SIGN_IN = 9001
     //private val KEY_NAME = "biometric_key"
     //private val ANDROID_KEYSTORE = "AndroidKeyStore"

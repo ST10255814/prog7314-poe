@@ -110,7 +110,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setFilterClicks() {
         // Set initial text size for dropdowns
-        binding.dropdownRooms.setTextSize(12.5f)
+        binding.dropdownRooms.textSize = 12.5f
 
         // Increase text size on item selection
         binding.dropdownRooms.setOnItemClickListener { _, _, _, _ ->
@@ -226,8 +226,7 @@ class HomeFragment : Fragment() {
     private fun fetchListingsExcludingFavourites() {
         showLoading()
         val api = RetrofitInstance.createAPIInstance(requireContext())
-        val tokenManager = TokenManger(requireContext())
-        val userId = tokenManager.getUser()
+        val userId = tokenManger.getUser()
 
         if(userId != null) {
             api.getListings().enqueue( object : Callback<List<ListingResponse>> {
@@ -286,8 +285,9 @@ class HomeFragment : Fragment() {
                                     }
                                     // Log out if unauthorized
                                     if (response.code() == 401) {
-                                        tokenManager.clearToken()
-                                        tokenManager.clearUser()
+                                        tokenManger.clearToken()
+                                        tokenManger.clearUser()
+                                        tokenManger.clearPfp()
 
                                         val intent = Intent(requireContext(), LoginActivity::class.java)
                                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -329,8 +329,9 @@ class HomeFragment : Fragment() {
                         }
                         // Log out if unauthorized
                         if (response.code() == 401) {
-                            tokenManager.clearToken()
-                            tokenManager.clearUser()
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace

@@ -111,7 +111,6 @@ class NotificationsFragment : Fragment() {
             }
         })
     }
-
     private fun showOverlay() {
         binding.recyclerViewLoadingOverlay.visibility = View.VISIBLE
     }

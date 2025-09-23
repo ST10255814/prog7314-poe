@@ -25,7 +25,7 @@ import retrofit2.Response
 class WishlistFragment : Fragment() {
     private var _binding: FragmentWishListBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var tokenManger: TokenManger
     private lateinit var wishlistAdapter: WishlistAdapter
 
     override fun onCreateView(
@@ -43,12 +43,13 @@ class WishlistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tokenManger = TokenManger(requireContext())
         getFavouriteListingsApiCall()
     }
 
     private fun getFavouriteListingsApiCall() {
         showOverlay()
-        val tokenManger = TokenManger(requireContext())
         val userId = tokenManger.getUser()
         if(userId != null){
             val api = RetrofitInstance.createAPIInstance(requireContext())
@@ -112,6 +113,7 @@ class WishlistFragment : Fragment() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -136,7 +138,6 @@ class WishlistFragment : Fragment() {
 
     private fun deleteFavouriteItemFromDbApiCall(listingId: String?, position: Int){
         showUnfavouriteOverlay()
-        val tokenManger = TokenManger(requireContext())
         val userId = tokenManger.getUser()
 
         val api = RetrofitInstance.createAPIInstance(requireContext())
@@ -186,6 +187,7 @@ class WishlistFragment : Fragment() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
