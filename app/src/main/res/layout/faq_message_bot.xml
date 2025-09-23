@@ -13,11 +13,11 @@
         app:cardBackgroundColor="@color/white">
 
         <TextView
-            android:id="@+id/tv_bot_message"
+            android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:textColor="@color/darkish_blue"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:textIsSelectable="true"
             android:textColorHighlight="#CC99CCFF"

@@ -1,0 +1,20 @@
+package com.example.rentwise.faq
+
+import com.example.rentwise.data_classes.ChatRequest
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Headers
+import retrofit2.http.POST
+
+interface OpenRouterApiService {
+
+    @Headers(
+        "Content-Type: application/json",
+        "HTTP-Referer: app://rentwise",   // 👈 Required (fake scheme is fine)
+        "X-Title: RentWise FAQ ChatBot"   // 👈 Optional app name
+    )
+    @POST("chat/completions")
+    suspend fun sendMessage(
+        @Body request: ChatRequest.ChatRequest
+    ): Response<ChatRequest.ChatResponse>
+}
