@@ -190,6 +190,7 @@ class ProfileSettings : AppCompatActivity() {
     }
 
     private fun updateUserSettings(){
+        showUpdatingOverlay()
         val userId = tokenManger.getUser() ?: return
 
         //Get the user inputs
@@ -227,6 +228,7 @@ class ProfileSettings : AppCompatActivity() {
                 response: Response<UpdateSettingsResponse?>
             ) {
                 if(response.isSuccessful){
+                    hideUpdatingOverlay()
                     val responseBody = response.body()
                     if(responseBody != null){
                         //Display success message
@@ -240,6 +242,7 @@ class ProfileSettings : AppCompatActivity() {
                     }
                 }
                 else{
+                    hideUpdatingOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -269,6 +272,7 @@ class ProfileSettings : AppCompatActivity() {
                 call: Call<UpdateSettingsResponse?>,
                 t: Throwable
             ) {
+                hideUpdatingOverlay()
                 CustomToast.show(this@ProfileSettings, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Profile Settings", "Error: ${t.message.toString()}")
             }
@@ -372,5 +376,11 @@ class ProfileSettings : AppCompatActivity() {
 
     private fun hideOverlay(){
         binding.fullScreenOverlay.visibility = View.GONE
+    }
+    private fun showUpdatingOverlay(){
+        binding.updatingOverlay.visibility = View.VISIBLE
+    }
+    private fun hideUpdatingOverlay(){
+        binding.updatingOverlay.visibility = View.GONE
     }
 }

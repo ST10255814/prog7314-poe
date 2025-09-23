@@ -372,4 +372,35 @@
             android:layout_marginTop="12dp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/updatingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3FFFFFF"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/light_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Updating profile..."
+            android:textColor="@color/darkish_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/goldman"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
 </FrameLayout>
