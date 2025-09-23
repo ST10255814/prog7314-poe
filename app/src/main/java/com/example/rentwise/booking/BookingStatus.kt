@@ -20,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class BookingStatus : AppCompatActivity() {
+    // View Binding handle for views in layout (BookingStatus) and token/ session helper.
     private lateinit var binding: ActivityBookingStatusBinding
     private lateinit var tokenManger: TokenManger
 
@@ -31,6 +32,7 @@ class BookingStatus : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
+        // Prepare UI elements and fetches booking status
         setListeners()
         getBookingStatusViaUserIdApiCall()
     }
@@ -71,6 +73,7 @@ class BookingStatus : AppCompatActivity() {
         }
     }
 
+    // Updates UI based on booking status, with a 4 - step tracker based on API status and BookingId.
     @SuppressLint("SetTextI18n")
     private fun prepBookingTracker(status: String, bookingId: String) {
         binding.bookingIdText.text = "Booking ID: $bookingId"
@@ -140,10 +143,12 @@ class BookingStatus : AppCompatActivity() {
                 }
             }
         }
+        // Update progress bar and subtitle summary.
         binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt() // Update progress bar
         binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}" // Update subtitle
     }
 
+    // Fetches booking status for user from API, and updates the UI accordingly, handles 401 by logging out.
     private fun getBookingStatusViaUserIdApiCall(){
         showOverlay()
 
@@ -163,12 +168,14 @@ class BookingStatus : AppCompatActivity() {
                             val status = bookingStatusResponse.newBooking?.status
                             val bookingId = bookingStatusResponse.bookingId ?: ""
                             if (status != null) {
+                                // Reflects booking status received in UI
                                 prepBookingTracker(status, bookingId) // Update UI based on status
                             }
                         }
                         hideMiddleOverlay()
                     }
                     else{
+                        // Method to handle auth errors and display middle overlay.
                         hideOverlay()
                         showMiddleOverlay()
                         val errorBody = response.errorBody()?.string()
