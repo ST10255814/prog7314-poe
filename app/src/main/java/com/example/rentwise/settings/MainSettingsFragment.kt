@@ -156,6 +156,7 @@ class MainSettingsFragment : Fragment() {
                 response: Response<UpdateSettingsResponse?>
             ) {
                 if (response.isSuccessful){
+                    //Display success message
                     val userSettings = response.body()
                     if (userSettings != null) {
                         CustomToast.show(requireContext(), "Settings Updated", CustomToast.Companion.ToastType.SUCCESS)
@@ -208,6 +209,7 @@ class MainSettingsFragment : Fragment() {
                     response: Response<UserSettingsResponse>
                 ) {
                     if (response.isSuccessful){
+                        //Bind fetched user settings depending on the userId
                         val userSettings = response.body()
                         if (userSettings != null) {
                             //set the states and language from backend

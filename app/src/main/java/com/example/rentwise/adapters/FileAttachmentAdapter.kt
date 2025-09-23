@@ -12,10 +12,12 @@ class FileAttachmentAdapter(
 ) : RecyclerView.Adapter<FileAttachmentAdapter.FileViewHolder>() {
 
     inner class FileViewHolder(val binding: ItemSelectFileBinding) : RecyclerView.ViewHolder(binding.root) {
+        //Function to bind all files to the appropriate layout file for the recycler view
         fun bind(uri: Uri) {
             val context = binding.root.context
             var fileName: String? = null
 
+            // Move to the first item in the results and retrieve the file name
             if (uri.scheme == "content") {
                 context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                     if (cursor.moveToFirst()) {
@@ -31,6 +33,7 @@ class FileAttachmentAdapter(
 
             binding.tvFileName.text = fileName
 
+            //On click listener to remove a file from the recyclerview at the click position
             binding.btnDeleteFile.setOnClickListener {
                 onDeleteClick(adapterPosition)
             }
@@ -43,7 +46,7 @@ class FileAttachmentAdapter(
     }
 
     override fun onBindViewHolder(holder: FileViewHolder, position: Int) {
-        holder.bind(files[position])
+        holder.bind(files[position]) //call the bind function
     }
 
     override fun getItemCount(): Int = files.size

@@ -146,6 +146,7 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    //Check which extra was received and bind accordingly
     private fun compareWhichDataToBind() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
@@ -158,6 +159,7 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    //Load unfavourited property
     private fun loadPropertyFromHomeFragment() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
         getListingsAndBind(property?.propertyId ?: "")
@@ -166,6 +168,7 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    //Loaded favourited property
     private fun loadPropertyFromWishlistFragment() : String {
         val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
         getFavouriteListingsAndBind(property?.listingDetail?.listingID ?: "")
@@ -173,6 +176,7 @@ class PropertyDetails : AppCompatActivity() {
         return property?.listingDetail?.listingID ?: "No Id"
     }
 
+    //Function to update the favourite button UI
     private fun updateFavouriteIcon(isFavourited: Boolean) {
        if (isFavourited) {
            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
@@ -200,8 +204,10 @@ class PropertyDetails : AppCompatActivity() {
                             apiResponse.message?.let {
                                 CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
                             }
-                            isFavourite = !isFavourite
+                            isFavourite = !isFavourite //change the favourite icon UI
                             updateFavouriteIcon(isFavourite)
+
+                            //Animate the button to improve UI
                             val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
                                 binding.favouriteBtn,
                                 PropertyValuesHolder.ofFloat("scaleX", 1.2f),
@@ -491,6 +497,7 @@ class PropertyDetails : AppCompatActivity() {
         })
     }
 
+    //Function to remove favourite property if its unfavoruited
     private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
         showFavouriteLoading()
         val userId = tokenManger.getUser()
@@ -534,7 +541,7 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
-                        // Log out if unauthorized
+                        // Log out if unauthorized or session expired and clear all shared prefs
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
@@ -558,6 +565,7 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    //API call to submit a review for a property
     @SuppressLint("SuspiciousIndentation")
     private fun submitReview(listingId: String, rating: Int, comment: String) {
 

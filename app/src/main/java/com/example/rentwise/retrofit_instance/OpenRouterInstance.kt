@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+//Still working on its implementation for part 3 as our user defined feature (incomplete)
 object OpenRouterInstance {
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
     private const val API_KEY = "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" // AI API KEY

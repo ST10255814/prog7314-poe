@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
 import com.example.rentwise.data_classes.ChatRequest
 
+//Still working on this for part 3 implementation
 class ChatAdapter : ListAdapter<ChatRequest.Message, ChatAdapter.MessageViewHolder>(DiffCallback()) {
 
     companion object {

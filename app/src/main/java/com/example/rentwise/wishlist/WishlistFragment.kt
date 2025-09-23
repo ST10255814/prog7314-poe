@@ -63,8 +63,7 @@ class WishlistFragment : Fragment() {
                         hideOverlay()
                         val favouriteList = response.body()?.toMutableList() ?: mutableListOf()
                         if(favouriteList.isNotEmpty()){
-                            binding.wishlistRecyclerView.visibility = View.VISIBLE
-                            binding.emptyWishlistView.emptyLayout.visibility = View.GONE
+                            showRecyclerView()
                             wishlistAdapter = WishlistAdapter(
                                 wishlistProperties = favouriteList,
                                 onItemClick = { selectedItem ->
@@ -73,7 +72,7 @@ class WishlistFragment : Fragment() {
                                     startActivity(intent)
                                 },
                                 onUnFavouriteClick = {_, position ->
-                                    val listingId = favouriteList[position].listingDetail?.listingID
+                                    val listingId = favouriteList[position].listingDetail?.listingID //get the listing ID of the selected position
                                     deleteFavouriteItemFromDbApiCall(listingId, position)
                                 }
                             )
@@ -83,14 +82,12 @@ class WishlistFragment : Fragment() {
                             CustomToast.show(requireContext(), "Wishlist loaded", CustomToast.Companion.ToastType.SUCCESS)
                         }
                         else{
-                            binding.wishlistRecyclerView.visibility = View.GONE
-                            binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+
                         }
                     }
                     else{
                         hideOverlay()
-                        binding.wishlistRecyclerView.visibility = View.GONE
-                        binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+                        showEmptyRecyclerView()
 
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
@@ -127,8 +124,7 @@ class WishlistFragment : Fragment() {
                 ) {
                     hideOverlay()
                     if (!isAdded || _binding == null) return
-                    binding.wishlistRecyclerView.visibility = View.GONE
-                    binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+                    showEmptyRecyclerView()
                     CustomToast.show(requireContext(), "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
@@ -158,8 +154,7 @@ class WishlistFragment : Fragment() {
                             }
                             wishlistAdapter.removeAt(position)
                             if(wishlistAdapter.itemCount == 0) {
-                                binding.wishlistRecyclerView.visibility = View.GONE
-                                binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+                                showEmptyRecyclerView()
                             }
                         }
                     }
@@ -201,6 +196,7 @@ class WishlistFragment : Fragment() {
                 ) {
                     hideUnfavouriteOverlay()
                     if (!isAdded || _binding == null) return
+                    showEmptyRecyclerView()
                     CustomToast.show(requireContext(), "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
                 }
@@ -218,5 +214,13 @@ class WishlistFragment : Fragment() {
     }
     private fun hideUnfavouriteOverlay() {
         binding.unfavouriteOverlay.visibility = View.GONE
+    }
+    private fun showEmptyRecyclerView(){
+        binding.wishlistRecyclerView.visibility = View.GONE
+        binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
+    }
+    private fun showRecyclerView(){
+        binding.wishlistRecyclerView.visibility = View.VISIBLE
+        binding.emptyWishlistView.emptyLayout.visibility = View.GONE
     }
 }

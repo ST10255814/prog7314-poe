@@ -35,8 +35,9 @@ class WishlistAdapter(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
-        val wishlistItem = wishlistProperties[position]
+        val wishlistItem = wishlistProperties[position] //Get current position on the property in use
 
+        //Bind the property data
         with(holder.binding){
             val firstImage = wishlistItem.listingDetail?.images?.firstOrNull()
             Glide.with(propertyImage.context)
@@ -49,8 +50,9 @@ class WishlistAdapter(
             propertyLocation.text = wishlistItem.listingDetail?.address ?: "No address"
             propertyAmount.text = wishlistItem.listingDetail?.price.let { "R${it}" } ?: "Price N/A"
 
-            root.setOnClickListener { onItemClick(wishlistItem) }
+            root.setOnClickListener { onItemClick(wishlistItem) } //On click for each property view
 
+            //Animation to enhance UX
             root.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -59,6 +61,7 @@ class WishlistAdapter(
                 false
             }
 
+            //Function to toggle the favourite state of the property
             favouriteIcon.setOnClickListener {
                 val currentPosition = holder.adapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
@@ -68,6 +71,7 @@ class WishlistAdapter(
                     )
                     favouriteIcon.setImageResource(R.drawable.favourite_icon)
 
+                    //Favourite icon animation to enhance UX
                     favouriteIcon.animate()
                         .scaleX(0f)
                         .scaleY(0f)
@@ -77,7 +81,7 @@ class WishlistAdapter(
                             favouriteIcon.scaleX = 1f
                             favouriteIcon.scaleY = 1f
                             favouriteIcon.alpha = 1f
-                            onUnFavouriteClick(wishlistItem, currentPosition)
+                            onUnFavouriteClick(wishlistItem, currentPosition) //On click to remove the property if unfavourited
                         }
                         .start()
                 }
@@ -85,6 +89,7 @@ class WishlistAdapter(
         }
     }
 
+    //Function to remove the property from the recycler view at the click position
     fun removeAt(position: Int) {
         if (position in wishlistProperties.indices) {
             wishlistProperties.removeAt(position)
