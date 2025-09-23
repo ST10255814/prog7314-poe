@@ -27,6 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
+    // View Binding handle for views in layout (RegisterActivity).
     private lateinit var binding: ActivityRegisterBinding
 
     @SuppressLint("ClickableViewAccessibility")
@@ -36,8 +37,8 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prepareRegisterView()
-        setListeners()
+        prepareRegisterView() // Static UI text styling (Brand + "Login" linked look)
+        setListeners() // Attaches event listeners to UI elements (Clicks, presses, validation, submit)
     }
 
     private fun prepareRegisterView(){
@@ -116,7 +117,7 @@ class RegisterActivity : AppCompatActivity() {
             }
             false
         }
-
+        // Validates inputs and calls API
         binding.registerBtn.setOnClickListener{
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
@@ -148,6 +149,7 @@ class RegisterActivity : AppCompatActivity() {
                     hideOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
+                        // Toast message from server if successful
                         CustomToast.show(this@RegisterActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
