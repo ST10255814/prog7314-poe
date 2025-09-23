@@ -156,18 +156,18 @@ class HomeFragment : Fragment() {
         // Filter price below 5k, between 5k-10k and above 10k
         if (selectedPrice.isNotEmpty() && !selectedPrice.equals("Any", ignoreCase = true)) {
             userFilteredList = when {
-                selectedPrice.contains("Below", ignoreCase = true) -> {
+                selectedPrice.contains("R0-R5k", ignoreCase = true) -> {
                     val limit = 5000f
-                    userFilteredList.filter { (it.price ?: 0f) < limit }
+                    userFilteredList.filter { (it.price ?: 0f) <= limit }
                 }
                 selectedPrice.contains("R5k-R10k", ignoreCase = true) -> {
                     val lowerLimit =  5000f
                     val upperLimit = 10000f
                     userFilteredList.filter { (it.price ?: 0f) in lowerLimit..upperLimit }
                 }
-                selectedPrice.contains("Above", ignoreCase = true) -> {
+                selectedPrice.contains("R10k+", ignoreCase = true) -> {
                     val limit = 10000f
-                    userFilteredList.filter { (it.price ?: 0f) > limit }
+                    userFilteredList.filter { (it.price ?: 0f) >= limit }
                 }
                 else -> userFilteredList // If "Any" or unrecognized value is entered
             }

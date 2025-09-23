@@ -79,24 +79,27 @@ class BookingStatus : AppCompatActivity() {
         val stepNames = listOf(
             "Pending",
             "Under Review",
+            "Awaiting Final Decision",
             when(status.lowercase()) {
                 "accepted" -> "Accepted"
                 "rejected" -> "Rejected"
-                else -> "Final Decision"
+                else -> "Outcome"
             }
         )
 
         val stepViews = listOf(
             binding.step1,
             binding.step2,
-            binding.step3
+            binding.step3,
+            binding.step4
         )
 
         // Determine current step based on status
         val currentStep = when(status.lowercase()) {
             "pending" -> 1
             "under review" -> 2
-            "accepted", "rejected" -> 3
+            "final decision" -> 3
+            "accepted", "rejected" -> 4
             else -> 1
         }
 

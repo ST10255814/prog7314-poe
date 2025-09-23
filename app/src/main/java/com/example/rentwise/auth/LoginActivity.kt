@@ -12,8 +12,12 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.util.Patterns
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
@@ -337,11 +341,12 @@ class LoginActivity : AppCompatActivity() {
                                 tokenManger.saveUser(it)
                             }
                         }
-                        googleResponse.user?.photo.let {
-                            if(it != null) {
+                        googleResponse.user?.pfpImage.let {
+                            if(it != null){
                                 tokenManger.savePfp(it)
                             }
                         }
+                        Log.d("Profile Image after login", tokenManger.getPfp().toString())
                         CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
                         val intent = Intent(this@LoginActivity, HomeScreen::class.java)
                         startActivity(intent)

@@ -35,9 +35,9 @@
     </string-array>
     <string-array name="price_options">
         <item>Any</item>
-        <item>Below R5k</item>
+        <item>R0-R5k</item>
         <item>R5k-R10k</item>
-        <item>Above R10k</item>
+        <item>R10k+</item>
     </string-array>
     <string-array name="priority_levels">
         <item>Low</item>

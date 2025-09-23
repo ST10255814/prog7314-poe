@@ -215,7 +215,7 @@ class MainSettingsFragment : Fragment() {
                             binding.offlineSyncSwitch.isChecked = userSettings.profile?.offlineSync ?: false
                             prepareLanguageSpinner(userSettings.profile?.preferredLanguage)
 
-                            isInitializing = false
+                            isInitializing = false //set to false to listen for updates
                         }
                     }
                     else{

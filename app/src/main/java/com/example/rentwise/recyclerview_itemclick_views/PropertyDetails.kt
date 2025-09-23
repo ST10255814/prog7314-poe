@@ -123,7 +123,7 @@ class PropertyDetails : AppCompatActivity() {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1.3f).scaleY(1.3f).setDuration(100).start()
+                    v.animate().scaleX(1.1f).scaleY(1.1f).setDuration(100).start()
                 }
             }
             false
