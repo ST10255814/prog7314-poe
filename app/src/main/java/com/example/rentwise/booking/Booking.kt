@@ -195,7 +195,7 @@ class Booking : AppCompatActivity() {
                     if(response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
-                        tokenManger.clearGooglePfp()
+                        tokenManger.clearPfp()
                         val intent = Intent(this@Booking, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -245,7 +245,7 @@ class Booking : AppCompatActivity() {
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
-                            tokenManger.clearGooglePfp()
+                            tokenManger.clearPfp()
                             val intent = Intent(this@Booking, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

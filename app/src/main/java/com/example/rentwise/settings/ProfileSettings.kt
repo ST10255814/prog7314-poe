@@ -2,7 +2,6 @@ package com.example.rentwise.settings
 
 import RetrofitInstance
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +21,8 @@ import com.example.rentwise.data_classes.UserSettingsResponse
 import com.example.rentwise.databinding.ActivityProfileSettingsBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -30,10 +31,11 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
+import java.time.Instant
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
-import java.time.temporal.ChronoUnit
+import java.util.Calendar
 
 class ProfileSettings : AppCompatActivity() {
     private lateinit var binding: ActivityProfileSettingsBinding
@@ -104,8 +106,7 @@ class ProfileSettings : AppCompatActivity() {
     }
     private fun getUserSettingsByLoggedInUserApiCall() {
         showOverlay()
-        val tokenManager = TokenManger(applicationContext)
-        val userId = tokenManager.getUser()
+        val userId = tokenManger.getUser()
 
         if (userId != null) {
             val api = RetrofitInstance.createAPIInstance(applicationContext)
@@ -126,21 +127,24 @@ class ProfileSettings : AppCompatActivity() {
                                 editPhone.setText(userSettings.profile?.phone)
                                 editDob.setText(userSettings.profile?.DoB)
                             }
-                            if(userSettings.profile?.pfpImage?.isNullOrEmpty() == true){
-                                Glide.with(this@ProfileSettings)
-                                    .load(R.drawable.profile_icon)
-                                    .placeholder(R.drawable.profile_icon)
-                                    .error(R.drawable.profile_icon)
-                                    .circleCrop()
-                                    .into(binding.profileImage)
-                            }
-                            else{
-                                Glide.with(this@ProfileSettings)
-                                    .load(userSettings.profile?.pfpImage)
-                                    .placeholder(R.drawable.profile_icon)
-                                    .error(R.drawable.profile_icon)
-                                    .circleCrop()
-                                    .into(binding.profileImage)
+                            userSettings.profile?.pfpImage.let {
+                                if (it != null){
+                                    tokenManger.savePfp(it)
+                                    Glide.with(this@ProfileSettings)
+                                        .load(it)
+                                        .placeholder(R.drawable.profile_icon)
+                                        .error(R.drawable.profile_icon)
+                                        .circleCrop()
+                                        .into(binding.profileImage)
+                                }
+                                else{
+                                    Glide.with(this@ProfileSettings)
+                                        .load(R.drawable.profile_icon)
+                                        .placeholder(R.drawable.profile_icon)
+                                        .error(R.drawable.profile_icon)
+                                        .circleCrop()
+                                        .into(binding.profileImage)
+                                }
                             }
                         }
                     }
@@ -159,8 +163,8 @@ class ProfileSettings : AppCompatActivity() {
                         }
                         // Log out if unauthorized
                         if (response.code() == 401) {
-                            tokenManager.clearToken()
-                            tokenManager.clearUser()
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
 
                             val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -310,30 +314,44 @@ class ProfileSettings : AppCompatActivity() {
     }
 
     private fun setupDatePickers() {
-        // Prevent soft keyboard from opening
-        binding.editDob.inputType = 0
-
         binding.editDob.setOnClickListener {
             showDatePicker()
         }
     }
 
+    //https://chatgpt.com/share/68d2a237-db98-8012-adab-45028f212c1c
     private fun showDatePicker() {
-        val today = LocalDate.now()
+        // Maximum selectable date (today)
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
 
-        val datePicker = DatePickerDialog(
-            this,
-            R.style.RentWiseDatePickerTheme,
-            { _, year, month, dayOfMonth ->
-                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                binding.editDob.setText(selectedDate.format(formatter))
-            },
-            today.year,
-            today.monthValue - 1,
-            today.dayOfMonth
-        )
-        datePicker.show()
+        // Minimum selectable date (100 years ago)
+        val hundredYearsAgo = Calendar.getInstance().apply {
+            add(Calendar.YEAR, -100)
+        }.timeInMillis
+
+        val constraints = CalendarConstraints.Builder()
+            .setStart(hundredYearsAgo) // min date
+            .setEnd(today) // max date
+            .build()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select Date of Birth")
+            .setTheme(R.style.RentWiseDatePickerThemeModern)
+            .setCalendarConstraints(constraints)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            // selection is in UTC milliseconds
+            val selectedDate = Instant.ofEpochMilli(selection)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+            binding.editDob.setText(selectedDate.format(formatter))
+        }
+
+        datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
+
+
 
     private fun showOverlay(){
         binding.fullScreenOverlay.visibility = View.VISIBLE

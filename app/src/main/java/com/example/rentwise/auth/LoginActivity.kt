@@ -339,7 +339,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                         googleResponse.user?.photo.let {
                             if(it != null) {
-                                tokenManger.saveGooglePfp(it)
+                                tokenManger.savePfp(it)
                             }
                         }
                         CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)

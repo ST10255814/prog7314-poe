@@ -24,9 +24,6 @@ class TokenManger (context: Context){
     fun saveUser(userId: String){
         sharedPref.edit { putString("user_id", userId)}
     }
-    fun saveGooglePfp(photo: String) {
-        sharedPref.edit { putString("google_photo", photo) }
-    }
     fun savePfp(photo: String) {
         sharedPref.edit { putString("pfp_photo", photo) }
     }
@@ -36,9 +33,6 @@ class TokenManger (context: Context){
     fun getUser() : String? {
         return sharedPref.getString("user_id", null)
     }
-    fun getGooglePfp() : String? {
-        return sharedPref.getString("google_photo", null)
-    }
     fun getPfp() : String? {
         return sharedPref.getString("pfp_photo", null)
     }
@@ -47,9 +41,6 @@ class TokenManger (context: Context){
     }
     fun clearUser(){
         sharedPref.edit { remove("user_id") }
-    }
-    fun clearGooglePfp() {
-        sharedPref.edit { remove("google_photo") }
     }
     fun clearPfp() {
         sharedPref.edit { remove("pfp_photo") }

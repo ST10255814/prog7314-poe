@@ -161,9 +161,11 @@ class HomeScreen : AppCompatActivity() {
         binding.logoutTab.setOnClickListener {
             selectDrawerNavButton(binding.logoutText)
 
-            //Clear the token and userid upon logging out
-            val tokenManger = TokenManger(this)
-            tokenManger.clearGooglePfp()
+            //Clear the token, userId and pfp image upon logging out
+            val tokenManger = TokenManger(applicationContext)
+            tokenManger.clearPfp()
+            tokenManger.clearToken()
+            tokenManger.clearUser()
             Log.d("JWT-Token After Logout", tokenManger.getToken().toString())
             CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
 

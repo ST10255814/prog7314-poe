@@ -48,11 +48,6 @@ class PropertyDetails : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        Glide.with(this)
-            .load(R.drawable.temp_profile)
-            .circleCrop()
-            .into(binding.estateAgent)
-
         val listingId = compareWhichDataToBind()
         setButtonListeners(listingId)
     }
@@ -332,6 +327,13 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+
+                            Glide.with(this@PropertyDetails)
+                                .load(landlordInfo.pfpImage)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.profile_icon)
+                                .circleCrop()
+                                .into(binding.estateAgent)
                         }
                     }
                     CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
@@ -437,6 +439,13 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+
+                            Glide.with(this@PropertyDetails)
+                                .load(landlordInfo.pfpImage)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.profile_icon)
+                                .circleCrop()
+                                .into(binding.estateAgent)
                         }
                     }
                     CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
@@ -545,8 +554,7 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
-
-
+    @SuppressLint("SuspiciousIndentation")
     private fun submitReview(listingId: String, rating: Int, comment: String) {
 
         val userId = tokenManger.getUser()
@@ -614,7 +622,6 @@ class PropertyDetails : AppCompatActivity() {
         }
 
     }
-
 
     private fun showLoading() {
         binding.loadingOverlay.visibility = View.VISIBLE

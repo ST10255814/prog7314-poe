@@ -48,10 +48,11 @@ class HomeFragment : Fragment() {
 
         tokenManger = TokenManger(requireContext())
 
-        val googlePfp = tokenManger.getGooglePfp()
-        if(googlePfp != null) {
+        val pfpImage = tokenManger.getPfp()
+        Log.d("Pfp Image", pfpImage.toString())
+        if(pfpImage != null) {
             Glide.with(this)
-                .load(googlePfp)
+                .load(pfpImage)
                 .circleCrop()
                 .error(R.drawable.ic_empty)
                 .placeholder(R.drawable.ic_empty)
