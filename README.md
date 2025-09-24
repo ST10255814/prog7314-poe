@@ -69,9 +69,10 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 
 ## ⚙️ Installation & Setup
 ### Clone the repository and Run
-git clone --branch main https://github.com/VCSTDN2024/prog7314-part2-grad_iq.git  
-Sync gradle files  
-Run the app  
+- git clone --branch main https://github.com/VCSTDN2024/prog7314-part2-grad_iq.git  
+- Sync gradle files  
+- Run the app  
 
+---
 ## Demo Links  
 TBD
