@@ -199,6 +199,7 @@ class MainSettingsFragment : Fragment() {
     }
 
     private fun getUserSettings(){
+        showSettingsOverlay()
         val userId = tokenManger.getUser()
 
         if (userId != null) {
@@ -209,6 +210,7 @@ class MainSettingsFragment : Fragment() {
                     response: Response<UserSettingsResponse>
                 ) {
                     if (response.isSuccessful){
+                        hideSettingsOverlay()
                         //Bind fetched user settings depending on the userId
                         val userSettings = response.body()
                         if (userSettings != null) {
@@ -221,6 +223,7 @@ class MainSettingsFragment : Fragment() {
                         }
                     }
                     else{
+                        hideSettingsOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
@@ -247,6 +250,7 @@ class MainSettingsFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<UserSettingsResponse>, t: Throwable) {
+                    hideSettingsOverlay()
                     CustomToast.show(requireContext(), "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Profile Settings", "Error: ${t.message.toString()}")
                 }
@@ -260,5 +264,12 @@ class MainSettingsFragment : Fragment() {
             val requestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
             MultipartBody.Part.createFormData(key, null, requestBody)
         }
+    }
+
+    private fun showSettingsOverlay(){
+        binding.settingsOverlay.visibility = View.VISIBLE
+    }
+    private fun hideSettingsOverlay(){
+        binding.settingsOverlay.visibility = View.GONE
     }
 }

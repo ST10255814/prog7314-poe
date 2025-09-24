@@ -402,6 +402,7 @@ class PropertyDetails : AppCompatActivity() {
                                 .error(R.drawable.ic_empty)
                                 .into(binding.imageMain)
 
+                            //Load the extra images into the image views
                             images.drop(1).take(3).forEachIndexed { index, imageUrl ->
                                 Glide.with(this@PropertyDetails)
                                     .load(imageUrl)
@@ -410,6 +411,7 @@ class PropertyDetails : AppCompatActivity() {
                                     .into(extraPhotos[index])
                             }
 
+                            //Hide any additional image views not used
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
