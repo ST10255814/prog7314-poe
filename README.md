@@ -27,6 +27,7 @@ It consists of:
 
 The system allows users to **register, log in (JWT/Google Sign-In) and perform CRUD functionailty for property management** once online.  
 
+> ⚠️ Note: The Restful API Code is on the [master branch](https://github.com/VCSTDN2024/prog7314-part2-grad_iq/tree/master).
 
 ## ✨ Features
 ### Android (Kotlin)
