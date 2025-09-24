@@ -38,7 +38,8 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 - Multilingual Support **(To be implemented within Part 3)**  
 - AI Chatbot for user queries **(To be implemented within Part 3)**
 - Google SSO
-- Biometric Authentication **(To be implemented within Part 3)**  
+- Biometric Authentication **(To be implemented within Part 3)**
+- Push Notifications **(To be implemented within Part 3)**  
 - Modern **Material 3 UI** design.  
 
 ### Node.js Backend
