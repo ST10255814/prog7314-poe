@@ -31,13 +31,17 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 
 ## ✨ Features
 ### Android (Kotlin)
-- User authentication (JWT / Google Sign-In).  
+- User authentication (JWT / Google Sign-In).
+- Google SSO
+- Upload of Digital Documents **(User Defined 1)**
+- Feedback and Listings **(User Defined 2)**  
+- Filtering Listing with Wishlist **(User Defined 3)**
+- User Setting Configuration **(Profile and App settings)**  
+- Property Management CRUD **(View Listings, Maintenance requests and tracking, etc)**  
 - Offline support with **Room Database (To be implemented in Part3)**.  
 - Automatic sync with backend API **(To be implemented in Part3)**.  
-- Property / data management (CRUD).
 - Multilingual Support **(To be implemented within Part 3)**  
 - AI Chatbot for user queries **(To be implemented within Part 3)**
-- Google SSO
 - Biometric Authentication **(To be implemented within Part 3)**
 - Push Notifications **(To be implemented within Part 3)**  
 - Modern **Material 3 UI** design.  
