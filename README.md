@@ -79,5 +79,8 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 - Run the app  
 
 ---
+## Download the Android APK
+### APK Downlaod link
+- [Download APK](https://github.com/VCSTDN2024/prog7314-part2-grad_iq/raw/master/app/build/outputs/apk/release/app-release.apk)
 ## Demo Links  
 TBD
