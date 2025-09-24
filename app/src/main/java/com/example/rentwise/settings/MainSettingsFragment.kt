@@ -140,7 +140,7 @@ class MainSettingsFragment : Fragment() {
         val offlineSyncSelection = binding.offlineSyncSwitch.isChecked.toString()
 
         val selectedDisplayName = binding.languageDropdown.text.toString()
-        val selectedLanguageCode = languageMap.entries.find { it.value == selectedDisplayName }?.key ?: "en"
+        val selectedLanguageCode = languageMap.entries.find { it.value == selectedDisplayName }?.key ?: "en" //Get the language code of selected language
 
         parts.clear() // Clear previous parts
 

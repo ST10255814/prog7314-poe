@@ -80,7 +80,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupLoginView(){
         //Spannable text implementation by:
-        //https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov
+        //Programmer World. 2023. How to edit the text in TextView using spannable string in your Android App?. [video online]
+        //Available at: <https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov> [Accessed 5 August 2025].
         val appName = getString(R.string.app_name)
         val halfOfAppName = "Wise".length
 
@@ -177,7 +178,8 @@ class LoginActivity : AppCompatActivity() {
 
 
         //Button Animation and states followed by ChatGPT
-        //https://chatgpt.com/share/689214fa-941c-800a-a9d7-81bfe8fefbf1
+        //OpenAI. 2025. In android studio kotlin i want to animate the button and make it a different color when hovered/clicked on. How can i do this?.
+        //[ChatGPT]. Available at: <https://chatgpt.com/share/689214fa-941c-800a-a9d7-81bfe8fefbf1> [Accessed 5 August 2025]
         binding.loginBtn.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -295,7 +297,8 @@ class LoginActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     //Google sign in Intent
-    //https://developer.android.com/identity/legacy/gsi/legacy-sign-in
+    //Developer. 2025. Integrate Google Sign-In into Your Android App. Developers. [online]
+    //Available at: <https://developer.android.com/identity/legacy/gsi/legacy-sign-in> [Accessed 17 September 2025].
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

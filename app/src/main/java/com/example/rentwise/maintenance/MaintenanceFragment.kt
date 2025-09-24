@@ -67,7 +67,7 @@ class MaintenanceFragment : Fragment() {
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, priority)
 
         binding.priorityDropdown.setAdapter(priorityAdapter)
-        binding.priorityDropdown.setText(priority[0], false)
+        binding.priorityDropdown.setText(priority[0], false) // Set initial value to first value
 
         getAllListingsForDropDown()
     }

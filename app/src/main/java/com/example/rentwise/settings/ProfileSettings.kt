@@ -339,7 +339,9 @@ class ProfileSettings : AppCompatActivity() {
     }
 
     //Modern DoB date picker with help from OpenAI
-    //https://chatgpt.com/share/68d2a237-db98-8012-adab-45028f212c1c
+    //OpenAI. 2025. For this current date picker i have been using, please show me how i can make it so that this is more user friendly when selecting
+    // a birth date as with the current calendar its not user friendly. Also how can i set the max date to todays date as well as set the
+    // minimum selectable date?. [ChatGPT]. Available at: <https://chatgpt.com/share/68d2a237-db98-8012-adab-45028f212c1c> [Accessed 23 September 2025].
     private fun showDatePicker() {
         // Maximum selectable date (today)
         val today = MaterialDatePicker.todayInUtcMilliseconds()

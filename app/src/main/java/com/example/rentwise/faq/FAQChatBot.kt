@@ -10,11 +10,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rentwise.adapters.ChatAdapter
 import com.example.rentwise.databinding.ActivityFaqchatBotBinding
 import com.example.rentwise.home.HomeScreen
 import kotlinx.coroutines.launch
 
-//Still working on this for part 3 implementation
+//Still working on this for part 3 implementation. NB NOT TO BE MARKED AS OF YET
 class FAQChatBot : AppCompatActivity() {
 
     private lateinit var binding: ActivityFaqchatBotBinding

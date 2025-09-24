@@ -1,4 +1,4 @@
-package com.example.rentwise.faq
+package com.example.rentwise.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rentwise.R
 import com.example.rentwise.data_classes.ChatRequest
 
-//Still working on this for part 3 implementation
+//Still working on this for part 3 implementation. NB NOT TO BE MARKED AS OF YET
 class ChatAdapter : ListAdapter<ChatRequest.Message, ChatAdapter.MessageViewHolder>(DiffCallback()) {
 
     companion object {

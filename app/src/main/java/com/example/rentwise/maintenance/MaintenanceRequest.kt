@@ -54,27 +54,22 @@ class MaintenanceRequest : AppCompatActivity() {
                         val responseBody = response.body()
                         if (responseBody != null) {
                             if (responseBody.isNotEmpty()){
-                                binding.rvRequests.visibility = View.VISIBLE
-                                binding.emptyView.emptyLayout.visibility = View.GONE
-
+                                showRecyclerView()
                                 adapter = MaintenanceRequestAdapter(requests = responseBody)
                                 binding.rvRequests.layoutManager = LinearLayoutManager(this@MaintenanceRequest)
                                 binding.rvRequests.adapter = adapter
                                 CustomToast.show(this@MaintenanceRequest, "Maintenance requests fetched", CustomToast.Companion.ToastType.SUCCESS )
                             } else{
-                                binding.rvRequests.visibility = View.GONE
-                                binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                                showEmptyRecyclerView()
                             }
                         }
                         else{
-                            binding.rvRequests.visibility = View.GONE
-                            binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                            showEmptyRecyclerView()
                         }
                     }
                     else{
                         hideOverlay()
-                        binding.rvRequests.visibility = View.GONE
-                        binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                        showEmptyRecyclerView()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
 
@@ -98,8 +93,7 @@ class MaintenanceRequest : AppCompatActivity() {
                 ) {
                     //Log error
                     hideOverlay()
-                    binding.rvRequests.visibility = View.GONE
-                    binding.emptyView.emptyLayout.visibility = View.VISIBLE
+                    showEmptyRecyclerView()
                     CustomToast.show(this@MaintenanceRequest, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Failure", "API call failed: ${t.message}" )
                 }
@@ -149,5 +143,13 @@ class MaintenanceRequest : AppCompatActivity() {
     }
     private fun hideOverlay(){
         binding.overlayLoadingRequests.visibility = View.GONE
+    }
+    private fun showEmptyRecyclerView(){
+        binding.rvRequests.visibility = View.GONE
+        binding.emptyView.emptyLayout.visibility = View.VISIBLE
+    }
+    private fun showRecyclerView(){
+        binding.rvRequests.visibility = View.VISIBLE
+        binding.emptyView.emptyLayout.visibility = View.GONE
     }
 }

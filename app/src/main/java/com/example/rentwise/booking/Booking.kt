@@ -275,6 +275,8 @@ class Booking : AppCompatActivity() {
     }
 
     // Get file name from URI
+    //Ryudith Tutorial. 2023. Get File Real Name, File Reference, And File MimeType From Android File Picker. [video online].
+    //Available at: <https://youtu.be/OFzrYr_vVWg?si=HDnikNtN69R5TE_B> [Accessed 15 September 2025].
     private fun getFileName(uri: Uri): String {
         var result: String? = null
         if (uri.scheme == "content") { // Use content resolver to get file name
@@ -311,6 +313,8 @@ class Booking : AppCompatActivity() {
         }
     }
     @SuppressLint("SetTextI18n")
+    //Coding with Dev. 2023. android date picker dialog example | DatePickerDialog - Android Studio Tutorial | Kotlin. [video online]
+    //Available at: <https://youtu.be/DpL8DhCNKdE?si=QkImhVsJSf1F9lTu> [Accessed 15 September 2025].
     private fun showCheckInPicker() {
         val today = LocalDate.now()
 
@@ -321,9 +325,9 @@ class Booking : AppCompatActivity() {
                 val selectedDate = LocalDate.of(year, month + 1, dayOfMonth) //Get the selected date
                 binding.editCheckin.setText(selectedDate.format(formatter)) //Bind the selected date with the correct format
             },
-            //Set initial date after selection
+            //Set initial date shown in the picker to today
             today.year,
-            today.monthValue - 1,
+            today.monthValue - 1, // Month is 0-based in DatePickerDialog
             today.dayOfMonth
         )
         datePicker.datePicker.minDate = System.currentTimeMillis() //Set the minimum pickable date to current date
