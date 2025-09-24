@@ -80,7 +80,10 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 
 ---
 ## Download the Android APK
-### APK Downlaod link
-- [Download APK](https://github.com/VCSTDN2024/prog7314-part2-grad_iq/raw/main/app/build/outputs/apk/release/app-debug.apk)
+## 🔗 Download Builds
+The latest APK and AAB files are generated automatically by GitHub Actions.  
+You can download them from the workflow run artifacts:
+[Download APKs](https://github.com/VCSTDN2024/prog7314-part2-grad_iq/actions/workflows/generate-apk-aab-debug-release.yml)
+
 ## Demo Links  
 TBD
