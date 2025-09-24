@@ -82,6 +82,10 @@ The system allows users to **register, log in (JWT/Google Sign-In) and perform C
 ## Download the Android APK
 ## 🔗 Download Builds
 > [Download latest APKs here](https://github.com/VCSTDN2024/prog7314-part2-grad_iq/actions/workflows/generate-apk-aab-debug-release.yml)
+1. Click the link above.  
+2. Select the latest workflow run.  
+3. Scroll down to **Artifacts**.  
+4. Click **Download** for APK or AAB.
 
 ---
 ## Demo Links  
