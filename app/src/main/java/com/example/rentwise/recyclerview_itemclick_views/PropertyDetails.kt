@@ -40,6 +40,14 @@ class PropertyDetails : AppCompatActivity() {
     private var isFavourite = false
     private lateinit var tokenManger: TokenManger
 
+    private val amenityIcons = mapOf(
+        "tv" to R.drawable.tv_icon,
+        "wi-fi" to R.drawable.wifi_icon,
+        "bed" to R.drawable.bed_icon,
+        "Wifi" to R.drawable.wifi_icon,
+        "Garage" to R.drawable.garage_icon
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -308,11 +316,6 @@ class PropertyDetails : AppCompatActivity() {
                         isFavourite = listing.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
-                        val amenityIcons = mapOf(
-                            "tv" to R.drawable.tv_icon,
-                            "wi-fi" to R.drawable.wifi_icon,
-                            "bed" to R.drawable.bed_icon
-                        )
                         val amenities = listing.amenities ?: emptyList()
                         val amenitiesContainer = binding.amenitiesContainer
                         amenitiesContainer.removeAllViews()
@@ -423,11 +426,6 @@ class PropertyDetails : AppCompatActivity() {
                         isFavourite = property.listingDetail?.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
-                        val amenityIcons = mapOf(
-                            "tv" to R.drawable.tv_icon,
-                            "wi-fi" to R.drawable.wifi_icon,
-                            "bed" to R.drawable.bed_icon
-                        )
                         val amenities = property.listingDetail?.amenities ?: emptyList()
                         val amenitiesContainer = binding.amenitiesContainer
                         amenitiesContainer.removeAllViews()
