@@ -44,8 +44,8 @@ class PropertyDetails : AppCompatActivity() {
         "tv" to R.drawable.tv_icon,
         "wi-fi" to R.drawable.wifi_icon,
         "bed" to R.drawable.bed_icon,
-        "Wifi" to R.drawable.wifi_icon,
-        "Garage" to R.drawable.garage_icon
+        "wifi" to R.drawable.wifi_icon,
+        "garage" to R.drawable.garage_icon
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
