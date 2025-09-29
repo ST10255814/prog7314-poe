@@ -22,7 +22,6 @@ import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.ListingDropDownItem
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentMaintenanceBinding
-import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -68,7 +67,7 @@ class MaintenanceFragment : Fragment() {
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, priority)
 
         binding.priorityDropdown.setAdapter(priorityAdapter)
-        binding.priorityDropdown.setText(priority[0], false)
+        binding.priorityDropdown.setText(priority[0], false) // Set initial value to first value
 
         getAllListingsForDropDown()
     }
@@ -210,6 +209,7 @@ class MaintenanceFragment : Fragment() {
                         if (response.code() == 401) {
                             tokenManager.clearToken()
                             tokenManager.clearUser()
+                            tokenManager.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -288,6 +288,7 @@ class MaintenanceFragment : Fragment() {
                     if (response.code() == 401) {
                         tokenManager.clearToken()
                         tokenManager.clearUser()
+                        tokenManager.clearPfp()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace

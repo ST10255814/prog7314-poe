@@ -5,7 +5,8 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import androidx.core.content.edit
 
-//https://youtu.be/2uResVLUCNI?si=pOnkbX8vZr0fATx1
+//Mr.Code. 2020. Android Encrypted Shared Preferences - Android Tutorial (2020). [video online]
+//Available at: <https://youtu.be/2uResVLUCNI?si=pOnkbX8vZr0fATx1> [Accessed 8 September 2025].
 class TokenManger (context: Context){
 
     private val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -24,16 +25,25 @@ class TokenManger (context: Context){
     fun saveUser(userId: String){
         sharedPref.edit { putString("user_id", userId)}
     }
+    fun savePfp(photo: String) {
+        sharedPref.edit { putString("pfp_photo", photo) }
+    }
     fun getToken() : String? {
         return sharedPref.getString("jwt_token", null)
     }
     fun getUser() : String? {
         return sharedPref.getString("user_id", null)
     }
+    fun getPfp() : String? {
+        return sharedPref.getString("pfp_photo", null)
+    }
     fun clearToken() {
-        sharedPref.edit { clear() }
+        sharedPref.edit { remove("jwt_token") }
     }
     fun clearUser(){
-        sharedPref.edit { clear() }
+        sharedPref.edit { remove("user_id") }
+    }
+    fun clearPfp() {
+        sharedPref.edit { remove("pfp_photo") }
     }
 }

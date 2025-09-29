@@ -33,27 +33,24 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/location_icon"
-                    app:tint="@color/black"
-                    android:visibility="gone"/>
+                    app:tint="@color/black"/>
 
                 <TextView
                     android:id="@+id/search_location_text"
-                    android:text="New York"
+                    android:text="South Africa"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/anek_latin_medium"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/profile_display"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_marginTop="4dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
                 android:scaleType="centerCrop"
@@ -83,37 +80,14 @@
                 android:id="@+id/dropdown_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:inputType="none"
+                android:popupBackground="@color/white"
                 android:scrollHorizontally="true"
-                android:textSize="12.5sp"
+                android:singleLine="true"
                 android:textColor="@color/black"
-                android:inputType="none"
-                android:popupBackground="@color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/CustomExposedDropdownMenu"
-            android:id="@+id/dropdownRoomsLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:background="@color/white"
-            android:hint="Rooms">
-
-            <AutoCompleteTextView
-                android:id="@+id/dropdown_rooms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:scrollHorizontally="true"
-                android:textSize="12.5sp"
-                android:inputType="none"
-                android:popupBackground="@color/white"/>
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -134,7 +108,7 @@
                 android:inputType="none"
                 android:popupBackground="@color/white"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="12.5sp"/>
+                android:textSize="14sp"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -157,7 +131,8 @@
             android:layout_height="48dp"
             android:background="@color/white"
             android:queryHint="Search for properties"
-            app:defaultQueryHint="Search for properties"/>
+            app:defaultQueryHint="Search for properties"
+            android:theme="@style/CustomSearchViewTheme"/>
     </androidx.cardview.widget.CardView>
 
     <FrameLayout
@@ -172,13 +147,13 @@
             android:id="@+id/properties_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="50dp"
             android:clipToPadding="false"
             android:visibility="gone"/>
 
         <include
             android:id="@+id/emptyView"
-            layout="@layout/empty_lisitings"
+            layout="@layout/empty_listings"
             android:visibility="gone"/>
 
         <FrameLayout
@@ -210,6 +185,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Loading properties..."
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/goldman"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/filterLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:indicatorSize="64dp"
+                    app:trackThickness="6dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="@color/darkish_blue"
+                    app:trackColor="@color/darker_grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Updating properties..."
                     android:textColor="@color/darkish_blue"
                     android:textSize="16sp"
                     android:layout_marginTop="12dp"

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Scrollable main content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,45 +61,89 @@
                             app:tint="@color/darkish_blue" />
                     </RelativeLayout>
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:progress="25"
-                        android:progressTint="@color/darkish_blue"
-                        android:progressBackgroundTint="@color/light_grey"
-                        android:max="100" />
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/progressSubtitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Step 1 of 8: Requested"
-                        android:textSize="14sp"
-                        android:textColor="@color/darker_grey"
-                        android:layout_marginBottom="20dp" />
+                        <LinearLayout
+                            android:id="@+id/progressSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/checkpoints"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:divider="@drawable/divider_grey"
-                        android:showDividers="middle">
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="8dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="12dp"
+                                android:progress="25"
+                                android:progressTint="@color/darkish_blue"
+                                android:progressBackgroundTint="@color/light_grey"
+                                android:max="100" />
 
-                        <include layout="@layout/progress_step_item" android:id="@+id/step1" />
-                        <include layout="@layout/progress_step_item" android:id="@+id/step2" />
-                        <include layout="@layout/progress_step_item" android:id="@+id/step3" />
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/progressSubtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Step 1 of 8: Requested"
+                                android:textSize="14sp"
+                                android:textColor="@color/darker_grey"
+                                android:layout_marginBottom="20dp" />
+
+                            <TextView
+                                android:id="@+id/bookingIdText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="Booking ID: #12345"
+                                android:textSize="14sp"
+                                android:textColor="@color/darkish_blue"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/goldman"
+                                android:layout_marginBottom="12dp"/>
+
+                            <LinearLayout
+                                android:id="@+id/checkpoints"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:divider="@drawable/divider_grey"
+                                android:showDividers="middle">
+
+                                <include layout="@layout/progress_step_item" android:id="@+id/step1" />
+                                <include layout="@layout/progress_step_item" android:id="@+id/step2" />
+                                <include layout="@layout/progress_step_item" android:id="@+id/step3" />
+                                <include layout="@layout/progress_step_item" android:id="@+id/step4" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/middleOverlay"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nothing to track..."
+                                android:textColor="@color/darkish_blue"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/goldman" />
+                        </LinearLayout>
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/refreshTracking"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="120dp"
                         android:text="@string/refresh_text"
                         android:textSize="14sp"
                         android:textColor="@color/darkish_blue"

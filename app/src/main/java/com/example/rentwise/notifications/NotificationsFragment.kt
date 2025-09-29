@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.NotificationAdapter
 import com.example.rentwise.auth.LoginActivity
@@ -43,6 +42,7 @@ class NotificationsFragment : Fragment() {
         fetchNotifications()
     }
 
+    //Fetch Notifications from Backend
     private fun fetchNotifications() {
         showOverlay()
         val api = RetrofitInstance.createAPIInstance(requireContext())
@@ -56,18 +56,20 @@ class NotificationsFragment : Fragment() {
                     hideOverlay()
                     val body = response.body() ?: emptyList()
                     if (body.isNotEmpty()) {
+                        showRecyclerView()
                         val adapter = NotificationAdapter(
                             notifications = body
                         )
-                        binding.wishlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.wishlistRecyclerView.adapter = adapter
+                        binding.notificationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        binding.notificationRecyclerView.adapter = adapter
                         CustomToast.show(requireContext(), "Notifications loaded", CustomToast.Companion.ToastType.INFO)
                     } else {
-                        CustomToast.show(requireContext(), "No notifications found", CustomToast.Companion.ToastType.INFO)
+                        showEmptyRecyclerView()
                     }
                 }
                 else {
                     hideOverlay()
+                    showEmptyRecyclerView()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -99,18 +101,26 @@ class NotificationsFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<NotificationResponse>>, t: Throwable) {
-                hideOverlay()
                 if (!isAdded || _binding == null) return
+                hideOverlay()
+                showEmptyRecyclerView()
                 CustomToast.show(requireContext(), "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
             }
         })
     }
-
     private fun showOverlay() {
         binding.recyclerViewLoadingOverlay.visibility = View.VISIBLE
     }
 
     private fun hideOverlay() {
         binding.recyclerViewLoadingOverlay.visibility = View.GONE
+    }
+    private fun showRecyclerView(){
+        binding.notificationRecyclerView.visibility = View.VISIBLE
+        binding.emptyNotificationView.emptyLayout.visibility = View.GONE
+    }
+    private fun showEmptyRecyclerView(){
+        binding.notificationRecyclerView.visibility = View.GONE
+        binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE
     }
 }

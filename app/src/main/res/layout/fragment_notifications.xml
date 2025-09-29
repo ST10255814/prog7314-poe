@@ -30,12 +30,17 @@
         android:paddingRight="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/wishlist_recyclerView"
+            android:id="@+id/notification_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="50dp"
             android:clipToPadding="false"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/emptyNotificationView"
+            layout="@layout/empty_notification"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/recyclerViewLoadingOverlay"

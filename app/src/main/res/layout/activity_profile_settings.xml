@@ -122,6 +122,10 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:background="@null"
+                        android:textColorHighlight="#CC99CCFF"
+                        android:textSelectHandle="@drawable/custom_handle"
+                        android:textSelectHandleLeft="@drawable/custom_handle"
+                        android:textSelectHandleRight="@drawable/custom_handle"
                         android:paddingTop="4dp"
                         android:inputType="textPersonName" />
                 </LinearLayout>
@@ -159,6 +163,10 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:background="@null"
+                        android:textColorHighlight="#CC99CCFF"
+                        android:textSelectHandle="@drawable/custom_handle"
+                        android:textSelectHandleLeft="@drawable/custom_handle"
+                        android:textSelectHandleRight="@drawable/custom_handle"
                         android:paddingTop="4dp"
                         android:inputType="textPersonName" />
                 </LinearLayout>
@@ -194,6 +202,10 @@
                         android:hint="Enter your surname"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
+                        android:textColorHighlight="#CC99CCFF"
+                        android:textSelectHandle="@drawable/custom_handle"
+                        android:textSelectHandleLeft="@drawable/custom_handle"
+                        android:textSelectHandleRight="@drawable/custom_handle"
                         android:textSize="16sp"
                         android:background="@null"
                         android:paddingTop="4dp"
@@ -224,17 +236,15 @@
                         android:textColor="@color/blue"
                         android:textSize="14sp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your email"
+                        android:text="Enter your email"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:background="@null"
-                        android:paddingTop="4dp"
-                        android:inputType="textEmailAddress" />
+                        android:paddingTop="4dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -268,6 +278,10 @@
                         android:hint="Enter your phone number"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
+                        android:textColorHighlight="#CC99CCFF"
+                        android:textSelectHandle="@drawable/custom_handle"
+                        android:textSelectHandleLeft="@drawable/custom_handle"
+                        android:textSelectHandleRight="@drawable/custom_handle"
                         android:textSize="16sp"
                         android:background="@null"
                         android:paddingTop="4dp"
@@ -307,10 +321,8 @@
                         android:clickable="true"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
                         android:background="@null"
-                        android:paddingTop="4dp"
-                        android:inputType="date" />
+                        android:drawableEnd="@drawable/calendar_icon" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -353,6 +365,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fetching profile..."
+            android:textColor="@color/darkish_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/goldman"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/updatingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3FFFFFF"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/light_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Updating profile..."
             android:textColor="@color/darkish_blue"
             android:textSize="16sp"
             android:textStyle="bold"

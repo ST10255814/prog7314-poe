@@ -8,8 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.example.rentwise.databinding.ActivityHomeScreenBinding
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -36,6 +36,8 @@ class HomeScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         bottomNavButtons = listOf(
             binding.navHome,
@@ -159,11 +161,12 @@ class HomeScreen : AppCompatActivity() {
         binding.logoutTab.setOnClickListener {
             selectDrawerNavButton(binding.logoutText)
 
-            //Clear the token and userid upon logging out
-            val tokenManger = TokenManger(this)
+            //Clear the token, userId and pfp image upon logging out
+            val tokenManger = TokenManger(applicationContext)
+            tokenManger.clearPfp()
             tokenManger.clearToken()
             tokenManger.clearUser()
-
+            Log.d("JWT-Token After Logout", tokenManger.getToken().toString())
             CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
 
             val intent = Intent(this, LoginActivity::class.java)

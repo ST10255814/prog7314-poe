@@ -2,16 +2,22 @@ package com.example.rentwise.api_interface
 
 import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.BookingStatusResponse
+import com.example.rentwise.data_classes.CreateReviewRequest
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
+import com.example.rentwise.data_classes.GoogleRequest
+import com.example.rentwise.data_classes.GoogleResponse
 import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.MaintenanceRequestResponse
 import com.example.rentwise.data_classes.MaintenanceResponse
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
+import com.example.rentwise.data_classes.ReviewResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
+import com.example.rentwise.data_classes.UpdateSettingsResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -80,4 +86,24 @@ interface RentWiseApi {
         @Part("priority") priority: RequestBody,
         @Part documentURL: List<MultipartBody.Part>
     ) : Call<MaintenanceResponse>
+
+    @GET("/api/{userID}/maintenance/request")
+    fun getMaintenanceRequestForUser(@Path("userID") userId: String): Call<List<MaintenanceRequestResponse>>
+
+    @POST("/auth/google/mobile")
+    fun googleMobileLogin(@Body request: GoogleRequest): Call<GoogleResponse>
+
+    @POST(value = "/api/reviews/{userID}/{listingID}/create")
+    fun createReview(
+        @Path("userID") userId: String,
+        @Path("listingID") listingId: String,
+        @Body request: CreateReviewRequest
+    ): Call<ReviewResponse>
+
+    @Multipart
+    @POST("/api/users/{id}/profile")
+    fun updateUserSettings(
+        @Path("id") userId: String,
+        @Part settingParts: MutableList<MultipartBody.Part>
+    ) : Call<UpdateSettingsResponse>
 }

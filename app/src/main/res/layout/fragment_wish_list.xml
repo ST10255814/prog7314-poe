@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Main LinearLayout content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,13 +37,13 @@
                 android:id="@+id/wishlist_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="50dp"
                 android:clipToPadding="false"
                 android:visibility="gone"/>
 
             <include
                 android:id="@+id/emptyWishlistView"
-                layout="@layout/empty_lisitings"
+                layout="@layout/empty_favourites"
                 android:visibility="gone"/>
 
             <FrameLayout

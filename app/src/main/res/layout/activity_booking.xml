@@ -1,302 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/booking_scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/booking_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fitsSystemWindows="true">
 
-        <ImageView
-            android:id="@+id/image_main"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/house_interior_temp" />
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="16dp"
-            android:background="@drawable/circle_background"
-            android:padding="8dp"
-            android:src="@drawable/go_back_icon"
-            app:tint="@color/white"
-            android:contentDescription="Back" />
+            <ImageView
+                android:id="@+id/image_main"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/house_interior_temp" />
 
-        <TextView
-            android:id="@+id/property_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_back"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Luxury Beach House"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/goldman"
-            android:shadowColor="#80000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="3" />
-
-        <TextView
-            android:id="@+id/property_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/property_name"
-            android:layout_alignStart="@id/property_name"
-            android:layout_marginTop="4dp"
-            android:text="123 Ocean Drive, Cape Town"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:fontFamily="@font/aldrich"
-            android:shadowColor="#80000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="3" />
-
-        <LinearLayout
-            android:id="@+id/container_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image_main"
-            android:orientation="vertical"
-            android:padding="20dp">
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_background"
+                android:padding="8dp"
+                android:src="@drawable/go_back_icon"
+                app:tint="@color/white"
+                android:contentDescription="Back" />
 
             <TextView
-                android:id="@+id/booking_title"
-                android:layout_width="match_parent"
+                android:id="@+id/property_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:fontFamily="@font/goldman"
-                android:gravity="center"
-                android:text="New Booking"
-                android:textColor="@color/darkish_blue"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Check-In Date"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/darkish_blue"
-                        android:textSize="14sp" />
-
-                    <EditText
-                        android:id="@+id/edit_checkin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Select date"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/calendar_icon"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:paddingTop="4dp"
-                        android:inputType="date" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Check-Out Date"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/darkish_blue"
-                        android:textSize="14sp" />
-
-                    <EditText
-                        android:id="@+id/edit_checkout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Select date"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/calendar_icon"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:paddingTop="4dp"
-                        android:inputType="date" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Number of Guests"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/darkish_blue"
-                        android:textSize="14sp" />
-
-                    <EditText
-                        android:id="@+id/edit_guests"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter guest count"
-                        android:background="@null"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:paddingTop="4dp"
-                        android:inputType="number" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Price"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/aldrich"
-                        android:textColor="@color/darkish_blue"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/text_total_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="R0.00"
-                        android:fontFamily="@font/goldman"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:paddingTop="4dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/file_upload_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@android:color/white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Attach Files"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/darkish_blue"
-                        android:layout_marginBottom="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/file_upload_subText"
-                        android:textSize="13sp"
-                        android:textColor="@color/grey"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_upload_file"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Choose Files"
-                        android:backgroundTint="@color/button_background_states"
-                        android:textColor="@color/white"
-                        android:layout_marginBottom="8dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_selected_files"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:overScrollMode="never" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_confirm_booking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/button_background_states"
-                android:text="Confirm Booking"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp"
+                android:layout_below="@id/btn_back"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Luxury Beach House"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/goldman" />
+                android:fontFamily="@font/goldman"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/property_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/property_name"
+                android:layout_alignStart="@id/property_name"
+                android:layout_marginTop="4dp"
+                android:text="123 Ocean Drive, Cape Town"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/aldrich"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
-    </RelativeLayout>
-</ScrollView>
+            <LinearLayout
+                android:id="@+id/container_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_main"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/booking_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/goldman"
+                    android:gravity="center"
+                    android:text="New Booking"
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Check-In Date"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/darkish_blue"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edit_checkin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Select date"
+                            android:background="@null"
+                            android:drawableEnd="@drawable/calendar_icon"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingTop="4dp"
+                            android:inputType="date" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Check-Out Date"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/darkish_blue"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edit_checkout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Select date"
+                            android:background="@null"
+                            android:drawableEnd="@drawable/calendar_icon"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingTop="4dp"
+                            android:inputType="date" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Number of Guests"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/darkish_blue"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edit_guests"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter guest count"
+                            android:background="@null"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingTop="4dp"
+                            android:inputType="number" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Price"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/aldrich"
+                            android:textColor="@color/darkish_blue"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/text_total_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="R0.00"
+                            android:fontFamily="@font/goldman"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:paddingTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/file_upload_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:elevation="6dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Attach Files"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/darkish_blue"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/file_upload_subText"
+                            android:textSize="13sp"
+                            android:textColor="@color/grey"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_upload_file"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Choose Files"
+                            android:backgroundTint="@color/button_background_states"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="8dp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_selected_files"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_confirm_booking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/button_background_states"
+                    android:text="Confirm Booking"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/goldman" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/overlay_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/darker_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textColor="@color/darkish_blue"
+            android:fontFamily="@font/goldman"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/create_booking_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/darker_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Processing booking request..."
+            android:textColor="@color/darkish_blue"
+            android:fontFamily="@font/goldman"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</FrameLayout>

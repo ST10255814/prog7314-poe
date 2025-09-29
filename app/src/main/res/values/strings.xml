@@ -9,10 +9,10 @@
     <string name="login_header">Sign In</string>
     <string name="email_address_hint">Email Address</string>
     <string name="or_condition">OR</string>
-    <string name="register_text">Don\'t have an account? Register</string>
+    <string name="register_text">Don\'t have an account? <u>Register</u></string>
     <string name="register_subtitle">is better with an account</string>
     <string name="register_button">Create Account</string>
-    <string name="login_message">Already have an account? Login</string>
+    <string name="login_message">Already have an account? <u>Login</u></string>
     <string name="let_s_get_you_an_account">Let\'s get you an account</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_now">Book Now</string>
@@ -21,29 +21,23 @@
     <string name="maintenance_file_upload">Please attach any supporting documents relevant to the issue being reported.</string>
     <string-array name="language_options">
         <item>English</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>German</item>
+        <item>Afrikaans</item>
+        <item>Sotho</item>
         <item>Zulu</item>
     </string-array>
     <string-array name="location_options">
+        <item>All</item>
         <item>JHB</item>
         <item>KZN</item>
         <item>CPT</item>
         <item>LP</item>
         <item>PTA</item>
     </string-array>
-    <string-array name="room_options">
-        <item>1</item>
-        <item>2</item>
-        <item>3+</item>
-    </string-array>
-
     <string-array name="price_options">
         <item>Any</item>
-        <item>Below R5k</item>
-        <item>R5k–R10k</item>
-        <item>Above R10k</item>
+        <item>R0-R5k</item>
+        <item>R5k-R10k</item>
+        <item>R10k+</item>
     </string-array>
     <string-array name="priority_levels">
         <item>Low</item>
@@ -63,4 +57,5 @@
     <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
     <string name="amenity_icon">Amenity Icon</string>
     <string name="refresh_text"><u>Refresh to see updates</u></string>
+    <string name="login_with_biometrics">Login with Biometrics</string>
 </resources>

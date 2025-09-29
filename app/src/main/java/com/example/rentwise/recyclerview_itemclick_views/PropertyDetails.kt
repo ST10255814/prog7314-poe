@@ -13,7 +13,6 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,9 +21,11 @@ import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.booking.Booking
 import com.example.rentwise.custom_toast.CustomToast
+import com.example.rentwise.data_classes.CreateReviewRequest
 import com.example.rentwise.data_classes.FavouriteListingPostResponse
 import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
+import com.example.rentwise.data_classes.ReviewResponse
 import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
@@ -46,11 +47,6 @@ class PropertyDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
-
-        Glide.with(this)
-            .load(R.drawable.temp_profile)
-            .circleCrop()
-            .into(binding.estateAgent)
 
         val listingId = compareWhichDataToBind()
         setButtonListeners(listingId)
@@ -127,7 +123,7 @@ class PropertyDetails : AppCompatActivity() {
                     v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1.3f).scaleY(1.3f).setDuration(100).start()
+                    v.animate().scaleX(1.1f).scaleY(1.1f).setDuration(100).start()
                 }
             }
             false
@@ -143,8 +139,14 @@ class PropertyDetails : AppCompatActivity() {
             }
             false
         }
+        binding.submitReviewButton.setOnClickListener {
+            val rating = binding.ratingBar.rating.toInt()
+            val comment = binding.reviewMessage.text.toString()
+            submitReview(listingId, rating, comment)
+        }
     }
 
+    //Check which extra was received and bind accordingly
     private fun compareWhichDataToBind() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
@@ -157,6 +159,7 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    //Load unfavourited property
     private fun loadPropertyFromHomeFragment() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
         getListingsAndBind(property?.propertyId ?: "")
@@ -165,6 +168,7 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    //Loaded favourited property
     private fun loadPropertyFromWishlistFragment() : String {
         val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
         getFavouriteListingsAndBind(property?.listingDetail?.listingID ?: "")
@@ -172,6 +176,7 @@ class PropertyDetails : AppCompatActivity() {
         return property?.listingDetail?.listingID ?: "No Id"
     }
 
+    //Function to update the favourite button UI
     private fun updateFavouriteIcon(isFavourited: Boolean) {
        if (isFavourited) {
            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
@@ -199,8 +204,10 @@ class PropertyDetails : AppCompatActivity() {
                             apiResponse.message?.let {
                                 CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
                             }
-                            isFavourite = !isFavourite
+                            isFavourite = !isFavourite //change the favourite icon UI
                             updateFavouriteIcon(isFavourite)
+
+                            //Animate the button to improve UI
                             val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
                                 binding.favouriteBtn,
                                 PropertyValuesHolder.ofFloat("scaleX", 1.2f),
@@ -238,6 +245,7 @@ class PropertyDetails : AppCompatActivity() {
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -294,6 +302,7 @@ class PropertyDetails : AppCompatActivity() {
 
                         binding.locationText.text = listing.address
                         binding.titleText.text = listing.title
+                        binding.propertyDescription.text = listing.description
                         binding.priceText.text = "R${listing.price}"
 
                         isFavourite = listing.isFavourite ?: false
@@ -325,6 +334,13 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+
+                            Glide.with(this@PropertyDetails)
+                                .load(landlordInfo.pfpImage)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.profile_icon)
+                                .circleCrop()
+                                .into(binding.estateAgent)
                         }
                     }
                     CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
@@ -346,6 +362,7 @@ class PropertyDetails : AppCompatActivity() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -385,6 +402,7 @@ class PropertyDetails : AppCompatActivity() {
                                 .error(R.drawable.ic_empty)
                                 .into(binding.imageMain)
 
+                            //Load the extra images into the image views
                             images.drop(1).take(3).forEachIndexed { index, imageUrl ->
                                 Glide.with(this@PropertyDetails)
                                     .load(imageUrl)
@@ -393,6 +411,7 @@ class PropertyDetails : AppCompatActivity() {
                                     .into(extraPhotos[index])
                             }
 
+                            //Hide any additional image views not used
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
@@ -430,6 +449,13 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+
+                            Glide.with(this@PropertyDetails)
+                                .load(landlordInfo.pfpImage)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.profile_icon)
+                                .circleCrop()
+                                .into(binding.estateAgent)
                         }
                     }
                     CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
@@ -451,6 +477,7 @@ class PropertyDetails : AppCompatActivity() {
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
+                        tokenManger.clearPfp()
 
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -472,6 +499,7 @@ class PropertyDetails : AppCompatActivity() {
         })
     }
 
+    //Function to remove favourite property if its unfavoruited
     private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
         showFavouriteLoading()
         val userId = tokenManger.getUser()
@@ -515,10 +543,11 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
-                        // Log out if unauthorized
+                        // Log out if unauthorized or session expired and clear all shared prefs
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
+                            tokenManger.clearPfp()
 
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
@@ -538,6 +567,73 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    //API call to submit a review for a property
+    @SuppressLint("SuspiciousIndentation")
+    private fun submitReview(listingId: String, rating: Int, comment: String) {
+
+        val userId = tokenManger.getUser()
+        if(userId != null){
+          val api = RetrofitInstance.createAPIInstance(applicationContext)
+          val request = CreateReviewRequest(
+              rating = rating,
+              comment = comment
+          )
+            api.createReview(userId, listingId, request).enqueue(object : Callback<ReviewResponse> {
+                override fun onResponse(
+                    call: Call<ReviewResponse?>,
+                    response: Response<ReviewResponse?>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        responseBody?.message?.let {
+                            CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
+                        }
+
+                    }
+                    else{
+                        // Handle error response
+                        hideFavouriteLoading()
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = if (errorBody != null) {
+                            try {
+                                val json = JSONObject(errorBody)
+                                when { // Check for both "message" and "error" keys
+                                    json.has("message") -> json.getString("message")
+                                    json.has("error") -> json.getString("error")
+                                    else -> "Unknown error"
+                                }
+                            } catch (e: Exception) {
+                                "Unknown error"
+                            }
+                        } else {
+                            "Unknown error"
+                        }
+                        CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                        Log.e("Error", errorMessage)
+                        // Log out if unauthorized
+                        if (response.code() == 401) {
+                            tokenManger.clearToken()
+                            tokenManger.clearUser()
+                            tokenManger.clearPfp()
+
+                            val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<ReviewResponse?>,
+                    t: Throwable
+                ) {
+                    hideFavouriteLoading()
+                    CustomToast.show(this@PropertyDetails, "Error: ${t.message.toString()}", CustomToast.Companion.ToastType.ERROR)
+                    Log.e("Error", t.message.toString())
+                }
+            })
+        }
+    }
     private fun showLoading() {
         binding.loadingOverlay.visibility = View.VISIBLE
     }

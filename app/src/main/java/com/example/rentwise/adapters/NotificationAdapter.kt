@@ -11,6 +11,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+// Adapter class for displaying the list of notifications in the recycler view.
 class NotificationAdapter(
     private val notifications: List<NotificationResponse>,
 ) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
@@ -40,6 +41,7 @@ class NotificationAdapter(
 
     override fun getItemCount(): Int = notifications.size
 
+    // Method to format MongoDb date to a more readable format.
     private fun formatIsoDate(dateString: String?): String {
         if (dateString.isNullOrBlank()) return ""
 

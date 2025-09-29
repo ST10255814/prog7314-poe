@@ -3,19 +3,19 @@ package com.example.rentwise.auth
 import RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.rentwise.R
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.RegisterRequest
@@ -27,6 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
+    // View Binding handle for views in layout (RegisterActivity).
     private lateinit var binding: ActivityRegisterBinding
 
     @SuppressLint("ClickableViewAccessibility")
@@ -36,13 +37,18 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        prepareRegisterView() // Static UI text styling (Brand + "Login" linked look)
+        setListeners() // Attaches event listeners to UI elements (Clicks, presses, validation, submit)
+    }
+
+    private fun prepareRegisterView(){
         val appName = getString(R.string.app_name)
         val halfOfAppName = "Wise".length
 
         val loginText = getString(R.string.login_message)
         val loginPortion = "Login".length
 
-        val color = ContextCompat.getColor(this, R.color.light_blue)
+        val color = ContextCompat.getColor(this, R.color.darkish_blue)
 
         val spannableAppName = SpannableString(appName)
         spannableAppName.setSpan(
@@ -54,6 +60,12 @@ class RegisterActivity : AppCompatActivity() {
 
         val spannableLoginText = SpannableString(loginText)
         spannableLoginText.setSpan(
+            UnderlineSpan(),
+            loginText.length - loginPortion,
+            loginText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableLoginText.setSpan(
             ForegroundColorSpan(color),
             loginText.length - loginPortion,
             loginText.length,
@@ -62,19 +74,12 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.appName.text = spannableAppName
         binding.loginText.text = spannableLoginText
-
-        val decorView: View = window.decorView
-        val viewGroup: ViewGroup = decorView.findViewById(android.R.id.content)
-        val windowBg: Drawable = decorView.background
-
-        binding.blurView.setupWith(viewGroup)
-            .setFrameClearDrawable(windowBg)
-            .setBlurRadius(23f)
-
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setListeners(){
         binding.loginText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         binding.registerBtn.setOnTouchListener { v, event ->
@@ -89,6 +94,18 @@ class RegisterActivity : AppCompatActivity() {
             false
         }
 
+        binding.regEmail.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.emailInputLayout.error = null
+            }
+        }
+
+        binding.regPassword.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.passwordInputLayout.error = null
+            }
+        }
+
         binding.loginText.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -100,14 +117,19 @@ class RegisterActivity : AppCompatActivity() {
             }
             false
         }
-
+        // Validates inputs and calls API
         binding.registerBtn.setOnClickListener{
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
-            registerAPICall(email, password)
+            if(email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
+                binding.emailInputLayout.error = "Email can not be empty"
+                binding.passwordInputLayout.error = "Password can not be empty"
+            }
+            else{
+                registerAPICall(email, password)
+            }
         }
-
     }
 
     private fun registerAPICall(email: String, password: String){
@@ -127,6 +149,7 @@ class RegisterActivity : AppCompatActivity() {
                     hideOverlay()
                     val authResponse = response.body()
                     if(authResponse != null){
+                        // Toast message from server if successful
                         CustomToast.show(this@RegisterActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)

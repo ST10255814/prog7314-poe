@@ -10,6 +10,7 @@ data class LandLordDetails(
     val surname: String?,
     val phone: String?,
     val email: String?,
+    val pfpImage: String?
 ) : Serializable
 
 data class ListingResponse(

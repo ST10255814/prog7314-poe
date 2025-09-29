@@ -7,12 +7,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F7F9FB"
+        android:background="@color/white"
         android:fitsSystemWindows="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/image_main"
@@ -115,7 +116,7 @@
 
                 <TextView
                     android:id="@+id/property_description"
-                    android:layout_width="match_parent"
+                    android:layout_width="308dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/goldman"
@@ -236,6 +237,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="@drawable/circle_background"
                         android:backgroundTint="#c2fdff"
                         android:contentDescription="Call"
@@ -247,6 +249,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
+
                         android:background="@drawable/circle_background"
                         android:backgroundTint="#c2fdff"
                         android:contentDescription="Chat"
@@ -300,14 +303,14 @@
 
                     <RatingBar
                         android:id="@+id/ratingBar"
-                        android:layout_width="wrap_content"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
                         android:numStars="5"
-                        android:stepSize="1"
-                        android:scaleX="1.3"
-                        android:scaleY="1.3"
                         android:progressTint="@color/golden_yellow"
-                        android:layout_marginBottom="20dp" />
+                        android:scaleX="1.1"
+                        android:scaleY="1.1"
+                        android:stepSize="1" />
+
 
                     <EditText
                         android:id="@+id/reviewMessage"

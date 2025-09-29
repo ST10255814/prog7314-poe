@@ -10,7 +10,8 @@ import android.widget.Toast
 import com.example.rentwise.R
 
 // Followed a video tutorial to create a custom toast
-// https://youtu.be/H9WF3te9Gdw?si=d96yB-zNUV61zhAL
+//Stevdza-San. 2019. Custom Toast Message/Notification | Android Studio/ [video online]
+//Available at: <https://youtu.be/H9WF3te9Gdw?si=d96yB-zNUV61zhAL> [Accessed 15 September 2025].
 
 class CustomToast {
 
