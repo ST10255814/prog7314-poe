@@ -39,13 +39,13 @@ class PropertyDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPropertyDetailsBinding
     private var isFavourite = false
     private lateinit var tokenManger: TokenManger
-
     private val amenityIcons = mapOf(
         "tv" to R.drawable.tv_icon,
         "wi-fi" to R.drawable.wifi_icon,
         "bed" to R.drawable.bed_icon,
         "wifi" to R.drawable.wifi_icon,
-        "garage" to R.drawable.garage_icon
+        "garage" to R.drawable.garage_icon,
+        "garden" to R.drawable.garden_icon
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
