@@ -320,6 +320,7 @@ class PropertyDetails : AppCompatActivity() {
                         val amenitiesContainer = binding.amenitiesContainer
                         amenitiesContainer.removeAllViews()
 
+                        //Declare inflater to dynamically add the amenities depending on how many there are
                         val inflater = LayoutInflater.from(this@PropertyDetails)
                         for (amenity in amenities) {
                             val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
