@@ -586,8 +586,9 @@ class PropertyDetails : AppCompatActivity() {
                         val responseBody = response.body()
                         responseBody?.message?.let {
                             CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
+                            binding.ratingBar.rating = 0f
+                            binding.reviewMessage.text.clear()
                         }
-
                     }
                     else{
                         // Handle error response

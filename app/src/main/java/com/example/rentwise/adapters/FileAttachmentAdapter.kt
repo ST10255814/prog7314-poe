@@ -17,16 +17,18 @@ class FileAttachmentAdapter(
             val context = binding.root.context
             var fileName: String? = null
 
-            // Move to the first item in the results and retrieve the file name
+            // Attempt to retrieve the file name from the content resolver if the URI scheme is "content"
             if (uri.scheme == "content") {
                 context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                     if (cursor.moveToFirst()) {
-                        val index = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        val index = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME) // Get the index of the display name column
+                        // If the index is valid, retrieve the file name
                         if (index != -1) fileName = cursor.getString(index)
                     }
                 }
             }
 
+            // If the file name couldn't be retrieved, extract it from the URI path
             if (fileName == null) {
                 fileName = uri.path?.substringAfterLast('/') ?: "unknown_file"
             }

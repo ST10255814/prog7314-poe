@@ -329,7 +329,7 @@ class ProfileSettings : AppCompatActivity() {
         if (result == null) {
             result = uri.path?.substringAfterLast('/') ?: "unknown_file"
         }
-        return result ?: "unknown_file"
+        return result
     }
 
     private fun setupDatePickers() {
@@ -375,7 +375,6 @@ class ProfileSettings : AppCompatActivity() {
     private fun showOverlay(){
         binding.fullScreenOverlay.visibility = View.VISIBLE
     }
-
     private fun hideOverlay(){
         binding.fullScreenOverlay.visibility = View.GONE
     }

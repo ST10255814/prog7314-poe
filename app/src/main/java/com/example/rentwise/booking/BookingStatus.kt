@@ -84,8 +84,9 @@ class BookingStatus : AppCompatActivity() {
             "Under Review",
             "Awaiting Final Decision",
             when(status.lowercase()) {
-                "accepted" -> "Accepted"
+                "approved" -> "Approved"
                 "rejected" -> "Rejected"
+                "active" -> "Active"
                 else -> "Outcome"
             }
         )
@@ -102,7 +103,7 @@ class BookingStatus : AppCompatActivity() {
             "pending" -> 1
             "under review" -> 2
             "final decision" -> 3
-            "accepted", "rejected" -> 4
+            "approved", "rejected" -> 4
             else -> 1
         }
 
@@ -121,7 +122,7 @@ class BookingStatus : AppCompatActivity() {
                     label.isActivated = false
                 }
                 index == currentStep - 1 -> { // Current step
-                    if (status.lowercase() == "accepted" || status.lowercase() == "rejected") {
+                    if (status.lowercase() == "approved" || status.lowercase() == "rejected") {
                         // Mark last step as completed if accepted or rejected
                         icon.isSelected = true
                         icon.isActivated = false

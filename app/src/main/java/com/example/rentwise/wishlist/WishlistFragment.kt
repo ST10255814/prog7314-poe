@@ -61,6 +61,7 @@ class WishlistFragment : Fragment() {
                     if(!isAdded || _binding == null) return
                     if(response.isSuccessful){
                         hideOverlay()
+                        showRecyclerView()
                         val favouriteList = response.body()?.toMutableList() ?: mutableListOf()
                         if(favouriteList.isNotEmpty()){
                             showRecyclerView()
@@ -82,13 +83,12 @@ class WishlistFragment : Fragment() {
                             CustomToast.show(requireContext(), "Wishlist loaded", CustomToast.Companion.ToastType.SUCCESS)
                         }
                         else{
-
+                            showEmptyRecyclerView()
                         }
                     }
                     else{
                         hideOverlay()
                         showEmptyRecyclerView()
-
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
@@ -99,6 +99,7 @@ class WishlistFragment : Fragment() {
                                     else -> "Unknown error"
                                 }
                             } catch (e: Exception) {
+                                e.printStackTrace()
                                 "Unknown error"
                             }
                         } else {
