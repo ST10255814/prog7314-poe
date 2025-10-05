@@ -143,6 +143,7 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
+            //Check if email and password are valid and the email is in the correct format
             if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()) {
                 binding.emailLayout.error = "Email can not be empty"
                 binding.passwordLayout.error = "Password can not be empty"
@@ -153,6 +154,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //Remove Error message when user starts typing
         binding.edtEmail.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
                 binding.emailLayout.error = null
@@ -219,12 +221,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     private fun loginAPICall(email: String, password: String){
-        showLoginOverlay()
+        showLoginOverlay() //Display overlay to prevent multiple requests
+        //Request going to the api
         val request = LoginRequest(
             email = email,
             password = password
         )
 
+        // Retrofit instance and calling the login endpoint
         val api = RetrofitInstance.createAPIInstance(applicationContext)
         api.login(request).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
@@ -232,22 +236,22 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<LoginResponse>
             ) {
                 if(response.isSuccessful) {
-                    hideLoginOverlay()
+                    hideLoginOverlay() //Hide overlay when request is complete
                     val authResponse = response.body()
                     //Save the jwt token and the userID in a secured shared pref for usage within the app
                     if(authResponse != null){
                         authResponse.token.let {
                             if (it != null) {
-                                tokenManger.saveToken(it)
+                                tokenManger.saveToken(it) //Save JWT token
                             }
                         }
                         authResponse.userId.let {
                             if(it != null){
-                                tokenManger.saveUser(it)
+                                tokenManger.saveUser(it) //Save userID
                             }
                         }
                         CustomToast.show(this@LoginActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
-                        val intent = Intent(this@LoginActivity, HomeScreen::class.java)
+                        val intent = Intent(this@LoginActivity, HomeScreen::class.java) //Navigate to home screen
                         startActivity(intent)
                         finish()
                     }
@@ -258,7 +262,7 @@ class LoginActivity : AppCompatActivity() {
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
-                            val json = JSONObject(errorBody)
+                            val json = JSONObject(errorBody) //Extract the error message from the json response
                             json.getString("error")
                         } catch (e: Exception) {
                             e.message.toString()
@@ -266,12 +270,14 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    binding.emailLayout.error = "Invalid Email"
-                    binding.passwordLayout.error = "Invalid Password"
+                    //Set error messages on the text fields
+                    binding.emailLayout.error = "Invalid Credentials"
+                    binding.passwordLayout.error = "Invalid Credentials"
                     CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
                     Log.e("Google Login API", errorMessage)
                 }
             }
+            //Display error if the request failed
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
                 hideLoginOverlay()
                 CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)

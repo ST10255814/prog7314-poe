@@ -94,6 +94,7 @@ class RegisterActivity : AppCompatActivity() {
             false
         }
 
+        // Clears error messages when user starts typing
         binding.regEmail.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
                 binding.emailInputLayout.error = null
@@ -122,18 +123,20 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
 
+            // Basic validation for empty fields and email format
             if(email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
-                binding.emailInputLayout.error = "Email can not be empty"
-                binding.passwordInputLayout.error = "Password can not be empty"
+                binding.emailInputLayout.error = "Invalid Credentials"
+                binding.passwordInputLayout.error = "Invalid Credentials"
             }
             else{
-                registerAPICall(email, password)
+                registerAPICall(email, password) // Calls the register API endpoint
             }
         }
     }
 
     private fun registerAPICall(email: String, password: String){
-        showOverlay()
+        showOverlay() // Show overlay to prevent multiple requests
+        // Prepare request body
         val request = RegisterRequest(
             email = email,
             password = password
@@ -145,31 +148,38 @@ class RegisterActivity : AppCompatActivity() {
                 call : Call<RegisterResponse>,
                 response : Response<RegisterResponse>
             ){
+                // Handle successful response
                 if(response.isSuccessful){
-                    hideOverlay()
-                    val authResponse = response.body()
+                    hideOverlay() // Hide overlay on successful response
+                    val authResponse = response.body() // Get the response body
                     if(authResponse != null){
                         // Toast message from server if successful
                         CustomToast.show(this@RegisterActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
-                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java) // Navigate to login after registration
                         startActivity(intent)
                         finish()
                     }
                 }
                 else{
-                    hideOverlay()
+                    hideOverlay() // Hide overlay on error response
+                    // Parse error message from response body
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
-                            val json = JSONObject(errorBody)
+                            val json = JSONObject(errorBody) // Parse the error body as JSON
                             json.getString("error")
-                        } catch (e: Exception) {
+                        } catch (e: Exception) { // Handle JSON parsing errors
+                            e.printStackTrace()
                             "Unexpected error"
                         }
                     } else {
                         "Unknown error"
                     }
+                    //Set error messages on the text fields
+                    binding.regEmail.error = "Invalid Credentials"
+                    binding.regPassword.error = "Invalid Credentials"
                     CustomToast.show(this@RegisterActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                    Log.e("Register API Call", "Error: $errorMessage")
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable){

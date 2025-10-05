@@ -24,9 +24,9 @@ object RetrofitInstance {
 
         val client = OkHttpClient.Builder()
             //Timeouts to allow the API to 'wake up' upon a request being sent after inactivity
-            .connectTimeout(50, TimeUnit.SECONDS)
-            .readTimeout(50, TimeUnit.SECONDS)
-            .writeTimeout(50, TimeUnit.SECONDS)
+            .connectTimeout(50, TimeUnit.SECONDS) //Connection timeout
+            .readTimeout(50, TimeUnit.SECONDS) //Socket timeout
+            .writeTimeout(50, TimeUnit.SECONDS) //Write timeout
             .addInterceptor(logging) //Logging to monitor https requests
             .addInterceptor { chain -> //Interceptor to attach authorisation headers when required
                 val requestBuilder = chain.request().newBuilder()
