@@ -13,6 +13,7 @@ import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.databinding.FragmentNotificationsBinding
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import com.example.rentwise.shared_pref_config.TokenManger
 import org.json.JSONObject
 import retrofit2.Call

@@ -1,6 +1,6 @@
 package com.example.rentwise.wishlist
 
-import RetrofitInstance
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

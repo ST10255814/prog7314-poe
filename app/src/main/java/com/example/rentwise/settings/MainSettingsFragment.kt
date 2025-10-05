@@ -17,6 +17,7 @@ import com.example.rentwise.data_classes.UpdateSettingsResponse
 import com.example.rentwise.data_classes.UserSettingsResponse
 import com.example.rentwise.databinding.FragmentMainSettingsBinding
 import com.example.rentwise.faq.FAQChatBot
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import com.example.rentwise.shared_pref_config.TokenManger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

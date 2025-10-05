@@ -1,3 +1,5 @@
+package com.example.rentwise.retrofit_instance
+
 import android.content.Context
 import com.example.rentwise.api_interface.RentWiseApi
 import com.example.rentwise.shared_pref_config.TokenManger

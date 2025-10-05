@@ -1,6 +1,6 @@
 package com.example.rentwise.recyclerview_itemclick_views
 
-import RetrofitInstance
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint

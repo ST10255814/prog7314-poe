@@ -1,6 +1,6 @@
 package com.example.rentwise.home
 
-import RetrofitInstance
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle

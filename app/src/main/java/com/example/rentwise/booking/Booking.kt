@@ -1,6 +1,6 @@
 package com.example.rentwise.booking
 
-import RetrofitInstance
+import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
