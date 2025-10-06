@@ -34,16 +34,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Activity responsible for handling user login, including email/password and Google SSO, with UI feedback and secure token storage.
 class LoginActivity : AppCompatActivity() {
 
+    // Holds the binding instance for accessing all views in the login layout.
     private lateinit var binding: ActivityLoginBinding
+    // Manages Google Sign-In client for SSO authentication.
     private lateinit var googleSignInClient: GoogleSignInClient
+    // Handles secure storage and retrieval of authentication tokens and user data.
     private lateinit var tokenManger: TokenManger
-    //private lateinit var executor: Executor
-    //private lateinit var biometricPrompt: BiometricPrompt
+    // Request code for Google Sign-In intent result handling.
     private val RC_SIGN_IN = 9001
-    //private val KEY_NAME = "biometric_key"
-    //private val ANDROID_KEYSTORE = "AndroidKeyStore"
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +55,12 @@ class LoginActivity : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        setupLoginView()
-        prepareGoogleSignIn()
-        //initBiometricPrompt()
-        //createBiometricKey()
-        setListeners()
+        setupLoginView() // Styles the app name, slogan, and register text for branding and navigation cues.
+        prepareGoogleSignIn() // Configures Google Sign-In options and initializes the client.
+        setListeners() // Attaches all event listeners for user interaction, input validation, and authentication triggers.
     }
 
-    //Initialise the google pop up for SSO
+    // Configures Google Sign-In with required scopes and initializes the client for SSO.
     private fun prepareGoogleSignIn(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
@@ -71,10 +70,8 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
+    // Styles the app name, slogan, and register text, applying color and underline to specific portions for visual emphasis.
     private fun setupLoginView(){
-        //Spannable text implementation by:
-        //Programmer World. 2023. How to edit the text in TextView using spannable string in your Android App?. [video online]
-        //Available at: <https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov> [Accessed 5 August 2025].
         val appName = getString(R.string.app_name)
         val halfOfAppName = "Wise".length
 
@@ -131,50 +128,51 @@ class LoginActivity : AppCompatActivity() {
         binding.appSlogan.text = spannableSlogan
         binding.registerText.text = spannableRegister
     }
+
     @SuppressLint("ClickableViewAccessibility")
+    // Sets up all listeners for UI elements, including navigation, button animations, input validation, and authentication triggers.
     private fun setListeners(){
+        // Navigates to the registration screen when the register text is clicked.
         binding.registerText.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        // Login with email/password
+        // Validates user input and triggers the login API call when the login button is clicked.
         binding.loginBtn.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
-            //Check if email and password are valid and the email is in the correct format
+            // Checks for empty fields and valid email format before proceeding.
             if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()) {
                 binding.emailLayout.error = "Email can not be empty"
                 binding.passwordLayout.error = "Password can not be empty"
             }
             else{
-                //API Call
-                loginAPICall(email, password)
+                loginAPICall(email, password) // Initiates the login process via API.
             }
         }
 
-        //Remove Error message when user starts typing
+        // Clears the email error message as soon as the user starts typing.
         binding.edtEmail.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
                 binding.emailLayout.error = null
             }
         }
 
+        // Clears the password error message as soon as the user starts typing.
         binding.edtPassword.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
                 binding.passwordLayout.error = null
             }
         }
 
+        // Placeholder for biometric authentication trigger (to be implemented).
         binding.fingerprintAnimation.setOnClickListener {
             //authenticate()
         }
 
-
-        //Button Animation and states followed by ChatGPT
-        //OpenAI. 2025. In android studio kotlin i want to animate the button and make it a different color when hovered/clicked on. How can i do this?.
-        //[ChatGPT]. Available at: <https://chatgpt.com/share/689214fa-941c-800a-a9d7-81bfe8fefbf1> [Accessed 5 August 2025]
+        // Adds a press animation to the login button for tactile feedback.
         binding.loginBtn.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -187,6 +185,7 @@ class LoginActivity : AppCompatActivity() {
             false
         }
 
+        // Adds a press animation to the Google Sign-In button for tactile feedback.
         binding.googleSignInBtn.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -199,6 +198,7 @@ class LoginActivity : AppCompatActivity() {
             false
         }
 
+        // Adds a press animation to the register text for tactile feedback.
         binding.registerText.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -211,24 +211,23 @@ class LoginActivity : AppCompatActivity() {
             false
         }
 
+        // Handles Google Sign-In button click, ensuring account selection and launching the sign-in intent.
         binding.googleSignInBtn.setOnClickListener {
-            // Logout Currently signed in user to prompt for account selection everytime
-            // Then call the google sign Intent
             googleSignInClient.signOut().addOnCompleteListener {
                 val signInIntent = googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
         }
     }
+
+    // Handles the login API call, manages UI overlays, and processes server responses for success or error.
     private fun loginAPICall(email: String, password: String){
-        showLoginOverlay() //Display overlay to prevent multiple requests
-        //Request going to the api
+        showLoginOverlay() // Displays a loading overlay to prevent duplicate submissions.
         val request = LoginRequest(
             email = email,
             password = password
         )
 
-        // Retrofit instance and calling the login endpoint
         val api = RetrofitInstance.createAPIInstance(applicationContext)
         api.login(request).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
@@ -236,33 +235,33 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<LoginResponse>
             ) {
                 if(response.isSuccessful) {
-                    hideLoginOverlay() //Hide overlay when request is complete
+                    hideLoginOverlay()
                     val authResponse = response.body()
-                    //Save the jwt token and the userID in a secured shared pref for usage within the app
+                    // Saves the JWT token and user ID in secure shared preferences for session management.
                     if(authResponse != null){
                         authResponse.token.let {
                             if (it != null) {
-                                tokenManger.saveToken(it) //Save JWT token
+                                tokenManger.saveToken(it)
                             }
                         }
                         authResponse.userId.let {
                             if(it != null){
-                                tokenManger.saveUser(it) //Save userID
+                                tokenManger.saveUser(it)
                             }
                         }
                         CustomToast.show(this@LoginActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
-                        val intent = Intent(this@LoginActivity, HomeScreen::class.java) //Navigate to home screen
+                        val intent = Intent(this@LoginActivity, HomeScreen::class.java)
                         startActivity(intent)
                         finish()
                     }
                 }
                 else{
                     hideLoginOverlay()
-                    //Check for error body and display error message if there is one
+                    // Extracts and displays error messages from the server response.
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
-                            val json = JSONObject(errorBody) //Extract the error message from the json response
+                            val json = JSONObject(errorBody)
                             json.getString("error")
                         } catch (e: Exception) {
                             e.message.toString()
@@ -270,14 +269,13 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    //Set error messages on the text fields
                     binding.emailLayout.error = "Invalid Credentials"
                     binding.passwordLayout.error = "Invalid Credentials"
                     CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
                     Log.e("Google Login API", errorMessage)
                 }
             }
-            //Display error if the request failed
+            // Handles network or unexpected failures during the login process.
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
                 hideLoginOverlay()
                 CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
@@ -286,18 +284,18 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    // Makes the login overlay visible to block user interaction during network operations.
     private fun showLoginOverlay(){
         binding.loginOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the login overlay, restoring user interaction after network operations.
     private fun hideLoginOverlay(){
         binding.loginOverlay.visibility = View.GONE
     }
 
     @Suppress("DEPRECATION")
-    //Google sign in Intent
-    //Developer. 2025. Integrate Google Sign-In into Your Android App. Developers. [online]
-    //Available at: <https://developer.android.com/identity/legacy/gsi/legacy-sign-in> [Accessed 17 September 2025].
+    // Handles the result from the Google Sign-In intent, extracting the ID token and sending it to the backend for authentication.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -308,7 +306,7 @@ class LoginActivity : AppCompatActivity() {
                 val idToken = account.idToken
                 if (idToken != null) {
                     Log.d("Google Token", idToken)
-                    sendIdTokenToBackend(idToken) //Send google token to the api for verification and jwt token retrieval
+                    sendIdTokenToBackend(idToken)
                 } else {
                     CustomToast.show(this@LoginActivity, "Failed to get Google ID Token", CustomToast.Companion.ToastType.ERROR)
                 }
@@ -319,6 +317,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Sends the Google ID token to the backend for verification and handles the authentication response.
     private fun sendIdTokenToBackend(idToken: String) {
         showLoginOverlay()
         val request = GoogleRequest(
@@ -333,8 +332,8 @@ class LoginActivity : AppCompatActivity() {
                 if(response.isSuccessful){
                     hideLoginOverlay()
                     val googleResponse = response.body()
+                    // Saves user ID, JWT token, and profile image for session and personalization.
                     if(googleResponse != null){
-                        //Save userId, jwt token and google photo for usage within the app
                         googleResponse.token.let {
                             if(it != null){
                                 tokenManger.saveToken(it)
@@ -359,6 +358,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else{
                     hideLoginOverlay()
+                    // Extracts and displays error messages from the server response.
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -374,78 +374,15 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
+            // Handles network or unexpected failures during the Google login process.
             override fun onFailure(
                 call: Call<GoogleResponse?>,
                 t: Throwable
             ) {
-                // Handle error
                 hideLoginOverlay()
                 CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Login", "Error: ${t.message.toString()}")
             }
         })
     }
-
-    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin (To be implemented properly in part 3)
-    //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
-    /*private fun initBiometricPrompt() {
-        executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
-                val jwt = tokenManger.getToken()
-                val userId = tokenManger.getUser()
-                if (!jwt.isNullOrEmpty() && !userId.isNullOrEmpty()){
-                    CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
-                    Log.d("BiometricJWT", "JWT=$jwt, userId=$userId")
-                    startActivity(Intent(this@LoginActivity, HomeScreen::class.java))
-                    finish()
-                }
-                else {
-                    CustomToast.show(this@LoginActivity, "No active session. Please login in manually",
-                        CustomToast.Companion.ToastType.ERROR)
-                }
-
-            }
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
-                CustomToast.show(this@LoginActivity, "Authentication error: $errString", CustomToast.Companion.ToastType.ERROR)
-            }
-            override fun onAuthenticationFailed() {
-                super.onAuthenticationFailed()
-                CustomToast.show(this@LoginActivity, "Authentication failed", CustomToast.Companion.ToastType.ERROR)
-            }
-        })
-    }
-
-    private fun createBiometricKey() {
-        val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE)
-        val keySpec = KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
-            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-            .setUserAuthenticationRequired(true)
-            .build()
-        keyGenerator.init(keySpec)
-        keyGenerator.generateKey()
-    }
-
-    private fun getCipher(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
-    private fun getSecretKey(): SecretKey {
-        val keyStore = java.security.KeyStore.getInstance(ANDROID_KEYSTORE)
-        keyStore.load(null)
-        return keyStore.getKey(KEY_NAME, null) as SecretKey
-    }
-
-    private fun authenticate() {
-        val cipher = getCipher()
-        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
-
-        val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric Authentication")
-            .setSubtitle("Access your account securely")
-            .setNegativeButtonText("Cancel")
-            .build()
-
-        biometricPrompt.authenticate(promptInfo)
-    }*/
 }

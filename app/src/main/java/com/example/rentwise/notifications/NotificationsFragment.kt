@@ -20,10 +20,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Fragment responsible for displaying user notifications, handling API calls, UI states, and authentication errors.
 class NotificationsFragment : Fragment() {
+    // Holds the binding for accessing layout views.
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
 
+    // Inflates the layout and initializes the binding for the fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,20 +35,21 @@ class NotificationsFragment : Fragment() {
         return binding.root
     }
 
+    // Cleans up the binding to prevent memory leaks when the fragment is destroyed.
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
+    // Sets up the UI and initiates fetching notifications after the view is created.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         fetchNotifications()
     }
 
-    //Fetch Notifications from Backend
+    // Fetches notifications from the backend, updates the UI, and handles errors or authentication issues.
     private fun fetchNotifications() {
-        showOverlay()
+        showOverlay() // Displays a loading overlay while fetching data.
         val api = RetrofitInstance.createAPIInstance(requireContext())
         api.getNotifications().enqueue(object : Callback<List<NotificationResponse>> {
             override fun onResponse(
@@ -57,7 +61,7 @@ class NotificationsFragment : Fragment() {
                     hideOverlay()
                     val body = response.body() ?: emptyList()
                     if (body.isNotEmpty()) {
-                        showRecyclerView()
+                        showRecyclerView() // Shows the RecyclerView with notifications.
                         val adapter = NotificationAdapter(
                             notifications = body
                         )
@@ -65,7 +69,7 @@ class NotificationsFragment : Fragment() {
                         binding.notificationRecyclerView.adapter = adapter
                         CustomToast.show(requireContext(), "Notifications loaded", CustomToast.Companion.ToastType.INFO)
                     } else {
-                        showEmptyRecyclerView()
+                        showEmptyRecyclerView() // Shows an empty view if there are no notifications.
                     }
                 }
                 else {
@@ -88,19 +92,20 @@ class NotificationsFragment : Fragment() {
                     }
                     CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", errorMessage)
-                    // Log out if unauthorized
+                    // Handles authentication errors by clearing session and redirecting to login.
                     val tokenManger = TokenManger(requireContext())
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                 }
             }
 
+            // Handles network or unexpected errors, displaying an error message.
             override fun onFailure(call: Call<List<NotificationResponse>>, t: Throwable) {
                 if (!isAdded || _binding == null) return
                 hideOverlay()
@@ -109,17 +114,24 @@ class NotificationsFragment : Fragment() {
             }
         })
     }
+
+    // Displays a loading overlay to indicate that data is being fetched.
     private fun showOverlay() {
         binding.recyclerViewLoadingOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the loading overlay after data fetching is complete.
     private fun hideOverlay() {
         binding.recyclerViewLoadingOverlay.visibility = View.GONE
     }
+
+    // Shows the RecyclerView with notifications and hides the empty view.
     private fun showRecyclerView(){
         binding.notificationRecyclerView.visibility = View.VISIBLE
         binding.emptyNotificationView.emptyLayout.visibility = View.GONE
     }
+
+    // Shows an empty view when there are no notifications to display.
     private fun showEmptyRecyclerView(){
         binding.notificationRecyclerView.visibility = View.GONE
         binding.emptyNotificationView.emptyLayout.visibility = View.VISIBLE

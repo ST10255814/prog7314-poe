@@ -20,7 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class BookingStatus : AppCompatActivity() {
-    // View Binding handle for views in layout (BookingStatus) and token/ session helper.
+    // Binds the layout views for the booking status screen and manages user session tokens.
     private lateinit var binding: ActivityBookingStatusBinding
     private lateinit var tokenManger: TokenManger
 
@@ -32,12 +32,12 @@ class BookingStatus : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        // Prepare UI elements and fetches booking status
-        setListeners()
-        getBookingStatusViaUserIdApiCall()
+        setListeners() // Attaches all event listeners for navigation and refresh actions.
+        getBookingStatusViaUserIdApiCall() // Initiates the API call to fetch and display booking status.
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Sets up listeners for navigation, refresh, and button animations.
     private fun setListeners(){
         binding.backButton.setOnClickListener {
             val intent = Intent(this, HomeScreen::class.java)
@@ -46,12 +46,8 @@ class BookingStatus : AppCompatActivity() {
         }
         binding.backButton.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
@@ -61,24 +57,18 @@ class BookingStatus : AppCompatActivity() {
         }
         binding.refreshTracking.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
     }
 
-    // Updates UI based on booking status, with a 4 - step tracker based on API status and BookingId.
     @SuppressLint("SetTextI18n")
+    // Updates the UI to reflect the current booking status using a step tracker and progress bar.
     private fun prepBookingTracker(status: String, bookingId: String) {
         binding.bookingIdText.text = "Booking ID: $bookingId"
 
-        // List to map step names based on status from api
         val stepNames = listOf(
             "Pending",
             "Under Review",
@@ -98,7 +88,6 @@ class BookingStatus : AppCompatActivity() {
             binding.step4
         )
 
-        // Determine current step based on status
         val currentStep = when(status.lowercase()) {
             "pending" -> 1
             "under review" -> 2
@@ -107,7 +96,6 @@ class BookingStatus : AppCompatActivity() {
             else -> 1
         }
 
-        // Update UI for each step
         stepViews.forEachIndexed { index, container ->
             val label = container.stepLabel
             val icon = container.stepIcon
@@ -115,28 +103,26 @@ class BookingStatus : AppCompatActivity() {
             label.text = stepNames[index]
 
             when {
-                index < currentStep - 1 -> { // Completed steps
+                index < currentStep - 1 -> {
                     icon.isSelected = true
                     icon.isActivated = false
                     label.isSelected = true
                     label.isActivated = false
                 }
-                index == currentStep - 1 -> { // Current step
+                index == currentStep - 1 -> {
                     if (status.lowercase() == "approved" || status.lowercase() == "rejected") {
-                        // Mark last step as completed if accepted or rejected
                         icon.isSelected = true
                         icon.isActivated = false
                         label.isSelected = true
                         label.isActivated = false
                     } else {
-                        // Mark in-progress for other current steps
                         icon.isSelected = false
                         icon.isActivated = true
                         label.isSelected = false
                         label.isActivated = true
                     }
                 }
-                else -> { // Pending
+                else -> {
                     icon.isSelected = false
                     icon.isActivated = false
                     label.isSelected = false
@@ -144,17 +130,14 @@ class BookingStatus : AppCompatActivity() {
                 }
             }
         }
-        // Update progress bar and subtitle summary.
-        binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt() // Update progress bar
-        binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}" // Update subtitle
+        binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt()
+        binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}"
     }
 
-    // Fetches booking status for user from API, and updates the UI accordingly, handles 401 by logging out.
+    // Fetches the booking status for the current user from the API and updates the UI, handling authentication errors.
     private fun getBookingStatusViaUserIdApiCall(){
         showOverlay()
-
         val userId = tokenManger.getUser()
-
         if(userId != null) {
             val api = RetrofitInstance.createAPIInstance(applicationContext)
             api.getBookingById(userId).enqueue( object : Callback<BookingStatusResponse> {
@@ -169,20 +152,16 @@ class BookingStatus : AppCompatActivity() {
                             val status = bookingStatusResponse.newBooking?.status
                             val bookingId = bookingStatusResponse.bookingId ?: ""
                             if (status != null) {
-                                // Reflects booking status received in UI
-                                prepBookingTracker(status, bookingId) // Update UI based on status
+                                prepBookingTracker(status, bookingId)
                             }
                         }
                         hideMiddleOverlay()
                     }
                     else{
-                        // Method to handle auth errors and display middle overlay.
                         hideOverlay()
                         showMiddleOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
-
-                        //Logout user if 401 Unauthorized
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
@@ -195,7 +174,6 @@ class BookingStatus : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<BookingStatusResponse>, t: Throwable) {
-                    // Handle failure
                     hideOverlay()
                     showMiddleOverlay()
                     CustomToast.show(this@BookingStatus, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
@@ -206,18 +184,22 @@ class BookingStatus : AppCompatActivity() {
         return
     }
 
+    // Shows a full-screen overlay to block user interaction during network operations.
     private fun showOverlay(){
         binding.fullScreenOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the full-screen overlay after network operations are complete.
     private fun hideOverlay(){
         binding.fullScreenOverlay.visibility = View.GONE
     }
 
+    // Shows a middle overlay for displaying errors or special states.
     private fun showMiddleOverlay(){
         binding.middleOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the middle overlay to restore normal UI state.
     private fun hideMiddleOverlay(){
         binding.middleOverlay.visibility = View.GONE
     }

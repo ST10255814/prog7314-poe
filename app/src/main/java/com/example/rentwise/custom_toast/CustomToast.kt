@@ -9,33 +9,32 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.rentwise.R
 
-// Followed a video tutorial to create a custom toast
-//Stevdza-San. 2019. Custom Toast Message/Notification | Android Studio/ [video online]
-//Available at: <https://youtu.be/H9WF3te9Gdw?si=d96yB-zNUV61zhAL> [Accessed 15 September 2025].
-
+// Utility class for displaying visually distinct toast notifications with custom icons and messages.
 class CustomToast {
 
     companion object {
 
+        // Displays a custom toast with a specific message and icon based on the notification type.
         fun show(context: Context, message: String, type: ToastType) {
-            // Inflate custom layout
+            // Inflates the custom layout for the toast, allowing for personalized appearance.
             val inflater = LayoutInflater.from(context)
             val layout: View = inflater.inflate(R.layout.custom_toast, null)
 
-            // Find views
+            // Retrieves the text and icon views from the custom layout for dynamic content updates.
             val toastText = layout.findViewById<TextView>(R.id.toast_text)
             val toastIcon = layout.findViewById<ImageView>(R.id.toast_icon)
 
+            // Sets the message to be displayed in the toast.
             toastText.text = message
 
-            // Set icon based on type
+            // Selects the appropriate icon resource based on the toast type for visual feedback.
             when (type) {
                 ToastType.SUCCESS -> toastIcon.setImageResource(R.drawable.ic_success)
                 ToastType.ERROR -> toastIcon.setImageResource(R.drawable.ic_error)
                 ToastType.INFO -> toastIcon.setImageResource(R.drawable.ic_info)
             }
 
-            // Show toast at default bottom position
+            // Configures and displays the toast at the bottom center of the screen with a slight vertical offset.
             with(Toast(context)) {
                 duration = Toast.LENGTH_SHORT
                 view = layout
@@ -44,7 +43,7 @@ class CustomToast {
             }
         }
 
-        // Enum for toast types
+        // Enum representing the types of toast notifications for consistent icon selection.
         enum class ToastType {
             SUCCESS, ERROR, INFO
         }

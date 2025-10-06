@@ -22,12 +22,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Fragment responsible for displaying and managing the user's wishlist.
 class WishlistFragment : Fragment() {
+    // View binding for accessing layout views.
     private var _binding: FragmentWishListBinding? = null
     private val binding get() = _binding!!
+    // Token manager for user authentication and session management.
     private lateinit var tokenManger: TokenManger
+    // Adapter for the wishlist RecyclerView.
     private lateinit var wishlistAdapter: WishlistAdapter
 
+    // Inflate the fragment layout and initialize view binding.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,11 +41,13 @@ class WishlistFragment : Fragment() {
         return binding.root
     }
 
+    // Clean up binding to prevent memory leaks.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    // Called after the view is created; initializes token manager and fetches wishlist data.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,6 +55,7 @@ class WishlistFragment : Fragment() {
         getFavouriteListingsApiCall()
     }
 
+    // Fetches the user's favourite listings from the backend API.
     private fun getFavouriteListingsApiCall() {
         showOverlay()
         val userId = tokenManger.getUser()
@@ -64,15 +72,17 @@ class WishlistFragment : Fragment() {
                         showRecyclerView()
                         val favouriteList = response.body()?.toMutableList() ?: mutableListOf()
                         if(favouriteList.isNotEmpty()){
-                            showRecyclerView()
+                            // Set up the adapter with click listeners for item selection and unfavourite actions.
                             wishlistAdapter = WishlistAdapter(
                                 wishlistProperties = favouriteList,
                                 onItemClick = { selectedItem ->
+                                    // Open property details when an item is clicked.
                                     val intent = Intent(requireContext(), PropertyDetails::class.java)
                                     intent.putExtra("property-wishList", selectedItem)
                                     startActivity(intent)
                                 },
                                 onUnFavouriteClick = {_, position ->
+                                    // Remove item from wishlist when unfavourite is clicked.
                                     val listingId = favouriteList[position].listingDetail?.listingID //get the listing ID of the selected position
                                     deleteFavouriteItemFromDbApiCall(listingId, position)
                                 }
@@ -89,6 +99,7 @@ class WishlistFragment : Fragment() {
                     else{
                         hideOverlay()
                         showEmptyRecyclerView()
+                        // Parse and display error message from API response.
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
@@ -119,6 +130,7 @@ class WishlistFragment : Fragment() {
                         }
                     }
                 }
+                // Handles network or other failures during the API call.
                 override fun onFailure(
                     call: Call<MutableList<FavouriteListingsResponse>>,
                     t: Throwable
@@ -133,6 +145,7 @@ class WishlistFragment : Fragment() {
         }
     }
 
+    // Calls the API to remove a listing from the user's favourites.
     private fun deleteFavouriteItemFromDbApiCall(listingId: String?, position: Int){
         showUnfavouriteOverlay()
         val userId = tokenManger.getUser()
@@ -191,6 +204,7 @@ class WishlistFragment : Fragment() {
                         }
                     }
                 }
+                // Handles network or other failures during the API call.
                 override fun onFailure(
                     call: Call<UnfavouriteListingResponse>,
                     t: Throwable
@@ -204,22 +218,29 @@ class WishlistFragment : Fragment() {
             })
         }
     }
+
+    // Shows a loading overlay while fetching wishlist data.
     private fun showOverlay() {
         binding.wishlistLoadingOverlay.visibility = View.VISIBLE
     }
+    // Hides the loading overlay.
     private fun hideOverlay() {
         binding.wishlistLoadingOverlay.visibility = View.GONE
     }
+    // Shows an overlay while unfavouriting an item.
     private fun showUnfavouriteOverlay() {
         binding.unfavouriteOverlay.visibility = View.VISIBLE
     }
+    // Hides the unfavourite overlay.
     private fun hideUnfavouriteOverlay() {
         binding.unfavouriteOverlay.visibility = View.GONE
     }
+    // Displays the empty state view when there are no wishlist items.
     private fun showEmptyRecyclerView(){
         binding.wishlistRecyclerView.visibility = View.GONE
         binding.emptyWishlistView.emptyLayout.visibility = View.VISIBLE
     }
+    // Displays the wishlist RecyclerView when there are items.
     private fun showRecyclerView(){
         binding.wishlistRecyclerView.visibility = View.VISIBLE
         binding.emptyWishlistView.emptyLayout.visibility = View.GONE

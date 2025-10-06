@@ -35,10 +35,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Activity for displaying detailed property information, handling user interactions such as booking, favouriting, and reviewing.
 class PropertyDetails : AppCompatActivity() {
+    // Binds the layout for property details, providing access to all UI elements.
     private lateinit var binding: ActivityPropertyDetailsBinding
+    // Tracks whether the property is currently favourited by the user.
     private var isFavourite = false
+    // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
+    // Maps amenity names to their corresponding icon resources for dynamic UI rendering.
     private val amenityIcons = mapOf(
         "tv" to R.drawable.tv_icon,
         "wi-fi" to R.drawable.wifi_icon,
@@ -56,11 +61,12 @@ class PropertyDetails : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        val listingId = compareWhichDataToBind()
-        setButtonListeners(listingId)
+        val listingId = compareWhichDataToBind() // Determines which property data to display.
+        setButtonListeners(listingId) // Sets up all button and touch listeners for user actions.
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Attaches click and touch listeners for all interactive UI elements, including booking, favouriting, and reviewing.
     private fun setButtonListeners(listingId: String){
         binding.buttonBookNow.setOnTouchListener { v, event ->
             when (event.action) {
@@ -109,9 +115,9 @@ class PropertyDetails : AppCompatActivity() {
         }
         binding.favouriteBtn.setOnClickListener {
             if(isFavourite){
-                deleteFavouriteItemFromDbApiCall(listingId)
+                deleteFavouriteItemFromDbApiCall(listingId) // Unfavourite property.
             } else{
-                favouriteListing(listingId)
+                favouriteListing(listingId) // Favourite property.
             }
         }
         binding.btnBack.setOnClickListener {
@@ -150,51 +156,50 @@ class PropertyDetails : AppCompatActivity() {
         binding.submitReviewButton.setOnClickListener {
             val rating = binding.ratingBar.rating.toInt()
             val comment = binding.reviewMessage.text.toString()
-            submitReview(listingId, rating, comment)
+            submitReview(listingId, rating, comment) // Submits a review for the property.
         }
     }
 
-    //Check which extra was received and bind accordingly
+    // Determines which intent extra was received and loads the appropriate property data.
     private fun compareWhichDataToBind() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
 
-        val listingId: String = if(property != null){ // Data passed from Home Fragment
-            loadPropertyFromHomeFragment()
+        val listingId: String = if(property != null){
+            loadPropertyFromHomeFragment() // Data from Home Fragment.
         } else{
-            loadPropertyFromWishlistFragment() // Data passed from WishList Fragment
+            loadPropertyFromWishlistFragment() // Data from Wishlist Fragment.
         }
         return listingId
     }
 
     @SuppressLint("SetTextI18n")
-    //Load unfavourited property
+    // Loads and binds property data for unfavourited properties (from Home Fragment).
     private fun loadPropertyFromHomeFragment() : String {
         val property = intent.getSerializableExtra("property") as? ListingResponse
         getListingsAndBind(property?.propertyId ?: "")
-
         return property?.propertyId ?: "No Id"
     }
 
     @SuppressLint("SetTextI18n")
-    //Loaded favourited property
+    // Loads and binds property data for favourited properties (from Wishlist Fragment).
     private fun loadPropertyFromWishlistFragment() : String {
         val property = intent.getSerializableExtra("property-wishList") as? FavouriteListingsResponse
         getFavouriteListingsAndBind(property?.listingDetail?.listingID ?: "")
-
         return property?.listingDetail?.listingID ?: "No Id"
     }
 
-    //Function to update the favourite button UI
+    // Updates the favourite button UI based on the current favourite state.
     private fun updateFavouriteIcon(isFavourited: Boolean) {
-       if (isFavourited) {
-           binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
-           binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
-       } else {
-           binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
-           binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
-       }
+        if (isFavourited) {
+            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon_filled)
+            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.red))
+        } else {
+            binding.favouriteBtn.setImageResource(R.drawable.favourite_icon)
+            binding.favouriteBtn.setColorFilter(ContextCompat.getColor(this, R.color.grey))
+        }
     }
 
+    // Sends a request to favourite the property and updates UI/animations on success.
     private fun favouriteListing(listingId: String){
         showFavouriteLoading()
         val userId = tokenManger.getUser()
@@ -212,10 +217,9 @@ class PropertyDetails : AppCompatActivity() {
                             apiResponse.message?.let {
                                 CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
                             }
-                            isFavourite = !isFavourite //change the favourite icon UI
+                            isFavourite = !isFavourite
                             updateFavouriteIcon(isFavourite)
-
-                            //Animate the button to improve UI
+                            // Animates the favourite button for visual feedback.
                             val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
                                 binding.favouriteBtn,
                                 PropertyValuesHolder.ofFloat("scaleX", 1.2f),
@@ -226,7 +230,6 @@ class PropertyDetails : AppCompatActivity() {
                                 repeatCount = 1
                                 repeatMode = ObjectAnimator.REVERSE
                             }
-
                             scaleUp.start()
                         }
                     }
@@ -249,21 +252,19 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
-                        // Log out if unauthorized
+                        // Handles authentication errors by clearing session and redirecting to login.
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
-
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<FavouriteListingPostResponse>, t: Throwable) {
-                    // Log error message
                     hideFavouriteLoading()
                     CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Error", t.message.toString())
@@ -272,6 +273,7 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
+    // Fetches property details by ID and binds all relevant data to the UI.
     private fun getListingsAndBind(listingId : String){
         showLoading()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
@@ -284,17 +286,15 @@ class PropertyDetails : AppCompatActivity() {
                 hideLoading()
                 if(response.isSuccessful) {
                     response.body()?.let { listing ->
-                        //Load first image from the images array and hide the rest if not available
+                        // Loads main and extra property images, hiding unused image views.
                         val images = listing.imagesURL ?: emptyList()
                         val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
-
                         if (images.isNotEmpty()) {
                             Glide.with(this@PropertyDetails)
                                 .load(images[0])
                                 .placeholder(R.drawable.ic_empty)
                                 .error(R.drawable.ic_empty)
                                 .into(binding.imageMain)
-
                             images.drop(1).take(3).forEachIndexed { index, imageUrl ->
                                 Glide.with(this@PropertyDetails)
                                     .load(imageUrl)
@@ -302,12 +302,10 @@ class PropertyDetails : AppCompatActivity() {
                                     .error(R.drawable.ic_empty)
                                     .into(extraPhotos[index])
                             }
-
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
                         }
-
                         binding.locationText.text = listing.address
                         binding.titleText.text = listing.title
                         binding.propertyDescription.text = listing.description
@@ -316,29 +314,26 @@ class PropertyDetails : AppCompatActivity() {
                         isFavourite = listing.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
+                        // Dynamically adds amenity icons and labels to the UI.
                         val amenities = listing.amenities ?: emptyList()
                         val amenitiesContainer = binding.amenitiesContainer
                         amenitiesContainer.removeAllViews()
-
-                        //Declare inflater to dynamically add the amenities depending on how many there are
                         val inflater = LayoutInflater.from(this@PropertyDetails)
                         for (amenity in amenities) {
                             val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
                             val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
                             val textView = itemView.findViewById<TextView>(R.id.amenityText)
-
                             textView.text = amenity
-
                             val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
                             iconView.setImageResource(iconRes)
                             amenitiesContainer.addView(itemView)
                         }
 
+                        // Loads landlord information and profile image if available.
                         val landlordInfo = listing.landlordInfo
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
-
                             Glide.with(this@PropertyDetails)
                                 .load(landlordInfo.pfpImage)
                                 .placeholder(R.drawable.profile_icon)
@@ -362,14 +357,13 @@ class PropertyDetails : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    // Log out if unauthorized
+                    // Handles authentication errors by clearing session and redirecting to login.
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
-
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -377,13 +371,14 @@ class PropertyDetails : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ListingResponse>, t: Throwable) {
-                // Log error message
                 hideLoading()
                 CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Error", t.message.toString())
             }
         })
     }
+
+    // Fetches and binds details for a favourited property by its listing ID.
     private fun getFavouriteListingsAndBind(listingId : String){
         showLoading()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
@@ -398,15 +393,12 @@ class PropertyDetails : AppCompatActivity() {
                     response.body()?.let { property ->
                         val images = property.listingDetail?.images ?: emptyList()
                         val extraPhotos = listOf(binding.image2, binding.image3, binding.image4)
-
                         if (images.isNotEmpty()) {
                             Glide.with(this@PropertyDetails)
                                 .load(images[0])
                                 .placeholder(R.drawable.ic_empty)
                                 .error(R.drawable.ic_empty)
                                 .into(binding.imageMain)
-
-                            //Load the extra images into the image views
                             images.drop(1).take(3).forEachIndexed { index, imageUrl ->
                                 Glide.with(this@PropertyDetails)
                                     .load(imageUrl)
@@ -414,8 +406,6 @@ class PropertyDetails : AppCompatActivity() {
                                     .error(R.drawable.ic_empty)
                                     .into(extraPhotos[index])
                             }
-
-                            //Hide any additional image views not used
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
@@ -430,15 +420,12 @@ class PropertyDetails : AppCompatActivity() {
                         val amenities = property.listingDetail?.amenities ?: emptyList()
                         val amenitiesContainer = binding.amenitiesContainer
                         amenitiesContainer.removeAllViews()
-
                         val inflater = LayoutInflater.from(this@PropertyDetails)
                         for (amenity in amenities) {
                             val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
                             val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
                             val textView = itemView.findViewById<TextView>(R.id.amenityText)
-
                             textView.text = amenity
-
                             val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
                             iconView.setImageResource(iconRes)
                             amenitiesContainer.addView(itemView)
@@ -448,7 +435,6 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
-
                             Glide.with(this@PropertyDetails)
                                 .load(landlordInfo.pfpImage)
                                 .placeholder(R.drawable.profile_icon)
@@ -472,14 +458,12 @@ class PropertyDetails : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    // Log out if unauthorized
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
-
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -490,7 +474,6 @@ class PropertyDetails : AppCompatActivity() {
                 call: Call<FavouriteListingsResponse>,
                 t: Throwable
             ) {
-                // Log error message
                 hideLoading()
                 CustomToast.show(this@PropertyDetails, "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Error", t.message.toString())
@@ -498,11 +481,10 @@ class PropertyDetails : AppCompatActivity() {
         })
     }
 
-    //Function to remove favourite property if its unfavoruited
+    // Sends a request to unfavourite the property and updates UI on success.
     private fun deleteFavouriteItemFromDbApiCall(listingId: String?){
         showFavouriteLoading()
         val userId = tokenManger.getUser()
-
         val api = RetrofitInstance.createAPIInstance(applicationContext)
         if(userId != null && listingId != null){
             api.deleteFavouriteListing(userId, listingId).enqueue(object : Callback<UnfavouriteListingResponse> {
@@ -514,7 +496,6 @@ class PropertyDetails : AppCompatActivity() {
                         hideFavouriteLoading()
                         val responseBody = response.body()
                         if (responseBody != null) {
-                            // Successfully unfavourited
                             isFavourite = !isFavourite
                             responseBody.message?.let {
                                 CustomToast.show(this@PropertyDetails, it, CustomToast.Companion.ToastType.SUCCESS)
@@ -523,13 +504,12 @@ class PropertyDetails : AppCompatActivity() {
                         }
                     }
                     else{
-                        // Handle error response
                         hideFavouriteLoading()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
                                 val json = JSONObject(errorBody)
-                                when { // Check for both "message" and "error" keys
+                                when {
                                     json.has("message") -> json.getString("message")
                                     json.has("error") -> json.getString("error")
                                     else -> "Unknown error"
@@ -542,14 +522,12 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
-                        // Log out if unauthorized or session expired and clear all shared prefs
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
-
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                     }
@@ -566,17 +544,16 @@ class PropertyDetails : AppCompatActivity() {
         }
     }
 
-    //API call to submit a review for a property
+    // Submits a review for the property, handling both success and error responses.
     @SuppressLint("SuspiciousIndentation")
     private fun submitReview(listingId: String, rating: Int, comment: String) {
-
         val userId = tokenManger.getUser()
         if(userId != null){
-          val api = RetrofitInstance.createAPIInstance(applicationContext)
-          val request = CreateReviewRequest(
-              rating = rating,
-              comment = comment
-          )
+            val api = RetrofitInstance.createAPIInstance(applicationContext)
+            val request = CreateReviewRequest(
+                rating = rating,
+                comment = comment
+            )
             api.createReview(userId, listingId, request).enqueue(object : Callback<ReviewResponse> {
                 override fun onResponse(
                     call: Call<ReviewResponse?>,
@@ -591,13 +568,12 @@ class PropertyDetails : AppCompatActivity() {
                         }
                     }
                     else{
-                        // Handle error response
                         hideFavouriteLoading()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
                             try {
                                 val json = JSONObject(errorBody)
-                                when { // Check for both "message" and "error" keys
+                                when {
                                     json.has("message") -> json.getString("message")
                                     json.has("error") -> json.getString("error")
                                     else -> "Unknown error"
@@ -610,14 +586,12 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         CustomToast.show(this@PropertyDetails, errorMessage, CustomToast.Companion.ToastType.ERROR)
                         Log.e("Error", errorMessage)
-                        // Log out if unauthorized
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
-
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                     }
@@ -634,18 +608,23 @@ class PropertyDetails : AppCompatActivity() {
             })
         }
     }
+
+    // Shows a loading overlay while property details are being fetched.
     private fun showLoading() {
         binding.loadingOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the loading overlay after property details are loaded.
     private fun hideLoading() {
         binding.loadingOverlay.visibility = View.GONE
     }
 
+    // Shows a loading overlay while favourite/unfavourite actions are being processed.
     private fun showFavouriteLoading() {
         binding.favouriteOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the favourite loading overlay after actions are complete.
     private fun hideFavouriteLoading() {
         binding.favouriteOverlay.visibility = View.GONE
     }

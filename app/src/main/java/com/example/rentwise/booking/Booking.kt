@@ -37,12 +37,19 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
 import java.time.temporal.ChronoUnit
 
+// Activity for handling the property booking process, including file attachments, date selection, and API integration.
 class Booking : AppCompatActivity() {
+    // Binds the layout views for the booking screen.
     private lateinit var binding: ActivityBookingBinding
+    // Stores URIs of files attached by the user for booking support documents.
     private val filesAttached = mutableListOf<Uri>()
+    // Adapter for displaying attached files in a RecyclerView.
     private lateinit var fileAdapter: FileAttachmentAdapter
+    // Formatter for displaying and parsing dates in the required format.
     private val formatter: DateTimeFormatter = ofPattern("dd-MM-yyyy")
+    // Holds the price per night for the selected property.
     private var propertyPrice: Float? = null
+    // Manages secure storage and retrieval of user authentication tokens.
     private lateinit var tokenManger: TokenManger
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,13 +60,14 @@ class Booking : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        getPropertyDetails()
-        setupRecyclerView()
-        setupDatePickers()
-        setListeners()
+        getPropertyDetails() // Fetches and displays property details for the booking.
+        setupRecyclerView() // Initializes the RecyclerView for file attachments.
+        setupDatePickers() // Prepares date pickers for check-in and check-out selection.
+        setListeners() // Attaches all event listeners for user interaction.
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Sets up listeners for navigation, file uploads, and booking confirmation, including button animations.
     private fun setListeners(){
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, HomeScreen::class.java)
@@ -68,50 +76,37 @@ class Booking : AppCompatActivity() {
         }
         binding.btnBack.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
         binding.btnUploadFile.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
 
         binding.btnUploadFile.setOnClickListener {
-            // open file picker and handle file selection
-            filePickerLauncher.launch("*/*")
+            filePickerLauncher.launch("*/*") // Launches the file picker for user to select a file.
         }
 
         binding.btnConfirmBooking.setOnClickListener { v ->
-            // Click animation
             v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(50).withEndAction {
                 v.animate().scaleX(1f).scaleY(1f).setDuration(50).start()
             }.start()
-
-            // Call booking api after animation
-            createBookingApiCall()
+            createBookingApiCall() // Initiates the booking API call after animation.
         }
-
     }
 
+    // Handles the booking API call, prepares multipart data, validates input, and processes server responses.
     private fun createBookingApiCall() {
         showBookingProcessOverlay()
         val userId = tokenManger.getUser() ?: return
         val listingId = intent.getStringExtra("propertyId") ?: return
 
-        // Retrieve and validate input fields to avoid empty submissions as well as remove leading/trailing white spaces
         val checkInDate = binding.editCheckin.text.toString().trim()
         val checkOutDate = binding.editCheckout.text.toString().trim()
         val numberOfGuests = binding.editGuests.text.toString().trim()
@@ -123,18 +118,16 @@ class Booking : AppCompatActivity() {
             return
         }
 
-        // Prepare RequestBody instances for text fields
         val checkInBody = checkInDate.toRequestBody("text/plain".toMediaTypeOrNull())
         val checkOutBody = checkOutDate.toRequestBody("text/plain".toMediaTypeOrNull())
         val guestsBody = numberOfGuests.toRequestBody("text/plain".toMediaTypeOrNull())
         val priceBody = totalPrice.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val multipartFiles = mutableListOf<MultipartBody.Part>() // Prepare list for MultipartBody.Part
-        for (uri in filesAttached) { // Convert each URI to MultipartBody.Part
-            val inputStream = contentResolver.openInputStream(uri) // Open InputStream from URI
-            val bytes = inputStream!!.readBytes() // Read bytes from InputStream
-            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream" // Fallback MIME type if null
-            // Create RequestBody and MultipartBody.Part
+        val multipartFiles = mutableListOf<MultipartBody.Part>()
+        for (uri in filesAttached) {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream!!.readBytes()
+            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
             val body = MultipartBody.Part.createFormData(
                 "supportDocuments",
                 getFileName(uri),
@@ -143,7 +136,6 @@ class Booking : AppCompatActivity() {
             multipartFiles.add(body)
         }
 
-        // Ensure at least one file is attached
         if (multipartFiles.isEmpty()){
             hideBookingProcessOverlay()
             CustomToast.show(this, "Please attach at least one file", CustomToast.Companion.ToastType.ERROR)
@@ -157,7 +149,6 @@ class Booking : AppCompatActivity() {
                 if (response.isSuccessful) {
                     hideBookingProcessOverlay()
                     CustomToast.show(this@Booking, response.body()?.message ?: "Booking successful", CustomToast.Companion.ToastType.SUCCESS)
-                    // Clear the input fields and attached files
                     binding.editCheckin.text.clear()
                     binding.editCheckout.text.clear()
                     binding.editGuests.text.clear()
@@ -169,8 +160,6 @@ class Booking : AppCompatActivity() {
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody ?: "Unknown error"
                     CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
-
-                    //Logout user if 401 Unauthorized
                     if(response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
@@ -183,7 +172,6 @@ class Booking : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<BookingResponse>, t: Throwable) {
-                // Handle failure
                 hideBookingProcessOverlay()
                 Log.e("Failure", "API call failed: ${t.message}" )
                 CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
@@ -191,7 +179,7 @@ class Booking : AppCompatActivity() {
         })
     }
 
-    // Fetch property details from API and bind
+    // Fetches property details from the API and binds them to the UI, handling errors and authentication.
     private fun getPropertyDetails()  {
         showLoadingOverlay()
         val api = RetrofitInstance.createAPIInstance(applicationContext)
@@ -215,12 +203,9 @@ class Booking : AppCompatActivity() {
                         propertyPrice = property?.price
                     } else {
                         hideLoadingOverlay()
-
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody ?: "Unknown error"
-
                         CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
-
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
@@ -233,7 +218,6 @@ class Booking : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<ListingResponse>, t: Throwable) {
-                    // Handle failure
                     hideLoadingOverlay()
                     Log.e("Failure", "API call failed: ${t.message}" )
                     CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
@@ -242,31 +226,26 @@ class Booking : AppCompatActivity() {
         }
     }
 
-
-    // Allowed MIME types for file selection
+    // List of allowed MIME types for file selection to ensure only supported files are attached.
     private val allowedMimeTypes = arrayOf(
-        "image/jpeg", // jpg, jpeg
-        "image/png",  // png
-        "application/pdf", // pdf
-        "application/msword", // doc
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // docx
+        "image/jpeg",
+        "image/png",
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
 
-    // File picker launcher
+    // Handles file selection from the file picker, validates type and duplicates, and updates the RecyclerView.
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        // Check if a file was selected
         if (uri != null) {
             val mimeType = contentResolver.getType(uri)
-            // Validate MIME type
             if (mimeType !in allowedMimeTypes) {
                 CustomToast.show(this, "Invalid file type", CustomToast.Companion.ToastType.ERROR)
                 return@registerForActivityResult
             }
-            // Check for duplicates
             if (filesAttached.contains(uri)) {
                 CustomToast.show(this, "File already attached", CustomToast.Companion.ToastType.ERROR)
             } else {
-                // Add new file
                 filesAttached.add(uri)
                 fileAdapter.notifyItemInserted(filesAttached.size - 1)
                 CustomToast.show(this, "Selected file: ${getFileName(uri)}", CustomToast.Companion.ToastType.INFO)
@@ -274,12 +253,10 @@ class Booking : AppCompatActivity() {
         }
     }
 
-    // Get file name from URI
-    //Ryudith Tutorial. 2023. Get File Real Name, File Reference, And File MimeType From Android File Picker. [video online].
-    //Available at: <https://youtu.be/OFzrYr_vVWg?si=HDnikNtN69R5TE_B> [Accessed 15 September 2025].
+    // Retrieves the display name of a file from its URI for user feedback and multipart upload.
     private fun getFileName(uri: Uri): String {
         var result: String? = null
-        if (uri.scheme == "content") { // Use content resolver to get file name
+        if (uri.scheme == "content") {
             contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
@@ -292,7 +269,7 @@ class Booking : AppCompatActivity() {
         return result ?: "unknown_file"
     }
 
-    // Setup RecyclerView for displaying selected files
+    // Initializes the RecyclerView for displaying attached files and handles file removal.
     private fun setupRecyclerView() {
         fileAdapter = FileAttachmentAdapter(filesAttached) { position ->
             filesAttached.removeAt(position)
@@ -303,37 +280,36 @@ class Booking : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
+    // Prepares date pickers for check-in and check-out fields, ensuring correct order and format.
     private fun setupDatePickers() {
         binding.editCheckin.setOnClickListener {
             showCheckInPicker()
         }
-
         binding.editCheckout.setOnClickListener {
             showCheckOutPicker()
         }
     }
+
     @SuppressLint("SetTextI18n")
-    //Coding with Dev. 2023. android date picker dialog example | DatePickerDialog - Android Studio Tutorial | Kotlin. [video online]
-    //Available at: <https://youtu.be/DpL8DhCNKdE?si=QkImhVsJSf1F9lTu> [Accessed 15 September 2025].
+    // Displays a date picker dialog for selecting the check-in date, restricting to today or later.
     private fun showCheckInPicker() {
         val today = LocalDate.now()
-
         val datePicker = DatePickerDialog(
             this,
-            R.style.RentWiseDatePickerTheme, //Customised theme for the date picker
+            R.style.RentWiseDatePickerTheme,
             { _, year, month, dayOfMonth ->
-                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth) //Get the selected date
-                binding.editCheckin.setText(selectedDate.format(formatter)) //Bind the selected date with the correct format
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                binding.editCheckin.setText(selectedDate.format(formatter))
             },
-            //Set initial date shown in the picker to today
             today.year,
-            today.monthValue - 1, // Month is 0-based in DatePickerDialog
+            today.monthValue - 1,
             today.dayOfMonth
         )
-        datePicker.datePicker.minDate = System.currentTimeMillis() //Set the minimum pickable date to current date
+        datePicker.datePicker.minDate = System.currentTimeMillis()
         datePicker.show()
     }
 
+    // Displays a date picker dialog for selecting the check-out date, ensuring it is after check-in.
     private fun showCheckOutPicker() {
         val checkInText = binding.editCheckin.text.toString()
         if (checkInText.isEmpty()) {
@@ -346,9 +322,7 @@ class Booking : AppCompatActivity() {
             R.style.RentWiseDatePickerTheme,
             { _, year, month, dayOfMonth ->
                 val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                //Check if the difference between check-in and check out is less than 1 day
                 val diffDays = ChronoUnit.DAYS.between(checkInDate, selectedDate)
-
                 if (diffDays < 1) {
                     CustomToast.show(this, "Checkout must be at least 1 day after check-in", CustomToast.Companion.ToastType.ERROR)
                 } else {
@@ -360,8 +334,6 @@ class Booking : AppCompatActivity() {
             checkInDate.monthValue - 1,
             checkInDate.dayOfMonth + 1
         )
-
-        //Calculate the minimum selected date for check-out
         val minCheckoutMillis = checkInDate.plusDays(1)
             .atStartOfDay(systemDefault())
             .toInstant()
@@ -371,22 +343,17 @@ class Booking : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    //Calculate the price based on the property price per night and difference in days
-    //between check in and check out
+    // Calculates the total booking price based on the number of nights and property price per night.
     private fun calculateTotalPrice() {
         val propertyPricePerNight = propertyPrice ?: return
-
         val checkInText = binding.editCheckin.text.toString()
         val checkOutText = binding.editCheckout.text.toString()
-
         if (checkInText.isEmpty() || checkOutText.isEmpty()) {
             binding.textTotalPrice.text = "R0.00"
             return
         }
-
         val checkInDate = LocalDate.parse(checkInText, formatter)
         val checkOutDate = LocalDate.parse(checkOutText, formatter)
-
         val nights = ChronoUnit.DAYS.between(checkInDate, checkOutDate).toInt()
         if (nights > 0) {
             val totalPrice = nights * propertyPricePerNight
@@ -396,15 +363,19 @@ class Booking : AppCompatActivity() {
         }
     }
 
+    // Shows a loading overlay to block user interaction during property detail fetch.
     private fun showLoadingOverlay(){
         binding.overlayLoading.visibility = View.VISIBLE
     }
+    // Hides the loading overlay after property detail fetch is complete.
     private fun hideLoadingOverlay(){
         binding.overlayLoading.visibility = View.GONE
     }
+    // Shows an overlay during the booking process to prevent duplicate submissions.
     private fun showBookingProcessOverlay(){
         binding.createBookingOverlay.visibility = View.VISIBLE
     }
+    // Hides the booking process overlay after completion or error.
     private fun hideBookingProcessOverlay() {
         binding.createBookingOverlay.visibility = View.GONE
     }

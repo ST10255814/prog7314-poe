@@ -7,37 +7,45 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-//Still working on its implementation for part 3 as our user defined feature (incomplete)
+// Singleton object responsible for configuring and providing an instance of the OpenRouter API service.
+// It sets up the Retrofit client with custom headers, logging, and timeout settings for secure and reliable communication with the OpenRouter AI API.
 object OpenRouterInstance {
+    // Base URL for all OpenRouter API requests, ensuring all endpoints are relative to this root.
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
-    private const val API_KEY = "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" // AI API KEY
+    // API key used for authenticating requests to the OpenRouter AI service.
+    private const val API_KEY = "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"
 
+    // Creates and returns an implementation of the OpenRouterApiService interface, configured with custom headers and logging.
     fun createAPI(): OpenRouterApiService {
+        // Configures HTTP logging to capture request and response details for debugging.
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
+        // Builds an OkHttpClient with custom timeouts, logging, and required headers for every request.
         val client = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(logging)
+            .connectTimeout(30, TimeUnit.SECONDS) // Sets connection timeout to 30 seconds.
+            .readTimeout(30, TimeUnit.SECONDS)    // Sets read timeout to 30 seconds.
+            .writeTimeout(30, TimeUnit.SECONDS)   // Sets write timeout to 30 seconds.
+            .addInterceptor(logging)              // Adds logging interceptor for HTTP traffic.
             .addInterceptor { chain ->
+                // Adds authentication and metadata headers to every outgoing request.
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $API_KEY")
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("HTTP-Referer", "app://rentwise")
-                    .addHeader("X-Title", "RentWise FAQ ChatBot")
+                    .addHeader("Authorization", "Bearer $API_KEY") // API key for authentication.
+                    .addHeader("Content-Type", "application/json") // Specifies JSON payloads.
+                    .addHeader("HTTP-Referer", "app://rentwise")   // Identifies the app as the request source.
+                    .addHeader("X-Title", "RentWise FAQ ChatBot")  // Custom title for API usage context.
                     .build()
                 chain.proceed(request)
             }
             .build()
 
+        // Constructs and returns a Retrofit instance configured for the OpenRouter API.
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)                        // Sets the API base URL.
+            .client(client)                           // Attaches the custom OkHttpClient.
+            .addConverterFactory(GsonConverterFactory.create()) // Enables JSON serialization/deserialization.
             .build()
-            .create(OpenRouterApiService::class.java)
+            .create(OpenRouterApiService::class.java) // Creates the API service interface implementation.
     }
 }

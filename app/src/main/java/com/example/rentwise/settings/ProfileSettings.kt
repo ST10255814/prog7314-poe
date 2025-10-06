@@ -37,13 +37,21 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
 import java.util.Calendar
 
+// Activity for managing user profile settings, including updating personal information and profile picture.
+// Handles user authentication, data binding, and communication with the backend API for profile updates.
 class ProfileSettings : AppCompatActivity() {
+    // Binds the layout for profile settings, providing access to all UI elements.
     private lateinit var binding: ActivityProfileSettingsBinding
+    // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
+    // Stores multipart form data for updating user profile.
     private val settingsParts = mutableListOf<MultipartBody.Part>()
+    // Holds the URI of the selected profile picture for upload.
     private var selectedProfilePic: Uri? = null
+    // Formats dates for display and API submission.
     private val formatter: DateTimeFormatter = ofPattern("yyyy-MM-dd")
 
+    // Initializes the activity, sets up listeners, date pickers, and loads user settings.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,15 +66,12 @@ class ProfileSettings : AppCompatActivity() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Attaches click and touch listeners for all interactive UI elements, including navigation and saving profile changes.
     private fun setListeners(){
         binding.btnBack.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
@@ -77,12 +82,8 @@ class ProfileSettings : AppCompatActivity() {
         }
         binding.saveButton.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
@@ -91,19 +92,17 @@ class ProfileSettings : AppCompatActivity() {
         }
         binding.editProfileImage.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
+                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             }
             false
         }
         binding.editProfileImage.setOnClickListener {
-            filePickerLauncher.launch("image/*") //Image picker launcher
+            filePickerLauncher.launch("image/*") // Launches image picker for profile picture selection.
         }
     }
+
+    // Fetches the current user's profile settings from the backend and binds them to the UI.
     private fun getUserSettingsByLoggedInUserApiCall() {
         showOverlay()
         val userId = tokenManger.getUser()
@@ -119,7 +118,7 @@ class ProfileSettings : AppCompatActivity() {
                         hideOverlay()
                         val userSettings = response.body()
                         if (userSettings != null){
-                            //Bind the fetched user profile data
+                            // Binds fetched user profile data to the UI fields.
                             userSettings.profile.let {
                                 if(it != null){
                                     with(binding){
@@ -132,7 +131,7 @@ class ProfileSettings : AppCompatActivity() {
                                     }
                                 }
                             }
-                            //Bind the users pfp if it exists if not assign a default
+                            // Loads the user's profile picture or assigns a default if not available.
                             userSettings.profile?.pfpImage.let {
                                 if (it != null){
                                     Glide.with(this@ProfileSettings)
@@ -166,14 +165,14 @@ class ProfileSettings : AppCompatActivity() {
                         } else {
                             "Unknown error"
                         }
-                        // Log out if unauthorized
+                        // Handles authentication errors by clearing session and redirecting to login.
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
 
                             val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                         CustomToast.show(this@ProfileSettings, errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -189,39 +188,39 @@ class ProfileSettings : AppCompatActivity() {
         }
     }
 
+    // Collects user input, prepares multipart form data, and sends an update request to the backend.
     private fun updateUserSettings(){
         showUpdatingOverlay()
         val userId = tokenManger.getUser() ?: return
 
-        //Get the user inputs
+        // Collects user input from UI fields.
         val usernameInput = binding.editUsername.text.toString().trim()
         val firstNameInput = binding.editFirstName.text.toString().trim()
         val surnameInput = binding.editSurname.text.toString().trim()
         val phoneInput = binding.editPhone.text.toString().trim()
         val dobInput = binding.editDob.text.toString().trim()
 
-        //Create the form data for none null data
+        // Creates multipart form data for non-null fields.
         createPart("username", usernameInput)?.let { settingsParts.add(it) }
         createPart("firstName", firstNameInput)?.let { settingsParts.add(it) }
         createPart("surname", surnameInput)?.let { settingsParts.add(it) }
         createPart("phone", phoneInput)?.let { settingsParts.add(it) }
         createPart("DoB", dobInput)?.let { settingsParts.add(it) }
 
-        // Convert attached image URI to MultipartBody.Part
+        // Converts the selected image URI to MultipartBody.Part for upload.
         if(selectedProfilePic != null){
-            val inputStream = contentResolver.openInputStream(selectedProfilePic!!) // Open InputStream from URI
-            val bytes = inputStream!!.readBytes() // Read bytes from InputStream
-            val mimeType = contentResolver.getType(selectedProfilePic!!) ?: "application/octet-stream" // Fallback MIME type if null
-            // Create RequestBody and MultipartBody.Part for the pfp
+            val inputStream = contentResolver.openInputStream(selectedProfilePic!!)
+            val bytes = inputStream!!.readBytes()
+            val mimeType = contentResolver.getType(selectedProfilePic!!) ?: "application/octet-stream"
             val body = MultipartBody.Part.createFormData(
                 "profilePicture",
                 getFileName(selectedProfilePic!!),
                 RequestBody.create(mimeType.toMediaTypeOrNull(), bytes)
             )
-            settingsParts.add(body) //add it to the list to be passed to the api
+            settingsParts.add(body)
         }
 
-        val api = RetrofitInstance.createAPIInstance(applicationContext) //Initialise the api instance
+        val api = RetrofitInstance.createAPIInstance(applicationContext)
         api.updateUserSettings(userId, settingsParts).enqueue( object : Callback<UpdateSettingsResponse> {
             override fun onResponse(
                 call: Call<UpdateSettingsResponse?>,
@@ -231,7 +230,7 @@ class ProfileSettings : AppCompatActivity() {
                     hideUpdatingOverlay()
                     val responseBody = response.body()
                     if(responseBody != null){
-                        //Display success message
+                        // Displays a success message and updates the stored profile picture if changed.
                         CustomToast.show(this@ProfileSettings, response.body()?.message ?: "Profile Updated", CustomToast.Companion.ToastType.SUCCESS)
                         settingsParts.clear()
                         responseBody.profile?.pfpImage.let {
@@ -254,14 +253,14 @@ class ProfileSettings : AppCompatActivity() {
                     } else {
                         "Unknown error"
                     }
-                    // Log out if unauthorized
+                    // Handles authentication errors by clearing session and redirecting to login.
                     if (response.code() == 401) {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
 
                         val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     CustomToast.show(this@ProfileSettings, errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -279,7 +278,7 @@ class ProfileSettings : AppCompatActivity() {
         })
     }
 
-    //Method to help create multi part form data
+    // Creates a multipart form data part for a given key-value pair, only if the value is not blank.
     private fun createPart(key: String, value: String?): MultipartBody.Part? {
         return value?.takeIf { it.isNotBlank() }?.let {
             val requestBody = it.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -287,25 +286,20 @@ class ProfileSettings : AppCompatActivity() {
         }
     }
 
-
-    //Allowed MIME types
+    // Allowed MIME types for profile picture uploads.
     private val allowedMimeTypes = arrayOf(
-        "image/jpeg", // jpg, jpeg
-        "image/png"  // png
+        "image/jpeg",
+        "image/png"
     )
 
-    // File picker launcher intent
+    // Handles the result of the file picker, validating and displaying the selected image.
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        // Check if a file was selected
         if (uri != null) {
             val mimeType = contentResolver.getType(uri)
-            // Validate MIME type
             if (mimeType !in allowedMimeTypes) {
                 CustomToast.show(this, "Invalid file type", CustomToast.Companion.ToastType.ERROR)
                 return@registerForActivityResult
             }
-
-            // Add new file
             selectedProfilePic = uri
             Glide.with(this)
                 .load(selectedProfilePic)
@@ -316,10 +310,10 @@ class ProfileSettings : AppCompatActivity() {
         }
     }
 
-    // Get file name from URI
+    // Retrieves the file name from a URI, using the content resolver or path as fallback.
     private fun getFileName(uri: Uri): String {
         var result: String? = null
-        if (uri.scheme == "content") { // Use content resolver to get file name
+        if (uri.scheme == "content") {
             contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
@@ -332,28 +326,23 @@ class ProfileSettings : AppCompatActivity() {
         return result
     }
 
+    // Sets up the date picker for selecting the date of birth, with constraints for valid date ranges.
     private fun setupDatePickers() {
         binding.editDob.setOnClickListener {
             showDatePicker()
         }
     }
 
-    //Modern DoB date picker with help from OpenAI
-    //OpenAI. 2025. For this current date picker i have been using, please show me how i can make it so that this is more user friendly when selecting
-    // a birth date as with the current calendar its not user friendly. Also how can i set the max date to todays date as well as set the
-    // minimum selectable date?. [ChatGPT]. Available at: <https://chatgpt.com/share/68d2a237-db98-8012-adab-45028f212c1c> [Accessed 23 September 2025].
+    // Displays a user-friendly date picker for selecting the date of birth, with min/max constraints.
     private fun showDatePicker() {
-        // Maximum selectable date (today)
         val today = MaterialDatePicker.todayInUtcMilliseconds()
-
-        // Minimum selectable date (100 years ago)
         val hundredYearsAgo = Calendar.getInstance().apply {
             add(Calendar.YEAR, -100)
         }.timeInMillis
 
         val constraints = CalendarConstraints.Builder()
-            .setStart(hundredYearsAgo) // min date
-            .setEnd(today) // max date
+            .setStart(hundredYearsAgo)
+            .setEnd(today)
             .build()
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -363,7 +352,6 @@ class ProfileSettings : AppCompatActivity() {
             .build()
 
         datePicker.addOnPositiveButtonClickListener { selection ->
-            // selection is in UTC milliseconds
             val selectedDate = Instant.ofEpochMilli(selection)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
@@ -372,15 +360,20 @@ class ProfileSettings : AppCompatActivity() {
 
         datePicker.show(supportFragmentManager, "DATE_PICKER")
     }
+
+    // Shows a loading overlay while user profile data is being fetched.
     private fun showOverlay(){
         binding.fullScreenOverlay.visibility = View.VISIBLE
     }
+    // Hides the loading overlay after user profile data is loaded.
     private fun hideOverlay(){
         binding.fullScreenOverlay.visibility = View.GONE
     }
+    // Shows a loading overlay while profile updates are being processed.
     private fun showUpdatingOverlay(){
         binding.updatingOverlay.visibility = View.VISIBLE
     }
+    // Hides the loading overlay after profile updates are complete.
     private fun hideUpdatingOverlay(){
         binding.updatingOverlay.visibility = View.GONE
     }

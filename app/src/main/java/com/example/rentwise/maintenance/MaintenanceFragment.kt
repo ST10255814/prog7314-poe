@@ -30,14 +30,21 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Callback
 
+// Fragment for submitting maintenance requests, handling file attachments, dropdowns, and API calls.
 class MaintenanceFragment : Fragment() {
+    // Binds the layout for the maintenance request form and manages UI elements.
     private var _binding: FragmentMaintenanceBinding? = null
     private val binding get() = _binding!!
+    // Handles user authentication and session data.
     private lateinit var tokenManager: TokenManger
+    // Stores available units for the dropdown, populated from API.
     private var unitDropdown = mutableListOf<ListingDropDownItem>()
+    // Adapter for displaying attached files in a RecyclerView.
     private lateinit var fileAdapter: FileAttachmentAdapter
+    // Tracks URIs of files attached by the user.
     private val filesAttached = mutableListOf<Uri>()
 
+    // Inflates the fragment layout and initializes view binding.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,21 +53,24 @@ class MaintenanceFragment : Fragment() {
         return binding.root
     }
 
+    // Cleans up the binding to prevent memory leaks when the fragment is destroyed.
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
+    // Sets up listeners, dropdowns, and file attachment RecyclerView after the view is created.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         tokenManager = TokenManger(requireContext())
 
-        setListeners()
-        updateDropdowns()
-        setupRecyclerView()
+        setListeners() // Attaches click and touch listeners for UI controls.
+        updateDropdowns() // Populates priority and unit dropdowns from resources and API.
+        setupRecyclerView() // Configures RecyclerView for displaying attached files.
     }
 
+    // Populates the priority dropdown from resources and fetches available units for the unit dropdown.
     private fun updateDropdowns() {
         if (!isAdded || _binding == null) return
         val priority = resources.getStringArray(R.array.priority_levels).toList()
@@ -69,10 +79,11 @@ class MaintenanceFragment : Fragment() {
         binding.priorityDropdown.setAdapter(priorityAdapter)
         binding.priorityDropdown.setText(priority[0], false) // Set initial value to first value
 
-        getAllListingsForDropDown()
+        getAllListingsForDropDown() // Fetches available units from the backend.
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Sets up click and touch listeners for file upload and request submission buttons.
     private fun setListeners(){
         binding.btnUploadFile.setOnTouchListener { v, event ->
             when (event.action) {
@@ -97,25 +108,26 @@ class MaintenanceFragment : Fragment() {
             false
         }
         binding.btnUploadFile.setOnClickListener {
-            // Launch file picker for images
+            // Launches the file picker for image selection.
             filePickerLauncher.launch("*/*")
         }
         binding.btnSubmitRequest.setOnClickListener {
-            createMaintenanceTicket()
+            createMaintenanceTicket() // Initiates maintenance request submission.
         }
     }
 
+    // Validates input, prepares multipart request, and submits a maintenance ticket via API.
     private fun createMaintenanceTicket(){
         showSubmitLoadingOverlay()
         val api = RetrofitInstance.createAPIInstance(requireContext())
         val userID = tokenManager.getUser() ?: return
 
-        // Validate inputs
         val issue = binding.editIssueTitle.text.toString().trim()
         val description = binding.editIssueDescription.text.toString().trim()
         val listing = binding.unitDropdown.text.toString().trim()
         val priority = binding.priorityDropdown.text.toString().trim()
 
+        // Ensures all required fields are filled and description is sufficiently detailed.
         if (issue.isEmpty() || description.isEmpty() || listing.isEmpty() || priority.isEmpty()) {
             CustomToast.show(requireContext(), "Please fill in all fields", CustomToast.Companion.ToastType.ERROR)
             hideSubmitLoadingOverlay()
@@ -128,7 +140,7 @@ class MaintenanceFragment : Fragment() {
             return
         }
 
-        //Find listing ID from dropdown selection
+        // Finds the selected unit's ID from the dropdown.
         val listingID = unitDropdown.find { it.name == listing }?.id ?: run {
             CustomToast.show(
                 requireContext(),
@@ -139,16 +151,16 @@ class MaintenanceFragment : Fragment() {
             return
         }
 
-        // Prepare RequestBody parts
+        // Prepares text fields as RequestBody parts for the API call.
         val issuePart = issue.toRequestBody("text/plain".toMediaTypeOrNull())
         val descriptionPart = description.toRequestBody("text/plain".toMediaTypeOrNull())
         val priorityPart = priority.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        //Prepare file parts
+        // Converts attached files into MultipartBody.Part objects for upload.
         val documentParts = mutableListOf<MultipartBody.Part>()
         for(uri in filesAttached) {
             val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val fileBytes = inputStream!!.readBytes() // Read file bytes
+            val fileBytes = inputStream!!.readBytes()
             val mimeType = requireContext().contentResolver.getType(uri) ?: "application/octet-stream"
             val body = MultipartBody.Part.createFormData(
                 "documentURL",
@@ -158,14 +170,14 @@ class MaintenanceFragment : Fragment() {
             documentParts.add(body)
         }
 
-        // Ensure at least one file is attached
+        // Requires at least one file to be attached before submission.
         if(documentParts.isEmpty()){
             CustomToast.show(requireContext(), "Please attach at least one file", CustomToast.Companion.ToastType.ERROR)
             hideSubmitLoadingOverlay()
             return
         }
 
-        // Make API call with prepared parts
+        // Submits the maintenance request to the backend and handles the response.
         api.createMaintenanceRequest(userID, listingID, issuePart, descriptionPart, priorityPart, documentParts)
             .enqueue(object : Callback<com.example.rentwise.data_classes.MaintenanceResponse> {
                 @SuppressLint("NotifyDataSetChanged")
@@ -180,7 +192,7 @@ class MaintenanceFragment : Fragment() {
                         val message = responseBody?.message ?: "Maintenance request created successfully"
                         CustomToast.show(requireContext(), message, CustomToast.Companion.ToastType.SUCCESS)
 
-                        // Clear inputs and reset dropdowns
+                        // Resets form fields and clears attached files after successful submission.
                         binding.editIssueTitle.text?.clear()
                         binding.editIssueDescription.text?.clear()
                         if (unitDropdown.isNotEmpty()) {
@@ -192,7 +204,7 @@ class MaintenanceFragment : Fragment() {
                         fileAdapter.notifyDataSetChanged()
 
                     } else {
-                        // Handle error response
+                        // Handles error responses, including unauthorized access.
                         hideSubmitLoadingOverlay()
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = if (errorBody != null) {
@@ -205,14 +217,13 @@ class MaintenanceFragment : Fragment() {
                         } else {
                             "Unknown error"
                         }
-                        // Log out if unauthorized
                         if (response.code() == 401) {
                             tokenManager.clearToken()
                             tokenManager.clearUser()
                             tokenManager.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                         CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -223,7 +234,7 @@ class MaintenanceFragment : Fragment() {
                     call: retrofit2.Call<com.example.rentwise.data_classes.MaintenanceResponse>,
                     t: Throwable
                 ) {
-                    // Handle failure
+                    // Handles network or unexpected errors during submission.
                     if (!isAdded || _binding == null) return
                     hideSubmitLoadingOverlay()
                     CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
@@ -232,6 +243,7 @@ class MaintenanceFragment : Fragment() {
             })
     }
 
+    // Fetches all available listings for the unit dropdown, filtering out invalid entries.
     private fun getAllListingsForDropDown() {
         showLoadingOverlay()
         val api = RetrofitInstance.createAPIInstance(requireContext())
@@ -244,16 +256,12 @@ class MaintenanceFragment : Fragment() {
                 if (response.isSuccessful) {
                     hideLoadingOverlay()
                     val listings = response.body()
-                    //  Check for null or empty list
                     if (!listings.isNullOrEmpty()) {
-                        // Map and filter out nulls
                         unitDropdown = listings.mapNotNull { listing ->
                             val title = listing.title
                             val id = listing.propertyId
-
-                            // Only include if both title and id are non-null and non-empty
                             if (!title.isNullOrEmpty() && !id.isNullOrEmpty()) {
-                                ListingDropDownItem(id, title) // Add to the list
+                                ListingDropDownItem(id, title)
                             } else null
                         }.toMutableList()
 
@@ -271,7 +279,7 @@ class MaintenanceFragment : Fragment() {
                     }
                 }
                 else{
-                    // Handle error response
+                    // Handles error responses and logs out if unauthorized.
                     hideLoadingOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
@@ -284,21 +292,20 @@ class MaintenanceFragment : Fragment() {
                     } else {
                         "Unknown error"
                     }
-                    // Log out if unauthorized
                     if (response.code() == 401) {
                         tokenManager.clearToken()
                         tokenManager.clearUser()
                         tokenManager.clearPfp()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
             override fun onFailure(call: retrofit2.Call<List<ListingResponse>>, t: Throwable) {
-                // Handle failure
+                // Handles network or unexpected errors during listing fetch.
                 if (!isAdded || _binding == null) return
                 hideLoadingOverlay()
                 CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
@@ -307,42 +314,42 @@ class MaintenanceFragment : Fragment() {
         })
     }
 
+    // Displays a loading overlay while listings are being fetched.
     private fun showLoadingOverlay(){
         binding.overlayLoadingProperties.visibility = View.VISIBLE
     }
 
+    // Hides the loading overlay after listings are loaded.
     private fun hideLoadingOverlay(){
         binding.overlayLoadingProperties.visibility = View.GONE
     }
 
+    // Shows a loading overlay during maintenance request submission.
     private fun showSubmitLoadingOverlay(){
         binding.submissionOverlay.visibility = View.VISIBLE
     }
+    // Hides the submission loading overlay after request is processed.
     private fun hideSubmitLoadingOverlay(){
         binding.submissionOverlay.visibility = View.GONE
     }
 
-    // Allowed MIME types for file selection
+    // Specifies allowed MIME types for file attachments.
     private val allowedMimeTypes = arrayOf(
-        "image/jpeg", // jpg, jpeg
-        "image/png"  // png
+        "image/jpeg",
+        "image/png"
     )
 
-    // File picker launcher
+    // Handles file selection, validates type, and updates the attached files list.
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        // Check if a file was selected
         if (uri != null) {
             val mimeType = requireContext().contentResolver.getType(uri)
-            // Validate MIME type
             if (mimeType !in allowedMimeTypes) {
                 CustomToast.show(requireContext(), "Invalid file type", CustomToast.Companion.ToastType.ERROR)
                 return@registerForActivityResult
             }
-            // Check for duplicates
             if (filesAttached.contains(uri)) {
                 CustomToast.show(requireContext(), "File already attached", CustomToast.Companion.ToastType.ERROR)
             } else {
-                // Add new file
                 filesAttached.add(uri)
                 fileAdapter.notifyItemInserted(filesAttached.size - 1)
                 CustomToast.show(requireContext(), "Selected file: ${getFileName(uri)}", CustomToast.Companion.ToastType.INFO)
@@ -350,10 +357,10 @@ class MaintenanceFragment : Fragment() {
         }
     }
 
-    // Get file name from URI
+    // Retrieves the display name of a file from its URI for user feedback and upload.
     private fun getFileName(uri: Uri): String {
         var result: String? = null
-        if (uri.scheme == "content") { // Use content resolver to get file name
+        if (uri.scheme == "content") {
             requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
@@ -366,7 +373,7 @@ class MaintenanceFragment : Fragment() {
         return result ?: "unknown_file"
     }
 
-    // Setup RecyclerView for displaying selected docs
+    // Configures the RecyclerView to display attached files and handle file removal.
     private fun setupRecyclerView() {
         fileAdapter = FileAttachmentAdapter(filesAttached) { position ->
             filesAttached.removeAt(position)

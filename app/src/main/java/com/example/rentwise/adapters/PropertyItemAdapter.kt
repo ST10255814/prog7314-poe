@@ -11,14 +11,18 @@ import com.example.rentwise.R
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ItemPropertyCardBinding
 
+// Adapter for displaying a list of property items in a RecyclerView.
+// Each property card shows an image, title, address, amenities, and price, and supports click and touch animations.
 class PropertyItemAdapter(
     private var properties: List<ListingResponse>,
     private val onItemClick: (ListingResponse) -> Unit
 ) : RecyclerView.Adapter<PropertyItemAdapter.PropertyViewHolder>() {
 
+    // ViewHolder class that holds the binding for each property card layout.
     class PropertyViewHolder(val binding: ItemPropertyCardBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    // Inflates the property card layout and creates a new ViewHolder for each property.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
         val binding = ItemPropertyCardBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -28,12 +32,15 @@ class PropertyItemAdapter(
         return PropertyViewHolder(binding)
     }
 
+    // Returns the total number of property items to be displayed in the RecyclerView.
     override fun getItemCount(): Int = properties.size
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
+    // Binds the property data to the ViewHolder, populating all relevant fields and handling UI interactions.
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val property = properties[position] //Get current position on the property in use
-        //List for all amenities binding labels
+        val property = properties[position] // Retrieves the property at the current position.
+
+        // Prepares a list of TextViews for displaying up to four amenities.
         val amenitiesLabels = listOf(
             holder.binding.tvLabel1,
             holder.binding.tvLabel2,
@@ -41,32 +48,38 @@ class PropertyItemAdapter(
             holder.binding.tvLabel4
         )
 
-        //Bind the property data
+        // Binds property details to the UI components.
         with(holder.binding) {
+            // Loads the first image URL using Glide, or a placeholder if unavailable.
             val firstImage = property.imagesURL?.firstOrNull()
-            Glide.with(imageProperty.context) //Glide used to display image URLs
+            Glide.with(imageProperty.context)
                 .load(firstImage ?: R.drawable.ic_empty)
                 .placeholder(R.drawable.ic_empty)
                 .error(R.drawable.ic_empty)
                 .into(imageProperty)
 
+            // Sets the property title or a default if missing.
             tvTitle.text = property.title ?: "No Title"
+            // Sets the property address or a default if missing.
             tvAddress.text = property.address ?: "No Address"
 
-            amenitiesLabels.forEach { it.visibility = View.GONE } //Hide all amenities labels at start
+            // Hides all amenities labels initially.
+            amenitiesLabels.forEach { it.visibility = View.GONE }
 
-            //Loop through the first 4 amenities and bind (only 4 amenities can be loaded within the view).
+            // Displays up to four amenities, making the corresponding labels visible.
             property.amenities?.take(4)?.forEachIndexed { index, amenity ->
                 amenitiesLabels[index].text = amenity
                 amenitiesLabels[index].visibility = View.VISIBLE
             }
 
-            tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A" //Format price and assign a default if null
+            // Sets the property price with formatting, or a default if missing.
+            tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A"
         }
 
-        holder.binding.root.setOnClickListener { onItemClick(property) } //on click for each property view
+        // Sets up a click listener for the property card, triggering the provided callback.
+        holder.binding.root.setOnClickListener { onItemClick(property) }
 
-        //Animation for on touch to enhance UX
+        // Adds a touch animation to the property card for enhanced user experience.
         holder.binding.root.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
@@ -76,7 +89,7 @@ class PropertyItemAdapter(
         }
     }
 
-    //Used to change the properties displayed according to filtered lists
+    // Updates the displayed property list with a filtered list and refreshes the RecyclerView.
     @SuppressLint("NotifyDataSetChanged")
     fun updateListViaFilters(filteredList: List<ListingResponse>) {
         properties = filteredList

@@ -15,11 +15,14 @@ import com.example.rentwise.databinding.ActivityFaqchatBotBinding
 import com.example.rentwise.home.HomeScreen
 import kotlinx.coroutines.launch
 
-//Still working on this for part 3 implementation. NB NOT TO BE MARKED AS OF YET
+// Activity responsible for managing the FAQ chatbot interface, including message input, display, and AI interaction.
 class FAQChatBot : AppCompatActivity() {
 
+    // Binds the layout views for the chatbot screen.
     private lateinit var binding: ActivityFaqchatBotBinding
+    // Provides the ViewModel for managing chat state and API calls.
     private val chatViewModel: ChatViewModel by viewModels()
+    // Adapter for displaying chat messages in a RecyclerView.
     private lateinit var chatAdapter: ChatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +31,12 @@ class FAQChatBot : AppCompatActivity() {
         binding = ActivityFaqchatBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
-        setListeners()
-        observeViewModel()
+        setupRecyclerView() // Initializes the RecyclerView for chat messages.
+        setListeners() // Attaches all event listeners for user interaction.
+        observeViewModel() // Observes ViewModel state to update UI in real time.
     }
 
+    // Configures the RecyclerView to display chat messages using the ChatAdapter.
     private fun setupRecyclerView() {
         chatAdapter = ChatAdapter()
         binding.rvChatMessages.apply {
@@ -41,22 +45,22 @@ class FAQChatBot : AppCompatActivity() {
         }
     }
 
+    // Observes the ViewModel's UI state and updates the chat UI, including error handling and loading state.
     private fun observeViewModel() {
         lifecycleScope.launch {
             chatViewModel.uiState.collect { state: ChatUiState ->
-                // Update chat messages
-                chatAdapter.submitList(state.messages.toList()) // Convert to new list for DiffUtil
+                chatAdapter.submitList(state.messages.toList()) // Ensures DiffUtil works with a new list.
 
-                // Auto-scroll to latest message
+                // Automatically scrolls to the latest message for better user experience.
                 if (state.messages.isNotEmpty()) {
                     binding.rvChatMessages.scrollToPosition(state.messages.size - 1)
                 }
 
-                // Show/hide loading (disable send button while loading)
+                // Disables the send button and changes its appearance while loading.
                 binding.btnSend.isEnabled = !state.isLoading
                 binding.btnSend.alpha = if (state.isLoading) 0.5f else 1.0f
 
-                // Handle errors
+                // Displays error messages as toasts and clears them from the ViewModel.
                 state.error?.let { errorMsg ->
                     Toast.makeText(this@FAQChatBot, "Error: $errorMsg", Toast.LENGTH_LONG).show()
                     chatViewModel.clearError()
@@ -66,9 +70,10 @@ class FAQChatBot : AppCompatActivity() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
+    // Sets up listeners for sending messages, button animations, and navigation.
     private fun setListeners() {
 
-        // Send button click
+        // Handles send button click to send user messages to the ViewModel.
         binding.btnSend.setOnClickListener {
             val userMessage = binding.etMessage.text.toString().trim()
             if (userMessage.isNotBlank()) {
@@ -77,7 +82,7 @@ class FAQChatBot : AppCompatActivity() {
             }
         }
 
-        // Send button touch animation (your existing code)
+        // Animates the send button on touch for visual feedback.
         binding.btnSend.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -90,7 +95,7 @@ class FAQChatBot : AppCompatActivity() {
             false
         }
 
-        // Back button touch animation (your existing code)
+        // Animates the back button on touch for visual feedback.
         binding.btnBack.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -103,14 +108,14 @@ class FAQChatBot : AppCompatActivity() {
             false
         }
 
-        // Back button click
+        // Handles back button click to navigate to the home screen.
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, HomeScreen::class.java)
             startActivity(intent)
             finish()
         }
 
-        // Optional: Send message when user presses Enter
+        // Sends a message when the user presses Enter in the message input field.
         binding.etMessage.setOnEditorActionListener { _, _, _ ->
             val userMessage = binding.etMessage.text.toString().trim()
             if (userMessage.isNotBlank()) {

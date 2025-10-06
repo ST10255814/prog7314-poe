@@ -28,13 +28,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Fragment responsible for displaying the home screen, including property listings, filters, and user profile image.
 class HomeFragment : Fragment() {
+    // Holds the binding for accessing layout views.
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    // Stores the list of property listings after filtering out favourites.
     private var filteredListings: List<ListingResponse> = emptyList()
+    // Adapter for displaying property items in the RecyclerView.
     private lateinit var adapter: PropertyItemAdapter
+    // Manages user authentication tokens and profile image.
     private lateinit var tokenManger: TokenManger
 
+    // Inflates the layout and initializes the binding for the fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +49,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    // Sets up the UI, loads the profile image, initializes filters, and fetches property listings.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,24 +66,25 @@ class HomeFragment : Fragment() {
                 .into(binding.profileDisplay)
         }
         else Glide.with(this)
-                .load(R.drawable.profile_icon)
-                .circleCrop()
-                .error(R.drawable.ic_empty)
-                .placeholder(R.drawable.ic_empty)
-                .into(binding.profileDisplay)
+            .load(R.drawable.profile_icon)
+            .circleCrop()
+            .error(R.drawable.ic_empty)
+            .placeholder(R.drawable.ic_empty)
+            .into(binding.profileDisplay)
 
-
-        updateDropdowns()
-        setUpPropertyAdapter()
-        setFilterClicks()
-        fetchListingsExcludingFavourites()
+        updateDropdowns() // Populates filter dropdowns with options.
+        setUpPropertyAdapter() // Configures the RecyclerView adapter for property listings.
+        setFilterClicks() // Attaches listeners for filter and search interactions.
+        fetchListingsExcludingFavourites() // Loads property listings, excluding user's favourites.
     }
 
+    // Cleans up the binding to prevent memory leaks when the view is destroyed.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    // Initializes the property adapter and sets up item click navigation to property details.
     private fun setUpPropertyAdapter(){
         adapter = PropertyItemAdapter(filteredListings) { selected ->
             val intent = Intent(requireContext(), PropertyDetails::class.java)
@@ -87,6 +95,7 @@ class HomeFragment : Fragment() {
         binding.propertiesRecyclerView.adapter = adapter
     }
 
+    // Populates the location and price dropdowns with predefined options and sets default selections.
     private fun updateDropdowns() {
         if (!isAdded || _binding == null) return
 
@@ -104,10 +113,11 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
+    // Attaches listeners to filter dropdowns and search view to trigger property filtering.
     private fun setFilterClicks() {
         binding.dropdownLocation.setOnItemClickListener { _, _, _, _ ->
             binding.dropdownLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
-            // Update searchLocationText with selected location
+            // Updates the displayed location filter text.
             if(binding.dropdownLocation.text.toString().trim() != "All"){
                 binding.searchLocationText.text = binding.dropdownLocation.text
             }
@@ -121,7 +131,7 @@ class HomeFragment : Fragment() {
             applyListingFilters()
         }
 
-        // Search view listener for on text change and submission
+        // Listens for search query changes and applies filters accordingly.
         binding.searchView.setOnQueryTextListener ( object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 applyListingFilters()
@@ -134,27 +144,24 @@ class HomeFragment : Fragment() {
         })
     }
 
-    //Filtering methods depending on dropdowns and search query input
+    // Applies location, price, and search text filters to the property listings and updates the UI.
     private fun applyListingFilters(){
         if(!isAdded || _binding == null) return
         showFilterLoading()
 
-        //Get filter values
         val selectedLocation = binding.dropdownLocation.text.toString().trim()
         val selectedPrice = binding.dropdownPrices.text.toString().trim()
-        val searchText = binding.searchView.query?.toString()?.trim()?.lowercase() ?: "" //Can be empty
+        val searchText = binding.searchView.query?.toString()?.trim()?.lowercase() ?: ""
 
-        //Apply filters and update recycler view
-        var userFilteredList = filteredListings // Start with the full list
+        var userFilteredList = filteredListings
 
-        //Location filter
+        // Filters listings by selected location if not "All".
         if (selectedLocation.isNotEmpty() && !selectedLocation.equals("All", ignoreCase = true)) {
             userFilteredList = userFilteredList.filter { listing ->
                 listing.address?.contains(selectedLocation, ignoreCase = true) == true
             }
         }
-        //Price filter
-        // Filter price below 5k, between 5k-10k and above 10k
+        // Filters listings by selected price range.
         if (selectedPrice.isNotEmpty() && !selectedPrice.equals("Any", ignoreCase = true)) {
             userFilteredList = when {
                 selectedPrice.contains("R0-R5k", ignoreCase = true) -> {
@@ -170,14 +177,13 @@ class HomeFragment : Fragment() {
                     val limit = 10000f
                     userFilteredList.filter { (it.price ?: 0f) >= limit }
                 }
-                else -> userFilteredList // If "Any" or unrecognized value is entered display original
+                else -> userFilteredList
             }
         }
 
-        //Search text filter
+        // Filters listings by search text across multiple fields.
         if (searchText.isNotEmpty()) {
             userFilteredList = userFilteredList.filter { listing ->
-                //Check that title, address, description and amenities matches the search text individually
                 val matchesTitle = listing.title?.contains(searchText, ignoreCase = true) == true
                 val matchesAddress = listing.address?.contains(searchText, ignoreCase = true) == true
                 val matchesDescription = listing.description?.contains(searchText, ignoreCase = true) == true
@@ -185,13 +191,12 @@ class HomeFragment : Fragment() {
                     amenity.contains(searchText, ignoreCase = true)
                 } == true
 
-                matchesTitle || matchesAddress || matchesDescription || matchesAmenities // Return conditions to filter the list by (either or)
+                matchesTitle || matchesAddress || matchesDescription || matchesAmenities
             }
         }
-        //Update adapter with filtered list
         adapter.updateListViaFilters(userFilteredList)
 
-        //Show empty view if no results
+        // Displays an empty view if no listings match the filters.
         if (userFilteredList.isEmpty()) {
             binding.propertiesRecyclerView.visibility = View.GONE
             binding.emptyView.emptyLayout.visibility = View.VISIBLE
@@ -203,6 +208,7 @@ class HomeFragment : Fragment() {
         hideFilterLoading()
     }
 
+    // Fetches all property listings, removes those in the user's favourites, and updates the UI.
     private fun fetchListingsExcludingFavourites() {
         showLoading()
         val api = RetrofitInstance.createAPIInstance(requireContext())
@@ -218,7 +224,7 @@ class HomeFragment : Fragment() {
                     if(response.isSuccessful){
                         val allListings = response.body() ?: emptyList()
 
-                        //Fetch favourites for filtering
+                        // Fetches the user's favourite listings to exclude them from the main list.
                         api.getFavouriteListings(userId).enqueue( object : Callback<MutableList<FavouriteListingsResponse>> {
                             override fun onResponse(
                                 call: Call<MutableList<FavouriteListingsResponse>>,
@@ -227,29 +233,24 @@ class HomeFragment : Fragment() {
                                 if(!isAdded || _binding == null) return
                                 if(favResponse.isSuccessful){
                                     hideLoading()
-                                    //Extract favourite listing IDs
                                     val favouriteIds = favResponse.body()
                                         ?.mapNotNull { it.listingDetail?.listingID }
                                         ?.toSet() ?: emptySet()
 
-                                    //Filter out favourites from all listings
                                     filteredListings = allListings.filter { it.propertyId !in favouriteIds }
 
-                                    //Pass filtered list to adapter and add onClick to each item
                                     adapter.updateListViaFilters(filteredListings)
 
                                     if (filteredListings.isEmpty()) {
                                         binding.propertiesRecyclerView.visibility = View.GONE
                                         binding.emptyView.emptyLayout.visibility = View.VISIBLE
                                     } else {
-                                        //Show success message
                                         CustomToast.show(requireContext(), "Listings loaded", CustomToast.Companion.ToastType.SUCCESS)
                                         binding.propertiesRecyclerView.visibility = View.VISIBLE
                                         binding.emptyView.emptyLayout.visibility = View.GONE
                                     }
                                 }
                                 else{
-                                    //Handle error response for favourites and show empty view
                                     binding.propertiesRecyclerView.visibility = View.GONE
                                     binding.emptyView.emptyLayout.visibility = View.VISIBLE
                                     val errorBody = response.errorBody()?.string()
@@ -263,14 +264,13 @@ class HomeFragment : Fragment() {
                                     } else {
                                         "Unknown error"
                                     }
-                                    // Log out if unauthorized
                                     if (response.code() == 401) {
                                         tokenManger.clearToken()
                                         tokenManger.clearUser()
                                         tokenManger.clearPfp()
 
                                         val intent = Intent(requireContext(), LoginActivity::class.java)
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                         startActivity(intent)
                                     }
                                     CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -281,7 +281,6 @@ class HomeFragment : Fragment() {
                                 call: Call<MutableList<FavouriteListingsResponse>>,
                                 t: Throwable
                             ) {
-                                //Handle failure and show empty view
                                 hideLoading()
                                 if(!isAdded || _binding == null) return
                                 binding.propertiesRecyclerView.visibility = View.GONE
@@ -293,7 +292,6 @@ class HomeFragment : Fragment() {
                         })
                     }
                     else{
-                        //Handle listing error response and show empty view
                         binding.propertiesRecyclerView.visibility = View.GONE
                         binding.emptyView.emptyLayout.visibility = View.VISIBLE
                         val errorBody = response.errorBody()?.string()
@@ -307,14 +305,13 @@ class HomeFragment : Fragment() {
                         } else {
                             "Unknown error"
                         }
-                        // Log out if unauthorized
                         if (response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
 
                             val intent = Intent(requireContext(), LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
                         CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
@@ -325,7 +322,6 @@ class HomeFragment : Fragment() {
                     call: Call<List<ListingResponse>>,
                     t: Throwable
                 ) {
-                    //Handle failure and show empty view
                     hideLoading()
                     if(!isAdded || _binding == null) return
                     binding.propertiesRecyclerView.visibility = View.GONE
@@ -336,18 +332,23 @@ class HomeFragment : Fragment() {
             })
         }
     }
+
+    // Displays a loading overlay while property listings are being fetched.
     private fun showLoading() {
         binding.recyclerLoadingOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the loading overlay after property listings are loaded.
     private fun hideLoading() {
         binding.recyclerLoadingOverlay.visibility = View.GONE
     }
 
+    // Shows a loading overlay when filters are being applied.
     private fun showFilterLoading() {
         binding.filterLoadingOverlay.visibility = View.VISIBLE
     }
 
+    // Hides the filter loading overlay after filtering is complete.
     private fun hideFilterLoading() {
         binding.filterLoadingOverlay.visibility = View.GONE
     }

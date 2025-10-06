@@ -10,26 +10,32 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 
+// Main entry point for the app, responsible for displaying the splash screen animation and transitioning to the login screen.
+// Utilizes Android's splash screen API and Lottie for animated graphics, ensuring a smooth user experience during app startup.
 class MainActivity : AppCompatActivity() {
 
+    // Handler tied to the main thread, used for scheduling the transition after a delay.
     private val handler = Handler(Looper.getMainLooper())
+    // Runnable that starts the LoginActivity and finishes the splash screen activity.
     private val runnable = Runnable {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 
+    // Initializes the splash screen, sets up the animation, and schedules the transition to the login screen.
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        installSplashScreen() // Installs the system splash screen for a seamless launch experience.
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main) // Sets the layout containing the Lottie animation view.
 
         val lottieView = findViewById<LottieAnimationView>(R.id.lottieView)
-        lottieView?.playAnimation()
+        lottieView?.playAnimation() // Starts the Lottie animation for visual engagement.
 
-        handler.postDelayed(runnable, 5000)
+        handler.postDelayed(runnable, 5000) // Schedules the transition to the login screen after 5 seconds.
     }
 
+    // Cleans up the handler to prevent memory leaks or delayed transitions if the activity is destroyed early.
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(runnable)
