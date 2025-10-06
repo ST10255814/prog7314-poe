@@ -115,14 +115,13 @@
                             android:id="@+id/edit_checkin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Select date"
-                            android:background="@null"
-                            android:drawableEnd="@drawable/calendar_icon"
-                            android:fontFamily="@font/aldrich"
+                            android:hint="Select check in date"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:fontFamily="sans-serif-medium"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:paddingTop="4dp"
-                            android:inputType="date" />
+                            android:background="@null"
+                            android:drawableEnd="@drawable/calendar_icon" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -153,14 +152,13 @@
                             android:id="@+id/edit_checkout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Select date"
-                            android:background="@null"
-                            android:drawableEnd="@drawable/calendar_icon"
-                            android:fontFamily="@font/aldrich"
+                            android:hint="Select check out date"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:fontFamily="sans-serif-medium"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:paddingTop="4dp"
-                            android:inputType="date" />
+                            android:background="@null"
+                            android:drawableEnd="@drawable/calendar_icon" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -193,9 +191,8 @@
                             android:layout_height="wrap_content"
                             android:hint="Enter guest count"
                             android:background="@null"
-                            android:fontFamily="@font/aldrich"
+                            android:fontFamily="sans-serif-medium"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
                             android:paddingTop="4dp"
                             android:inputType="number" />
                     </LinearLayout>

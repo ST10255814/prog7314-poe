@@ -7,6 +7,8 @@ import androidx.core.content.edit
 
 // Securely manages sensitive user data such as authentication tokens, user IDs, and profile photos using encrypted shared preferences.
 // Utilizes AndroidX Security library to ensure all stored values are encrypted at rest, protecting against unauthorized access.
+//Mr.Code. 2020. Android Encrypted Shared Preferences - Android Tutorial (2020). [video online]
+//Available at: <https://youtu.be/2uResVLUCNI?si=pOnkbX8vZr0fATx1> [Accessed 8 September 2025].
 class TokenManger(context: Context) {
 
     // Generates or retrieves a master encryption key for securing the shared preferences.

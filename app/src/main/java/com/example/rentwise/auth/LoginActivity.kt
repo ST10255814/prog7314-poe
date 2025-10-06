@@ -45,6 +45,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var tokenManger: TokenManger
     // Request code for Google Sign-In intent result handling.
     private val RC_SIGN_IN = 9001
+    //private val KEY_NAME = "biometric_key"
+    //private val ANDROID_KEYSTORE = "AndroidKeyStore"
+    //private lateinit var executor: Executor
+    //private lateinit var biometricPrompt: BiometricPrompt
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +58,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
+
+        //initBiometricPrompt()
+        //createBiometricKey()
 
         setupLoginView() // Styles the app name, slogan, and register text for branding and navigation cues.
         prepareGoogleSignIn() // Configures Google Sign-In options and initializes the client.
@@ -71,6 +78,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // Styles the app name, slogan, and register text, applying color and underline to specific portions for visual emphasis.
+    // Spannable text implementation by:
+    //Programmer World. 2023. How to edit the text in TextView using spannable string in your Android App?. [video online]
+    //Available at: <https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov> [Accessed 5 August 2025].
     private fun setupLoginView(){
         val appName = getString(R.string.app_name)
         val halfOfAppName = "Wise".length
@@ -172,6 +182,8 @@ class LoginActivity : AppCompatActivity() {
             //authenticate()
         }
 
+        //OpenAI. 2025. In android studio kotlin i want to animate the button and make it a different color when hovered/clicked on. How can i do this?.
+        //[ChatGPT]. Available at: <https://chatgpt.com/share/689214fa-941c-800a-a9d7-81bfe8fefbf1> [Accessed 5 August 2025]
         // Adds a press animation to the login button for tactile feedback.
         binding.loginBtn.setOnTouchListener { v, event ->
             when (event.action) {
@@ -296,6 +308,8 @@ class LoginActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     // Handles the result from the Google Sign-In intent, extracting the ID token and sending it to the backend for authentication.
+    //Developer. 2025. Integrate Google Sign-In into Your Android App. Developers. [online]
+    //Available at: <https://developer.android.com/identity/legacy/gsi/legacy-sign-in> [Accessed 17 September 2025].
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -385,4 +399,66 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin (To be implemented properly in part 3)
+    //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
+    /*private fun initBiometricPrompt() {
+        executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                val jwt = tokenManger.getToken()
+                val userId = tokenManger.getUser()
+                if (!jwt.isNullOrEmpty() && !userId.isNullOrEmpty()){
+                    CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
+                    Log.d("BiometricJWT", "JWT=$jwt, userId=$userId")
+                    startActivity(Intent(this@LoginActivity, HomeScreen::class.java))
+                    finish()
+                }
+                else {
+                    CustomToast.show(this@LoginActivity, "No active session. Please login in manually",
+                        CustomToast.Companion.ToastType.ERROR)
+                }
+
+            }
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                CustomToast.show(this@LoginActivity, "Authentication error: $errString", CustomToast.Companion.ToastType.ERROR)
+            }
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                CustomToast.show(this@LoginActivity, "Authentication failed", CustomToast.Companion.ToastType.ERROR)
+            }
+        })
+    }
+
+    private fun createBiometricKey() {
+        val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE)
+        val keySpec = KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            .setUserAuthenticationRequired(true)
+            .build()
+        keyGenerator.init(keySpec)
+        keyGenerator.generateKey()
+    }
+
+    private fun getCipher(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
+    private fun getSecretKey(): SecretKey {
+        val keyStore = java.security.KeyStore.getInstance(ANDROID_KEYSTORE)
+        keyStore.load(null)
+        return keyStore.getKey(KEY_NAME, null) as SecretKey
+    }
+
+    private fun authenticate() {
+        val cipher = getCipher()
+        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric Authentication")
+            .setSubtitle("Access your account securely")
+            .setNegativeButtonText("Cancel")
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }*/
 }
