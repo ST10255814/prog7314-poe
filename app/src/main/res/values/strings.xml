@@ -45,14 +45,42 @@
         <item>High</item>
     </string-array>
 
-    <string name="privacy_policy"><![CDATA[Date: August 8, 2025\n\nYour privacy is important to us. This Privacy Policy explains how we collect, use, and
-    protect your information when you use our rental application (\'The App\').\n\nInformation We Collect\n- Personal Information: Name, email address,
-    phone number, and profile photo when you create an account or make bookings.\n- Property & Rental Data: Listings you view, save, or book.\n- Location
-    Information: Only with your permission, to improve search results.\n\nHow We Use Your Information\n- To provide and improve our services.\n- To process
-    your bookings and manage your account.\n- To send you notifications related to your bookings.\n\nSharing Your Information\nWe do not sell your personal
-    information. We only share it with:\n- Property owners or managers for bookings.\n- Service providers to process payments or deliver features.\n\nData
-    Security\nWe use encryption and secure servers to protect your data.\n\nYour Rights\nYou can update or delete your information in the App at any time.\n\nContact
-    Us\nIf you have questions about this Privacy Policy, please email: support@rentwise.com]]></string>
+    <string name="privacy_policy"><![CDATA[
+<b>Date:</b> October 20, 2025<br/><br/>
+
+<b>Introduction</b><br/>
+Welcome to <b>RentWise</b>. Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect your information when you use the app.<br/><br/>
+
+<b>1. Information We Collect</b><br/>
+• Personal details: name, email, phone number, and profile photo.<br/>
+• Rental activity: listings you view, save, or book.<br/>
+• Optional location data (only with permission) to improve search relevance.<br/><br/>
+
+<b>2. How We Use Your Information</b><br/>
+We use your information to:<br/>
+• Manage your account and facilitate bookings.<br/>
+• Improve the quality and reliability of our services.<br/>
+• Send you booking updates and notifications you’ve opted into.<br/><br/>
+
+<b>3. Data Security</b><br/>
+We use secure servers and encryption (including <b>AES-256</b>) to protect your data and follow best practices to prevent unauthorized access.<br/><br/>
+
+<b>4. Sharing Your Information</b><br/>
+We do not sell your data. We share limited data only with:<br/>
+• Property owners/managers (to enable booking logistics).<br/>
+• Trusted service providers (e.g., payments, maintenance) under strict obligations.<br/><br/>
+
+<b>5. Your Rights</b><br/>
+You can update or delete your information in the app at any time. If you uninstall the app, locally stored data (tokens, preferences) is cleared automatically.<br/><br/>
+
+<b>6. Contact Us</b><br/>
+For questions or concerns:<br/>
+📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
+🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+
+<b>Last Updated:</b> October 20, 2025
+]]></string>
+
 
     <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
     <string name="amenity_icon">Amenity Icon</string>
