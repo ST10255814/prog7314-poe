@@ -58,7 +58,6 @@
     <string name="amenity_icon">Amenity Icon</string>
     <string name="refresh_text"><u>Refresh to see updates</u></string>
     <string name="login_with_biometrics">Login with Biometrics</string>
-    <string name="first_name">First name</string>
-    <string name="surname">Surname</string>
-
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>
