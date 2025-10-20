@@ -43,21 +43,10 @@ class RegisterActivity : AppCompatActivity() {
 
     // Styles the app name and login text, applying color and underline to specific portions for visual emphasis.
     private fun prepareRegisterView(){
-        val appName = getString(R.string.app_name)
-        val halfOfAppName = "Wise".length
-
         val loginText = getString(R.string.login_message)
         val loginPortion = "Login".length
 
         val color = ContextCompat.getColor(this, R.color.darkish_blue)
-
-        val spannableAppName = SpannableString(appName)
-        spannableAppName.setSpan(
-            ForegroundColorSpan(color),
-            appName.length - halfOfAppName,
-            appName.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
 
         val spannableLoginText = SpannableString(loginText)
         spannableLoginText.setSpan(
@@ -72,8 +61,6 @@ class RegisterActivity : AppCompatActivity() {
             loginText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-
-        binding.appName.text = spannableAppName
         binding.loginText.text = spannableLoginText
     }
 
@@ -113,6 +100,20 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+        // Clears the first name error message as soon as the user starts typing.
+        binding.regfirstName.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.passwordInputLayout.error = null
+            }
+        }
+
+        // Clears the last name error message as soon as the user starts typing.
+        binding.regLastName.addTextChangedListener { text ->
+            if (!text.isNullOrEmpty()) {
+                binding.passwordInputLayout.error = null
+            }
+        }
+
         // Adds a press animation to the login text for tactile feedback.
         binding.loginText.setOnTouchListener { v, event ->
             when (event.action) {
@@ -130,14 +131,27 @@ class RegisterActivity : AppCompatActivity() {
         binding.registerBtn.setOnClickListener{
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
+            val firstName = binding.regfirstName.text.toString()
+            val lastName = binding.regLastName.text.toString()
 
             // Checks for empty fields and valid email format before proceeding.
-            if(email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isNullOrEmpty()){
-                binding.emailInputLayout.error = "Invalid Credentials"
-                binding.passwordInputLayout.error = "Invalid Credentials"
+            if(email.isEmpty()){
+                binding.emailInputLayout.error = "Email is required"
+            }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                binding.emailInputLayout.error = "Please enter a valid email"
+            }
+            else if(password.isEmpty()){
+                binding.passwordInputLayout.error = "Password is required"
+            }
+            else if(firstName.isEmpty()){
+                binding.firstNameInputLayout.error = "First name is required"
+            }
+            else if(lastName.isEmpty()){
+                binding.lastNameInputLayout.error = "Last name is required"
             }
             else{
-                registerAPICall(email, password) // Initiates the registration process via API.
+                registerAPICall(email, password)
             }
         }
     }
