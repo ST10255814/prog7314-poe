@@ -108,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // Clears the last name error message as soon as the user starts typing.
-        binding.regLastName.addTextChangedListener { text ->
+        binding.regSurname.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
                 binding.passwordInputLayout.error = null
             }
@@ -132,7 +132,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.regEmail.text.toString()
             val password = binding.regPassword.text.toString()
             val firstName = binding.regfirstName.text.toString()
-            val lastName = binding.regLastName.text.toString()
+            val surname = binding.regSurname.text.toString()
 
             // Checks for empty fields and valid email format before proceeding.
             if(email.isEmpty()){
@@ -147,22 +147,24 @@ class RegisterActivity : AppCompatActivity() {
             else if(firstName.isEmpty()){
                 binding.firstNameInputLayout.error = "First name is required"
             }
-            else if(lastName.isEmpty()){
-                binding.lastNameInputLayout.error = "Last name is required"
+            else if(surname.isEmpty()){
+                binding.surnameInputLayout.error = "Last name is required"
             }
             else{
-                registerAPICall(email, password)
+                registerAPICall(email, password, firstName, surname)
             }
         }
     }
 
     // Handles the registration API call, manages UI overlays, and processes server responses for success or error.
-    private fun registerAPICall(email: String, password: String){
+    private fun registerAPICall(email: String, password: String, firstName: String, surname: String){
         showOverlay() // Displays a loading overlay to prevent duplicate submissions.
 
         val request = RegisterRequest(
             email = email,
-            password = password
+            password = password,
+            firstName = firstName,
+            surname = surname
         )
 
         val api = RetrofitInstance.createAPIInstance(applicationContext)
