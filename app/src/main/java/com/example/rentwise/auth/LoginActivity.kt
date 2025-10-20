@@ -3,6 +3,7 @@ package com.example.rentwise.auth
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -240,6 +241,7 @@ class LoginActivity : AppCompatActivity() {
                     // Saves the JWT token and user ID in secure shared preferences for session management.
                     if(authResponse != null){
                         authResponse.data?.token.let {
+                            Log.d("Login Token", "Token received: $it")
                             if(it != null){
                                 tokenManger.saveToken(it)
                             }
