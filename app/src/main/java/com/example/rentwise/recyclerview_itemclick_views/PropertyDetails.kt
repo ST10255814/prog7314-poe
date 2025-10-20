@@ -412,6 +412,7 @@ class PropertyDetails : AppCompatActivity() {
                         }
                         binding.locationText.text = property.listingDetail?.address ?: ""
                         binding.titleText.text = property.listingDetail?.title ?: ""
+                        binding.propertyDescription.text = property.listingDetail?.description ?: ""
                         binding.priceText.text = "R${property.listingDetail?.price}"
 
                         isFavourite = property.listingDetail?.isFavourite ?: false

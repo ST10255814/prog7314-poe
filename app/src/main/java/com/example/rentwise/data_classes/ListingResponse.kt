@@ -21,7 +21,6 @@ data class ListingResponse(
     val description: String?,
     val imagesURL: List<String>?,
     val amenities: List<String>?,
-    @SerializedName("parsedPrice")
     val price: Float?,
     @SerializedName("isFavourited")
     val isFavourite: Boolean?,
