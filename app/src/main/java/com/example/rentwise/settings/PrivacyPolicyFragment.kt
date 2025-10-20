@@ -1,6 +1,9 @@
 package com.example.rentwise.settings
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +26,28 @@ class PrivacyPolicyFragment : Fragment() {
         return binding.root
     }
 
-    // Cleans up the binding reference when the fragment is destroyed to avoid memory leaks.
-    override fun onDestroy() {
-        super.onDestroy()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   // (<---------THIS WAS UPDATED-------->)
+        super.onViewCreated(view, savedInstanceState)
+
+        // Render HTML (bold + links) from strings.xml
+        val raw = resources.getString(com.example.rentwise.R.string.privacy_policy)
+
+        val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {  // (<---------THIS WAS UPDATED-------->)
+            Html.fromHtml(raw, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")                                        // (<---------THIS WAS UPDATED-------->)
+            Html.fromHtml(raw)
+        }
+
+        binding.privacyText.text = spanned
+        binding.privacyText.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    // Cleans up the binding reference when the fragment's view is destroyed to avoid memory leaks.
+    override fun onDestroyView() {                                          // (<---------THIS WAS UPDATED-------->)
+        super.onDestroyView()
         _binding = null
     }
 }
+

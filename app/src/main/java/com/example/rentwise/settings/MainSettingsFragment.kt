@@ -124,6 +124,12 @@ class MainSettingsFragment : Fragment() {
     // Replaces the current fragment with the provided fragment in the container.
     private fun commitFragmentToContainer(fragment: Fragment) {
         parentFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.fade_out
+            )
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
