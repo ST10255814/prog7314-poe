@@ -84,10 +84,10 @@
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/regLastName"
+                android:id="@+id/regSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/last_name"
+                android:hint="@string/surname"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingTop="14dp"
