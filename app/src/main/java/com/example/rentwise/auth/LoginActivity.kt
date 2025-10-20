@@ -82,9 +82,6 @@ class LoginActivity : AppCompatActivity() {
     //Programmer World. 2023. How to edit the text in TextView using spannable string in your Android App?. [video online]
     //Available at: <https://youtu.be/UR-oQynC12E?si=_2Lvcr7al9a4wgov> [Accessed 5 August 2025].
     private fun setupLoginView(){
-        val appName = getString(R.string.app_name)
-        val halfOfAppName = "Wise".length
-
         val slogan = getString(R.string.app_slogan)
         val smartPortionOfSlogan = "Smart".length
         val simplePortionOfSlogan = "Simple".length
@@ -97,14 +94,6 @@ class LoginActivity : AppCompatActivity() {
         val color = ContextCompat.getColor(this, R.color.darkish_blue)
 
         val spannableSlogan = SpannableString(slogan)
-
-        val spannableAppName = SpannableString(appName)
-        spannableAppName.setSpan(
-            ForegroundColorSpan(color),
-            appName.length - halfOfAppName,
-            appName.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
 
         spannableSlogan.setSpan(
             ForegroundColorSpan(color),
@@ -134,7 +123,6 @@ class LoginActivity : AppCompatActivity() {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        binding.appName.text = spannableAppName
         binding.appSlogan.text = spannableSlogan
         binding.registerText.text = spannableRegister
     }
@@ -251,12 +239,12 @@ class LoginActivity : AppCompatActivity() {
                     val authResponse = response.body()
                     // Saves the JWT token and user ID in secure shared preferences for session management.
                     if(authResponse != null){
-                        authResponse.token.let {
-                            if (it != null) {
+                        authResponse.data?.token.let {
+                            if(it != null){
                                 tokenManger.saveToken(it)
                             }
                         }
-                        authResponse.userId.let {
+                        authResponse.data?.userId.let {
                             if(it != null){
                                 tokenManger.saveUser(it)
                             }
@@ -284,14 +272,12 @@ class LoginActivity : AppCompatActivity() {
                     binding.emailLayout.error = "Invalid Credentials"
                     binding.passwordLayout.error = "Invalid Credentials"
                     CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
-                    Log.e("Google Login API", errorMessage)
                 }
             }
             // Handles network or unexpected failures during the login process.
             override fun onFailure(call: Call<LoginResponse>, t: Throwable){
                 hideLoginOverlay()
                 CustomToast.show(this@LoginActivity, "${t.message}", CustomToast.Companion.ToastType.ERROR)
-                Log.e("Google Login Failure", "Error: ${t.message.toString()}")
             }
         })
     }
@@ -462,3 +448,5 @@ class LoginActivity : AppCompatActivity() {
         biometricPrompt.authenticate(promptInfo)
     }*/
 }
+
+
