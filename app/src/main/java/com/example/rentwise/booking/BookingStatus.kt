@@ -150,7 +150,7 @@ class BookingStatus : AppCompatActivity() {
                         val bookingStatusResponse = response.body()
                         if (bookingStatusResponse != null) {
                             val status = bookingStatusResponse.newBooking?.status
-                            val bookingId = bookingStatusResponse.bookingId ?: ""
+                            val bookingId = bookingStatusResponse.newBooking?.bookingId ?: ""
                             if (status != null) {
                                 prepBookingTracker(status, bookingId)
                             }
