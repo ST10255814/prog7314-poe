@@ -109,7 +109,7 @@ class PropertyDetails : AppCompatActivity() {
         "shopping_mall" to R.drawable.ic_amenity_mall,
         "school" to R.drawable.ic_amenity_school,
         "hospital" to R.drawable.ic_amenity_hospital,
-        "fireplace" to R.drawable.`ic_amenity_fireplace.xml`,
+        "fireplace" to R.drawable.`ic_amenity_fireplace`,
         "study_room" to R.drawable.ic_amenity_study,
         "backup_generator" to R.drawable.ic_amenity_generator,
         "water_tank" to R.drawable.ic_amenity_water_tank,
