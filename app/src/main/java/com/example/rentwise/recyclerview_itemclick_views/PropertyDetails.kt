@@ -44,14 +44,137 @@ class PropertyDetails : AppCompatActivity() {
     // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
     // Maps amenity names to their corresponding icon resources for dynamic UI rendering.
-    private val amenityIcons = mapOf(
-        "tv" to R.drawable.tv_icon,
-        "wi-fi" to R.drawable.wifi_icon,
-        "bed" to R.drawable.bed_icon,
-        "wifi" to R.drawable.wifi_icon,
-        "garage" to R.drawable.garage_icon,
-        "garden" to R.drawable.garden_icon
+    private val amenityLabelByKey: Map<String, String> = mapOf(
+        "swimming_pool" to "Swimming Pool",
+        "gym" to "Gym/Fitness Center",
+        "parking" to "Parking",
+        "security_24_7" to "24/7 Security",
+        "air_conditioning" to "Air Conditioning",
+        "balcony" to "Balcony/Patio",
+        "garden" to "Garden",
+        "laundry_room" to "Laundry Room",
+        "pet_friendly" to "Pet Friendly",
+        "wifi" to "WiFi",
+        "furnished" to "Furnished",
+        "kitchen_appliances" to "Kitchen Appliances",
+        "elevator" to "Elevator",
+        "playground" to "Playground",
+        "bbq_area" to "BBQ Area",
+        "storage_room" to "Storage Room",
+        "garage" to "Garage",
+        "dishwasher" to "Dishwasher",
+        "washing_machine" to "Washing Machine",
+        "microwave" to "Microwave",
+        "refrigerator" to "Refrigerator",
+        "tv" to "TV",
+        "public_transport" to "Close to Public Transport",
+        "shopping_mall" to "Shopping Mall Nearby",
+        "school" to "School Nearby",
+        "hospital" to "Hospital Nearby",
+        "fireplace" to "Fire Place",
+        "study_room" to "Study Room",
+        "backup_generator" to "Backup Generator",
+        "water_tank" to "Water Tank",
+        "cctv" to "CCTV Surveillance",
+        "intercom" to "Intercom System",
+        "cleaning_service" to "Cleaning Service",
+        "maintenance_service" to "Maintenance Service"
     )
+
+    private val amenityIconByKey: Map<String, Int> = mapOf(
+        "swimming_pool" to R.drawable.ic_amenity_pool,
+        "gym" to R.drawable.ic_amenity_gym,
+        "parking" to R.drawable.ic_amenity_parking,
+        "security_24_7" to R.drawable.ic_amenity_security,
+        "air_conditioning" to R.drawable.ic_amenity_ac,
+        "balcony" to R.drawable.ic_amenity_balcony,
+        "garden" to R.drawable.garden_icon,
+        "laundry_room" to R.drawable.ic_amenity_laundry,
+        "pet_friendly" to R.drawable.ic_amenity_pet,
+        "wi-fi" to R.drawable.wifi_icon,
+        "wifi" to R.drawable.wifi_icon,
+        "furnished" to R.drawable.ic_amenity_furnished,
+        "kitchen_appliances" to R.drawable.ic_amenity_kitchen,
+        "elevator" to R.drawable.ic_amenity_elevator,
+        "playground" to R.drawable.ic_amenity_playground,
+        "bbq_area" to R.drawable.ic_amenity_bbq,
+        "storage_room" to R.drawable.ic_amenity_storage,
+        "garage" to R.drawable.garage_icon,
+        "dishwasher" to R.drawable.ic_amenity_dishwasher,
+        "washing_machine" to R.drawable.ic_amenity_washing_machine,
+        "microwave" to R.drawable.ic_amenity_microwave,
+        "refrigerator" to R.drawable.ic_amenity_fridge,
+        "tv" to R.drawable.tv_icon,
+        "public_transport" to R.drawable.ic_amenity_transport,
+        "shopping_mall" to R.drawable.ic_amenity_mall,
+        "school" to R.drawable.ic_amenity_school,
+        "hospital" to R.drawable.ic_amenity_hospital,
+        "fireplace" to R.drawable.`ic_amenity_fireplace.xml`,
+        "study_room" to R.drawable.ic_amenity_study,
+        "backup_generator" to R.drawable.ic_amenity_generator,
+        "water_tank" to R.drawable.ic_amenity_water_tank,
+        "cctv" to R.drawable.ic_amenity_cctv,
+        "intercom" to R.drawable.ic_amenity_intercom,
+        "cleaning_service" to R.drawable.ic_amenity_cleaning,
+        "maintenance_service" to R.drawable.ic_amenity_maintenance,
+        "bed" to R.drawable.bed_icon,
+    )
+
+    // 3) Robust normalizer: maps various API spellings/synonyms to the canonical keys above
+    private fun canonicalAmenityKey(raw: String): String {
+        val s = raw.trim().lowercase()
+            .replace("&", "and")
+            .replace("/", " ")
+            .replace("-", " ")
+            .replace("\\s+".toRegex(), " ")
+
+        return when (s) {
+            "swimming pool", "pool" -> "swimming_pool"
+            "gym", "fitness center", "gym fitness center", "fitness" -> "gym"
+            "parking", "car parking" -> "parking"
+            "24 7 security", "24/7 security", "security 24 7", "security" -> "security_24_7"
+            "air conditioning", "ac", "aircon", "air con" -> "air_conditioning"
+            "balcony", "patio", "balcony patio" -> "balcony"
+            "garden", "yard" -> "garden"
+            "laundry", "laundry room", "laundry area" -> "laundry_room"
+            "pet friendly", "pets allowed", "pet friendly property" -> "pet_friendly"
+            "wifi", "wi fi", "wi-fi", "internet" -> "wifi"
+            "furnished", "fully furnished" -> "furnished"
+            "kitchen appliances", "appliances", "fitted kitchen" -> "kitchen_appliances"
+            "elevator", "lift" -> "elevator"
+            "playground", "kids play area", "children playground" -> "playground"
+            "bbq area", "braai area", "barbecue area" -> "bbq_area"
+            "storage room", "store room", "storeroom" -> "storage_room"
+            "garage" -> "garage"
+            "dishwasher" -> "dishwasher"
+            "washing machine", "washer" -> "washing_machine"
+            "microwave" -> "microwave"
+            "refrigerator", "fridge" -> "refrigerator"
+            "tv", "television" -> "tv"
+            "close to public transport", "near public transport", "public transport" -> "public_transport"
+            "shopping mall nearby", "near shopping mall", "mall nearby" -> "shopping_mall"
+            "school nearby", "nearby school", "close to school" -> "school"
+            "hospital nearby", "nearby hospital", "close to hospital" -> "hospital"
+            "fire place", "fireplace" -> "fireplace"
+            "study room", "study", "office", "home office" -> "study_room"
+            "backup generator", "generator", "power backup" -> "backup_generator"
+            "water tank", "backup water", "jojo tank" -> "water_tank"
+            "cctv surveillance", "cctv", "cameras" -> "cctv"
+            "intercom system", "intercom" -> "intercom"
+            "cleaning service", "cleaning", "housekeeping" -> "cleaning_service"
+            "maintenance service", "maintenance" -> "maintenance_service"
+
+            // Your older keys (kept for backward compatibility)
+            "tv" -> "tv"
+            "wi-fi" -> "wifi"
+            "bed" -> "furnished" // legacy fallback
+            "wifi" -> "wifi"
+            "garage" -> "garage"
+            "garden" -> "garden"
+
+            else -> s.replace(" ", "_") // safe fallback (e.g., unknown becomes an underscore key)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -315,18 +438,25 @@ class PropertyDetails : AppCompatActivity() {
                         updateFavouriteIcon(isFavourite)
 
                         // Dynamically adds amenity icons and labels to the UI.
-                        val amenities = listing.amenities ?: emptyList()
-                        val amenitiesContainer = binding.amenitiesContainer
-                        amenitiesContainer.removeAllViews()
+                        // Use the LISTING response for amenities (not 'property'), and normalize
+                        val amenities: List<String> = listing.amenities ?: emptyList()
+                        val container = binding.amenitiesContainer
+                        container.removeAllViews()
                         val inflater = LayoutInflater.from(this@PropertyDetails)
-                        for (amenity in amenities) {
-                            val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+
+                        for (rawAmenity in amenities) {
+                            val key = canonicalAmenityKey(rawAmenity)
+                            val label = amenityLabelByKey[key] ?: rawAmenity
+                            val iconRes = amenityIconByKey[key] ?: R.drawable.ic_empty
+
+                            val itemView = inflater.inflate(R.layout.amenity_item, container, false)
                             val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
                             val textView = itemView.findViewById<TextView>(R.id.amenityText)
-                            textView.text = amenity
-                            val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
+
                             iconView.setImageResource(iconRes)
-                            amenitiesContainer.addView(itemView)
+                            textView.text = label
+
+                            container.addView(itemView)
                         }
 
                         // Loads landlord information and profile image if available.
@@ -418,18 +548,25 @@ class PropertyDetails : AppCompatActivity() {
                         isFavourite = property.listingDetail?.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
-                        val amenities = property.listingDetail?.amenities ?: emptyList()
-                        val amenitiesContainer = binding.amenitiesContainer
-                        amenitiesContainer.removeAllViews()
+                        // Normalize + map icons/labels (replace old 'amenityIcons' usage)
+                        val amenities: List<String> = property.listingDetail?.amenities ?: emptyList()
+                        val container = binding.amenitiesContainer
+                        container.removeAllViews()
                         val inflater = LayoutInflater.from(this@PropertyDetails)
-                        for (amenity in amenities) {
-                            val itemView = inflater.inflate(R.layout.amenity_item, amenitiesContainer, false)
+
+                        for (rawAmenity in amenities) {
+                            val key = canonicalAmenityKey(rawAmenity)
+                            val label = amenityLabelByKey[key] ?: rawAmenity
+                            val iconRes = amenityIconByKey[key] ?: R.drawable.ic_empty
+
+                            val itemView = inflater.inflate(R.layout.amenity_item, container, false)
                             val iconView = itemView.findViewById<ImageView>(R.id.amenityIcon)
                             val textView = itemView.findViewById<TextView>(R.id.amenityText)
-                            textView.text = amenity
-                            val iconRes = amenityIcons[amenity.lowercase()] ?: R.drawable.ic_empty
+
                             iconView.setImageResource(iconRes)
-                            amenitiesContainer.addView(itemView)
+                            textView.text = label
+
+                            container.addView(itemView)
                         }
 
                         val landlordInfo = property.listingDetail?.landlordInfo
