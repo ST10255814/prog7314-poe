@@ -93,6 +93,9 @@ class MainSettingsFragment : Fragment() {
             val intent = Intent(requireContext(), FAQChatBot::class.java)
             startActivity(intent)
         }
+        binding.aboutTab.setOnClickListener {
+            commitFragmentToContainer(AboutFragment())
+        }
         binding.aboutTab.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()

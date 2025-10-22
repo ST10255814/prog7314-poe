@@ -81,6 +81,19 @@ For questions or concerns:<br/>
 <b>Last Updated:</b> October 20, 2025
 ]]></string>
 
+    <string name="privacy_policy_title">Privacy Policy</string>
+    <string name="about_title">About RentWise</string>
+    <string name="about_body">RentWise helps tenants and landlords manage listings, inquiries, bookings, maintenance, and communication in one simple app.</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_version_placeholder">Version x.y.z</string>
+    <string name="about_package_placeholder">com.example.rentwise</string>
+    <string name="about_website">Website</string>
+    <string name="about_privacy">Privacy Policy</string>
+    <string name="about_support">Support</string>
+
+    <string name="website_url"></string>
+    <string name="privacy_url"></string>
+    <string name="support_email">support@rentwise.app</string>
 
     <string name="footer_tracking_note">Tracking updates are refreshed in real-time. If an update takes longer than expected, please contact our support team.</string>
     <string name="amenity_icon">Amenity Icon</string>
