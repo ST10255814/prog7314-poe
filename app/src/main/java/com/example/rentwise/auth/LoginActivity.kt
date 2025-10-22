@@ -34,6 +34,10 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.TextView
+import com.google.android.gms.common.SignInButton
 
 // Activity responsible for handling user login, including email/password and Google SSO, with UI feedback and secure token storage.
 class LoginActivity : AppCompatActivity() {
@@ -57,6 +61,8 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        customizeGoogleButton() //Ensure label is centered and size is wide.
 
         tokenManger = TokenManger(applicationContext)
 
@@ -387,6 +393,32 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
+    //Centers the Google button’s label while keeping your existing SignInButton.
+    //Also enforces the official wide size for consistent spacing.
+    //
+    private fun customizeGoogleButton() {
+        // Use Google's wide layout for better label centering and spacing.
+        binding.googleSignInBtn.setSize(SignInButton.SIZE_WIDE)
+
+        // Center the inner text view so the label appears centered regardless of the 'G' icon.
+        for (i in 0 until binding.googleSignInBtn.childCount) {
+            val child = binding.googleSignInBtn.getChildAt(i)
+            if (child is TextView) {
+                child.gravity = Gravity.CENTER
+                child.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                child.layoutParams = (child.layoutParams).apply {
+                    width = ViewGroup.LayoutParams.MATCH_PARENT
+                }
+                // Optional: keep your own string resource label if present.
+                try {
+                    child.text = getString(R.string.sign_in_with_google)
+                } catch (_: Exception) {}
+                break
+            }
+        }
+    }
+
     //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin (To be implemented properly in part 3)
     //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
     /*private fun initBiometricPrompt() {

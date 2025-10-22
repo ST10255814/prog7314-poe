@@ -27,16 +27,16 @@ class PrivacyPolicyFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   // (<---------THIS WAS UPDATED-------->)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Render HTML (bold + links) from strings.xml
         val raw = resources.getString(com.example.rentwise.R.string.privacy_policy)
 
-        val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {  // (<---------THIS WAS UPDATED-------->)
+        val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(raw, Html.FROM_HTML_MODE_LEGACY)
         } else {
-            @Suppress("DEPRECATION")                                        // (<---------THIS WAS UPDATED-------->)
+            @Suppress("DEPRECATION")
             Html.fromHtml(raw)
         }
 
@@ -45,7 +45,7 @@ class PrivacyPolicyFragment : Fragment() {
     }
 
     // Cleans up the binding reference when the fragment's view is destroyed to avoid memory leaks.
-    override fun onDestroyView() {                                          // (<---------THIS WAS UPDATED-------->)
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
