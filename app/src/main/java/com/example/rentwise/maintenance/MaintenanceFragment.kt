@@ -44,6 +44,10 @@ class MaintenanceFragment : Fragment() {
     // Tracks URIs of files attached by the user.
     private val filesAttached = mutableListOf<Uri>()
 
+    //Adapter + list to display past maintenance requests
+    private lateinit var maintenanceHistoryAdapter: MaintenanceHistoryAdapter
+    private val maintenanceHistory = mutableListOf<com.example.rentwise.data_classes.MaintenanceRequestResponse>()
+
     // Inflates the fragment layout and initializes view binding.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +72,10 @@ class MaintenanceFragment : Fragment() {
         setListeners() // Attaches click and touch listeners for UI controls.
         updateDropdowns() // Populates priority and unit dropdowns from resources and API.
         setupRecyclerView() // Configures RecyclerView for displaying attached files.
+        setupHistoryRecyclerView() // init the past requests list
+        getUserMaintenanceHistory() //  fetch past maintenance requests
     }
+
 
     // Populates the priority dropdown from resources and fetches available units for the unit dropdown.
     private fun updateDropdowns() {
@@ -202,6 +209,7 @@ class MaintenanceFragment : Fragment() {
                         binding.priorityDropdown.setText(priorityLevels[0], false)
                         filesAttached.clear()
                         fileAdapter.notifyDataSetChanged()
+                        getUserMaintenanceHistory()
 
                     } else {
                         // Handles error responses, including unauthorized access.
@@ -382,4 +390,70 @@ class MaintenanceFragment : Fragment() {
         binding.rvUploadedFiles.layoutManager = LinearLayoutManager(requireContext())
         binding.rvUploadedFiles.adapter = fileAdapter
     }
+
+    //Configures RecyclerView for maintenance history
+    private fun setupHistoryRecyclerView() {
+        maintenanceHistoryAdapter = MaintenanceHistoryAdapter(maintenanceHistory)
+        binding.rvPastRequests.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPastRequests.adapter = maintenanceHistoryAdapter
+    }
+
+    // Fetch history for current user and bind to list
+    private fun getUserMaintenanceHistory() {
+        val userId = tokenManager.getUser() ?: return
+        showHistoryOverlay()
+        val api = RetrofitInstance.createAPIInstance(requireContext())
+        api.getMaintenanceRequestForUser(userId).enqueue(object : Callback<List<com.example.rentwise.data_classes.MaintenanceRequestResponse>> {
+            override fun onResponse(
+                call: retrofit2.Call<List<com.example.rentwise.data_classes.MaintenanceRequestResponse>>,
+                response: retrofit2.Response<List<com.example.rentwise.data_classes.MaintenanceRequestResponse>>
+            ) {
+                if (!isAdded || _binding == null) return
+                hideHistoryOverlay()
+                if (response.isSuccessful) {
+                    val list = response.body().orEmpty()
+                    maintenanceHistory.clear()
+                    maintenanceHistory.addAll(list)
+                    maintenanceHistoryAdapter.notifyDataSetChanged()
+                    binding.emptyHistory.visibility = if (maintenanceHistory.isEmpty()) View.VISIBLE else View.GONE
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = if (errorBody != null) {
+                        try {
+                            val json = JSONObject(errorBody)
+                            json.getString("error")
+                        } catch (e: Exception) {
+                            "Unknown error"
+                        }
+                    } else {
+                        "Unknown error"
+                    }
+                    if (response.code() == 401) {
+                        tokenManager.clearToken()
+                        tokenManager.clearUser()
+                        tokenManager.clearPfp()
+                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                    CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
+                }
+            }
+
+            override fun onFailure(
+                call: retrofit2.Call<List<com.example.rentwise.data_classes.MaintenanceRequestResponse>>,
+                t: Throwable
+            ) {
+                if (!isAdded || _binding == null) return
+                hideHistoryOverlay()
+                CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
+                Log.e("Maintenance History", t.message.toString())
+            }
+        })
+    }
+
+    //simple overlays to show history load state
+    private fun showHistoryOverlay() { binding.overlayLoadingHistory.visibility = View.VISIBLE } // [<------THIS WAS CHNAGED----->]
+    private fun hideHistoryOverlay() { binding.overlayLoadingHistory.visibility = View.GONE } // [<------THIS WAS CHNAGED----->]
 }
+

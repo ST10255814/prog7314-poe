@@ -291,6 +291,35 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/past_requests_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Past Requests"
+                    android:textColor="@color/darkish_blue"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/goldman"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/empty_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You have no past maintenance requests."
+                    android:textColor="@color/darker_grey"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_past_requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -356,4 +385,34 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/overlay_loading_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80FFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/darker_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading your past requests..."
+            android:textColor="@color/darkish_blue"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/goldman"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
 </FrameLayout>
+
