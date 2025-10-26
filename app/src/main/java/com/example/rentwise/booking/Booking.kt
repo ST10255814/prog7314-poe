@@ -149,12 +149,31 @@ class Booking : AppCompatActivity() {
                 if (response.isSuccessful) {
                     hideBookingProcessOverlay()
                     CustomToast.show(this@Booking, response.body()?.message ?: "Booking successful", CustomToast.Companion.ToastType.SUCCESS)
+
+                    // Captures values needed for payment processing, before clearing the form.
+                    val propertyName = binding.propertyName.text.toString().orEmpty()
+                    val amountRand = binding.textTotalPrice.text?.toString()?.replace("R","")!!.trim()
+                    val checkIn = binding.editCheckin.text?.toString().orEmpty()
+                    val checkOut = binding.editCheckout.text?.toString().orEmpty()
+
+                    //Clear UI
                     binding.editCheckin.text.clear()
                     binding.editCheckout.text.clear()
                     binding.editGuests.text.clear()
                     binding.textTotalPrice.text = "R0.00"
                     filesAttached.clear()
                     fileAdapter.notifyDataSetChanged()
+
+                    // Go to Booking Status (user pays only once Approved).
+                    val statusIntent = Intent(this@Booking, BookingStatus::class.java)
+                    statusIntent.putExtra("amount", amountRand)
+                    statusIntent.putExtra("propertyName", propertyName)
+                    statusIntent.putExtra("checkIn", checkIn)
+                    statusIntent.putExtra("checkOut", checkOut)
+                    statusIntent.putExtra("listingId", listingId)
+                    startActivity(statusIntent)
+
+
                 } else {
                     hideBookingProcessOverlay()
                     val errorBody = response.errorBody()?.string()

@@ -22,7 +22,9 @@ data class ListingDetails(
     val price: Float?,
     @SerializedName("isFavourited")
     val isFavourite: Boolean?,
-    val landlordInfo: LandLordDetails?
+    val landlordInfo: LandLordDetails?,
+    val averageRating: Float?,
+    val reviewCount: Int?
 ) : Serializable
 
 data class FavouriteListingPostResponse(

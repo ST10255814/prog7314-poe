@@ -1,0 +1,4 @@
+<!-- res/values/ids.xml -->
+<resources>
+    <item name="tag_email" type="id"/>
+</resources>

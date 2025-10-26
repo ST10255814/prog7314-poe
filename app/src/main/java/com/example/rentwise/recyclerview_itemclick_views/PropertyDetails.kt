@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -109,7 +110,7 @@ class PropertyDetails : AppCompatActivity() {
         "shopping_mall" to R.drawable.ic_amenity_mall,
         "school" to R.drawable.ic_amenity_school,
         "hospital" to R.drawable.ic_amenity_hospital,
-        "fireplace" to R.drawable.`ic_amenity_fireplace`,
+        "fireplace" to R.drawable.ic_amenity_fireplace,
         "study_room" to R.drawable.ic_amenity_study,
         "backup_generator" to R.drawable.ic_amenity_generator,
         "water_tank" to R.drawable.ic_amenity_water_tank,
@@ -214,28 +215,43 @@ class PropertyDetails : AppCompatActivity() {
             }
             false
         }
-        binding.callButton.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+
+        // Call landlord (opens dialer)
+        binding.callButton.setOnClickListener {
+            val phone = binding.landlordTxt.tag as? String           // phone is stashed later when binding landlord
+            if (!phone.isNullOrBlank()) {
+                val dial = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                startActivity(dial)
+            } else {
+                CustomToast.show(this, "No phone number available", CustomToast.Companion.ToastType.ERROR)
+            }
+        }
+
+        // Chat landlord (prefer SMS; else email)
+        binding.chatButton.setOnClickListener {
+            val phone = binding.landlordTxt.tag as? String
+            val email = binding.landlordTxt.getTag(R.id.tag_email) as? String
+            val displayName = binding.landlordTxt.text?.toString()?.trim()?.ifBlank { "Landlord" }
+
+            when {
+                !phone.isNullOrBlank() -> {
+                    val smsUri = Uri.parse("smsto:$phone")
+                    val sms = Intent(Intent.ACTION_SENDTO, smsUri)
+                    sms.putExtra("sms_body", "Hi $displayName, I'm interested in your listing.")
+                    startActivity(sms)
                 }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                !email.isNullOrBlank() -> {
+                    val mail = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+                    mail.putExtra(Intent.EXTRA_SUBJECT, "Enquiry about your property")
+                    mail.putExtra(Intent.EXTRA_TEXT, "Hi $displayName,\n\nI'm interested in your listing.")
+                    startActivity(mail)
+                }
+                else -> {
+                    CustomToast.show(this, "No contact method found for landlord", CustomToast.Companion.ToastType.ERROR)
                 }
             }
-            false
         }
-        binding.chatButton.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
-                }
-            }
-            false
-        }
+
         binding.favouriteBtn.setOnClickListener {
             if(isFavourite){
                 deleteFavouriteItemFromDbApiCall(listingId) // Unfavourite property.
@@ -434,6 +450,17 @@ class PropertyDetails : AppCompatActivity() {
                         binding.propertyDescription.text = listing.description
                         binding.priceText.text = "R${listing.price}"
 
+                        // Show rating if available
+                        val avg = listing.averageRating
+                        val count = listing.reviewCount
+                        if (avg != null && avg > 0f) {
+                            binding.ratingRow.visibility = View.VISIBLE
+                            binding.tvAvgRating.text = String.format("%.1f", avg)
+                            binding.tvReviewCount.text = "(${count ?: 0})"
+                        } else {
+                            binding.ratingRow.visibility = View.GONE
+                        }
+
                         isFavourite = listing.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
@@ -464,6 +491,8 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+                            binding.landlordTxt.tag = landlordInfo.phone                 // store phone for Call/SMS
+                            binding.landlordTxt.setTag(R.id.tag_email, landlordInfo.email) // store email for fallback chat
                             Glide.with(this@PropertyDetails)
                                 .load(landlordInfo.pfpImage)
                                 .placeholder(R.drawable.profile_icon)
@@ -545,6 +574,17 @@ class PropertyDetails : AppCompatActivity() {
                         binding.propertyDescription.text = property.listingDetail?.description ?: ""
                         binding.priceText.text = "R${property.listingDetail?.price}"
 
+                        // Show rating if available from wishlist payload
+                        val avg = property.listingDetail?.averageRating
+                        val count = property.listingDetail?.reviewCount
+                        if (avg != null && avg > 0f) {
+                            binding.ratingRow.visibility = View.VISIBLE
+                            binding.tvAvgRating.text = String.format("%.1f", avg)
+                            binding.tvReviewCount.text = "(${count ?: 0})"
+                        } else {
+                            binding.ratingRow.visibility = View.GONE
+                        }
+
                         isFavourite = property.listingDetail?.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
 
@@ -573,6 +613,8 @@ class PropertyDetails : AppCompatActivity() {
                         if (landlordInfo != null) {
                             binding.landlordTxt.text =
                                 "${landlordInfo.firstName} ${landlordInfo.surname}"
+                            binding.landlordTxt.tag = landlordInfo.phone
+                            binding.landlordTxt.setTag(R.id.tag_email, landlordInfo.email)
                             Glide.with(this@PropertyDetails)
                                 .load(landlordInfo.pfpImage)
                                 .placeholder(R.drawable.profile_icon)

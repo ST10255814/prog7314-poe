@@ -78,6 +78,45 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
+            <!-- Rating row (read-only) -->
+            <LinearLayout
+                android:id="@+id/rating_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/star_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star_filled"
+                    app:tint="@color/golden_yellow" />
+
+                <TextView
+                    android:id="@+id/tv_avg_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.8"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/aldrich" />
+
+                <TextView
+                    android:id="@+id/tv_review_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(120)"
+                    android:textSize="13sp"
+                    android:textColor="@color/darker_grey"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/aldrich" />
+            </LinearLayout>
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

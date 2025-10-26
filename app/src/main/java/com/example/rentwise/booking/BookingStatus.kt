@@ -19,10 +19,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class BookingStatus : AppCompatActivity() {
     // Binds the layout views for the booking status screen and manages user session tokens.
     private lateinit var binding: ActivityBookingStatusBinding
     private lateinit var tokenManger: TokenManger
+
+    // Carry-forward values from Booking screen for Payment later.
+    private var summaryAmount: String? = null
+    private var summaryProperty: String? = null
+    private var summaryCheckIn: String? = null
+    private var summaryCheckOut: String? = null
+    private var summaryListingId: String? = null
+    private var currentBookingId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,13 @@ class BookingStatus : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
+
+        // Read extras coming from Booking (so we can pass them to Payment later)
+        summaryAmount = intent.getStringExtra("amount")
+        summaryProperty = intent.getStringExtra("propertyName")
+        summaryCheckIn = intent.getStringExtra("checkIn")
+        summaryCheckOut = intent.getStringExtra("checkOut")
+        summaryListingId = intent.getStringExtra("listingId")
 
         setListeners() // Attaches all event listeners for navigation and refresh actions.
         getBookingStatusViaUserIdApiCall() // Initiates the API call to fetch and display booking status.
@@ -62,12 +78,29 @@ class BookingStatus : AppCompatActivity() {
             }
             false
         }
+
+        // Proceed to Payment CTA (initially GONE; shown when Approved).
+        binding.btnProceedToPayment.setOnClickListener {
+            val amount = summaryAmount?.takeIf { it.isNotBlank() } ?: run {
+                CustomToast.show(this, "Amount unavailable", CustomToast.Companion.ToastType.ERROR)
+                return@setOnClickListener
+            }
+            val pay = Intent(this, PaymentActivity::class.java)
+            pay.putExtra("amount", amount)
+            pay.putExtra("propertyName", summaryProperty ?: "Property")
+            pay.putExtra("checkIn", summaryCheckIn ?: "-")
+            pay.putExtra("checkOut", summaryCheckOut ?: "-")
+            pay.putExtra("listingId", summaryListingId ?: "")
+            pay.putExtra("bookingId", currentBookingId ?: "")
+            startActivity(pay)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     // Updates the UI to reflect the current booking status using a step tracker and progress bar.
     private fun prepBookingTracker(status: String, bookingId: String) {
         binding.bookingIdText.text = "Booking ID: $bookingId"
+        currentBookingId = bookingId // CACHE FOR ID
 
         val stepNames = listOf(
             "Pending",
@@ -92,7 +125,7 @@ class BookingStatus : AppCompatActivity() {
             "pending" -> 1
             "under review" -> 2
             "final decision" -> 3
-            "approved", "rejected" -> 4
+            "approved", "rejected", "active" -> 4   // treat active as final too
             else -> 1
         }
 
@@ -110,7 +143,7 @@ class BookingStatus : AppCompatActivity() {
                     label.isActivated = false
                 }
                 index == currentStep - 1 -> {
-                    if (status.lowercase() == "approved" || status.lowercase() == "rejected") {
+                    if (status.lowercase() == "approved" || status.lowercase() == "rejected" || status.lowercase() == "active") {
                         icon.isSelected = true
                         icon.isActivated = false
                         label.isSelected = true
@@ -132,6 +165,10 @@ class BookingStatus : AppCompatActivity() {
         }
         binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt()
         binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}"
+
+        // Show/Hide the Payment CTA depending on status
+        val approvedLike = status.equals("approved", true) || status.equals("active", true)
+        binding.btnProceedToPayment.visibility = if (approvedLike) View.VISIBLE else View.GONE
     }
 
     // Fetches the booking status for the current user from the API and updates the UI, handling authentication errors.

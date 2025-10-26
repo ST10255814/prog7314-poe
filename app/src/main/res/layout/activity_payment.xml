@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/paymentTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Portal"
+                    android:textColor="@color/darkish_blue"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/goldman"
+                    android:layout_centerVertical="true" />
+
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/circle_background"
+                    android:contentDescription="Back"
+                    android:padding="8dp"
+                    android:src="@drawable/go_back_icon"
+                    app:tint="@color/darkish_blue" />
+            </RelativeLayout>
+
+            <!-- Summary -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Booking Summary"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/aldrich"
+                        android:textColor="@color/darkish_blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/summaryProperty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Property"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/goldman"
+                        android:layout_marginTop="4dp" />
+
+                    <TextView
+                        android:id="@+id/summaryDates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/darker_grey"
+                        android:textSize="13sp"
+                        android:layout_marginTop="2dp" />
+
+                    <TextView
+                        android:id="@+id/summaryAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="R0.00"
+                        android:textColor="@color/darkish_blue"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/goldman"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Payment Method -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payment Method"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/aldrich"
+                        android:textColor="@color/darkish_blue"
+                        android:textSize="14sp" />
+
+                    <RadioGroup
+                        android:id="@+id/methodGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/methodCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Card"
+                            android:textColor="@color/black" />
+
+                        <RadioButton
+                            android:id="@+id/methodEft"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="EFT / Bank Transfer"
+                            android:textColor="@color/black" />
+
+                        <RadioButton
+                            android:id="@+id/methodArrival"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Pay on Arrival"
+                            android:textColor="@color/black" />
+                    </RadioGroup>
+
+                    <!-- Card fields -->
+                    <LinearLayout
+                        android:id="@+id/cardFields"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Card Number"
+                            app:endIconMode="clear_text"
+                            app:boxBackgroundMode="filled"
+                            app:boxBackgroundColor="@color/white"
+                            app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusTopEnd="16dp"
+                            app:boxCornerRadiusBottomStart="16dp"
+                            app:boxCornerRadiusBottomEnd="16dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_card_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="19"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name on Card"
+                            app:boxBackgroundMode="filled"
+                            app:boxBackgroundColor="@color/white"
+                            app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusTopEnd="16dp"
+                            app:boxCornerRadiusBottomStart="16dp"
+                            app:boxCornerRadiusBottomEnd="16dp"
+                            android:layout_marginTop="8dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_card_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPersonName"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="MM/YY"
+                                app:boxBackgroundMode="filled"
+                                app:boxBackgroundColor="@color/white"
+                                app:boxCornerRadiusTopStart="16dp"
+                                app:boxCornerRadiusTopEnd="16dp"
+                                app:boxCornerRadiusBottomStart="16dp"
+                                app:boxCornerRadiusBottomEnd="16dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edit_card_expiry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="12dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="CVV"
+                                app:boxBackgroundMode="filled"
+                                app:boxBackgroundColor="@color/white"
+                                app:boxCornerRadiusTopStart="16dp"
+                                app:boxCornerRadiusTopEnd="16dp"
+                                app:boxCornerRadiusBottomStart="16dp"
+                                app:boxCornerRadiusBottomEnd="16dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edit_card_cvv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="numberPassword"
+                                    android:maxLength="4"/>
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_pay_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/button_background_states"
+                android:text="Pay Now"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/goldman" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Processing overlay (matches your overlays elsewhere) -->
+    <LinearLayout
+        android:id="@+id/payment_processing_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/darker_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Processing payment..."
+            android:textColor="@color/darkish_blue"
+            android:fontFamily="@font/goldman"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+</FrameLayout>

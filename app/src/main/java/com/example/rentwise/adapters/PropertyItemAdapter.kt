@@ -74,6 +74,15 @@ class PropertyItemAdapter(
 
             // Sets the property price with formatting, or a default if missing.
             tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A"
+
+            // Rating on card
+            val rating = property.averageRating
+            if (rating != null && rating > 0f) {
+                cardRatingCluster.visibility = View.VISIBLE
+                tvCardRating.text = String.format("%.1f", rating)
+            } else {
+                cardRatingCluster.visibility = View.GONE
+            }
         }
 
         // Sets up a click listener for the property card, triggering the provided callback.
