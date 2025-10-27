@@ -444,6 +444,14 @@ class PropertyDetails : AppCompatActivity() {
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
+                            // location line now prefers "area · address"
+                            val area = listing.area?.takeIf { it.isNotBlank() }
+                            val address = listing.address?.takeIf { it.isNotBlank() }
+                            binding.locationText.text = when {
+                                area != null && address != null -> "$area · $address"
+                                area != null -> area
+                                else -> address
+                            }
                         }
                         binding.locationText.text = listing.address
                         binding.titleText.text = listing.title
@@ -567,6 +575,14 @@ class PropertyDetails : AppCompatActivity() {
                             }
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
+                            }
+                            // location line now prefers "area · address"           
+                            val area = property.listingDetail?.area?.takeIf { it.isNotBlank() }
+                            val address = property.listingDetail?.address?.takeIf { it.isNotBlank() }
+                            binding.locationText.text = when {
+                                area != null && address != null -> "$area · $address"
+                                area != null -> area
+                                else -> address ?: ""
                             }
                         }
                         binding.locationText.text = property.listingDetail?.address ?: ""

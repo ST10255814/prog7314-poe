@@ -158,7 +158,10 @@ class HomeFragment : Fragment() {
         // Filters listings by selected location if not "All".
         if (selectedLocation.isNotEmpty() && !selectedLocation.equals("All", ignoreCase = true)) {
             userFilteredList = userFilteredList.filter { listing ->
-                listing.address?.contains(selectedLocation, ignoreCase = true) == true
+                // now also checks listing.area in addition to address
+                val areaMatch = listing.area?.contains(selectedLocation, ignoreCase = true) == true
+                val addressMatch = listing.address?.contains(selectedLocation, ignoreCase = true) == true
+                areaMatch || addressMatch
             }
         }
         // Filters listings by selected price range.
@@ -186,12 +189,13 @@ class HomeFragment : Fragment() {
             userFilteredList = userFilteredList.filter { listing ->
                 val matchesTitle = listing.title?.contains(searchText, ignoreCase = true) == true
                 val matchesAddress = listing.address?.contains(searchText, ignoreCase = true) == true
+                val matchesArea = listing.area?.contains(searchText, ignoreCase = true) == true
                 val matchesDescription = listing.description?.contains(searchText, ignoreCase = true) == true
                 val matchesAmenities = listing.amenities?.any { amenity ->
                     amenity.contains(searchText, ignoreCase = true)
                 } == true
 
-                matchesTitle || matchesAddress || matchesDescription || matchesAmenities
+                matchesTitle || matchesAddress || matchesArea || matchesDescription || matchesAmenities
             }
         }
         adapter.updateListViaFilters(userFilteredList)

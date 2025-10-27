@@ -60,8 +60,17 @@ class PropertyItemAdapter(
 
             // Sets the property title or a default if missing.
             tvTitle.text = property.title ?: "No Title"
-            // Sets the property address or a default if missing.
-            tvAddress.text = property.address ?: "No Address"
+
+            // Sets the property address (show full address; add area if present).
+            // This ensures the card displays the actual address as requested.
+            val address = property.address?.takeIf { it.isNotBlank() }
+            val area = property.area?.takeIf { it.isNotBlank() }
+            tvAddress.text = when {
+                address != null && area != null -> "$address · $area"
+                address != null -> address
+                area != null -> area
+                else -> "No Address"
+            }
 
             // Hides all amenities labels initially.
             amenitiesLabels.forEach { it.visibility = View.GONE }

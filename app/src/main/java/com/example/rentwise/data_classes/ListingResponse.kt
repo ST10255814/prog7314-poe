@@ -26,5 +26,6 @@ data class ListingResponse(
     val isFavourite: Boolean?,
     val landlordInfo: LandLordDetails?,
     val averageRating: Float?,
-    val reviewCount: Int?
+    val reviewCount: Int?,
+    val area: String? = null
 ) : Serializable
