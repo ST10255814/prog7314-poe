@@ -61,8 +61,7 @@ class PropertyItemAdapter(
             // Sets the property title or a default if missing.
             tvTitle.text = property.title ?: "No Title"
 
-            // Sets the property address (show full address; add area if present).
-            // This ensures the card displays the actual address as requested.
+            // Address + Area line (prefer address, append area if present).
             val address = property.address?.takeIf { it.isNotBlank() }
             val area = property.area?.takeIf { it.isNotBlank() }
             tvAddress.text = when {
@@ -72,23 +71,24 @@ class PropertyItemAdapter(
                 else -> "No Address"
             }
 
-            // Hides all amenities labels initially.
+            // Hide all amenity chips initially, then show up to 4.
             amenitiesLabels.forEach { it.visibility = View.GONE }
-
-            // Displays up to four amenities, making the corresponding labels visible.
             property.amenities?.take(4)?.forEachIndexed { index, amenity ->
                 amenitiesLabels[index].text = amenity
                 amenitiesLabels[index].visibility = View.VISIBLE
             }
 
-            // Sets the property price with formatting, or a default if missing.
+            // Price
             tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A"
 
-            // Rating on card
-            val rating = property.averageRating
-            if (rating != null && rating > 0f) {
+            // Rating on card (average + optional count)
+            val avg = property.averageRating
+            val count = property.reviewCount
+            if (avg != null && avg > 0f) {
                 cardRatingCluster.visibility = View.VISIBLE
-                tvCardRating.text = String.format("%.1f", rating)
+                tvCardRating.text = String.format("%.1f", avg)
+                tvCardRatingCount.text = if (count != null && count > 0) "(${count})" else ""
+                tvCardRatingCount.visibility = if (count != null && count > 0) View.VISIBLE else View.GONE
             } else {
                 cardRatingCluster.visibility = View.GONE
             }

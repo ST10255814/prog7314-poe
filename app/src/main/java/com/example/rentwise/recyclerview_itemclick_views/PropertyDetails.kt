@@ -458,19 +458,20 @@ class PropertyDetails : AppCompatActivity() {
                         binding.propertyDescription.text = listing.description
                         binding.priceText.text = "R${listing.price}"
 
-                        // Show rating if available
-                        val avg = listing.averageRating
-                        val count = listing.reviewCount
-                        if (avg != null && avg > 0f) {
-                            binding.ratingRow.visibility = View.VISIBLE
-                            binding.tvAvgRating.text = String.format("%.1f", avg)
-                            binding.tvReviewCount.text = "(${count ?: 0})"
-                        } else {
-                            binding.ratingRow.visibility = View.GONE
-                        }
 
                         isFavourite = listing.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
+
+                        // Shoes RATING on DETAILS (avg + count) if available.
+                        val avg = listing.averageRating                              // [<------THIS WAS CHNAGED----->]
+                        val count = listing.reviewCount                               // [<------THIS WAS CHNAGED----->]
+                        if (avg != null && avg > 0f) {                                // [<------THIS WAS CHNAGED----->]
+                            binding.ratingRow.visibility = View.VISIBLE               // [<------THIS WAS CHNAGED----->]
+                            binding.tvAvgRating.text = String.format("%.1f", avg)    // [<------THIS WAS CHNAGED----->]
+                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else "" // [<------THIS WAS CHNAGED----->]
+                        } else {                                                      // [<------THIS WAS CHNAGED----->]
+                            binding.ratingRow.visibility = View.GONE                  // [<------THIS WAS CHNAGED----->]
+                        }
 
                         // Dynamically adds amenity icons and labels to the UI.
                         // Use the LISTING response for amenities (not 'property'), and normalize
@@ -591,18 +592,19 @@ class PropertyDetails : AppCompatActivity() {
                         binding.priceText.text = "R${property.listingDetail?.price}"
 
                         // Show rating if available from wishlist payload
+                        isFavourite = property.listingDetail?.isFavourite ?: false
+                        updateFavouriteIcon(isFavourite)
+
+                        // Shows RATING on DETAILS if available from wishlist payload.
                         val avg = property.listingDetail?.averageRating
                         val count = property.listingDetail?.reviewCount
                         if (avg != null && avg > 0f) {
                             binding.ratingRow.visibility = View.VISIBLE
                             binding.tvAvgRating.text = String.format("%.1f", avg)
-                            binding.tvReviewCount.text = "(${count ?: 0})"
+                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else ""
                         } else {
                             binding.ratingRow.visibility = View.GONE
                         }
-
-                        isFavourite = property.listingDetail?.isFavourite ?: false
-                        updateFavouriteIcon(isFavourite)
 
                         // Normalize + map icons/labels (replace old 'amenityIcons' usage)
                         val amenities: List<String> = property.listingDetail?.amenities ?: emptyList()

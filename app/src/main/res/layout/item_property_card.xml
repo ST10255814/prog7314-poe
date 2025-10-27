@@ -135,6 +135,16 @@
                     android:textSize="12sp"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_card_rating_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(12)"
+                    android:textSize="12sp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/black"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View

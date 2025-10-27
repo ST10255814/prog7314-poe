@@ -78,44 +78,41 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-            <!-- Rating row (read-only) -->
-            <LinearLayout
-                android:id="@+id/rating_row"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/star_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_star_filled"
-                    app:tint="@color/golden_yellow" />
-
-                <TextView
-                    android:id="@+id/tv_avg_rating"
+                <LinearLayout
+                    android:id="@+id/ratingRow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.8"
-                    android:textSize="13sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="@font/aldrich" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_review_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(120)"
-                    android:textSize="13sp"
-                    android:textColor="@color/darker_grey"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/aldrich" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_star_filled"
+                        app:tint="@color/golden_yellow" />
 
+                    <TextView
+                        android:id="@+id/tvAvgRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.8"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/aldrich" />
+
+                    <TextView
+                        android:id="@+id/tvReviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(120)"
+                        android:textSize="13sp"
+                        android:textColor="@color/darker_grey"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/aldrich" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,7 +134,7 @@
                         android:id="@+id/price_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$1,280"
+                        android:text="R1,280"
                         android:textColor="@color/darkish_blue"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -288,7 +285,6 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="20dp"
-
                         android:background="@drawable/circle_background"
                         android:backgroundTint="#c2fdff"
                         android:contentDescription="Chat"
@@ -350,7 +346,6 @@
                         android:scaleY="1.1"
                         android:stepSize="1" />
 
-
                     <EditText
                         android:id="@+id/reviewMessage"
                         android:layout_width="match_parent"
@@ -384,6 +379,7 @@
         </RelativeLayout>
 
     </ScrollView>
+
     <FrameLayout
         android:id="@+id/favouriteOverlay"
         android:layout_width="match_parent"
@@ -422,6 +418,7 @@
         </LinearLayout>
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
