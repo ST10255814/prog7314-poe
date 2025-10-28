@@ -99,6 +99,15 @@
                         android:textStyle="bold"
                         android:fontFamily="@font/goldman"
                         android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:id="@+id/paymentStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_status_not_paid"
+                        android:textStyle="bold"
+                        android:paddingTop="8dp"/>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

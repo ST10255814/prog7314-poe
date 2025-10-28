@@ -15,6 +15,10 @@ import com.example.rentwise.data_classes.BookingStatusResponse
 import com.example.rentwise.databinding.ActivityBookingStatusBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.shared_pref_config.PaymentStore
+import com.example.rentwise.Payments.PaymentSummary
+import com.example.rentwise.Payments.PaymentStatus
+import com.example.rentwise.Payments.PaymentActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +28,7 @@ class BookingStatus : AppCompatActivity() {
     // Binds the layout views for the booking status screen and manages user session tokens.
     private lateinit var binding: ActivityBookingStatusBinding
     private lateinit var tokenManger: TokenManger
+    private lateinit var paymentStore: PaymentStore
 
     // Carry-forward values from Booking screen for Payment later.
     private var summaryAmount: String? = null
@@ -40,6 +45,7 @@ class BookingStatus : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
+        paymentStore = PaymentStore(applicationContext)
 
         // Read extras coming from Booking (so we can pass them to Payment later)
         summaryAmount = intent.getStringExtra("amount")
@@ -79,20 +85,18 @@ class BookingStatus : AppCompatActivity() {
             false
         }
 
-        // Proceed to Payment CTA (initially GONE; shown when Approved).
+        // Proceed → Payment: launch the REAL activity + pass fallback extras
         binding.btnProceedToPayment.setOnClickListener {
-            val amount = summaryAmount?.takeIf { it.isNotBlank() } ?: run {
-                // allow navigation even if amount is missing, pass "0.00" and inform the user
-                CustomToast.show(this, "Amount unavailable — continuing to payment", CustomToast.Companion.ToastType.INFO)
-                "0.00"
-            }
-            val pay = Intent(this, PaymentActivity::class.java)
-            pay.putExtra("amount", amount)
-            pay.putExtra("propertyName", summaryProperty ?: "Property")
-            pay.putExtra("checkIn", summaryCheckIn ?: "-")
-            pay.putExtra("checkOut", summaryCheckOut ?: "-")
-            pay.putExtra("listingId", summaryListingId ?: "")
-            pay.putExtra("bookingId", currentBookingId ?: "")
+            val persisted = paymentStore.get()
+
+            val pay = Intent(this, PaymentActivity::class.java)                   // [<------THIS WAS CHNAGED----->]
+            // Fallback extras (PaymentActivity will prefer PaymentStore, but these help if store is empty)
+            pay.putExtra("propertyName", persisted?.propertyName ?: summaryProperty ?: "Property") // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("checkIn",      persisted?.checkIn      ?: summaryCheckIn ?: "-")        // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("checkOut",     persisted?.checkOut     ?: summaryCheckOut ?: "-")       // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("amount",       (persisted?.amount ?: summaryAmount ?: "0.00").replace(",","").trim()) // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("listingId",    persisted?.listingId    ?: summaryListingId ?: "")       // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("bookingId",    currentBookingId ?: (persisted?.bookingId ?: ""))        // [<------THIS WAS CHNAGED----->]
             startActivity(pay)
         }
     }
@@ -101,7 +105,14 @@ class BookingStatus : AppCompatActivity() {
     // Updates the UI to reflect the current booking status using a step tracker and progress bar.
     private fun prepBookingTracker(status: String, bookingId: String) {
         binding.bookingIdText.text = "Booking ID: $bookingId"
-        currentBookingId = bookingId // CACHE FOR ID
+        currentBookingId = bookingId // CACHE FOR
+
+        // Update persisted summary with bookingId
+        paymentStore.get()?.let {
+            if (it.bookingId.isBlank() && bookingId.isNotBlank()) {
+                paymentStore.save(it.copy(bookingId = bookingId))
+            }
+        }
 
         val stepNames = listOf(
             "Pending",
@@ -167,8 +178,7 @@ class BookingStatus : AppCompatActivity() {
         binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt()
         binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}"
 
-        // Show/Hide the Payment CTA depending on status
-        // centralize the "approved-like" logic via constants/enums
+        // CTA visibility via centralized helper
         val approvedLike = BookingStatusValues.isApprovedLike(status)
         binding.btnProceedToPayment.visibility = if (approvedLike) View.VISIBLE else View.GONE
     }

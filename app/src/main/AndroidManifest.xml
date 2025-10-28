@@ -16,9 +16,10 @@
         android:theme="@style/Theme.RentWise"
         tools:targetApi="33">
         <activity
-            android:name="com.example.rentwise.booking.PaymentActivity"
+            android:name=".Payments.PaymentActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".maintenance.MaintenanceRequest"
             android:windowSoftInputMode="adjustNothing|stateHidden"

@@ -24,6 +24,8 @@ import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.ActivityBookingBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.shared_pref_config.PaymentStore
+import com.example.rentwise.Payments.PaymentSummary
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +38,8 @@ import java.time.ZoneId.systemDefault
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
 import java.time.temporal.ChronoUnit
+
+
 
 // Activity for handling the property booking process, including file attachments, date selection, and API integration.
 class Booking : AppCompatActivity() {
@@ -51,6 +55,7 @@ class Booking : AppCompatActivity() {
     private var propertyPrice: Float? = null
     // Manages secure storage and retrieval of user authentication tokens.
     private lateinit var tokenManger: TokenManger
+    private lateinit var paymentStore: PaymentStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,7 @@ class Booking : AppCompatActivity() {
         setContentView(binding.root)
 
         tokenManger = TokenManger(applicationContext)
+        paymentStore = PaymentStore(applicationContext)
 
         getPropertyDetails() // Fetches and displays property details for the booking.
         setupRecyclerView() // Initializes the RecyclerView for file attachments.
@@ -152,9 +158,27 @@ class Booking : AppCompatActivity() {
 
                     // Captures values needed for payment processing, before clearing the form.
                     val propertyName = binding.propertyName.text.toString().orEmpty()
-                    val amountRand = binding.textTotalPrice.text?.toString()?.replace("R","")?.replace(",","")!!.trim()
+                    val amountRand = binding.textTotalPrice.text?.toString()
+                        ?.replace("R","")
+                        ?.replace(",","")
+                        ?.trim()
+                        ?: "0.00"
                     val checkIn = binding.editCheckin.text?.toString().orEmpty()
                     val checkOut = binding.editCheckout.text?.toString().orEmpty()
+
+                    val bookingId = extractBookingId(response.body()?.newBooking) // [<------THIS WAS CHNAGED----->]
+
+                    // Persist Payment Summary immediately so Status/Payment can always load it // [<------THIS WAS CHNAGED----->]
+                    paymentStore.save(
+                        PaymentSummary(
+                            bookingId = bookingId,
+                            listingId = listingId,
+                            propertyName = propertyName,
+                            checkIn = checkIn,
+                            checkOut = checkOut,
+                            amount = amountRand
+                        )
+                    )
 
                     //Clear UI
                     binding.editCheckin.text.clear()
@@ -165,37 +189,34 @@ class Booking : AppCompatActivity() {
                     fileAdapter.notifyDataSetChanged()
 
                     // Go to Booking Status (user pays only once Approved).
-                    val statusIntent = Intent(this@Booking, BookingStatus::class.java)
-                    statusIntent.putExtra("amount", amountRand)
-                    statusIntent.putExtra("propertyName", propertyName)
-                    statusIntent.putExtra("checkIn", checkIn)
-                    statusIntent.putExtra("checkOut", checkOut)
-                    statusIntent.putExtra("listingId", listingId)
-                    startActivity(statusIntent)
-
-
+                    startActivity(Intent(this@Booking, BookingStatus::class.java))
                 } else {
                     hideBookingProcessOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody ?: "Unknown error"
                     CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
-                    if(response.code() == 401) {
-                        tokenManger.clearToken()
-                        tokenManger.clearUser()
-                        tokenManger.clearPfp()
-                        val intent = Intent(this@Booking, LoginActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
-                    }
                 }
             }
+
+
             override fun onFailure(call: Call<BookingResponse>, t: Throwable) {
                 hideBookingProcessOverlay()
                 Log.e("Failure", "API call failed: ${t.message}" )
                 CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
             }
         })
+    }
+
+    // Safely pull "bookingId" from a loosely-typed newBooking payload (Gson may give LinkedTreeMap) // [<------THIS WAS CHNAGED----->]
+    private fun extractBookingId(newBooking: Any?): String { // [<------THIS WAS CHNAGED----->]
+        return try {
+            when (newBooking) {
+                is Map<*, *> -> (newBooking["bookingId"] as? String) ?: ""
+                else -> ""
+            }
+        } catch (_: Throwable) {
+            ""
+        }
     }
 
     // Fetches property details from the API and binds them to the UI, handling errors and authentication.

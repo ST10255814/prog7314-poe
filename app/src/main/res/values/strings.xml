@@ -101,4 +101,5 @@ For questions or concerns:<br/>
     <string name="login_with_biometrics">Login with Biometrics</string>
     <string name="first_name">First Name</string>
     <string name="surname">Surname</string>
+    <string name="payment_status_not_paid">Payment Status: Not Paid</string>
 </resources>
