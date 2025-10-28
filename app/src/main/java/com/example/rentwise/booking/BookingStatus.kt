@@ -82,8 +82,9 @@ class BookingStatus : AppCompatActivity() {
         // Proceed to Payment CTA (initially GONE; shown when Approved).
         binding.btnProceedToPayment.setOnClickListener {
             val amount = summaryAmount?.takeIf { it.isNotBlank() } ?: run {
-                CustomToast.show(this, "Amount unavailable", CustomToast.Companion.ToastType.ERROR)
-                return@setOnClickListener
+                // allow navigation even if amount is missing, pass "0.00" and inform the user
+                CustomToast.show(this, "Amount unavailable — continuing to payment", CustomToast.Companion.ToastType.INFO)
+                "0.00"
             }
             val pay = Intent(this, PaymentActivity::class.java)
             pay.putExtra("amount", amount)
@@ -167,7 +168,8 @@ class BookingStatus : AppCompatActivity() {
         binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}"
 
         // Show/Hide the Payment CTA depending on status
-        val approvedLike = status.equals("approved", true) || status.equals("active", true)
+        // centralize the "approved-like" logic via constants/enums
+        val approvedLike = BookingStatusValues.isApprovedLike(status)
         binding.btnProceedToPayment.visibility = if (approvedLike) View.VISIBLE else View.GONE
     }
 

@@ -152,7 +152,7 @@ class Booking : AppCompatActivity() {
 
                     // Captures values needed for payment processing, before clearing the form.
                     val propertyName = binding.propertyName.text.toString().orEmpty()
-                    val amountRand = binding.textTotalPrice.text?.toString()?.replace("R","")!!.trim()
+                    val amountRand = binding.textTotalPrice.text?.toString()?.replace("R","")?.replace(",","")!!.trim()
                     val checkIn = binding.editCheckin.text?.toString().orEmpty()
                     val checkOut = binding.editCheckout.text?.toString().orEmpty()
 

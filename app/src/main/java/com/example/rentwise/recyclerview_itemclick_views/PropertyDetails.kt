@@ -463,14 +463,13 @@ class PropertyDetails : AppCompatActivity() {
                         updateFavouriteIcon(isFavourite)
 
                         // Shoes RATING on DETAILS (avg + count) if available.
-                        val avg = listing.averageRating                              // [<------THIS WAS CHNAGED----->]
-                        val count = listing.reviewCount                               // [<------THIS WAS CHNAGED----->]
-                        if (avg != null && avg > 0f) {                                // [<------THIS WAS CHNAGED----->]
-                            binding.ratingRow.visibility = View.VISIBLE               // [<------THIS WAS CHNAGED----->]
-                            binding.tvAvgRating.text = String.format("%.1f", avg)    // [<------THIS WAS CHNAGED----->]
-                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else "" // [<------THIS WAS CHNAGED----->]
-                        } else {                                                      // [<------THIS WAS CHNAGED----->]
-                            binding.ratingRow.visibility = View.GONE                  // [<------THIS WAS CHNAGED----->]
+                        val avg = listing.averageRating
+                        val count = listing.reviewCount
+                        if (avg != null && avg > 0f) {
+                            binding.ratingRow.visibility = View.VISIBLE
+                            binding.tvAvgRating.text = String.format("%.1f", avg)
+                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else ""
+                            binding.ratingRow.visibility = View.GONE
                         }
 
                         // Dynamically adds amenity icons and labels to the UI.

@@ -7,13 +7,18 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RentWise"
-        tools:targetApi="31">
+        tools:targetApi="33">
+        <activity
+            android:name="com.example.rentwise.booking.PaymentActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".maintenance.MaintenanceRequest"
             android:windowSoftInputMode="adjustNothing|stateHidden"
