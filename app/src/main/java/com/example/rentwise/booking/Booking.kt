@@ -166,9 +166,10 @@ class Booking : AppCompatActivity() {
                     val checkIn = binding.editCheckin.text?.toString().orEmpty()
                     val checkOut = binding.editCheckout.text?.toString().orEmpty()
 
-                    val bookingId = extractBookingId(response.body()?.newBooking) // [<------THIS WAS CHNAGED----->]
+                    val bookingId = response.body()?.bookingID.orEmpty()
 
-                    // Persist Payment Summary immediately so Status/Payment can always load it // [<------THIS WAS CHNAGED----->]
+
+                    // Persist Payment Summary immediately so Status/Payment can always load it
                     paymentStore.save(
                         PaymentSummary(
                             bookingId = bookingId,

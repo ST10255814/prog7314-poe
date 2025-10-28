@@ -125,4 +125,8 @@ interface RentWiseApi {
         @Path("id") userId: String,
         @Part settingParts: MutableList<MultipartBody.Part>
     ) : Call<UpdateSettingsResponse>
+
+    // Retrieves a list of reviews for a specific listing.
+    @GET("/api/{listingID}/reviews")
+    fun getReviews(@Path("listingID") listingId: String): Call<List<ReviewResponse>>
 }
