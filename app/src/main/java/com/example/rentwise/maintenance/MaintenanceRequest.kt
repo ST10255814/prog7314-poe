@@ -1,6 +1,7 @@
 package com.example.rentwise.maintenance
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.rentwise.databinding.ActivityMaintenanceRequestBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +31,12 @@ class MaintenanceRequest : AppCompatActivity() {
     private lateinit var adapter: MaintenanceRequestAdapter
     // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

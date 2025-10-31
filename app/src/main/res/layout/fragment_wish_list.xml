@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/goldman"
             android:gravity="center"
-            android:text="My Wishlist"
+            android:text="@string/my_wishlist"
             android:textColor="@color/darkish_blue"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -74,7 +74,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Loading wishlist..."
+                        android:text="@string/loading_wishlist"
                         android:textColor="@color/darkish_blue"
                         android:textSize="14sp"
                         android:layout_marginTop="8dp"
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Updating favourites..."
+                android:text="@string/updating_favourites"
                 android:textColor="@color/darkish_blue"
                 android:textSize="14sp"
                 android:layout_marginTop="8dp"

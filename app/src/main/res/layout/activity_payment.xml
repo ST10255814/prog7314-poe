@@ -27,7 +27,7 @@
                     android:id="@+id/paymentTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Payment Portal"
+                    android:text="@string/payment_portal"
                     android:textColor="@color/darkish_blue"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -40,7 +40,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/circle_background"
-                    android:contentDescription="Back"
+                    android:contentDescription="@string/go_back_title"
                     android:padding="8dp"
                     android:src="@drawable/go_back_icon"
                     app:tint="@color/darkish_blue" />
@@ -64,7 +64,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Booking Summary"
+                        android:text="@string/booking_summary"
                         android:textStyle="bold"
                         android:fontFamily="@font/aldrich"
                         android:textColor="@color/darkish_blue"
@@ -74,7 +74,7 @@
                         android:id="@+id/summaryProperty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Property"
+                        android:text="@string/property"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/goldman"
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment Method"
+                        android:text="@string/payment_method"
                         android:textStyle="bold"
                         android:fontFamily="@font/aldrich"
                         android:textColor="@color/darkish_blue"
@@ -146,21 +146,21 @@
                             android:id="@+id/methodCard"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Card"
+                            android:text="@string/card"
                             android:textColor="@color/black" />
 
                         <RadioButton
                             android:id="@+id/methodEft"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="EFT / Bank Transfer"
+                            android:text="@string/eft_bank_transfer"
                             android:textColor="@color/black" />
 
                         <RadioButton
                             android:id="@+id/methodArrival"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Pay on Arrival"
+                            android:text="@string/pay_on_arrival"
                             android:textColor="@color/black" />
                     </RadioGroup>
 
@@ -175,7 +175,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Card Number"
+                            android:hint="@string/card_number"
                             app:endIconMode="clear_text"
                             app:boxBackgroundMode="filled"
                             app:boxBackgroundColor="@color/white"
@@ -195,7 +195,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name on Card"
+                            android:hint="@string/name_on_card"
                             app:boxBackgroundMode="filled"
                             app:boxBackgroundColor="@color/white"
                             app:boxCornerRadiusTopStart="16dp"
@@ -221,7 +221,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="MM/YY"
+                                android:hint="@string/mm_yy"
                                 app:boxBackgroundMode="filled"
                                 app:boxBackgroundColor="@color/white"
                                 app:boxCornerRadiusTopStart="16dp"
@@ -244,7 +244,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="CVV"
+                                android:hint="@string/cvv"
                                 app:boxBackgroundMode="filled"
                                 app:boxBackgroundColor="@color/white"
                                 app:boxCornerRadiusTopStart="16dp"
@@ -269,7 +269,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/button_background_states"
-                android:text="Pay Now"
+                android:text="@string/pay_now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -302,7 +302,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Processing payment..."
+            android:text="@string/processing_payment"
             android:textColor="@color/darkish_blue"
             android:fontFamily="@font/goldman"
             android:textSize="16sp"

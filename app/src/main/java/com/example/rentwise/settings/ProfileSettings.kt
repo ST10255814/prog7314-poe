@@ -2,6 +2,7 @@ package com.example.rentwise.settings
 
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.example.rentwise.data_classes.UserSettingsResponse
 import com.example.rentwise.databinding.ActivityProfileSettingsBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -50,6 +52,12 @@ class ProfileSettings : AppCompatActivity() {
     private var selectedProfilePic: Uri? = null
     // Formats dates for display and API submission.
     private val formatter: DateTimeFormatter = ofPattern("yyyy-MM-dd")
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     // Initializes the activity, sets up listeners, date pickers, and loads user settings.
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,6 +2,7 @@ package com.example.rentwise.maintenance
 
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.example.rentwise.data_classes.ListingDropDownItem
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentMaintenanceBinding
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -47,6 +49,12 @@ class MaintenanceFragment : Fragment() {
     //Adapter + list to display past maintenance requests
     private lateinit var maintenanceHistoryAdapter: MaintenanceHistoryAdapter
     private val maintenanceHistory = mutableListOf<com.example.rentwise.data_classes.MaintenanceRequestResponse>()
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     // Inflates the fragment layout and initializes view binding.
     override fun onCreateView(

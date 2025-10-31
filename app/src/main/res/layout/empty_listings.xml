@@ -11,12 +11,13 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/empty_listings_icon"
-        android:contentDescription="No listings" />
+        android:contentDescription="@string/no_listings"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No listings available to show"
+        android:text="@string/no_listings_available"
         android:textSize="18sp"
         android:textColor="@color/darker_grey"
         android:fontFamily="@font/goldman"

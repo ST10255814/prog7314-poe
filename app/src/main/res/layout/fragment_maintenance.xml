@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/goldman"
             android:gravity="center"
-            android:text="Maintenance Request"
+            android:text="@string/maintenance_request"
             android:textColor="@color/darkish_blue"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/aldrich"
-                            android:text="Issue Title"
+                            android:text="@string/issue_title"
                             android:textColor="@color/darkish_blue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:fontFamily="@font/aldrich"
-                            android:hint="E.g. Broken tap in kitchen"
+                            android:hint="@string/issue_title_hint"
                             android:inputType="text"
                             android:paddingTop="4dp"
                             android:textIsSelectable="true"
@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/aldrich"
-                            android:text="Description"
+                            android:text="@string/description"
                             android:textColor="@color/darkish_blue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -113,7 +113,7 @@
                             android:background="@null"
                             android:fontFamily="@font/aldrich"
                             android:gravity="top"
-                            android:hint="Describe the issue in detail..."
+                            android:hint="@string/description_hint"
                             android:inputType="textMultiLine"
                             android:textIsSelectable="true"
                             android:textColorHighlight="#CC99CCFF"
@@ -144,7 +144,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/aldrich"
-                            android:text="Location / Unit"
+                            android:text="@string/location_unit"
                             android:textColor="@color/darkish_blue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -195,7 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/aldrich"
-                            android:text="Priority"
+                            android:text="@string/priority"
                             android:textColor="@color/darkish_blue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -247,7 +247,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:text="Attach Supporting Docs"
+                            android:text="@string/attach_supporting_docs"
                             android:textColor="@color/darkish_blue"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -267,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
                             android:backgroundTint="@color/button_background_states"
-                            android:text="Choose Files"
+                            android:text="@string/choose_files"
                             android:textColor="@color/white" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -286,7 +286,7 @@
                     android:layout_marginBottom="20dp"
                     android:backgroundTint="@color/button_background_states"
                     android:fontFamily="@font/goldman"
-                    android:text="Submit Request"
+                    android:text="@string/submit_request"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -296,7 +296,7 @@
                     android:id="@+id/past_requests_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Past Requests"
+                    android:text="@string/past_requests"
                     android:textColor="@color/darkish_blue"
                     android:textStyle="bold"
                     android:textSize="18sp"
@@ -308,7 +308,7 @@
                     android:id="@+id/empty_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="You have no past maintenance requests."
+                    android:text="@string/no_past_maintenance_requests"
                     android:textColor="@color/darker_grey"
                     android:textSize="14sp"
                     android:visibility="gone" />
@@ -347,7 +347,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submitting ticket..."
+            android:text="@string/submitting_ticket"
             android:textColor="@color/darkish_blue"
             android:layout_marginTop="12dp"
             android:textSize="14sp"
@@ -377,7 +377,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Populating property dropdown..."
+            android:text="@string/populating_property_dropdown"
             android:textColor="@color/darkish_blue"
             android:layout_marginTop="12dp"
             android:textSize="14sp"
@@ -406,7 +406,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading your past requests..."
+            android:text="@string/loading_past_requests"
             android:textColor="@color/darkish_blue"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
@@ -415,4 +415,3 @@
     </LinearLayout>
 
 </FrameLayout>
-

@@ -1,4 +1,6 @@
 <!-- res/values/ids.xml -->
 <resources>
-    <item name="tag_email" type="id"/>
+    <item name="tag_email" type="id" />
+    <item name="tv_file_name" type="id" />
+    <item name="btn_delete_file" type="id" />
 </resources>

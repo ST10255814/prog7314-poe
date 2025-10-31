@@ -19,6 +19,7 @@ import com.example.rentwise.databinding.FragmentMainSettingsBinding
 import com.example.rentwise.faq.FAQChatBot
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -36,6 +37,13 @@ class MainSettingsFragment : Fragment() {
     private val parts = mutableListOf<MultipartBody.Part>()
     // Tracks whether the UI is initializing to prevent unwanted updates.
     private var isInitializing = true
+
+    // Track in-flight calls so we can cancel them when view is destroyed (avoid callbacks on a dead Fragment/View)
+    private var updateSettingsCall: Call<UpdateSettingsResponse?>? = null
+    private var getUserSettingsCall: Call<UserSettingsResponse>? = null
+
+    // Keep the last applied language to decide if we need to restart the Activity
+    private var currentLanguageCode: String = "en"
 
     // Maps language codes to their display names for spinner selection and backend communication.
     val languageMap = mapOf(
@@ -64,19 +72,40 @@ class MainSettingsFragment : Fragment() {
         getUserSettings()
     }
 
+    // Cancel in-flight calls and clean up binding when the view is destroyed to prevent callbacks after detach.
+    override fun onDestroyView() {
+        super.onDestroyView()
+        try {
+            updateSettingsCall?.cancel()
+        } catch (_: Exception) {}
+        try {
+            getUserSettingsCall?.cancel()
+        } catch (_: Exception) {}
+        _binding = null
+    }
+
     // Cleans up the binding to prevent memory leaks when the fragment is destroyed.
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        // no-op; moved network call cancellation to onDestroyView for safety
     }
 
     // Prepares the language dropdown spinner with available options and sets the current selection.
     private fun prepareLanguageSpinner(selectedCode: String? = null) {
+        val ctx = context ?: return
         val languages = resources.getStringArray(R.array.language_options)
-        val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, languages)
+        val adapter = ArrayAdapter(ctx, R.layout.custom_spinner_dropdown_item, languages)
         binding.languageDropdown.setAdapter(adapter)
+
         val displayName = selectedCode?.let { languageMap[it] } ?: languages[0]
+        // Prevent triggering listeners while setting programmatic value
+        val prevInit = isInitializing
+        isInitializing = true
         binding.languageDropdown.setText(displayName, false)
+        isInitializing = prevInit
+
+        // Keep track of current language code
+        currentLanguageCode = languageMap.entries.find { it.value == displayName }?.key ?: "en"
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -90,7 +119,8 @@ class MainSettingsFragment : Fragment() {
             false
         }
         binding.helpAndSupportTab.setOnClickListener {
-            val intent = Intent(requireContext(), FAQChatBot::class.java)
+            val ctx = context ?: return@setOnClickListener
+            val intent = Intent(ctx, FAQChatBot::class.java)
             startActivity(intent)
         }
         binding.aboutTab.setOnClickListener {
@@ -119,13 +149,37 @@ class MainSettingsFragment : Fragment() {
         binding.offlineSyncSwitch.setOnCheckedChangeListener { _, _ ->
             if (!isInitializing) updateUserSettings()
         }
+        // <------THIS WAS CHANGED-----> UPDATED LANGUAGE DROPDOWN LISTENER TO APPLY LANGUAGE CHANGE SAFELY
         binding.languageDropdown.setOnItemClickListener { _, _, _, _ ->
-            updateUserSettings()
+            if (!isInitializing) {
+                val ctx = context ?: return@setOnItemClickListener
+                val selectedDisplayName = binding.languageDropdown.text.toString()
+                val selectedLanguageCode = languageMap.entries.find { it.value == selectedDisplayName }?.key ?: "en"
+
+                // Only proceed if language actually changed
+                val languageChanged = selectedLanguageCode != currentLanguageCode
+
+                // Apply language to context immediately to keep preference in sync
+                LocaleHelper.setLocale(ctx, selectedLanguageCode)
+
+                // Update user settings in the backend; restart Activity after success if language changed
+                updateUserSettings(onSuccess = {
+                    if (languageChanged && isAdded) {
+                        activity?.let { LocaleHelper.restartActivity(it) }
+                    }
+                }, onError = {
+                    // Revert spinner to previous language if update failed
+                    if (isAdded && view != null) {
+                        prepareLanguageSpinner(currentLanguageCode)
+                    }
+                })
+            }
         }
     }
 
     // Replaces the current fragment with the provided fragment in the container.
     private fun commitFragmentToContainer(fragment: Fragment) {
+        if (!isAdded) return
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.fade_in,
@@ -139,29 +193,50 @@ class MainSettingsFragment : Fragment() {
     }
 
     // Collects user settings from the UI and sends an update request to the backend.
-    private fun updateUserSettings(){
-        val userId = tokenManger.getUser() ?: return
+    private fun updateUserSettings(onSuccess: (() -> Unit)? = null, onError: (() -> Unit)? = null){
+        val ctx = context ?: run {
+            onError?.invoke()
+            return
+        }
+        val userId = tokenManger.getUser() ?: run {
+            onError?.invoke()
+            return
+        }
+
         val notificationSelection = binding.notificationSwitch.isChecked.toString()
         val offlineSyncSelection = binding.offlineSyncSwitch.isChecked.toString()
         val selectedDisplayName = binding.languageDropdown.text.toString()
         val selectedLanguageCode = languageMap.entries.find { it.value == selectedDisplayName }?.key ?: "en"
+
         parts.clear()
         createPart("preferredLanguage", selectedLanguageCode)?.let { parts.add(it) }
         createPart("notifications", notificationSelection)?.let { parts.add(it) }
         createPart("offlineSync", offlineSyncSelection)?.let { parts.add(it) }
-        val api = RetrofitInstance.createAPIInstance(requireContext())
-        api.updateUserSettings(userId, parts).enqueue( object : Callback<UpdateSettingsResponse> {
+
+        val api = RetrofitInstance.createAPIInstance(ctx)
+
+        // Cancel any previous call to avoid race conditions
+        try { updateSettingsCall?.cancel() } catch (_: Exception) {}
+        updateSettingsCall = api.updateUserSettings(userId, parts) as Call<UpdateSettingsResponse?>?
+
+        updateSettingsCall?.enqueue(object : Callback<UpdateSettingsResponse> {
             override fun onResponse(
                 call: Call<UpdateSettingsResponse?>,
                 response: Response<UpdateSettingsResponse?>
             ) {
+                if (!isAdded || view == null) return  // Fragment not attached anymore
+
                 if (response.isSuccessful){
                     val userSettings = response.body()
                     if (userSettings != null) {
+                        // Update current language code to reflect saved state
+                        currentLanguageCode = selectedLanguageCode
                         CustomToast.show(requireContext(), "Settings Updated", CustomToast.Companion.ToastType.SUCCESS)
+                        onSuccess?.invoke()
+                    } else {
+                        onError?.invoke()
                     }
-                }
-                else{
+                } else{
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -174,6 +249,8 @@ class MainSettingsFragment : Fragment() {
                         "Unknown error"
                     }
                     if (response.code() == 401) {
+                        // Guard with context safety
+                        if (!isAdded) return
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
@@ -181,7 +258,10 @@ class MainSettingsFragment : Fragment() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
-                    CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
+                    if (isAdded) {
+                        CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
+                    }
+                    onError?.invoke()
                 }
             }
 
@@ -189,27 +269,39 @@ class MainSettingsFragment : Fragment() {
                 call: Call<UpdateSettingsResponse?>,
                 t: Throwable
             ) {
+                if (!isAdded) return
                 CustomToast.show(requireContext(), "${t.message}", CustomToast.Companion.ToastType.ERROR)
                 Log.e("Profile Settings", "Error: ${t.message.toString()}")
+                onError?.invoke()
             }
-        })
+        } as Callback<UpdateSettingsResponse?>)
     }
 
     // Fetches user settings from the backend and binds them to the UI, handling authentication errors.
     private fun getUserSettings(){
+        val ctx = context ?: return
         showSettingsOverlay()
         val userId = tokenManger.getUser()
         if (userId != null) {
-            val api = RetrofitInstance.createAPIInstance(requireContext())
-            api.getUserById(userId).enqueue(object : Callback<UserSettingsResponse> {
+            val api = RetrofitInstance.createAPIInstance(ctx)
+
+            // Cancel any previous call to avoid overlap
+            try { getUserSettingsCall?.cancel() } catch (_: Exception) {}
+            getUserSettingsCall = api.getUserById(userId)
+
+            getUserSettingsCall?.enqueue(object : Callback<UserSettingsResponse> {
                 override fun onResponse(
                     call: Call<UserSettingsResponse>,
                     response: Response<UserSettingsResponse>
                 ) {
+                    if (!isAdded || view == null) return  // Fragment not attached anymore
+
                     if (response.isSuccessful){
                         hideSettingsOverlay()
                         val userSettings = response.body()
                         if (userSettings != null) {
+                            // Temporarily disable listeners while binding values
+                            isInitializing = true
                             binding.notificationSwitch.isChecked = userSettings.profile?.notifications ?: false
                             binding.offlineSyncSwitch.isChecked = userSettings.profile?.offlineSync ?: false
                             prepareLanguageSpinner(userSettings.profile?.preferredLanguage)
@@ -230,6 +322,7 @@ class MainSettingsFragment : Fragment() {
                             "Unknown error"
                         }
                         if (response.code() == 401) {
+                            if (!isAdded) return
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
@@ -237,16 +330,21 @@ class MainSettingsFragment : Fragment() {
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
-                        CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
+                        if (isAdded) {
+                            CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<UserSettingsResponse>, t: Throwable) {
+                    if (!isAdded) return
                     hideSettingsOverlay()
                     CustomToast.show(requireContext(), "${t.message}", CustomToast.Companion.ToastType.ERROR)
                     Log.e("Profile Settings", "Error: ${t.message.toString()}")
                 }
             })
+        } else {
+            if (isAdded) hideSettingsOverlay()
         }
     }
 
@@ -260,10 +358,12 @@ class MainSettingsFragment : Fragment() {
 
     // Shows a loading overlay while user settings are being fetched or updated.
     private fun showSettingsOverlay(){
+        if (!isAdded || view == null) return
         binding.settingsOverlay.visibility = View.VISIBLE
     }
     // Hides the loading overlay after user settings are loaded or updated.
     private fun hideSettingsOverlay(){
+        if (!isAdded || view == null) return
         binding.settingsOverlay.visibility = View.GONE
     }
 }

@@ -1,5 +1,6 @@
 package com.example.rentwise.notifications
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.databinding.FragmentNotificationsBinding
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +27,12 @@ class NotificationsFragment : Fragment() {
     // Holds the binding for accessing layout views.
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     // Inflates the layout and initializes the binding for the fragment.
     override fun onCreateView(

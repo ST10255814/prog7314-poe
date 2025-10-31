@@ -22,7 +22,7 @@
                 android:id="@+id/settings_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Settings"
+                android:text="@string/settings"
                 android:textAlignment="center"
                 android:textColor="@color/blue"
                 android:textSize="26sp"
@@ -50,7 +50,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/notification_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="Notifications" />
+                        android:contentDescription="@string/notifications"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -58,7 +59,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Notifications"
+                        android:text="@string/notifications"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -93,7 +94,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/language_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="Language" />
+                        android:contentDescription="@string/language"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -101,7 +103,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Language"
+                        android:text="@string/language"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -154,7 +156,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/offline_sync_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="Offline Sync" />
+                        android:contentDescription="@string/offline_sync"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -162,7 +165,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Offline Data Sync"
+                        android:text="@string/offline_data_sync"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -197,7 +200,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/help_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="Help" />
+                        android:contentDescription="@string/help"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -205,7 +209,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Help and Support"
+                        android:text="@string/help_and_support"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -233,7 +237,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/privacy_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="Privacy Policy" />
+                        android:contentDescription="@string/privacy_policy"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -241,7 +246,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Privacy Policy"
+                        android:text="@string/privacy_policy"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -269,7 +274,8 @@
                         android:layout_height="24dp"
                         android:src="@drawable/about_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="About" />
+                        android:contentDescription="@string/about"
+                        />
 
                     <TextView
                         android:layout_width="0dp"
@@ -277,7 +283,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="About"
+                        android:text="@string/about"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -305,25 +311,25 @@
         android:background="@color/white"
         android:visibility="gone">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/settingsProgress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:indicatorSize="60dp"
-        app:trackThickness="6dp"
-        android:indeterminate="true"
-        app:indicatorColor="@color/darkish_blue"
-        app:trackColor="@color/darker_grey" />
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/settingsProgress"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:indicatorSize="60dp"
+            app:trackThickness="6dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/darkish_blue"
+            app:trackColor="@color/darker_grey" />
 
-    <TextView
-        android:id="@+id/settingsOverlayText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Loading settings..."
-        android:textColor="@color/darkish_blue"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/goldman"
-        android:layout_marginTop="12dp"/>
-</LinearLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/settingsOverlayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_settings"
+            android:textColor="@color/darkish_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/goldman"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+</FrameLayout>

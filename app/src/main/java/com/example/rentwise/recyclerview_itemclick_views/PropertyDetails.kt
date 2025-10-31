@@ -4,6 +4,7 @@ import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -31,6 +32,7 @@ import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.ActivityPropertyDetailsBinding
 import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -120,6 +122,12 @@ class PropertyDetails : AppCompatActivity() {
         "maintenance_service" to R.drawable.ic_amenity_maintenance,
         "bed" to R.drawable.bed_icon,
     )
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     // 3) Robust normalizer: maps various API spellings/synonyms to the canonical keys above
     private fun canonicalAmenityKey(raw: String): String {

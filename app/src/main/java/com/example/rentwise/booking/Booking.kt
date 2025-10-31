@@ -3,6 +3,7 @@ package com.example.rentwise.booking
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.example.rentwise.home.HomeScreen
 import com.example.rentwise.shared_pref_config.TokenManger
 import com.example.rentwise.shared_pref_config.PaymentStore
 import com.example.rentwise.Payments.PaymentSummary
+import com.example.rentwise.utils.LocaleHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -56,6 +58,12 @@ class Booking : AppCompatActivity() {
     // Manages secure storage and retrieval of user authentication tokens.
     private lateinit var tokenManger: TokenManger
     private lateinit var paymentStore: PaymentStore
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

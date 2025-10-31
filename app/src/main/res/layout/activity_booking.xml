@@ -33,7 +33,7 @@
                 android:padding="8dp"
                 android:src="@drawable/go_back_icon"
                 app:tint="@color/white"
-                android:contentDescription="Back" />
+                android:contentDescription="@string/back" />
 
             <TextView
                 android:id="@+id/property_name"
@@ -83,7 +83,7 @@
                     android:layout_marginBottom="12dp"
                     android:fontFamily="@font/goldman"
                     android:gravity="center"
-                    android:text="New Booking"
+                    android:text="@string/new_booking"
                     android:textColor="@color/darkish_blue"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -105,7 +105,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Check-In Date"
+                            android:text="@string/check_in_date"
                             android:textStyle="bold"
                             android:fontFamily="@font/aldrich"
                             android:textColor="@color/darkish_blue"
@@ -115,7 +115,7 @@
                             android:id="@+id/edit_checkin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Select check in date"
+                            android:hint="@string/check_in_hint"
                             android:focusable="false"
                             android:clickable="true"
                             android:fontFamily="sans-serif-medium"
@@ -142,7 +142,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Check-Out Date"
+                            android:text="@string/check_out_date"
                             android:textStyle="bold"
                             android:fontFamily="@font/aldrich"
                             android:textColor="@color/darkish_blue"
@@ -152,7 +152,7 @@
                             android:id="@+id/edit_checkout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Select check out date"
+                            android:hint="@string/check_out_hint"
                             android:focusable="false"
                             android:clickable="true"
                             android:fontFamily="sans-serif-medium"
@@ -179,7 +179,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Number of Guests"
+                            android:text="@string/number_of_guests"
                             android:textStyle="bold"
                             android:fontFamily="@font/aldrich"
                             android:textColor="@color/darkish_blue"
@@ -189,7 +189,7 @@
                             android:id="@+id/edit_guests"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter guest count"
+                            android:hint="@string/enter_guest_count"
                             android:background="@null"
                             android:fontFamily="sans-serif-medium"
                             android:textColor="@color/black"
@@ -215,7 +215,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Price"
+                            android:text="@string/total_price"
                             android:textStyle="bold"
                             android:fontFamily="@font/aldrich"
                             android:textColor="@color/darkish_blue"
@@ -251,7 +251,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Attach Files"
+                            android:text="@string/attach_files"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/darkish_blue"
@@ -270,7 +270,7 @@
                             android:id="@+id/btn_upload_file"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Choose Files"
+                            android:text="@string/choose_files"
                             android:backgroundTint="@color/button_background_states"
                             android:textColor="@color/white"
                             android:layout_marginBottom="8dp" />
@@ -289,7 +289,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/button_background_states"
-                    android:text="Confirm Booking"
+                    android:text="@string/confirm_booking"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -321,7 +321,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading..."
+            android:text="@string/loading"
             android:textColor="@color/darkish_blue"
             android:fontFamily="@font/goldman"
             android:textSize="16sp"
@@ -350,7 +350,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Processing booking request..."
+            android:text="@string/processing_booking"
             android:textColor="@color/darkish_blue"
             android:fontFamily="@font/goldman"
             android:textSize="18sp"

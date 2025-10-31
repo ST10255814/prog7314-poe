@@ -28,7 +28,7 @@
                 android:backgroundTint="@color/button_background_states"
                 android:padding="8dp"
                 android:src="@drawable/go_back_icon"
-                android:contentDescription="Go Back"
+                android:contentDescription="@string/go_back_title"
                 app:tint="@color/white"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true" />
@@ -37,7 +37,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FAQ Chat Bot"
+                android:text="@string/faq_chat_bot"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -71,7 +71,6 @@
         android:elevation="4dp"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp"
-
         app:cardBackgroundColor="@color/white">
 
         <LinearLayout
@@ -103,7 +102,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:background="@drawable/edittext_background"
-                            android:hint="Ask a question"
+                            android:hint="@string/ask_a_question"
                             android:inputType="text"
                             android:maxLines="4"
                             android:minLines="1"
@@ -120,7 +119,7 @@
                             android:background="@android:color/transparent"
                             android:padding="8dp"
                             android:src="@drawable/send_icon"
-                            android:contentDescription="Send"
+                            android:contentDescription="@string/send"
                             app:tint="@color/darkish_blue" />
                     </FrameLayout>
 

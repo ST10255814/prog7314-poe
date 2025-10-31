@@ -35,7 +35,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/circle_background"
-                    android:contentDescription="Back"
+                    android:contentDescription="@string/go_back_title"
                     android:padding="8dp"
                     android:src="@drawable/go_back_icon"
                     app:tint="@color/white"
@@ -46,7 +46,7 @@
                     android:id="@+id/profile_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Profile Settings"
+                    android:text="@string/profile_settings"
                     android:textColor="@color/blue"
                     android:textSize="26sp"
                     android:textStyle="bold"
@@ -74,7 +74,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/temp_profile"
-                        android:contentDescription="Profile Image" />
+                        android:contentDescription="@string/profile_image" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <ImageView
@@ -86,7 +86,7 @@
                     android:padding="6dp"
                     android:src="@drawable/edit_icon"
                     android:elevation="8dp"
-                    android:contentDescription="Edit Profile Image"
+                    android:contentDescription="@string/edit_profile_image"
                     android:clickable="true"/>
             </FrameLayout>
 
@@ -107,7 +107,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Username"
+                        android:text="@string/username"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -117,7 +117,7 @@
                         android:id="@+id/edit_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your username"
+                        android:hint="@string/enter_your_username"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -148,7 +148,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="First Name"
+                        android:text="@string/first_name"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -158,7 +158,7 @@
                         android:id="@+id/edit_first_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your first name"
+                        android:hint="@string/enter_your_first_name"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -189,7 +189,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Surname"
+                        android:text="@string/surname"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -199,7 +199,7 @@
                         android:id="@+id/edit_surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your surname"
+                        android:hint="@string/enter_your_surname"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textColorHighlight="#CC99CCFF"
@@ -230,7 +230,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email"
+                        android:text="@string/email"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -240,7 +240,7 @@
                         android:id="@+id/edit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Enter your email"
+                        android:text="@string/enter_your_email"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -265,7 +265,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phone"
+                        android:text="@string/phone"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -275,7 +275,7 @@
                         android:id="@+id/edit_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your phone number"
+                        android:hint="@string/enter_your_phone_number"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textColorHighlight="#CC99CCFF"
@@ -306,7 +306,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date of Birth"
+                        android:text="@string/date_of_birth"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/blue"
@@ -316,7 +316,7 @@
                         android:id="@+id/edit_dob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Select your date of birth"
+                        android:hint="@string/select_your_date_of_birth"
                         android:focusable="false"
                         android:clickable="true"
                         android:fontFamily="sans-serif-medium"
@@ -333,7 +333,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="20dp"
-                android:text="Save Changes"
+                android:text="@string/save_changes"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/button_background_states"
@@ -364,7 +364,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fetching profile..."
+            android:text="@string/fetching_profile"
             android:textColor="@color/darkish_blue"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -395,7 +395,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Updating profile..."
+            android:text="@string/updating_profile"
             android:textColor="@color/darkish_blue"
             android:textSize="16sp"
             android:textStyle="bold"

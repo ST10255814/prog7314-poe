@@ -2,6 +2,7 @@ package com.example.rentwise.auth
 
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
@@ -21,6 +22,7 @@ import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.RegisterRequest
 import com.example.rentwise.data_classes.RegisterResponse
 import com.example.rentwise.databinding.ActivityRegisterBinding
+import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +31,12 @@ import retrofit2.Response
 class RegisterActivity : AppCompatActivity() {
     // Holds the binding instance for accessing all views in the registration layout.
     private lateinit var binding: ActivityRegisterBinding
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {

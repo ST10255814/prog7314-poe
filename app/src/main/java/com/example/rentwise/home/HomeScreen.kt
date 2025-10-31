@@ -1,6 +1,7 @@
 package com.example.rentwise.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ import com.example.rentwise.notifications.NotificationsFragment
 import com.example.rentwise.settings.MainSettingsFragment
 import com.example.rentwise.settings.ProfileSettings
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import com.example.rentwise.wishlist.WishlistFragment
 
 // Main activity for the home screen, managing navigation, drawer interactions, and fragment transactions.
@@ -34,6 +36,12 @@ class HomeScreen : AppCompatActivity() {
     private lateinit var bottomNavButtons: List<ImageButton>
     // Holds references to the drawer navigation text views for selection handling.
     private lateinit var drawerNavButtons: List<TextView>
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {

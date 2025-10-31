@@ -1,5 +1,6 @@
 package com.example.rentwise.settings
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.rentwise.databinding.FragmentPrivacyPolicyBinding
+import com.example.rentwise.utils.LocaleHelper
 
 // Fragment responsible for displaying the privacy policy content to the user.
 // Utilizes view binding for safe and efficient access to layout views, and ensures proper cleanup to prevent memory leaks.
@@ -16,6 +18,12 @@ class PrivacyPolicyFragment : Fragment() {
     // Holds the binding instance for accessing the fragment's layout views.
     private var _binding: FragmentPrivacyPolicyBinding? = null
     private val binding get() = _binding!!
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     // Inflates the privacy policy layout and initializes the binding for this fragment.
     override fun onCreateView(

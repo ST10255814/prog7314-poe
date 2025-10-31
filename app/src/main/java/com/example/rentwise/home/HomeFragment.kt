@@ -2,6 +2,7 @@ package com.example.rentwise.home
 
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,7 @@ import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentHomeBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,6 +41,12 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: PropertyItemAdapter
     // Manages user authentication tokens and profile image.
     private lateinit var tokenManger: TokenManger
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     // Inflates the layout and initializes the binding for the fragment.
     override fun onCreateView(

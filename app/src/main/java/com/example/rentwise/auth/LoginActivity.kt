@@ -2,8 +2,8 @@ package com.example.rentwise.auth
 
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -26,6 +26,7 @@ import com.example.rentwise.data_classes.LoginRequest
 import com.example.rentwise.data_classes.LoginResponse
 import com.example.rentwise.databinding.ActivityLoginBinding
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -55,6 +56,11 @@ class LoginActivity : AppCompatActivity() {
     //private lateinit var executor: Executor
     //private lateinit var biometricPrompt: BiometricPrompt
 
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

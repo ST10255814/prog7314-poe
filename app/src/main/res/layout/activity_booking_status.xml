@@ -41,7 +41,7 @@
                             android:id="@+id/progressTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Booking Progress"
+                            android:text="@string/booking_progress"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/darkish_blue"
@@ -56,7 +56,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="Go Back"
+                            android:contentDescription="@string/go_back_title"
                             android:src="@drawable/go_back_icon"
                             app:tint="@color/darkish_blue" />
                     </RelativeLayout>
@@ -131,7 +131,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Nothing to track..."
+                                android:text="@string/nothing_to_track"
                                 android:textColor="@color/darkish_blue"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@color/button_background_states"
-                        android:text="Proceed to Payment"
+                        android:text="@string/proceed_to_payment"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="16sp"
@@ -170,7 +170,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="NOTICE TO TENANTS"
+                        android:text="@string/notice_to_tenants"
                         android:textSize="22sp"
                         android:textColor="@color/darkish_blue"
                         android:gravity="center"
@@ -211,7 +211,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please wait..."
+            android:text="@string/please_wait"
             android:textColor="@color/darkish_blue"
             android:textSize="16sp"
             android:textStyle="bold"

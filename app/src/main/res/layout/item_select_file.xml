@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/delete_icon"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete file" />
+            android:contentDescription="@string/delete_file" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

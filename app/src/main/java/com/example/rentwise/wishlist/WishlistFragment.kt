@@ -1,5 +1,6 @@
 package com.example.rentwise.wishlist
 
+import android.content.Context
 import com.example.rentwise.retrofit_instance.RetrofitInstance
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.example.rentwise.data_classes.UnfavouriteListingResponse
 import com.example.rentwise.databinding.FragmentWishListBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
 import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,6 +33,12 @@ class WishlistFragment : Fragment() {
     private lateinit var tokenManger: TokenManger
     // Adapter for the wishlist RecyclerView.
     private lateinit var wishlistAdapter: WishlistAdapter
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     // Inflate the fragment layout and initialize view binding.
     override fun onCreateView(

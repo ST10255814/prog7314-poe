@@ -1,6 +1,7 @@
 package com.example.rentwise.faq
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rentwise.adapters.ChatAdapter
 import com.example.rentwise.databinding.ActivityFaqchatBotBinding
 import com.example.rentwise.home.HomeScreen
+import com.example.rentwise.utils.LocaleHelper
 import kotlinx.coroutines.launch
 
 // Activity responsible for managing the FAQ chatbot interface, including message input, display, and AI interaction.
@@ -24,6 +26,12 @@ class FAQChatBot : AppCompatActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
     // Adapter for displaying chat messages in a RecyclerView.
     private lateinit var chatAdapter: ChatAdapter
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+// This ensures the saved language is applied when the activity is created
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

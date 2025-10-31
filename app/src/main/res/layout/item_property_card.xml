@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:text="The Aliso"
+            android:text="@string/placeholder_property_title"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/black"
@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/tv_address"
-            android:text="950 E 3rd St, Los Angeles, CA"
+            android:text="@string/placeholder_property_address"
             android:textSize="12sp"
             android:textColor="#888888"
             android:textIsSelectable="true"
@@ -66,7 +66,7 @@
                 <TextView
                     android:id="@+id/tv_label1"
                     android:background="@drawable/bg_rounded_outline"
-                    android:text="2 Rooms"
+                    android:text="@string/placeholder_rooms"
                     android:padding="6dp"
                     android:textSize="12sp"
                     android:textColor="@color/black"
@@ -77,7 +77,7 @@
                 <TextView
                     android:id="@+id/tv_label2"
                     android:background="@drawable/bg_rounded_outline"
-                    android:text="Heating"
+                    android:text="@string/placeholder_heating"
                     android:textColor="@color/black"
                     android:padding="6dp"
                     android:textSize="12sp"
@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/tv_label3"
                     android:background="@drawable/bg_rounded_outline"
-                    android:text="Wifi"
+                    android:text="@string/placeholder_wifi"
                     android:textColor="@color/black"
                     android:padding="6dp"
                     android:textSize="12sp"
@@ -99,7 +99,7 @@
                 <TextView
                     android:id="@+id/tv_label4"
                     android:background="@drawable/bg_rounded_outline"
-                    android:text="Parking"
+                    android:text="@string/placeholder_parking"
                     android:textColor="@color/black"
                     android:padding="6dp"
                     android:textSize="12sp"
@@ -131,7 +131,7 @@
                     android:id="@+id/tv_card_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.7"
+                    android:text="@string/placeholder_rating"
                     android:textSize="12sp"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/black"/>
@@ -140,7 +140,7 @@
                     android:id="@+id/tv_card_rating_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(12)"
+                    android:text="@string/placeholder_rating_count"
                     android:textSize="12sp"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/black"
@@ -156,7 +156,7 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="R1,280"
+                android:text="@string/placeholder_price"
                 android:textColor="@color/darkish_blue"
                 android:textSize="24sp"
                 android:textStyle="bold" />

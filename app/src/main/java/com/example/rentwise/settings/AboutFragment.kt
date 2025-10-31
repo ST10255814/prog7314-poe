@@ -1,6 +1,7 @@
 package com.example.rentwise.settings
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.rentwise.R
 import com.example.rentwise.databinding.FragmentAboutBinding
 import android.content.pm.PackageManager
 import android.os.Build
+import com.example.rentwise.utils.LocaleHelper
 
 // Fragment to display app information, version, credits, and quick links.
 // Matches the visual style of other screens (cards, paddings, colors).
@@ -20,6 +22,12 @@ class AboutFragment : Fragment() {
 
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
+
+    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the fragment is attached
+    override fun onAttach(context: Context) {
+        super.onAttach(LocaleHelper.onAttach(context))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

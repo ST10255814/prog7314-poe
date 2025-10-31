@@ -7,4 +7,5 @@ object PaymentStatus {
     const val PAID = "Booking Paid Successfully"
 
     fun isPaid(status: String?): Boolean = status == PAID
+
 }

@@ -37,7 +37,7 @@
 
                 <TextView
                     android:id="@+id/search_location_text"
-                    android:text="South Africa"
+                    android:text="@string/south_africa"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp"
@@ -73,7 +73,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:layout_marginEnd="8dp"
-            android:hint="Address / Area"
+            android:hint="@string/address_area"
             app:hintEnabled="true">
 
             <AutoCompleteTextView
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
-            android:hint="Price">
+            android:hint="@string/price">
 
             <AutoCompleteTextView
                 android:id="@+id/dropdown_prices"
@@ -130,8 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/white"
-            android:queryHint="Search for properties"
-            app:defaultQueryHint="Search for properties"
+            android:queryHint="@string/search_for_properties"
+            app:defaultQueryHint="@string/search_for_properties"
             android:theme="@style/CustomSearchViewTheme"/>
     </androidx.cardview.widget.CardView>
 
@@ -184,7 +184,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading properties..."
+                    android:text="@string/loading_properties"
                     android:textColor="@color/darkish_blue"
                     android:textSize="16sp"
                     android:layout_marginTop="12dp"
@@ -222,7 +222,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Updating properties..."
+                    android:text="@string/updating_properties"
                     android:textColor="@color/darkish_blue"
                     android:textSize="16sp"
                     android:layout_marginTop="12dp"

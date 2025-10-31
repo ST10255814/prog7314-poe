@@ -11,12 +11,13 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/no_notifications_icon"
-        android:contentDescription="No requests" />
+        android:contentDescription="@string/no_notifications"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You have no notifications"
+        android:text="@string/you_have_no_notifications"
         android:textSize="18sp"
         android:textAlignment="center"
         android:textColor="@color/darker_grey"
