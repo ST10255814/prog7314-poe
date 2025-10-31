@@ -19,7 +19,6 @@ class PrivacyPolicyFragment : Fragment() {
     private var _binding: FragmentPrivacyPolicyBinding? = null
     private val binding get() = _binding!!
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the fragment is attached
     override fun onAttach(context: Context) {
         super.onAttach(LocaleHelper.onAttach(context))

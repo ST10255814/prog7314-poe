@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.BookingStatusResponse
@@ -40,8 +41,7 @@ class BookingStatus : AppCompatActivity() {
     private var summaryListingId: String? = null
     private var currentBookingId: String? = null
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
-// This ensures the saved language is applied when the activity is created
+    // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
@@ -97,14 +97,14 @@ class BookingStatus : AppCompatActivity() {
         binding.btnProceedToPayment.setOnClickListener {
             val persisted = paymentStore.get()
 
-            val pay = Intent(this, PaymentActivity::class.java)                   // [<------THIS WAS CHNAGED----->]
+            val pay = Intent(this, PaymentActivity::class.java)
             // Fallback extras (PaymentActivity will prefer PaymentStore, but these help if store is empty)
-            pay.putExtra("propertyName", persisted?.propertyName ?: summaryProperty ?: "Property") // [<------THIS WAS CHNAGED----->]
-            pay.putExtra("checkIn",      persisted?.checkIn      ?: summaryCheckIn ?: "-")        // [<------THIS WAS CHNAGED----->]
-            pay.putExtra("checkOut",     persisted?.checkOut     ?: summaryCheckOut ?: "-")       // [<------THIS WAS CHNAGED----->]
-            pay.putExtra("amount",       (persisted?.amount ?: summaryAmount ?: "0.00").replace(",","").trim()) // [<------THIS WAS CHNAGED----->]
-            pay.putExtra("listingId",    persisted?.listingId    ?: summaryListingId ?: "")       // [<------THIS WAS CHNAGED----->]
-            pay.putExtra("bookingId",    currentBookingId ?: (persisted?.bookingId ?: ""))        // [<------THIS WAS CHNAGED----->]
+            pay.putExtra("propertyName", persisted?.propertyName ?: summaryProperty ?: "Property")
+            pay.putExtra("checkIn",      persisted?.checkIn      ?: summaryCheckIn ?: "-")
+            pay.putExtra("checkOut",     persisted?.checkOut     ?: summaryCheckOut ?: "-")
+            pay.putExtra("amount",       (persisted?.amount ?: summaryAmount ?: "0.00").replace(",","").trim())
+            pay.putExtra("listingId",    persisted?.listingId    ?: summaryListingId ?: "")
+            pay.putExtra("bookingId",    currentBookingId ?: (persisted?.bookingId ?: ""))
             startActivity(pay)
         }
     }
@@ -112,7 +112,8 @@ class BookingStatus : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     // Updates the UI to reflect the current booking status using a step tracker and progress bar.
     private fun prepBookingTracker(status: String, bookingId: String) {
-        binding.bookingIdText.text = "Booking ID: $bookingId"
+        // Use string resource with placeholder for Booking ID
+        binding.bookingIdText.text = getString(R.string.booking_id_label, bookingId)
         currentBookingId = bookingId // CACHE FOR
 
         // Update persisted summary with bookingId
@@ -122,15 +123,16 @@ class BookingStatus : AppCompatActivity() {
             }
         }
 
+        // Use string resources for step names
         val stepNames = listOf(
-            "Pending",
-            "Under Review",
-            "Awaiting Final Decision",
+            getString(R.string.status_pending),
+            getString(R.string.status_under_review),
+            getString(R.string.status_awaiting_decision),
             when(status.lowercase()) {
-                "approved" -> "Approved"
-                "rejected" -> "Rejected"
-                "active" -> "Active"
-                else -> "Outcome"
+                "approved" -> getString(R.string.status_approved)
+                "rejected" -> getString(R.string.status_rejected)
+                "active" -> getString(R.string.status_active)
+                else -> getString(R.string.status_outcome)
             }
         )
 
@@ -184,7 +186,13 @@ class BookingStatus : AppCompatActivity() {
             }
         }
         binding.progressBar.progress = ((currentStep.toFloat() / stepViews.size) * 100).toInt()
-        binding.progressSubtitle.text = "Step $currentStep of ${stepViews.size}: ${stepNames[currentStep - 1]}"
+        // Use string resource with placeholders for progress subtitle
+        binding.progressSubtitle.text = getString(
+            R.string.step_progress_format,
+            currentStep,
+            stepViews.size,
+            stepNames[currentStep - 1]
+        )
 
         // CTA visibility via centralized helper
         val approvedLike = BookingStatusValues.isApprovedLike(status)

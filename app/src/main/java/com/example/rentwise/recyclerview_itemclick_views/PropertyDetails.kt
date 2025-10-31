@@ -46,43 +46,9 @@ class PropertyDetails : AppCompatActivity() {
     private var isFavourite = false
     // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
+
     // Maps amenity names to their corresponding icon resources for dynamic UI rendering.
-    private val amenityLabelByKey: Map<String, String> = mapOf(
-        "swimming_pool" to "Swimming Pool",
-        "gym" to "Gym/Fitness Center",
-        "parking" to "Parking",
-        "security_24_7" to "24/7 Security",
-        "air_conditioning" to "Air Conditioning",
-        "balcony" to "Balcony/Patio",
-        "garden" to "Garden",
-        "laundry_room" to "Laundry Room",
-        "pet_friendly" to "Pet Friendly",
-        "wifi" to "WiFi",
-        "furnished" to "Furnished",
-        "kitchen_appliances" to "Kitchen Appliances",
-        "elevator" to "Elevator",
-        "playground" to "Playground",
-        "bbq_area" to "BBQ Area",
-        "storage_room" to "Storage Room",
-        "garage" to "Garage",
-        "dishwasher" to "Dishwasher",
-        "washing_machine" to "Washing Machine",
-        "microwave" to "Microwave",
-        "refrigerator" to "Refrigerator",
-        "tv" to "TV",
-        "public_transport" to "Close to Public Transport",
-        "shopping_mall" to "Shopping Mall Nearby",
-        "school" to "School Nearby",
-        "hospital" to "Hospital Nearby",
-        "fireplace" to "Fire Place",
-        "study_room" to "Study Room",
-        "backup_generator" to "Backup Generator",
-        "water_tank" to "Water Tank",
-        "cctv" to "CCTV Surveillance",
-        "intercom" to "Intercom System",
-        "cleaning_service" to "Cleaning Service",
-        "maintenance_service" to "Maintenance Service"
-    )
+    private lateinit var amenityLabelByKey: Map<String, String>
 
     private val amenityIconByKey: Map<String, Int> = mapOf(
         "swimming_pool" to R.drawable.ic_amenity_pool,
@@ -99,7 +65,7 @@ class PropertyDetails : AppCompatActivity() {
         "furnished" to R.drawable.ic_amenity_furnished,
         "kitchen_appliances" to R.drawable.ic_amenity_kitchen,
         "elevator" to R.drawable.ic_amenity_elevator,
-        "playground" to R.drawable.ic_amenity_playground,
+        "Playground" to R.drawable.ic_amenity_playground,
         "bbq_area" to R.drawable.ic_amenity_bbq,
         "storage_room" to R.drawable.ic_amenity_storage,
         "garage" to R.drawable.garage_icon,
@@ -123,8 +89,8 @@ class PropertyDetails : AppCompatActivity() {
         "bed" to R.drawable.bed_icon,
     )
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
-// This ensures the saved language is applied when the activity is created
+
+    // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
@@ -151,7 +117,7 @@ class PropertyDetails : AppCompatActivity() {
             "furnished", "fully furnished" -> "furnished"
             "kitchen appliances", "appliances", "fitted kitchen" -> "kitchen_appliances"
             "elevator", "lift" -> "elevator"
-            "playground", "kids play area", "children playground" -> "playground"
+            "Playground", "kids play area", "children Playground" -> "Playground"
             "bbq area", "braai area", "barbecue area" -> "bbq_area"
             "storage room", "store room", "storeroom" -> "storage_room"
             "garage" -> "garage"
@@ -193,6 +159,44 @@ class PropertyDetails : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
+        // Initialize amenityLabelByKey AFTER context is ready to avoid NPE from getString()
+        amenityLabelByKey = mapOf(
+            "swimming_pool" to getString(R.string.amenity_swimming_pool),
+            "gym" to getString(R.string.amenity_gym),
+            "parking" to getString(R.string.amenity_parking),
+            "security_24_7" to getString(R.string.amenity_security_24_7),
+            "air_conditioning" to getString(R.string.amenity_air_conditioning),
+            "balcony" to getString(R.string.amenity_balcony),
+            "garden" to getString(R.string.amenity_garden),
+            "laundry_room" to getString(R.string.amenity_laundry_room),
+            "pet_friendly" to getString(R.string.amenity_pet_friendly),
+            "wifi" to getString(R.string.amenity_wifi),
+            "furnished" to getString(R.string.amenity_furnished),
+            "kitchen_appliances" to getString(R.string.amenity_kitchen_appliances),
+            "elevator" to getString(R.string.amenity_elevator),
+            "Playground" to getString(R.string.amenity_playground),
+            "bbq_area" to getString(R.string.amenity_bbq_area),
+            "storage_room" to getString(R.string.amenity_storage_room),
+            "garage" to getString(R.string.amenity_garage),
+            "dishwasher" to getString(R.string.amenity_dishwasher),
+            "washing_machine" to getString(R.string.amenity_washing_machine),
+            "microwave" to getString(R.string.amenity_microwave),
+            "refrigerator" to getString(R.string.amenity_refrigerator),
+            "tv" to getString(R.string.amenity_tv),
+            "public_transport" to getString(R.string.amenity_public_transport),
+            "shopping_mall" to getString(R.string.amenity_shopping_mall),
+            "school" to getString(R.string.amenity_school),
+            "hospital" to getString(R.string.amenity_hospital),
+            "fireplace" to getString(R.string.amenity_fireplace),
+            "study_room" to getString(R.string.amenity_study_room),
+            "backup_generator" to getString(R.string.amenity_backup_generator),
+            "water_tank" to getString(R.string.amenity_water_tank),
+            "cctv" to getString(R.string.amenity_cctv),
+            "intercom" to getString(R.string.amenity_intercom),
+            "cleaning_service" to getString(R.string.amenity_cleaning_service),
+            "maintenance_service" to getString(R.string.amenity_maintenance_service)
+        )
+
         val listingId = compareWhichDataToBind() // Determines which property data to display.
         setButtonListeners(listingId) // Sets up all button and touch listeners for user actions.
     }
@@ -231,7 +235,7 @@ class PropertyDetails : AppCompatActivity() {
                 val dial = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
                 startActivity(dial)
             } else {
-                CustomToast.show(this, "No phone number available", CustomToast.Companion.ToastType.ERROR)
+                CustomToast.show(this, getString(R.string.no_phone_available), CustomToast.Companion.ToastType.ERROR)
             }
         }
 
@@ -239,23 +243,23 @@ class PropertyDetails : AppCompatActivity() {
         binding.chatButton.setOnClickListener {
             val phone = binding.landlordTxt.tag as? String
             val email = binding.landlordTxt.getTag(R.id.tag_email) as? String
-            val displayName = binding.landlordTxt.text?.toString()?.trim()?.ifBlank { "Landlord" }
+            val displayName = binding.landlordTxt.text?.toString()?.trim()?.ifBlank { getString(R.string.landlord) }
 
             when {
                 !phone.isNullOrBlank() -> {
                     val smsUri = Uri.parse("smsto:$phone")
                     val sms = Intent(Intent.ACTION_SENDTO, smsUri)
-                    sms.putExtra("sms_body", "Hi $displayName, I'm interested in your listing.")
+                    sms.putExtra("sms_body", getString(R.string.sms_template, displayName))
                     startActivity(sms)
                 }
                 !email.isNullOrBlank() -> {
                     val mail = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
-                    mail.putExtra(Intent.EXTRA_SUBJECT, "Enquiry about your property")
-                    mail.putExtra(Intent.EXTRA_TEXT, "Hi $displayName,\n\nI'm interested in your listing.")
+                    mail.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
+                    mail.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_body, displayName))
                     startActivity(mail)
                 }
                 else -> {
-                    CustomToast.show(this, "No contact method found for landlord", CustomToast.Companion.ToastType.ERROR)
+                    CustomToast.show(this, getString(R.string.no_contact_method), CustomToast.Companion.ToastType.ERROR)
                 }
             }
         }
@@ -456,7 +460,7 @@ class PropertyDetails : AppCompatActivity() {
                             val area = listing.area?.takeIf { it.isNotBlank() }
                             val address = listing.address?.takeIf { it.isNotBlank() }
                             binding.locationText.text = when {
-                                area != null && address != null -> "$area · $address"
+                                area != null && address != null -> getString(R.string.address_area_sep, area, address)
                                 area != null -> area
                                 else -> address
                             }
@@ -464,8 +468,7 @@ class PropertyDetails : AppCompatActivity() {
                         binding.locationText.text = listing.address
                         binding.titleText.text = listing.title
                         binding.propertyDescription.text = listing.description
-                        binding.priceText.text = "R${listing.price}"
-
+                        binding.priceText.text = getString(R.string.currency_rand_amount_decimal, listing.price ?: 0f)
 
                         isFavourite = listing.isFavourite ?: false
                         updateFavouriteIcon(isFavourite)
@@ -476,7 +479,8 @@ class PropertyDetails : AppCompatActivity() {
                         if (avg != null && avg > 0f) {
                             binding.ratingRow.visibility = View.VISIBLE
                             binding.tvAvgRating.text = String.format("%.1f", avg)
-                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else ""
+                            binding.tvReviewCount.text = if (count != null && count > 0)
+                                getString(R.string.rating_count_fmt, count) else ""
                             binding.ratingRow.visibility = View.GONE
                         }
 
@@ -517,7 +521,7 @@ class PropertyDetails : AppCompatActivity() {
                                 .into(binding.estateAgent)
                         }
                     }
-                    CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
+                    CustomToast.show(this@PropertyDetails, getString(R.string.property_loaded), CustomToast.Companion.ToastType.SUCCESS)
                 }
                 else {
                     hideLoading()
@@ -584,11 +588,11 @@ class PropertyDetails : AppCompatActivity() {
                             for (i in images.drop(1).size until 3) {
                                 extraPhotos[i].visibility = View.GONE
                             }
-                            // location line now prefers "area · address"           
+                            // location line now prefers "area · address"
                             val area = property.listingDetail?.area?.takeIf { it.isNotBlank() }
                             val address = property.listingDetail?.address?.takeIf { it.isNotBlank() }
                             binding.locationText.text = when {
-                                area != null && address != null -> "$area · $address"
+                                area != null && address != null -> getString(R.string.address_area_sep, area, address)
                                 area != null -> area
                                 else -> address ?: ""
                             }
@@ -596,7 +600,10 @@ class PropertyDetails : AppCompatActivity() {
                         binding.locationText.text = property.listingDetail?.address ?: ""
                         binding.titleText.text = property.listingDetail?.title ?: ""
                         binding.propertyDescription.text = property.listingDetail?.description ?: ""
-                        binding.priceText.text = "R${property.listingDetail?.price}"
+                        binding.priceText.text = getString(
+                            R.string.currency_rand_amount_decimal,
+                            property.listingDetail?.price ?: 0f
+                        )
 
                         // Show rating if available from wishlist payload
                         isFavourite = property.listingDetail?.isFavourite ?: false
@@ -608,7 +615,8 @@ class PropertyDetails : AppCompatActivity() {
                         if (avg != null && avg > 0f) {
                             binding.ratingRow.visibility = View.VISIBLE
                             binding.tvAvgRating.text = String.format("%.1f", avg)
-                            binding.tvReviewCount.text = if (count != null && count > 0) "(${count})" else ""
+                            binding.tvReviewCount.text = if (count != null && count > 0)
+                                getString(R.string.rating_count_fmt, count) else ""
                         } else {
                             binding.ratingRow.visibility = View.GONE
                         }
@@ -648,7 +656,7 @@ class PropertyDetails : AppCompatActivity() {
                                 .into(binding.estateAgent)
                         }
                     }
-                    CustomToast.show(this@PropertyDetails, "Property Loaded", CustomToast.Companion.ToastType.SUCCESS)
+                    CustomToast.show(this@PropertyDetails, getString(R.string.property_loaded), CustomToast.Companion.ToastType.SUCCESS)
                 }
                 else {
                     hideLoading()

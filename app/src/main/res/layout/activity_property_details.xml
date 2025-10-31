@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:fontFamily="@font/aldrich"
-                    android:text="New York"
+                    android:text="@string/placeholder_location"
                     android:textColor="@color/darker_grey"
                     android:textSize="14sp" />
 
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/goldman"
-                    android:text="The Aliso"
+                    android:text="@string/placeholder_property_title"
                     android:textColor="#000000"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -134,7 +134,7 @@
                         android:id="@+id/price_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="R1,280"
+                        android:text="@string/placeholder_price"
                         android:textColor="@color/darkish_blue"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/goldman"
-                    android:text="This beautifully Aliso home is located in Adarsh Palm Retreat Tower 1, Adarsh Palm Retreat Tower 2 Adarsh Palm Retreat Bellandur."
+                    android:text="@string/placeholder_property_description"
                     android:textColor="#555555"
                     android:textSize="14sp" />
 
@@ -254,7 +254,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
-                            android:text="Mr. Lee"
+                            android:text="@string/placeholder_landlord_name"
                             android:textColor="#000000"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -263,7 +263,7 @@
                             android:id="@+id/landord_pfp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10:00AM - 2:00PM"
+                            android:text="@string/placeholder_landlord_hours"
                             android:textColor="#777777"
                             android:textSize="12sp" />
                     </LinearLayout>

@@ -53,7 +53,6 @@ class ProfileSettings : AppCompatActivity() {
     // Formats dates for display and API submission.
     private val formatter: DateTimeFormatter = ofPattern("yyyy-MM-dd")
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))

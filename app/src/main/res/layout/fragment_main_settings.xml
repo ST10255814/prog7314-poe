@@ -50,8 +50,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/notification_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/notifications"
-                        />
+                        android:contentDescription="@string/notifications" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -94,8 +93,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/language_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/language"
-                        />
+                        android:contentDescription="@string/language" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -156,8 +154,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/offline_sync_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/offline_sync"
-                        />
+                        android:contentDescription="@string/offline_sync" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -200,8 +197,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/help_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/help"
-                        />
+                        android:contentDescription="@string/help" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -237,8 +233,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/privacy_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/privacy_policy"
-                        />
+                        android:contentDescription="@string/privacy_policy_title" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -246,7 +241,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="@string/privacy_policy"
+                        android:text="@string/privacy_policy_title"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -274,8 +269,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/about_icon"
                         app:tint="@color/blue"
-                        android:contentDescription="@string/about"
-                        />
+                        android:contentDescription="@string/about" />
 
                     <TextView
                         android:layout_width="0dp"

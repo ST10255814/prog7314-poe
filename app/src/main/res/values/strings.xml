@@ -1,72 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- App Metadata -->
+    <!-- =========================================================
+         App Metadata
+         ========================================================= -->
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Smart Rentals. Simple Management.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="website_url" translatable="false"></string>
     <string name="privacy_url" translatable="false"></string>
     <string name="support_email">support@rentwise.app</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
+    <string name="website_url" translatable="false"></string>
 
-    <!-- Navigation / Common -->
+    <!-- =========================================================
+         Navigation / Common
+         ========================================================= -->
     <string name="go_back_title">Go Back</string>
+    <string name="loading">Loading…</string>
+    <string name="please_wait">Please wait…</string>
     <string name="send">Send</string>
-    <string name="please_wait">Please wait...</string>
-    <string name="loading">Loading...</string>
 
-    <!-- Booking -->
-    <string name="file_upload_subText">Please upload a copy of your ID and proof of income for verification by the agent.</string>
-    <string name="notice_to_tenants">Notice to tenants</string>
-    <string name="processing_booking">Processing booking...</string>
-
-    <!-- FAQ Chatbot -->
-    <string name="faq_chat_bot">FAQ Chat Bot</string>
-    <string name="ask_a_question">Ask a question</string>
-
-    <!-- Home / Navigation targets -->
+    <!-- =========================================================
+         Navigation / Menu Destinations
+         ========================================================= -->
+    <string name="menu">menu</string>
+    <string name="nav_booking_status">nav_booking_status</string>
+    <string name="nav_faq_chatbot">nav_faq_chatbot</string>
+    <string name="nav_logout">nav_logout</string>
     <string name="nav_maintenance_status">Maintenance Status</string>
+    <string name="nav_profile_management">nav_profile_management</string>
+    <string name="nav_settings">nav_settings</string>
 
-    <!-- Login -->
-    <string name="logging_in">Logging in...</string>
-
-    <!-- Maintenance Requests -->
-    <string name="my_maintenance_requests">My Maintenance Requests</string>
-    <string name="loading_requests">Loading requests...</string>
-
-    <!-- Payment -->
-    <string name="processing_payment">Processing payment...</string>
-
-    <!-- Profile Settings -->
-    <string name="profile_settings">Profile Settings</string>
-    <string name="profile_image">Profile Image</string>
-    <string name="edit_profile_image">Edit Profile Image</string>
-
-    <!-- Auth / Onboarding -->
+    <!-- =========================================================
+         Auth / Onboarding
+         ========================================================= -->
     <string name="email_address_hint">Email Address</string>
     <string name="let_s_get_you_an_account">Let\'s get you an account</string>
+    <string name="logging_in">Logging in…</string>
     <string name="login_header">Sign In</string>
     <string name="login_message">Already have an account? <u>Login</u></string>
     <string name="login_to_enjoy_rentwise">Login to enjoy RentWise</string>
     <string name="login_with_biometrics">Login with Biometrics</string>
     <string name="or_condition">OR</string>
     <string name="password_hint">Password</string>
+    <string name="creating_account">Creating account...</string>
     <string name="register_button">Create Account</string>
     <string name="register_subtitle">is better with an account</string>
     <string name="register_text">Don\'t have an account? <u>Register</u></string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="welcome_message">Welcome</string>
 
-    <!-- Navigation / Menu -->
-    <string name="menu">menu</string>
-    <string name="nav_booking_status">nav_booking_status</string>
-    <string name="nav_faq_chatbot">nav_faq_chatbot</string>
-    <string name="nav_logout">nav_logout</string>
-    <string name="nav_profile_management">nav_profile_management</string>
-    <string name="nav_settings">nav_settings</string>
-
-    <!-- Listings / Properties -->
+    <!-- =========================================================
+         Listings / Properties
+         ========================================================= -->
+    <string name="address_area">Address Area</string>
     <string name="amenities">Amenities</string>
     <string name="amenity">Amenity</string>
     <string name="book_now">Book Now</string>
@@ -76,26 +63,55 @@
     <string name="price">Price</string>
     <string name="property">Property</string>
     <string name="rent">Rent</string>
-    <string name="address_area">Address Area</string>
 
-    <!-- Booking / Payments -->
+    <!-- =========================================================
+         Property details: actions / reviews
+         ========================================================= -->
+
+    <string name="call">Call</string>
+    <string name="chat">Chat</string>
+    <string name="leave_a_review">Leave a Review</string>
+    <string name="review_prompt">How was your experience?</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="updating_favourites">Updating favourites...</string>
+    <string name="write_your_review_optional">Write your review (optional)</string>
+    <string name="loading_property">Loading property...</string>
+
+    <!-- =========================================================
+         Booking: creation form
+         ========================================================= -->
     <string name="back">Back</string>
-    <string name="new_booking">New Booking</string>
     <string name="check_in_date">Check-in Date</string>
     <string name="check_in_hint">Select your check-in date</string>
     <string name="check_out_date">Check-out Date</string>
     <string name="check_out_hint">Select your check-out date</string>
-    <string name="number_of_guests">Number of Guests</string>
+    <string name="confirm_booking">Confirm Booking</string>
     <string name="enter_guest_count">Enter guest count</string>
+    <string name="new_booking">New Booking</string>
+    <string name="number_of_guests">Number of Guests</string>
     <string name="total_price">Total Price</string>
+
+    <!-- =========================================================
+         Booking: attachments
+         ========================================================= -->
     <string name="attach_files">Attach Files</string>
     <string name="choose_files">Choose Files</string>
-    <string name="confirm_booking">Confirm Booking</string>
+    <string name="delete_file">Delete file</string>
+    <string name="file_upload_subText">Please upload a copy of your ID and proof of income for verification by the agent.</string>
 
+    <!-- =========================================================
+         Booking: progress / status
+         ========================================================= -->
     <string name="booking_progress">Booking Progress</string>
-    <string name="nothing_to_track">Nothing to track yet</string>
-    <string name="proceed_to_payment">Proceed to Payment</string>
     <string name="booking_summary">Booking Summary</string>
+    <string name="nothing_to_track">Nothing to track yet</string>
+    <string name="notice_to_tenants">Notice to tenants</string>
+    <string name="processing_booking">Processing booking...</string>
+    <string name="proceed_to_payment">Proceed to Payment</string>
+
+    <!-- =========================================================
+         Payments
+         ========================================================= -->
     <string name="card">Card</string>
     <string name="card_number">Card Number</string>
     <string name="cvv">CVV</string>
@@ -107,160 +123,189 @@
     <string name="payment_method">Payment Method</string>
     <string name="payment_portal">Payment Portal</string>
     <string name="payment_status_not_paid">Payment Status: Not Paid</string>
+    <string name="processing_payment">Processing payment...</string>
 
-    <!-- Settings -->
-    <string name="settings">Settings</string>
-    <string name="notifications">Notifications</string>
-    <string name="language">Language</string>
-    <string name="offline_sync">Offline Sync</string>
-    <string name="offline_data_sync">Offline Data Sync</string>
-    <string name="help">Help</string>
-    <string name="help_and_support">Help and Support</string>
+    <!-- =========================================================
+         Settings
+         ========================================================= -->
     <string name="about">About</string>
-    <string name="about_title">About RentWise</string>
     <string name="about_body">RentWise helps tenants and landlords manage listings, inquiries, bookings, maintenance, and communication in one simple app.</string>
-    <string name="about_version">Version %1$s</string>
-    <string name="about_version_placeholder">Version x.y.z</string>
     <string name="about_package_placeholder">com.example.rentwise</string>
-    <string name="about_website">Website</string>
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_support">Support</string>
+    <string name="about_title">About RentWise</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_version_placeholder">Version x.y.z</string>
+    <string name="about_website">Website</string>
+    <string name="help">Help</string>
+    <string name="help_and_support">Help and Support</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="offline_data_sync">Offline Data Sync</string>
+    <string name="offline_sync">Offline Sync</string>
+    <string name="settings">Settings</string>
+    <string name="loading_settings">Loading settings...</string>
 
-    <!-- Profile Settings fields -->
-    <string name="username">Username</string>
-    <string name="enter_your_username">Enter your username</string>
+    <!-- =========================================================
+         Profile Settings (screen + fields)
+         ========================================================= -->
+    <string name="edit_profile_image">Edit Profile Image</string>
+    <string name="fetching_profile">Fetching profile...</string>
     <string name="first_name">First Name</string>
     <string name="enter_your_first_name">Enter your first name</string>
-    <string name="surname">Surname</string>
-    <string name="enter_your_surname">Enter your surname</string>
     <string name="email">Email</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="phone">Phone</string>
     <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="profile_settings">Profile Settings</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="surname">Surname</string>
+    <string name="enter_your_surname">Enter your surname</string>
+    <string name="updating_profile">Updating profile...</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your username</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="select_your_date_of_birth">Select your date of birth</string>
-    <string name="save_changes">Save Changes</string>
-    <string name="fetching_profile">Fetching profile...</string>
-    <string name="updating_profile">Updating profile...</string>
 
-    <!-- Property details actions -->
-    <string name="call">Call</string>
-    <string name="chat">Chat</string>
-    <string name="leave_a_review">Leave a Review</string>
-    <string name="review_prompt">How was your experience?</string>
-    <string name="write_your_review_optional">Write your review (optional)</string>
-
-    <!-- Property details: reviews and favourites -->
-    <string name="submit_review">Submit Review</string>
-    <string name="updating_favourites">Updating favourites...</string>
-    <string name="loading_property">Loading property...</string>
-
-    <!-- Register -->
-    <string name="creating_account">Creating account...</string>
-
-    <!-- Spinner / list item placeholder -->
-    <string name="list_item_placeholder">Select an option</string>
-
-    <!-- Empty states -->
-    <string name="no_favourites">No favourites</string>
-    <string name="you_have_no_favourites">You have no favourite properties yet.</string>
-    <string name="no_listings">No listings</string>
-    <string name="no_listings_available">No listings are available at the moment.</string>
-    <string name="no_requests">No requests</string>
-    <string name="no_maintenance_requests">You don\'t have any maintenance requests yet.</string>
-    <string name="no_notifications">No notifications</string>
-    <string name="you_have_no_notifications">You have no notifications yet.</string>
-
-    <!-- Home -->
-    <string name="search_for_properties">Search for properties</string>
+    <!-- =========================================================
+         Home
+         ========================================================= -->
     <string name="loading_properties">Loading properties...</string>
+    <string name="search_for_properties">Search for properties</string>
     <string name="updating_properties">Updating properties...</string>
 
-    <!-- Settings -->
-    <string name="loading_settings">Loading settings...</string>
+    <!-- =========================================================
+         Empty states
+         ========================================================= -->
+    <string name="no_favourites">No favourites</string>
+    <string name="no_listings">No listings</string>
+    <string name="no_listings_available">No listings are available at the moment.</string>
+    <string name="no_maintenance_requests">You don\'t have any maintenance requests yet.</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="no_requests">No requests</string>
+    <string name="you_have_no_favourites">You have no favourite properties yet.</string>
+    <string name="you_have_no_notifications">You have no notifications yet.</string>
 
-    <!-- Maintenance -->
+    <!-- =========================================================
+         FAQ Chatbot
+         ========================================================= -->
+    <string name="ask_a_question">Ask a question</string>
+    <string name="faq_chat_bot">FAQ Chat Bot</string>
+
+    <!-- =========================================================
+         Maintenance (screens + lists)
+         ========================================================= -->
+    <string name="loading_requests">Loading requests...</string>
     <string name="maintenance_request">Maintenance Request</string>
+    <string name="my_maintenance_requests">My Maintenance Requests</string>
 
-    <!-- Amenity item -->
-    <!-- If used as visible label: -->
-    <string name="amenity_icon">Amenity Icon</string>
-    <!-- Prefer for accessibility on ImageView: -->
-    <string name="amenity_icon_content_description">Amenity icon</string>
-
-    <!-- Maintenance form -->
-    <string name="issue_title">Issue Title</string>
-    <string name="issue_title_hint">Enter a brief title for the issue</string>
+    <!-- =========================================================
+         Maintenance form
+         ========================================================= -->
+    <string name="attach_supporting_docs">Attach supporting documents</string>
     <string name="description">Description</string>
     <string name="description_hint">Describe the issue in detail</string>
+    <string name="issue_title">Issue Title</string>
+    <string name="issue_title_hint">Enter a brief title for the issue</string>
     <string name="location_unit">Location / Unit</string>
-    <string name="priority">Priority</string>
-    <string name="attach_supporting_docs">Attach supporting documents</string>
     <string name="maintenance_file_upload">Upload photos or files related to the issue</string>
-    <string name="submit_request">Submit Request</string>
     <string name="past_requests">Past Requests</string>
-    <string name="no_past_maintenance_requests">You don\'t have any past maintenance requests.</string>
-    <string name="submitting_ticket">Submitting ticket...</string>
     <string name="populating_property_dropdown">Loading property list...</string>
+    <string name="priority">Priority</string>
+    <string name="submitting_ticket">Submitting ticket...</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="no_past_maintenance_requests">You don\'t have any past maintenance requests.</string>
     <string name="loading_past_requests">Loading past requests...</string>
 
-    <!-- Notifications -->
-    <string name="loading_notifications">Loading notifications...</string>
+    <!-- =========================================================
+         Amenity visuals / accessibility
+         ========================================================= -->
+    <string name="amenity_icon">Amenity Icon</string>
+    <string name="amenity_icon_content_description">Amenity icon</string>
 
-    <!-- Wishlist -->
-    <string name="my_wishlist">My Wishlist</string>
+    <!-- =========================================================
+         Wishlist
+         ========================================================= -->
     <string name="loading_wishlist">Loading wishlist...</string>
+    <string name="my_wishlist">My Wishlist</string>
 
-    <!-- Maintenance item placeholders -->
+    <!-- =========================================================
+         Notifications
+         ========================================================= -->
+    <string name="loading_notifications">Loading notifications...</string>
+    <string name="placeholder_notification_message">Notification message</string>
+    <string name="placeholder_notification_time">Just now</string>
+    <string name="placeholder_notification_title">Notification title</string>
+
+    <!-- =========================================================
+         Placeholders: Maintenance items
+         ========================================================= -->
+    <string name="placeholder_assigned">Assigned</string>
     <string name="placeholder_broken_tap">Broken tap</string>
+    <string name="placeholder_caretaker_note">Caretaker note</string>
+    <string name="placeholder_follow_ups">Follow-ups</string>
     <string name="placeholder_high_priority">High priority</string>
-
-    <!-- Maintenance item placeholders -->
     <string name="placeholder_pending">Pending</string>
+    <string name="placeholder_request_id">Request ID</string>
+    <string name="placeholder_submitted_date">Submitted date</string>
     <string name="placeholder_tap_leaking">Tap leaking</string>
     <string name="placeholder_unit">Unit</string>
-    <string name="placeholder_assigned">Assigned</string>
-    <string name="placeholder_submitted_date">Submitted date</string>
-    <string name="placeholder_request_id">Request ID</string>
-    <string name="placeholder_follow_ups">Follow-ups</string>
-    <string name="placeholder_caretaker_note">Caretaker note</string>
 
-    <!-- Property card placeholders -->
-    <string name="placeholder_property_title">Property title</string>
-    <string name="placeholder_property_address">Property address</string>
-    <string name="placeholder_rooms">Rooms</string>
+    <!-- =========================================================
+         Placeholders: Property card
+         ========================================================= -->
     <string name="placeholder_heating">Heating</string>
-    <string name="placeholder_wifi">Wi‑Fi</string>
     <string name="placeholder_parking">Parking</string>
+    <string name="placeholder_price">Price</string>
+    <string name="placeholder_property_address">Property address</string>
+    <string name="placeholder_property_title">Property title</string>
     <string name="placeholder_rating">Rating</string>
     <string name="placeholder_rating_count">Rating count</string>
-    <string name="placeholder_price">Price</string>
+    <string name="placeholder_rooms">Rooms</string>
+    <string name="placeholder_wifi">Wi‑Fi</string>
 
-    <!-- File selection -->
-    <string name="delete_file">Delete file</string>
-
-    <!-- Notification item placeholders -->
-    <string name="placeholder_notification_title">Notification title</string>
-    <string name="placeholder_notification_message">Notification message</string>
-
-    <!-- Notifications -->
-    <string name="placeholder_notification_time">Just now</string>
-
-    <!-- Progress step item -->
-    <string name="step_label">Step</string>
-
-    <!-- Wishlist card placeholders -->
-    <string name="placeholder_property_title_card">Property title</string>
-    <string name="placeholder_property_location_card">Location</string>
+    <!-- =========================================================
+         Placeholders: Wishlist card
+         ========================================================= -->
     <string name="placeholder_property_amount_card">Amount</string>
     <string name="placeholder_property_duration_card">per month</string>
+    <string name="placeholder_property_location_card">Location</string>
+    <string name="placeholder_property_title_card">Property title</string>
 
-    <!-- Misc -->
-    <string name="south_africa">South Africa</string>
+    <!-- =========================================================
+         Misc / UI helpers
+         ========================================================= -->
     <string name="footer_tracking_note">Tracking updates are refreshed in real time. If an update takes longer than expected, please contact our support team.</string>
+    <string name="list_item_placeholder">Select an option</string>
     <string name="refresh_text"><u>Refresh to see updates</u></string>
+    <string name="south_africa">South Africa</string>
+    <string name="step_label">Step</string>
 
-    <!-- Arrays -->
+    <!-- Booking Status Strings -->
+    <string name="booking_id_label">Booking ID: %1$s</string>
+    <string name="step_progress_format">Step %1$d of %2$d: %3$s</string>
+
+    <!-- Booking Status Names -->
+    <string name="status_pending">Pending</string>
+    <string name="status_under_review">Under Review</string>
+    <string name="status_awaiting_decision">Awaiting Final Decision</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_rejected">Rejected</string>
+    <string name="status_active">Active</string>
+    <string name="status_outcome">Outcome</string>
+
+    !-- Drawer labels (clean names, no "nav_" prefix in the visible text) -->
+    <string name="profile_management">Profile Management</string>
+    <string name="faq_chatbot">FAQ Chatbot</string>
+    <string name="booking_status">Booking Status</string>
+    <string name="maintenance_request_status">Maintenance Request Status</string>
+    <string name="log_out">Log out</string>
+
+
+    <!-- =========================================================
+         Arrays
+         ========================================================= -->
     <string-array name="language_options">
         <item>English</item>
         <item>Afrikaans</item>
@@ -290,13 +335,107 @@
         <item>High</item>
     </string-array>
 
-    <!-- Privacy Policy -->
+    <!-- Generic -->
+    <string name="no_title">No Title</string>
+    <string name="no_address">No Address</string>
+    <string name="price_na">Price N/A</string>
+    <string name="rating_count_fmt">(%1$d)</string>
+    <string name="currency_rand_amount">R%1$.0f</string>
+    <string name="currency_rand_amount_decimal">R%1$.1f</string>
+    <string name="address_area_sep">%1$s · %2$s</string>
+    <string name="error_prefix">%1$s</string>
+
+    <!-- Placeholders for XML defaults (overwritten at runtime) -->
+    <string name="placeholder_location">Location</string>
+    <string name="placeholder_property_description">Property description</string>
+    <string name="placeholder_landlord_name">Landlord</string>
+    <string name="placeholder_landlord_hours">10:00AM - 2:00PM</string>
+
+    <!-- Property Details toasts and labels -->
+    <string name="no_phone_available">No phone number available</string>
+    <string name="no_contact_method">No contact method found for landlord</string>
+    <string name="landlord">Landlord</string>
+    <string name="sms_template">Hi %1$s, I\'m interested in your listing.</string>
+    <string name="mail_subject">Enquiry about your property</string>
+    <string name="mail_body">Hi %1$s,\n\nI\'m interested in your listing.</string>
+    <string name="property_loaded">Property loaded</string>
+
+    <!-- Amenity labels -->
+    <string name="amenity_swimming_pool">Swimming Pool</string>
+    <string name="amenity_gym">Gym/Fitness Center</string>
+    <string name="amenity_parking">Parking</string>
+    <string name="amenity_security_24_7">24/7 Security</string>
+    <string name="amenity_air_conditioning">Air Conditioning</string>
+    <string name="amenity_balcony">Balcony/Patio</string>
+    <string name="amenity_garden">Garden</string>
+    <string name="amenity_laundry_room">Laundry Room</string>
+    <string name="amenity_pet_friendly">Pet Friendly</string>
+    <string name="amenity_wifi">WiFi</string>
+    <string name="amenity_furnished">Furnished</string>
+    <string name="amenity_kitchen_appliances">Kitchen Appliances</string>
+    <string name="amenity_elevator">Elevator</string>
+    <string name="amenity_playground">Playground</string>
+    <string name="amenity_bbq_area">BBQ Area</string>
+    <string name="amenity_storage_room">Storage Room</string>
+    <string name="amenity_garage">Garage</string>
+    <string name="amenity_dishwasher">Dishwasher</string>
+    <string name="amenity_washing_machine">Washing Machine</string>
+    <string name="amenity_microwave">Microwave</string>
+    <string name="amenity_refrigerator">Refrigerator</string>
+    <string name="amenity_tv">TV</string>
+    <string name="amenity_public_transport">Close to Public Transport</string>
+    <string name="amenity_shopping_mall">Shopping Mall Nearby</string>
+    <string name="amenity_school">School Nearby</string>
+    <string name="amenity_hospital">Hospital Nearby</string>
+    <string name="amenity_fireplace">Fireplace</string>
+    <string name="amenity_study_room">Study Room</string>
+    <string name="amenity_backup_generator">Backup Generator</string>
+    <string name="amenity_water_tank">Water Tank</string>
+    <string name="amenity_cctv">CCTV Surveillance</string>
+    <string name="amenity_intercom">Intercom System</string>
+    <string name="amenity_cleaning_service">Cleaning Service</string>
+    <string name="amenity_maintenance_service">Maintenance Service</string>
+
+
+
+    <!-- =========================================================
+         Privacy Policy
+         ========================================================= -->
     <string name="privacy_policy_title">Privacy Policy</string>
     <string name="privacy_policy"><![CDATA[
 <b>Date:</b> October 20, 2025<br/><br/>
 
 <b>Introduction</b><br/>
-Welcome to <b>RentWise</b>. Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect your information when you use the app.
+Welcome to <b>RentWise</b>. Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect your information when you use the app.<br/><br/>
+
+<b>1. Information We Collect</b><br/>
+• Personal details: name, email, phone number, and profile photo.<br/>
+• Rental activity: listings you view, save, or book.<br/>
+• Optional location data (only with permission) to improve search relevance.<br/><br/>
+
+<b>2. How We Use Your Information</b><br/>
+We use your information to:<br/>
+• Manage your account and facilitate bookings.<br/>
+• Improve the quality and reliability of our services.<br/>
+• Send you booking updates and notifications you’ve opted into.<br/><br/>
+
+<b>3. Data Security</b><br/>
+We use secure servers and encryption (including <b>AES-256</b>) to protect your data and follow best practices to prevent unauthorized access.<br/><br/>
+
+<b>4. Sharing Your Information</b><br/>
+We do not sell your data. We share limited data only with:<br/>
+• Property owners/managers (to enable booking logistics).<br/>
+• Trusted service providers (e.g., payments, maintenance) under strict obligations.<br/><br/>
+
+<b>5. Your Rights</b><br/>
+You can update or delete your information in the app at any time. If you uninstall the app, locally stored data (tokens, preferences) is cleared automatically.<br/><br/>
+
+<b>6. Contact Us</b><br/>
+For questions or concerns:<br/>
+📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
+🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+
+<b>Last Updated:</b> October 20, 2025
 ]]></string>
 
 </resources>

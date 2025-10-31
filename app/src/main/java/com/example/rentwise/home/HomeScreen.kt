@@ -37,7 +37,6 @@ class HomeScreen : AppCompatActivity() {
     // Holds references to the drawer navigation text views for selection handling.
     private lateinit var drawerNavButtons: List<TextView>
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))

@@ -50,6 +50,9 @@ class PropertyItemAdapter(
 
         // Binds property details to the UI components.
         with(holder.binding) {
+            val ctx = root.context
+            val res = ctx.resources
+
             // Loads the first image URL using Glide, or a placeholder if unavailable.
             val firstImage = property.imagesURL?.firstOrNull()
             Glide.with(imageProperty.context)
@@ -59,16 +62,16 @@ class PropertyItemAdapter(
                 .into(imageProperty)
 
             // Sets the property title or a default if missing.
-            tvTitle.text = property.title ?: "No Title"
+            tvTitle.text = property.title ?: res.getString(R.string.no_title)
 
             // Address + Area line (prefer address, append area if present).
             val address = property.address?.takeIf { it.isNotBlank() }
             val area = property.area?.takeIf { it.isNotBlank() }
             tvAddress.text = when {
-                address != null && area != null -> "$address · $area"
+                address != null && area != null -> res.getString(R.string.address_area_sep, address, area)
                 address != null -> address
                 area != null -> area
-                else -> "No Address"
+                else -> res.getString(R.string.no_address)
             }
 
             // Hide all amenity chips initially, then show up to 4.
@@ -79,7 +82,8 @@ class PropertyItemAdapter(
             }
 
             // Price
-            tvPrice.text = property.price?.let { "R$it" } ?: "Price N/A"
+            tvPrice.text = property.price?.let { res.getString(R.string.currency_rand_amount, it) }
+                ?: res.getString(R.string.price_na)
 
             // Rating on card (average + optional count)
             val avg = property.averageRating
@@ -87,7 +91,8 @@ class PropertyItemAdapter(
             if (avg != null && avg > 0f) {
                 cardRatingCluster.visibility = View.VISIBLE
                 tvCardRating.text = String.format("%.1f", avg)
-                tvCardRatingCount.text = if (count != null && count > 0) "(${count})" else ""
+                tvCardRatingCount.text = if (count != null && count > 0)
+                    res.getString(R.string.rating_count_fmt, count) else ""
                 tvCardRatingCount.visibility = if (count != null && count > 0) View.VISIBLE else View.GONE
             } else {
                 cardRatingCluster.visibility = View.GONE

@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
     // Manages user authentication tokens and profile image.
     private lateinit var tokenManger: TokenManger
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // OVERRIDE ONATTACH TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the fragment is attached
     override fun onAttach(context: Context) {
         super.onAttach(LocaleHelper.onAttach(context))

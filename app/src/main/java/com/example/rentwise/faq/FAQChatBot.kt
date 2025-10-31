@@ -27,7 +27,6 @@ class FAQChatBot : AppCompatActivity() {
     // Adapter for displaying chat messages in a RecyclerView.
     private lateinit var chatAdapter: ChatAdapter
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
 // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))

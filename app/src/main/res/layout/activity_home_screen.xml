@@ -23,7 +23,8 @@
         android:padding="8dp"
         android:src="@drawable/drawer_icon"
         app:tint="@color/black"
-        android:contentDescription="@string/menu" />
+        android:contentDescription="@string/menu"
+        android:layout_gravity="top|start"/>
 
     <LinearLayout
         android:id="@+id/custom_drawer"
@@ -76,7 +77,11 @@
                 android:id="@+id/profile_Settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_profile_management" />
+                android:text="@string/profile_management"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +105,11 @@
                 android:id="@+id/settings_Tab_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_settings" />
+                android:text="@string/settings"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -124,7 +133,11 @@
                 android:id="@+id/faq_chatbot_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_faq_chatbot" />
+                android:text="@string/faq_chatbot"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -148,7 +161,11 @@
                 android:id="@+id/booking_status_tab_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_booking_status" />
+                android:text="@string/booking_status"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -172,7 +189,11 @@
                 android:id="@+id/maintenance_Tab_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_maintenance_status" />
+                android:text="@string/maintenance_request_status"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <View
@@ -208,7 +229,11 @@
                 android:id="@+id/logout_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_logout" />
+                android:text="@string/log_out"
+                android:textColor="@color/drawer_item_text_selector"
+                android:textSize="16sp"
+                android:fontFamily="@font/goldman"
+                android:textStyle="normal"/>
         </LinearLayout>
     </LinearLayout>
 

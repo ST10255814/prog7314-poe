@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/privacy_policy"
+        android:text="@string/privacy_policy_title"
         android:fontFamily="@font/goldman"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -57,6 +57,6 @@
         android:textSize="12sp"
         android:textColor="@color/darker_grey"
         android:layout_marginTop="12dp"
-    android:layout_marginBottom="80dp"
-    android:fontFamily="@font/goldman"/>
+        android:layout_marginBottom="80dp"
+        android:fontFamily="@font/goldman"/>
 </LinearLayout>
