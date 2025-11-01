@@ -43,7 +43,7 @@
     <string name="login_with_biometrics">Login with Biometrics</string>
     <string name="or_condition">OR</string>
     <string name="password_hint">Password</string>
-    <string name="creating_account">Creating account...</string>
+    <string name="creating_account">Creating account…</string>
     <string name="register_button">Create Account</string>
     <string name="register_subtitle">is better with an account</string>
     <string name="register_text">Don\'t have an account? <u>Register</u></string>
@@ -73,9 +73,9 @@
     <string name="leave_a_review">Leave a Review</string>
     <string name="review_prompt">How was your experience?</string>
     <string name="submit_review">Submit Review</string>
-    <string name="updating_favourites">Updating favourites...</string>
+    <string name="updating_favourites">Updating favourites…</string>
     <string name="write_your_review_optional">Write your review (optional)</string>
-    <string name="loading_property">Loading property...</string>
+    <string name="loading_property">Loading property…</string>
 
     <!-- =========================================================
          Booking: creation form
@@ -106,7 +106,7 @@
     <string name="booking_summary">Booking Summary</string>
     <string name="nothing_to_track">Nothing to track yet</string>
     <string name="notice_to_tenants">Notice to tenants</string>
-    <string name="processing_booking">Processing booking...</string>
+    <string name="processing_booking">Processing booking…</string>
     <string name="proceed_to_payment">Proceed to Payment</string>
 
     <!-- =========================================================
@@ -123,7 +123,7 @@
     <string name="payment_method">Payment Method</string>
     <string name="payment_portal">Payment Portal</string>
     <string name="payment_status_not_paid">Payment Status: Not Paid</string>
-    <string name="processing_payment">Processing payment...</string>
+    <string name="processing_payment">Processing payment…</string>
 
     <!-- =========================================================
          Settings
@@ -144,13 +144,13 @@
     <string name="offline_data_sync">Offline Data Sync</string>
     <string name="offline_sync">Offline Sync</string>
     <string name="settings">Settings</string>
-    <string name="loading_settings">Loading settings...</string>
+    <string name="loading_settings">Loading settings…</string>
 
     <!-- =========================================================
          Profile Settings (screen + fields)
          ========================================================= -->
     <string name="edit_profile_image">Edit Profile Image</string>
-    <string name="fetching_profile">Fetching profile...</string>
+    <string name="fetching_profile">Fetching profile…</string>
     <string name="first_name">First Name</string>
     <string name="enter_your_first_name">Enter your first name</string>
     <string name="email">Email</string>
@@ -162,7 +162,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="surname">Surname</string>
     <string name="enter_your_surname">Enter your surname</string>
-    <string name="updating_profile">Updating profile...</string>
+    <string name="updating_profile">Updating profile…</string>
     <string name="username">Username</string>
     <string name="enter_your_username">Enter your username</string>
     <string name="date_of_birth">Date of Birth</string>
@@ -171,9 +171,9 @@
     <!-- =========================================================
          Home
          ========================================================= -->
-    <string name="loading_properties">Loading properties...</string>
+    <string name="loading_properties">Loading properties…</string>
     <string name="search_for_properties">Search for properties</string>
-    <string name="updating_properties">Updating properties...</string>
+    <string name="updating_properties">Updating properties…</string>
 
     <!-- =========================================================
          Empty states
@@ -196,7 +196,7 @@
     <!-- =========================================================
          Maintenance (screens + lists)
          ========================================================= -->
-    <string name="loading_requests">Loading requests...</string>
+    <string name="loading_requests">Loading requests…</string>
     <string name="maintenance_request">Maintenance Request</string>
     <string name="my_maintenance_requests">My Maintenance Requests</string>
 
@@ -211,12 +211,12 @@
     <string name="location_unit">Location / Unit</string>
     <string name="maintenance_file_upload">Upload photos or files related to the issue</string>
     <string name="past_requests">Past Requests</string>
-    <string name="populating_property_dropdown">Loading property list...</string>
+    <string name="populating_property_dropdown">Loading property list…</string>
     <string name="priority">Priority</string>
-    <string name="submitting_ticket">Submitting ticket...</string>
+    <string name="submitting_ticket">Submitting ticket…</string>
     <string name="submit_request">Submit Request</string>
     <string name="no_past_maintenance_requests">You don\'t have any past maintenance requests.</string>
-    <string name="loading_past_requests">Loading past requests...</string>
+    <string name="loading_past_requests">Loading past requests…</string>
 
     <!-- =========================================================
          Amenity visuals / accessibility
@@ -227,13 +227,13 @@
     <!-- =========================================================
          Wishlist
          ========================================================= -->
-    <string name="loading_wishlist">Loading wishlist...</string>
+    <string name="loading_wishlist">Loading wishlist…</string>
     <string name="my_wishlist">My Wishlist</string>
 
     <!-- =========================================================
          Notifications
          ========================================================= -->
-    <string name="loading_notifications">Loading notifications...</string>
+    <string name="loading_notifications">Loading notifications…</string>
     <string name="placeholder_notification_message">Notification message</string>
     <string name="placeholder_notification_time">Just now</string>
     <string name="placeholder_notification_title">Notification title</string>

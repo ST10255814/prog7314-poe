@@ -16,18 +16,18 @@
          Navigation / Common
          ========================================================= -->
     <string name="go_back_title">Gaan terug</string>
-    <string name="loading">Laai...</string>
-    <string name="please_wait">Wag asseblief...</string>
+    <string name="loading">Laai…</string>
+    <string name="please_wait">Wag asseblief…</string>
     <string name="send">Stuur</string>
 
     <!-- =========================================================
          Navigation / Menu Destinations
          ========================================================= -->
-    <string name="menu">kieslys</string>
+    <string name="menu">spyskaart</string>
     <string name="nav_booking_status">nav_booking_status</string>
     <string name="nav_faq_chatbot">nav_faq_chatbot</string>
     <string name="nav_logout">nav_logout</string>
-    <string name="nav_maintenance_status">Instandhoudingsstatus</string>
+    <string name="nav_maintenance_status">Onderhoudstatus</string>
     <string name="nav_profile_management">nav_profile_management</string>
     <string name="nav_settings">nav_settings</string>
 
@@ -36,14 +36,14 @@
      ========================================================= -->
     <string name="email_address_hint">E-posadres</string>
     <string name="let_s_get_you_an_account">Kom ons kry vir jou ’n rekening</string>
-    <string name="logging_in">Meld aan...</string>
+    <string name="logging_in">Meld tans aan…</string>
     <string name="login_header">Meld aan</string>
     <string name="login_message">Het jy reeds ’n rekening? <u>Meld aan</u></string>
     <string name="login_to_enjoy_rentwise">Meld aan om RentWise te geniet</string>
-    <string name="login_with_biometrics">Meld aan met biometrie</string>
+    <string name="login_with_biometrics">Teken aan met biometrie</string>
     <string name="or_condition">OF</string>
     <string name="password_hint">Wagwoord</string>
-    <string name="creating_account">Skep tans ’n rekening...</string>
+    <string name="creating_account">Skep rekening…</string>
     <string name="register_button">Skep rekening</string>
     <string name="register_subtitle">is beter met ’n rekening</string>
     <string name="register_text">Het jy nie ’n rekening nie? <u>Regsitreer</u></string>
@@ -55,7 +55,7 @@
          ========================================================= -->
     <string name="address_area">Adresgebied</string>
     <string name="amenities">Gerieflikhede</string>
-    <string name="amenity">Gerieflikheid</string>
+    <string name="amenity">Gerief</string>
     <string name="book_now">Bespreek nou</string>
     <string name="favourite">Gunsteling</string>
     <string name="per_night">Per nag</string>
@@ -72,9 +72,9 @@
     <string name="leave_a_review">Laat ’n resensie</string>
     <string name="review_prompt">Hoe was jou ervaring?</string>
     <string name="submit_review">Dien resensie in</string>
-    <string name="updating_favourites">Werk gunstelinge by...</string>
+    <string name="updating_favourites">Werk gunstelinge by…</string>
     <string name="write_your_review_optional">Skryf jou resensie (opsioneel)</string>
-    <string name="loading_property">Laai eiendom...</string>
+    <string name="loading_property">Laai eiendom…</string>
 
     <!-- =========================================================
          Booking: creation form
@@ -85,7 +85,7 @@
     <string name="check_out_date">Uitboekdatum</string>
     <string name="check_out_hint">Kies jou uitboekdatum</string>
     <string name="confirm_booking">Bevestig bespreking</string>
-    <string name="enter_guest_count">Voer aantal gaste in</string>
+    <string name="enter_guest_count">Voer gastetellinging in</string>
     <string name="new_booking">Nuwe bespreking</string>
     <string name="number_of_guests">Aantal gaste</string>
     <string name="total_price">Totale prys</string>
@@ -102,10 +102,10 @@
          Booking: progress / status
          ========================================================= -->
     <string name="booking_progress">Besprekingsvordering</string>
-    <string name="booking_summary">Besprekingsoorsig</string>
-    <string name="nothing_to_track">Niks om nog te volg nie</string>
+    <string name="booking_summary">Besprekingsopsomming</string>
+    <string name="nothing_to_track">Nog niks om op te spoor nie</string>
     <string name="notice_to_tenants">Kennisgewing aan huurders</string>
-    <string name="processing_booking">Verwerk bespreking...</string>
+    <string name="processing_booking">Verwerk bespreking…</string>
     <string name="proceed_to_payment">Gaan voort na betaling</string>
 
     <!-- =========================================================
@@ -122,7 +122,7 @@
     <string name="payment_method">Betaalmetode</string>
     <string name="payment_portal">Betaalportaal</string>
     <string name="payment_status_not_paid">Betalingstatus: Nie betaal nie</string>
-    <string name="processing_payment">Verwerk betaling...</string>
+    <string name="processing_payment">Verwerk betaling…</string>
 
     <!-- =========================================================
      Settings
@@ -143,13 +143,13 @@
     <string name="offline_data_sync">Vanlyn Datasingronisering</string>
     <string name="offline_sync">Vanlyn Sinkronisering</string>
     <string name="settings">Instellings</string>
-    <string name="loading_settings">Laai instellings...</string>
+    <string name="loading_settings">Laai instellings…</string>
 
     <!-- =========================================================
          Profile Settings (screen + fields)
          ========================================================= -->
     <string name="edit_profile_image">Wysig profielprent</string>
-    <string name="fetching_profile">Haal profiel...</string>
+    <string name="fetching_profile">Haal profiel…</string>
     <string name="first_name">Voornaam</string>
     <string name="enter_your_first_name">Voer jou voornaam in</string>
     <string name="email">E-pos</string>
@@ -161,7 +161,7 @@
     <string name="save_changes">Stoor veranderinge</string>
     <string name="surname">Van</string>
     <string name="enter_your_surname">Voer jou van in</string>
-    <string name="updating_profile">Werk profiel by...</string>
+    <string name="updating_profile">Werk profiel by…</string>
     <string name="username">Gebruikersnaam</string>
     <string name="enter_your_username">Voer jou gebruikersnaam in</string>
     <string name="date_of_birth">Geboortedatum</string>
@@ -170,9 +170,9 @@
     <!-- =========================================================
          Home
          ========================================================= -->
-    <string name="loading_properties">Laai eiendomme...</string>
+    <string name="loading_properties">Laai eiendomme…</string>
     <string name="search_for_properties">Soek vir eiendomme</string>
-    <string name="updating_properties">Werk eiendomme by...</string>
+    <string name="updating_properties">Werk eiendomme by…</string>
 
     <!-- =========================================================
          Empty states
@@ -195,7 +195,7 @@
     <!-- =========================================================
          Maintenance (screens + lists)
          ========================================================= -->
-    <string name="loading_requests">Laai versoeke...</string>
+    <string name="loading_requests">Laai versoeke…</string>
     <string name="maintenance_request">Onderhoudsversoek</string>
     <string name="my_maintenance_requests">My onderhoudsversoeke</string>
 
@@ -210,12 +210,12 @@
     <string name="location_unit">Ligging / Eenheid</string>
     <string name="maintenance_file_upload">Laai foto’s of lêers op wat met die probleem verband hou</string>
     <string name="past_requests">Vorige versoeke</string>
-    <string name="populating_property_dropdown">Laai eiendomslys...</string>
+    <string name="populating_property_dropdown">Laai eiendomslys…</string>
     <string name="priority">Prioriteit</string>
-    <string name="submitting_ticket">Dien kaartjie in...</string>
+    <string name="submitting_ticket">Dien kaartjie in…</string>
     <string name="submit_request">Dien versoek in</string>
     <string name="no_past_maintenance_requests">Jy het geen vorige onderhoudsversoeke nie.</string>
-    <string name="loading_past_requests">Laai vorige versoeke...</string>
+    <string name="loading_past_requests">Laai vorige versoeke…</string>
 
     <!-- =========================================================
          Amenity visuals / accessibility
@@ -226,13 +226,13 @@
     <!-- =========================================================
          Wishlist
          ========================================================= -->
-    <string name="loading_wishlist">Laai wenslys...</string>
+    <string name="loading_wishlist">Laai wenslys…</string>
     <string name="my_wishlist">My wenslys</string>
 
     <!-- =========================================================
          Notifications
          ========================================================= -->
-    <string name="loading_notifications">Laai kennisgewings...</string>
+    <string name="loading_notifications">Laai kennisgewings…</string>
     <string name="placeholder_notification_message">Kennisgewingboodskap</string>
     <string name="placeholder_notification_time">Pas nou</string>
     <string name="placeholder_notification_title">Kennisgewingtitel</string>
