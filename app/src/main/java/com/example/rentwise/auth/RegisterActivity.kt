@@ -28,11 +28,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class RegisterActivity : AppCompatActivity() {
     // Holds the binding instance for accessing all views in the registration layout.
     private lateinit var binding: ActivityRegisterBinding
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
 // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
@@ -79,6 +80,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.loginText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish() //Finish register activity when navigating to login
         }
 
         // Adds a press animation to the register button for tactile feedback.
@@ -111,14 +113,14 @@ class RegisterActivity : AppCompatActivity() {
         // Clears the first name error message as soon as the user starts typing.
         binding.regfirstName.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
-                binding.passwordInputLayout.error = null
+                binding.firstNameInputLayout.error = null
             }
         }
 
         // Clears the last name error message as soon as the user starts typing.
         binding.regSurname.addTextChangedListener { text ->
             if (!text.isNullOrEmpty()) {
-                binding.passwordInputLayout.error = null
+                binding.surnameInputLayout.error = null
             }
         }
 
@@ -158,6 +160,10 @@ class RegisterActivity : AppCompatActivity() {
             else if(surname.isEmpty()){
                 binding.surnameInputLayout.error = "Last name is required"
             }
+
+            else if(password.length < 6){
+                binding.passwordInputLayout.error = "Password must be at least 6 characters"
+            }
             else{
                 registerAPICall(email, password, firstName, surname)
             }
@@ -187,6 +193,7 @@ class RegisterActivity : AppCompatActivity() {
                     val authResponse = response.body()
                     if(authResponse != null){
                         CustomToast.show(this@RegisterActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
+                        //----THIS WAS UPDATED---- Navigate to login after successful registration
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()

@@ -28,6 +28,7 @@ import com.example.rentwise.shared_pref_config.TokenManger
 import com.example.rentwise.utils.LocaleHelper
 import com.example.rentwise.wishlist.WishlistFragment
 
+
 // Main activity for the home screen, managing navigation, drawer interactions, and fragment transactions.
 class HomeScreen : AppCompatActivity() {
     // Binds the layout for the home screen, providing access to all UI elements.
@@ -36,6 +37,8 @@ class HomeScreen : AppCompatActivity() {
     private lateinit var bottomNavButtons: List<ImageButton>
     // Holds references to the drawer navigation text views for selection handling.
     private lateinit var drawerNavButtons: List<TextView>
+
+    private lateinit var tokenManager: TokenManger
 
     // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
@@ -47,6 +50,9 @@ class HomeScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Initialize token manager
+        tokenManager = TokenManger(applicationContext)
 
         // Configures the window to allow content to extend into system windows for a modern look.
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -178,7 +184,22 @@ class HomeScreen : AppCompatActivity() {
         binding.profileSettingsTab.setOnClickListener {
             selectDrawerNavButton(binding.profileSettingsText)
             closeDrawer()
+            //Read userId synchronously from secure prefs and pass it to ProfileSettings
+            val userId = tokenManager.getUser()
+            //If no userId is present, redirect to login to avoid "user not found" in ProfileSettings
+            if (userId.isNullOrEmpty()) {
+                CustomToast.show(this, "No active user found. Please sign in.", CustomToast.Companion.ToastType.ERROR)
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+                return@setOnClickListener
+            }
+
             val intent = Intent(this, ProfileSettings::class.java)
+            intent.putExtra("userId", userId)
+            val pfp = tokenManager.getPfp()
+            if (!pfp.isNullOrEmpty()) intent.putExtra("pfp", pfp)
             startActivity(intent)
             finish()
         }
@@ -193,11 +214,12 @@ class HomeScreen : AppCompatActivity() {
         // Handles user logout by clearing stored credentials, showing a toast, and redirecting to the login screen.
         binding.logoutTab.setOnClickListener {
             selectDrawerNavButton(binding.logoutText)
-            val tokenManger = TokenManger(applicationContext)
-            tokenManger.clearPfp()
-            tokenManger.clearToken()
-            tokenManger.clearUser()
-            Log.d("JWT-Token After Logout", tokenManger.getToken().toString())
+            // Clear tokens except for biometric data
+            tokenManager.clearPfp()
+            tokenManager.clearToken()
+            tokenManager.clearUser()
+            // Removed clearEncryptedToken() to preserve biometric data
+            Log.d("JWT-Token After Logout", tokenManager.getToken().toString())
             CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

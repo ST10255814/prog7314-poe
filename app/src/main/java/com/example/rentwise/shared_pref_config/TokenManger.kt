@@ -4,67 +4,121 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import androidx.core.content.edit
+import org.json.JSONObject
 
 // Securely manages sensitive user data such as authentication tokens, user IDs, and profile photos using encrypted shared preferences.
-// Utilizes AndroidX Security library to ensure all stored values are encrypted at rest, protecting against unauthorized access.
-//Mr.Code. 2020. Android Encrypted Shared Preferences - Android Tutorial (2020). [video online]
-//Available at: <https://youtu.be/2uResVLUCNI?si=pOnkbX8vZr0fATx1> [Accessed 8 September 2025].
 class TokenManger(context: Context) {
 
-    // Generates or retrieves a master encryption key for securing the shared preferences.
     private val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
-    // Creates an instance of EncryptedSharedPreferences, specifying encryption schemes for both keys and values.
     private val sharedPref = EncryptedSharedPreferences.create(
-        "secret_prefs", // Name of the encrypted preferences file.
-        masterKey,      // Master key for encryption.
-        context,        // Application context for file access.
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,   // Key encryption algorithm.
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM  // Value encryption algorithm.
+        "secret_prefs",
+        masterKey,
+        context,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    // Stores the JWT authentication token securely in encrypted preferences.
-    fun saveToken(token: String) {
-        sharedPref.edit { putString("jwt_token", token) }
+    // Keys
+    private val KEY_JWT = "jwt_token"
+    private val KEY_USER = "user_id"
+    private val KEY_PFP = "pfp_photo"
+    private val KEY_BIOMETRIC_CT = "biometric_ciphertext"
+    private val KEY_BIOMETRIC_IV = "biometric_iv"
+
+    // Save single values (async by default)
+    fun saveToken(token: String, commit: Boolean = false) {
+        if (commit) sharedPref.edit(commit = true) { putString(KEY_JWT, token) }
+        else sharedPref.edit { putString(KEY_JWT, token) }
     }
 
-    // Stores the user ID securely for session management.
-    fun saveUser(userId: String) {
-        sharedPref.edit { putString("user_id", userId) }
+    fun saveUser(userId: String, commit: Boolean = false) {
+        if (commit) sharedPref.edit(commit = true) { putString(KEY_USER, userId) }
+        else sharedPref.edit { putString(KEY_USER, userId) }
     }
 
-    // Stores the profile photo URL or identifier securely.
-    fun savePfp(photo: String) {
-        sharedPref.edit { putString("pfp_photo", photo) }
+    fun savePfp(photo: String, commit: Boolean = false) {
+        if (commit) sharedPref.edit(commit = true) { putString(KEY_PFP, photo) }
+        else sharedPref.edit { putString(KEY_PFP, photo) }
     }
 
-    // Retrieves the stored JWT token, or null if not present.
-    fun getToken(): String? {
-        return sharedPref.getString("jwt_token", null)
+    // Synchronous atomic save for token + user + pfp (use this after biometric restore)
+    fun saveAllSync(token: String?, userId: String?, pfp: String?) {
+        sharedPref.edit(commit = true) {
+            if (token != null) putString(KEY_JWT, token)
+            if (userId != null) putString(KEY_USER, userId)
+            if (pfp != null) putString(KEY_PFP, pfp)
+        }
     }
 
-    // Retrieves the stored user ID, or null if not present.
-    fun getUser(): String? {
-        return sharedPref.getString("user_id", null)
-    }
+    fun getToken(): String? = sharedPref.getString(KEY_JWT, null)
+    fun getUser(): String? = sharedPref.getString(KEY_USER, null)
+    fun getPfp(): String? = sharedPref.getString(KEY_PFP, null)
 
-    // Retrieves the stored profile photo, or null if not present.
-    fun getPfp(): String? {
-        return sharedPref.getString("pfp_photo", null)
-    }
+    fun hasToken(): Boolean = getToken() != null
+    fun hasUser(): Boolean = getUser() != null
 
-    // Removes the stored JWT token from encrypted preferences.
     fun clearToken() {
-        sharedPref.edit { remove("jwt_token") }
+        sharedPref.edit { remove(KEY_JWT) }
     }
 
-    // Removes the stored user ID from encrypted preferences.
     fun clearUser() {
-        sharedPref.edit { remove("user_id") }
+        sharedPref.edit { remove(KEY_USER) }
     }
 
-    // Removes the stored profile photo from encrypted preferences.
     fun clearPfp() {
-        sharedPref.edit { remove("pfp_photo") }
+        sharedPref.edit { remove(KEY_PFP) }
+    }
+
+    // Biometric storage helpers
+    fun saveEncryptedToken(ctBase64: String, ivBase64: String, commit: Boolean = false) {
+        if (commit) {
+            sharedPref.edit(commit = true) {
+                putString(KEY_BIOMETRIC_CT, ctBase64)
+                putString(KEY_BIOMETRIC_IV, ivBase64)
+            }
+        } else {
+            sharedPref.edit {
+                putString(KEY_BIOMETRIC_CT, ctBase64)
+                putString(KEY_BIOMETRIC_IV, ivBase64)
+            }
+        }
+    }
+
+    fun getEncryptedTokenPair(): Pair<String, String>? {
+        val ct = sharedPref.getString(KEY_BIOMETRIC_CT, null)
+        val iv = sharedPref.getString(KEY_BIOMETRIC_IV, null)
+        return if (ct != null && iv != null) Pair(ct, iv) else null
+    }
+
+    fun clearEncryptedToken() {
+        sharedPref.edit {
+            remove(KEY_BIOMETRIC_CT)
+            remove(KEY_BIOMETRIC_IV)
+        }
+    }
+
+    fun createBiometricPayload(token: String, userId: String? = null, pfp: String? = null): String {
+        // fallback to stored values if params are null/blank
+        val finalUserId = userId?.takeIf { it.isNotBlank() } ?: getUser()
+        val finalPfp = pfp?.takeIf { it.isNotBlank() } ?: getPfp()
+
+        val json = JSONObject()
+        json.put("token", token)
+        if (!finalUserId.isNullOrEmpty()) json.put("userId", finalUserId)
+        if (!finalPfp.isNullOrEmpty()) json.put("pfp", finalPfp)
+        return json.toString()
+    }
+
+    fun parseBiometricPayload(payloadJson: String): Triple<String?, String?, String?> {
+        return try {
+            val json = JSONObject(payloadJson)
+            val token = json.optString("token", null)
+            val userId = json.optString("userId", null)
+            val pfp = json.optString("pfp", null)
+            Triple(token, userId, pfp)
+        } catch (e: Exception) {
+            Triple(null, null, null)
+        }
     }
 }

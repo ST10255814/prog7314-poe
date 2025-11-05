@@ -149,7 +149,7 @@ class MainSettingsFragment : Fragment() {
         binding.offlineSyncSwitch.setOnCheckedChangeListener { _, _ ->
             if (!isInitializing) updateUserSettings()
         }
-        // <------THIS WAS CHANGED-----> UPDATED LANGUAGE DROPDOWN LISTENER TO APPLY LANGUAGE CHANGE SAFELY
+        //  UPDATED LANGUAGE DROPDOWN LISTENER TO APPLY LANGUAGE CHANGE SAFELY
         binding.languageDropdown.setOnItemClickListener { _, _, _, _ ->
             if (!isInitializing) {
                 val ctx = context ?: return@setOnItemClickListener
@@ -165,7 +165,7 @@ class MainSettingsFragment : Fragment() {
                 // Update user settings in the backend; restart Activity after success if language changed
                 updateUserSettings(onSuccess = {
                     if (languageChanged && isAdded) {
-                        activity?.let { LocaleHelper.restartActivity(it) }
+                        activity?.let { LocaleHelper.restartActivity(it) }//change to saty in current tab(settings/mainsettings screen)
                     }
                 }, onError = {
                     // Revert spinner to previous language if update failed

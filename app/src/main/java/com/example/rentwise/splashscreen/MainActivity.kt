@@ -9,6 +9,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.airbnb.lottie.LottieAnimationView
 import com.example.rentwise.R
 import com.example.rentwise.auth.LoginActivity
+import com.example.rentwise.shared_pref_config.TokenManger
+import com.example.rentwise.home.HomeScreen
+
 
 // Main entry point for the app, responsible for displaying the splash screen animation and transitioning to the login screen.
 // Utilizes Android's splash screen API and Lottie for animated graphics, ensuring a smooth user experience during app startup.
@@ -17,10 +20,7 @@ class MainActivity : AppCompatActivity() {
     // Handler tied to the main thread, used for scheduling the transition after a delay.
     private val handler = Handler(Looper.getMainLooper())
     // Runnable that starts the LoginActivity and finishes the splash screen activity.
-    private val runnable = Runnable {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
-    }
+    private lateinit var runnable: Runnable
 
     // Initializes the splash screen, sets up the animation, and schedules the transition to the login screen.
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +32,26 @@ class MainActivity : AppCompatActivity() {
         val lottieView = findViewById<LottieAnimationView>(R.id.lottieView)
         lottieView?.playAnimation() // Starts the Lottie animation for visual engagement.
 
-        handler.postDelayed(runnable, 5000) // Schedules the transition to the login screen after 5 seconds.
+        // Check if user is already logged in
+        val tokenManager = TokenManger(applicationContext)
+        val hasValidToken = !tokenManager.getToken().isNullOrEmpty()
+        val hasEncryptedToken = tokenManager.getEncryptedTokenPair() != null
+
+        runnable = if (hasValidToken || hasEncryptedToken) {
+            // User has valid session, go to home screen
+            Runnable {
+                startActivity(Intent(this, HomeScreen::class.java))
+                finish()
+            }
+        } else {
+            // No valid session, go to login screen
+            Runnable {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        }
+
+        handler.postDelayed(runnable, 3000) // Schedules the transition after 3 seconds.
     }
 
     // Cleans up the handler to prevent memory leaks or delayed transitions if the activity is destroyed early.
