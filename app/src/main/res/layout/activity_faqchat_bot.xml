@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -17,32 +18,61 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:layout_height="56dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <View
+                android:id="@+id/top_white_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:background="@android:color/white" />
+
+            <View
+                android:id="@+id/bottom_white_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="6dp"
+                android:background="@android:color/white" />
 
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 android:background="@drawable/bg_circle_white"
                 android:backgroundTint="@color/button_background_states"
                 android:padding="8dp"
                 android:src="@drawable/go_back_icon"
                 android:contentDescription="@string/go_back_title"
-                app:tint="@color/white"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true" />
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="@string/faq_chat_bot"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/goldman"
-                android:layout_centerInParent="true" />
+                android:fontFamily="@font/goldman" />
+
+            <ImageView
+                android:id="@+id/iv_bot_avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/bot_avatar"
+                android:contentDescription="@string/bot_avatar"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
 
         </RelativeLayout>
 
@@ -56,7 +86,8 @@
         android:padding="8dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:paddingBottom="120dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -65,13 +96,19 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkish_blue" />
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp"
         app:cardCornerRadius="0dp"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="@color/white">
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/darkish_blue"
+        app:cardBackgroundColor="@color/darkish_blue">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,9 +119,10 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="4dp"
-                app:cardCornerRadius="0dp"
-                app:strokeWidth="0dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@android:color/darker_gray"
                 app:cardBackgroundColor="@android:color/white">
 
                 <LinearLayout
@@ -101,7 +139,7 @@
                             android:id="@+id/et_message"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:background="@drawable/edittext_background"
+                            android:background="@android:color/transparent"
                             android:hint="@string/ask_a_question"
                             android:inputType="text"
                             android:maxLines="4"
@@ -121,6 +159,7 @@
                             android:src="@drawable/send_icon"
                             android:contentDescription="@string/send"
                             app:tint="@color/darkish_blue" />
+
                     </FrameLayout>
 
                 </LinearLayout>
@@ -130,5 +169,10 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkish_blue" />
 
 </LinearLayout>
