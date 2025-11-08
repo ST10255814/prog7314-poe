@@ -139,7 +139,7 @@ class ProfileSettings : AppCompatActivity() {
                                 }
                             }
                             // Loads the user's profile picture or assigns a default if not available.
-                            userSettings.pfpImage.let {
+                            userSettings.profilePicture.let {
                                 if (it != null){
                                     Glide.with(this@ProfileSettings)
                                         .load(it)
