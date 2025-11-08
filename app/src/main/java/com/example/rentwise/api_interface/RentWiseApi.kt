@@ -1,5 +1,6 @@
 package com.example.rentwise.api_interface
 
+import com.example.rentwise.data_classes.BookedListings
 import com.example.rentwise.data_classes.BookingResponse
 import com.example.rentwise.data_classes.BookingStatusResponse
 import com.example.rentwise.data_classes.CreateReviewRequest
@@ -111,7 +112,7 @@ interface RentWiseApi {
     fun googleMobileLogin(@Body request: GoogleRequest): Call<GoogleResponse>
 
     // Submits a new review for a listing by a user, including review content and rating.
-    @POST(value = "/api/reviews/{userID}/{listingID}/create")
+    @POST("/api/reviews/{userID}/{listingID}/create")
     fun createReview(
         @Path("userID") userId: String,
         @Path("listingID") listingId: String,
@@ -129,4 +130,7 @@ interface RentWiseApi {
     // Retrieves a list of reviews for a specific listing.
     @GET("/api/{listingID}/reviews")
     fun getReviews(@Path("listingID") listingId: String): Call<List<ReviewResponse>>
+
+    @GET("/api/{userID}/bookedListings")
+    fun getBookedListings(@Path("userID") userId: String): Call<List<BookedListings>>
 }

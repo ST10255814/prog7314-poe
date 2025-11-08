@@ -47,15 +47,15 @@ class MaintenanceRequestAdapter(
             // Displays the unit title associated with the request.
             tvRequestUnit.text = "Unit: ${issue.listingDetail?.title}"
             // Shows the assigned caretaker's name or "Unassigned" if not assigned.
-            tvAssignedStaff.text = "Assigned Caretaker: ${issue.assignedCaretaker ?: "Unassigned"}"
+            tvAssignedStaff.text = "Assigned Caretaker: ${issue.newMaintenanceRequest?.caretakerId ?: "Unassigned"}"
             // Formats and displays the submission date of the request.
             tvRequestDate.text = "Submitted On: ${formatDate(issue.newMaintenanceRequest?.createdAt)}"
             // Shows the unique maintenance request ID.
-            tvRequestId.text = "Maintenance Request ID: ${issue._id}"
+            tvRequestId.text = "Maintenance Request ID: ${issue.newMaintenanceRequest?.maintenanceId}"
             // Displays the number of follow-up requests or "0" if none.
             tvFollowUpRequests.text = "Follow-ups: ${issue.followUps ?: "0"}"
             // Shows caretaker notes or "No Notes" if none are provided.
-            tvCaretakerNote.text = "Caretaker Note: ${issue.careTakerNotes ?: "No Notes"}"
+            tvCaretakerNote.text = "Caretaker Note: ${issue.newMaintenanceRequest?.careTakerNotes ?: "No Notes"}"
 
             // Sets the priority text and applies a background color based on the priority level.
             tvRequestPriority.text = issue.newMaintenanceRequest?.priority ?: ""
