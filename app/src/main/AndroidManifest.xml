@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -20,7 +21,6 @@
         <activity
             android:name=".Payments.PaymentActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".maintenance.MaintenanceRequest"
@@ -67,5 +67,18 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
+    <!-- Add queries for package visibility when checking settings activities -->
+    <queries>
+        <intent>
+            <action android:name="android.settings.BIOMETRIC_ENROLL" />
+        </intent>
+        <intent>
+            <action android:name="android.settings.FINGERPRINT_ENROLL" />
+        </intent>
+        <intent>
+            <action android:name="android.settings.SECURITY_SETTINGS" />
+        </intent>
+    </queries>
 
 </manifest>

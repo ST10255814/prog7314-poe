@@ -39,7 +39,6 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.gms.common.SignInButton
-
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricManager
 import java.util.concurrent.Executor
@@ -55,7 +54,9 @@ import androidx.appcompat.app.AlertDialog
 import java.security.InvalidKeyException
 import javax.crypto.BadPaddingException
 import javax.crypto.IllegalBlockSizeException
-
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 
 // Activity responsible for handling user login, including email/password and Google SSO, with UI feedback and secure token storage.
 class LoginActivity : AppCompatActivity() {
@@ -108,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
             }
         } else {
             // Hide the fingerprint animation if biometric auth isn't available/enrolled
-            binding.fingerprintAnimation.visibility = View.GONE
+            binding.biometricContainer.visibility = View.GONE
         }
 
         setupLoginView() // Styles the app name, slogan, and register text for branding and navigation cues.
@@ -125,11 +126,9 @@ class LoginActivity : AppCompatActivity() {
         updateFingerprintVisibility()
     }
 
-
     //  Returns true if device supports biometrics AND at least one biometric is enrolled.
     //  If it detects no enrollment, it shows a dialog offering to open the system enroll screen.
     //  Logs the detailed BiometricManager response for easier debugging.
-
     private fun isBiometricAvailableAndEnrolled(): Boolean {
         try {
             val biometricManager = BiometricManager.from(this)
@@ -183,38 +182,43 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
-      //Opens the system biometric enrollment screen.
-      //Uses modern ACTION_BIOMETRIC_ENROLL with allowed authenticators; falls back to ACTION_FINGERPRINT_ENROLL for older devices.
-
+    // Opens the system biometric enrollment screen with proper API level handling
     private fun promptEnroll() {
         try {
-            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                putExtra(
-                    Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                    BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-                )
-            }
-            // If ACTION_BIOMETRIC_ENROLL isn't supported on very old devices, fall back:
-            if (enrollIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(enrollIntent, 1002)
-            } else {
-                // fallback for older API levels/devices (fingerprint)
-                val fpIntent = Intent(Settings.ACTION_FINGERPRINT_ENROLL)
-                if (fpIntent.resolveActivity(packageManager) != null) {
-                    startActivityForResult(fpIntent, 1002)
-                } else {
-                    // Last resort: open Security settings
-                    val secIntent = Intent(Settings.ACTION_SECURITY_SETTINGS)
-                    startActivityForResult(secIntent, 1002)
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                    // API 30+ - Use modern biometric enrollment
+                    val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                        putExtra(
+                            Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                            BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                        )
+                    }
+                    startActivity(enrollIntent)
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> {
+                    // API 28-29 - Use fingerprint enrollment
+                    @Suppress("DEPRECATION")
+                    val fpIntent = Intent(Settings.ACTION_FINGERPRINT_ENROLL)
+                    if (fpIntent.resolveActivity(packageManager) != null) {
+                        startActivity(fpIntent)
+                    } else {
+                        startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
+                    }
+                }
+                else -> {
+                    // API 26-27 - Fall back to security settings
+                    startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
                 }
             }
         } catch (e: Exception) {
             Log.e("BiometricEnroll", "Failed to open enroll screen: ${e.message}", e)
-            // Open security settings as fallback
+            // Final fallback to security settings
             try {
-                startActivityForResult(Intent(Settings.ACTION_SECURITY_SETTINGS), 1002)
-            } catch (_: Exception) { /* ignore */ }
+                startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
+            } catch (_: Exception) {
+                CustomToast.show(this, "Unable to open biometric enrollment. Please set up biometrics manually in Settings.", CustomToast.Companion.ToastType.ERROR)
+            }
         }
     }
 
@@ -748,9 +752,19 @@ class LoginActivity : AppCompatActivity() {
             )
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                // require user authentication for every use of the key
                 .setUserAuthenticationRequired(true)
                 .setInvalidatedByBiometricEnrollment(true) // Key invalidated when biometrics change
+
+            // Add user authentication validity for better UX - require auth every time for security
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                keySpecBuilder.setUserAuthenticationParameters(
+                    0, // timeout in seconds (0 means auth required every use)
+                    KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                keySpecBuilder.setUserAuthenticationValidityDurationSeconds(-1) // require auth every use
+            }
 
             val keySpec = keySpecBuilder.build()
             keyGenerator.init(keySpec)
