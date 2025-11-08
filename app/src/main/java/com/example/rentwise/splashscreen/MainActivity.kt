@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val hasValidToken = !tokenManager.getToken().isNullOrEmpty()
         val hasEncryptedToken = tokenManager.getEncryptedTokenPair() != null
 
-        runnable = if (hasValidToken || hasEncryptedToken) {
+        runnable = if (hasValidToken && hasEncryptedToken) {
             // User has valid session, go to home screen
             Runnable {
                 startActivity(Intent(this, HomeScreen::class.java))
