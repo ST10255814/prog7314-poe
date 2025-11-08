@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
     // Handler tied to the main thread, used for scheduling the transition after a delay.
     private val handler = Handler(Looper.getMainLooper())
     // Runnable that starts the LoginActivity and finishes the splash screen activity.
-    private lateinit var runnable: Runnable
+    private val runnable = Runnable {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
 
     // Initializes the splash screen, sets up the animation, and schedules the transition to the login screen.
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,26 +35,7 @@ class MainActivity : AppCompatActivity() {
         val lottieView = findViewById<LottieAnimationView>(R.id.lottieView)
         lottieView?.playAnimation() // Starts the Lottie animation for visual engagement.
 
-        // Check if user is already logged in
-        val tokenManager = TokenManger(applicationContext)
-        val hasValidToken = !tokenManager.getToken().isNullOrEmpty()
-        val hasEncryptedToken = tokenManager.getEncryptedTokenPair() != null
-
-        runnable = if (hasValidToken && hasEncryptedToken) {
-            // User has valid session, go to home screen
-            Runnable {
-                startActivity(Intent(this, HomeScreen::class.java))
-                finish()
-            }
-        } else {
-            // No valid session, go to login screen
-            Runnable {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-        }
-
-        handler.postDelayed(runnable, 3000) // Schedules the transition after 3 seconds.
+        handler.postDelayed(runnable, 4000) // Schedules the transition after 4 seconds.
     }
 
     // Cleans up the handler to prevent memory leaks or delayed transitions if the activity is destroyed early.

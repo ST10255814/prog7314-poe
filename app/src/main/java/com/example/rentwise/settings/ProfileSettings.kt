@@ -126,7 +126,7 @@ class ProfileSettings : AppCompatActivity() {
                         val userSettings = response.body()
                         if (userSettings != null){
                             // Binds fetched user profile data to the UI fields.
-                            userSettings.profile.let {
+                            userSettings.let {
                                 if(it != null){
                                     with(binding){
                                         editUsername.setText(it.username)
@@ -139,7 +139,7 @@ class ProfileSettings : AppCompatActivity() {
                                 }
                             }
                             // Loads the user's profile picture or assigns a default if not available.
-                            userSettings.profile?.pfpImage.let {
+                            userSettings.pfpImage.let {
                                 if (it != null){
                                     Glide.with(this@ProfileSettings)
                                         .load(it)

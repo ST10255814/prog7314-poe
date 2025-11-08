@@ -5,11 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class UserSettingsResponse(
     @SerializedName("_id")
     val id: String?,
-    val userId: String?,
-    val profile: Profile?
-)
-
-data class Profile(
     val username: String?,
     val firstName: String?,
     val surname: String?,

@@ -84,12 +84,6 @@ class MainSettingsFragment : Fragment() {
         _binding = null
     }
 
-    // Cleans up the binding to prevent memory leaks when the fragment is destroyed.
-    override fun onDestroy() {
-        super.onDestroy()
-        // no-op; moved network call cancellation to onDestroyView for safety
-    }
-
     // Prepares the language dropdown spinner with available options and sets the current selection.
     private fun prepareLanguageSpinner(selectedCode: String? = null) {
         val ctx = context ?: return
@@ -302,9 +296,9 @@ class MainSettingsFragment : Fragment() {
                         if (userSettings != null) {
                             // Temporarily disable listeners while binding values
                             isInitializing = true
-                            binding.notificationSwitch.isChecked = userSettings.profile?.notifications ?: false
-                            binding.offlineSyncSwitch.isChecked = userSettings.profile?.offlineSync ?: false
-                            prepareLanguageSpinner(userSettings.profile?.preferredLanguage)
+                            binding.notificationSwitch.isChecked = userSettings.notifications ?: false
+                            binding.offlineSyncSwitch.isChecked = userSettings.offlineSync ?: false
+                            prepareLanguageSpinner(userSettings.preferredLanguage)
                             isInitializing = false
                         }
                     }
