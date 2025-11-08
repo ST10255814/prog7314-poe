@@ -104,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                 // If key creation fails for any reason, log and continue without biometric
                 Log.e("Biometric", "Failed to create biometric key: ${e.message}", e)
                 // Hide biometric UI to avoid user confusion
-                binding.fingerprintAnimation.visibility = View.GONE
+                binding.biometricContainer.visibility = View.GONE
             }
         } else {
             // Hide the fingerprint animation if biometric auth isn't available/enrolled
