@@ -345,5 +345,6 @@ Vir vrae of bekommernisse:<br/>
     <string name="toast_unknown_error">Onbekende fout</string>
     <string name="toast_error_prefix">Fout: %1$s</string>
     <string name="thinking_message">Besig om te dink…</string>
+    <string name="chat_bot_empty_state_message">Welkom by die KI Geselsbot! 🤖\nVoel vry om my alles te vra, van algemene vrae tot spesifieke onderwerpe. Ek is hier om te help!</string>
 
 </resources>

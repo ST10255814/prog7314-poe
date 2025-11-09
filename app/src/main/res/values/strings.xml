@@ -334,5 +334,6 @@ For questions or concerns:<br/>
     <string name="toast_unknown_error">Unknown error</string>
     <string name="toast_error_prefix">Error: %1$s</string>
     <string name="thinking_message">Thinking...</string>
+    <string name="chat_bot_empty_state_message">Welcome to the AI Chat Bot! 🤖\n Feel free to ask me anything from general questions to specific topics. I’m here to help!</string>
 
 </resources>

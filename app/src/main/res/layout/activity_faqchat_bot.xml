@@ -78,23 +78,34 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_chat_messages"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:background="@color/white"
-        android:paddingBottom="120dp" />
+        android:layout_weight="1">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChatMessages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:overScrollMode="always"
+            android:scrollbars="vertical" />
+
+        <include
+            android:id="@+id/empty_state"
+            layout="@layout/chat_empty_state"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

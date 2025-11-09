@@ -5,12 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rentwise.R
 import com.example.rentwise.adapters.ChatAdapter
 import com.example.rentwise.databinding.ActivityFaqchatBotBinding
 import com.example.rentwise.home.HomeScreen
@@ -54,14 +56,25 @@ class FAQChatBot : AppCompatActivity() {
 
     // Observes the ViewModel's UI state and updates the chat UI, including error handling and loading state.
     private fun observeViewModel() {
+        val emptyStateView = findViewById<View>(R.id.empty_state)
         lifecycleScope.launch {
             chatViewModel.uiState.collect { state: ChatUiState ->
                 chatAdapter.submitList(state.messages.toList()) // Ensures DiffUtil works with a new list.
 
+                // Show/hide empty state view
+                if (state.messages.isEmpty()) {
+                    emptyStateView.visibility = View.VISIBLE
+                    binding.rvChatMessages.visibility = View.GONE
+                } else {
+                    emptyStateView.visibility = View.GONE
+                    binding.rvChatMessages.visibility = View.VISIBLE
+                }
+
                 // Automatically scrolls to the latest message for better user experience.
-                if (state.messages.isNotEmpty()) {
-                    binding.rvChatMessages.post {
-                        binding.rvChatMessages.smoothScrollToPosition(chatAdapter.itemCount - 1)
+                binding.rvChatMessages.post {
+                    val lastIndex = chatAdapter.itemCount - 1
+                    if (lastIndex >= 0) {
+                        binding.rvChatMessages.smoothScrollToPosition(lastIndex)
                     }
                 }
 

@@ -345,4 +345,5 @@ Ngemibuzwana noma ukukhathazeka:<br/>
     <string name="toast_unknown_error">Iphutha elingaziwa</string>
     <string name="toast_error_prefix">Iphutha: %1$s</string>
     <string name="thinking_message">Ucabangisisa…</string>
+    <string name="chat_bot_empty_state_message">Siyakwamukela ku-AI Chat Bot! 🤖\nZizwe ukhululekile ukungibuza noma yini kusukela ezimweni ezijwayelekile kuya kwezithile. Ngilapha ukuzosiza!</string>
 </resources>

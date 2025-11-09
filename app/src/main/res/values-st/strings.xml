@@ -344,5 +344,6 @@ Bakeng sa dipotso kapa matshwenyeho:<br/>
     <string name="toast_unknown_error">Phoso e sa tsejoeng</string>
     <string name="toast_error_prefix">Phoso: %1$s</string>
     <string name="thinking_message">Ke nagana…</string>
+    <string name="chat_bot_empty_state_message">Rea u amohela ho AI Chat Bot! 🤖\nIketlise ho mpotsa ntho efe kapa efe, ho tloha lipotsong tse akaretsang ho isa ho tse khethehileng. Ke mona ho thusa!</string>
 
 </resources>
