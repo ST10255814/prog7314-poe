@@ -23,7 +23,7 @@ class ChatRepository {
                 }
 
                 // Defines a detailed system message for property management context (currently unused in the request).
-                val systemMessage = ChatRequest.Message(
+                ChatRequest.Message(
                     role = "System",
                     content = "Your name is Astral, you are a property management Assistant AI. Currently you are in a mobile app where people can view and book" +
                             "holiday houses, you can give advice on all ethical and legal questions regarding this subject"

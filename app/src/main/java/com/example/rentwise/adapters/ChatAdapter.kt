@@ -18,23 +18,31 @@ class ChatAdapter : ListAdapter<ChatRequest.Message, ChatAdapter.MessageViewHold
         private const val VIEW_TYPE_USER = 1
         // Constant representing the view type for AI (bot) messages.
         private const val VIEW_TYPE_AI = 2
+        // Constant representing the view type for loading state.
+        private const val VIEW_TYPE_LOADING = 3
     }
 
     // Determines the view type for a given position based on the message role.
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).role == "user") VIEW_TYPE_USER else VIEW_TYPE_AI
+        val item = getItem(position)
+        return when {
+            item.role == "user" -> VIEW_TYPE_USER
+            item.role == "ai" -> VIEW_TYPE_AI
+            item.role == "loading" -> VIEW_TYPE_LOADING
+            else -> VIEW_TYPE_AI // fallback to AI for unknown roles
+        }
     }
 
-    // Inflates the appropriate layout for the message based on its view type (user or AI).
+    // Inflates the appropriate layout for the message based on its view type (user, AI, or loading).
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val layoutId = if (viewType == VIEW_TYPE_USER) {
-            R.layout.faq_message_user
-        } else {
-            R.layout.faq_message_bot
+        val layoutId = when (viewType) {
+            VIEW_TYPE_USER -> R.layout.faq_message_user
+            VIEW_TYPE_AI -> R.layout.faq_message_bot
+            VIEW_TYPE_LOADING -> R.layout.faq_message_loading
+            else -> R.layout.faq_message_bot
         }
-
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-        return MessageViewHolder(view)
+        return MessageViewHolder(view, viewType)
     }
 
     // Binds the message data to the ViewHolder for display.
@@ -43,12 +51,23 @@ class ChatAdapter : ListAdapter<ChatRequest.Message, ChatAdapter.MessageViewHold
     }
 
     // ViewHolder class responsible for holding and binding the message view.
-    class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val messageText: TextView = itemView.findViewById(R.id.tv_message)
+    class MessageViewHolder(itemView: View, private val viewType: Int) : RecyclerView.ViewHolder(itemView) {
+        private val messageText: TextView? = itemView.findViewById(R.id.tv_message)
+        private val loadingIndicator: View? = itemView.findViewById(R.id.loading_indicator)
 
-        // Sets the message content to the TextView for display.
+        // Sets the message content or loading indicator visibility based on the view type.
         fun bind(message: ChatRequest.Message) {
-            messageText.text = message.content
+            when (viewType) {
+                VIEW_TYPE_USER, VIEW_TYPE_AI -> {
+                    messageText?.text = message.content
+                    messageText?.visibility = View.VISIBLE
+                    loadingIndicator?.visibility = View.GONE
+                }
+                VIEW_TYPE_LOADING -> {
+                    messageText?.visibility = View.GONE
+                    loadingIndicator?.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
