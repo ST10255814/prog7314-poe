@@ -46,9 +46,8 @@ class MaintenanceFragment : Fragment() {
     private lateinit var fileAdapter: FileAttachmentAdapter
     // Tracks URIs of files attached by the user.
     private val filesAttached = mutableListOf<Uri>()
-    private val maintenanceHistory = mutableListOf<com.example.rentwise.data_classes.MaintenanceRequestResponse>()
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // OVERRIDE ONATTACH TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the fragment is attached
     override fun onAttach(context: Context) {
         super.onAttach(LocaleHelper.onAttach(context))
@@ -235,6 +234,8 @@ class MaintenanceFragment : Fragment() {
                             tokenManager.clearUser()
                             tokenManager.clearPfp()
 
+                            CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -311,6 +312,8 @@ class MaintenanceFragment : Fragment() {
                         tokenManager.clearUser()
                         tokenManager.clearPfp()
 
+                        CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

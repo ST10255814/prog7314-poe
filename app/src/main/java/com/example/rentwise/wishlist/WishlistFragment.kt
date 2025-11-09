@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rentwise.R
 import com.example.rentwise.adapters.WishlistAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
@@ -34,7 +35,7 @@ class WishlistFragment : Fragment() {
     // Adapter for the wishlist RecyclerView.
     private lateinit var wishlistAdapter: WishlistAdapter
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // OVERRIDE ONATTACH TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the fragment is attached
     override fun onAttach(context: Context) {
         super.onAttach(LocaleHelper.onAttach(context))
@@ -132,6 +133,8 @@ class WishlistFragment : Fragment() {
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
 
+                            CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Clear Activity trace
                             startActivity(intent)

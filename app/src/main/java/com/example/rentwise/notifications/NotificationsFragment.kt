@@ -9,7 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rentwise.NotificationAdapter
+import com.example.rentwise.R
+import com.example.rentwise.adapters.NotificationAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
 import com.example.rentwise.data_classes.NotificationResponse
@@ -27,8 +28,9 @@ class NotificationsFragment : Fragment() {
     // Holds the binding for accessing layout views.
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var tokenManger: TokenManger
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ONATTACH TO APPLY SAVED LOCALE
+    // OVERRIDE ONATTACH TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the fragment is attached
     override fun onAttach(context: Context) {
         super.onAttach(LocaleHelper.onAttach(context))
@@ -52,14 +54,16 @@ class NotificationsFragment : Fragment() {
     // Sets up the UI and initiates fetching notifications after the view is created.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        tokenManger = TokenManger(requireContext())
         fetchNotifications()
     }
 
     // Fetches notifications from the backend, updates the UI, and handles errors or authentication issues.
     private fun fetchNotifications() {
         showOverlay() // Displays a loading overlay while fetching data.
+        val userId = tokenManger.getUser() ?: return
         val api = RetrofitInstance.createAPIInstance(requireContext())
-        api.getNotifications().enqueue(object : Callback<List<NotificationResponse>> {
+        api.getUserNotifications(userId).enqueue(object : Callback<List<NotificationResponse>> {
             override fun onResponse(
                 call: Call<List<NotificationResponse>>,
                 response: Response<List<NotificationResponse>>
@@ -106,6 +110,8 @@ class NotificationsFragment : Fragment() {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
 
+                        CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

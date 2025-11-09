@@ -363,6 +363,8 @@ class PropertyDetails : AppCompatActivity() {
                         Log.e("Error", errorMessage)
                         // Handles authentication errors by clearing session and redirecting to login.
                         if (response.code() == 401) {
+                            CustomToast.show(this@PropertyDetails, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
@@ -499,6 +501,8 @@ class PropertyDetails : AppCompatActivity() {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
+                        CustomToast.show(this@PropertyDetails, getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -633,6 +637,9 @@ class PropertyDetails : AppCompatActivity() {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
+
+                        CustomToast.show(this@PropertyDetails, getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -697,6 +704,8 @@ class PropertyDetails : AppCompatActivity() {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
+                            CustomToast.show(this@PropertyDetails, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -761,6 +770,9 @@ class PropertyDetails : AppCompatActivity() {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
+
+                            CustomToast.show(this@PropertyDetails, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@PropertyDetails, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

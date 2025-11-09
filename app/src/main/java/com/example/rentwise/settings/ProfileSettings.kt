@@ -178,6 +178,8 @@ class ProfileSettings : AppCompatActivity() {
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
 
+                            CustomToast.show(this@ProfileSettings, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -266,6 +268,8 @@ class ProfileSettings : AppCompatActivity() {
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
 
+                        CustomToast.show(this@ProfileSettings, getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(this@ProfileSettings, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

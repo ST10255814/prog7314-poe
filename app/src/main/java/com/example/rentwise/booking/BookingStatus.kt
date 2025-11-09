@@ -230,7 +230,8 @@ class BookingStatus : AppCompatActivity() {
                         if(response.code() == 401) {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
-                            CustomToast.show(this@BookingStatus, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                            CustomToast.show(this@BookingStatus, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@BookingStatus, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

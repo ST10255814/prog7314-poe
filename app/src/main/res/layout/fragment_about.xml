@@ -71,13 +71,14 @@
                 android:layout_marginTop="20dp"
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="16dp"
-                app:strokeColor="@color/very_light_blue"
+                app:strokeColor="@color/darkish_blue"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="@color/white"
                     android:padding="16dp">
 
                     <TextView
@@ -108,7 +109,7 @@
                 android:layout_marginTop="16dp"
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="16dp"
-                app:strokeColor="@color/very_light_blue"
+                app:strokeColor="@color/darkish_blue"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -116,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:background="@color/white"
                     android:padding="16dp">
 
                     <ImageView
@@ -142,7 +144,7 @@
                 android:layout_marginTop="12dp"
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="16dp"
-                app:strokeColor="@color/very_light_blue"
+                app:strokeColor="@color/darkish_blue"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -150,6 +152,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:background="@color/white"
                     android:padding="16dp">
 
                     <ImageView
@@ -176,13 +179,14 @@
                 android:layout_marginTop="12dp"
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="16dp"
-                app:strokeColor="@color/very_light_blue"
+                app:strokeColor="@color/darkish_blue"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@color/white"
                     android:gravity="center_vertical"
                     android:padding="16dp">
 

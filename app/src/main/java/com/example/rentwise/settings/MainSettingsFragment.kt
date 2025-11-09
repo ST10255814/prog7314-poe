@@ -248,6 +248,9 @@ class MainSettingsFragment : Fragment() {
                         tokenManger.clearToken()
                         tokenManger.clearUser()
                         tokenManger.clearPfp()
+
+                        CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -320,6 +323,9 @@ class MainSettingsFragment : Fragment() {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
+
+                            CustomToast.show(requireContext(), getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(requireContext(), LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

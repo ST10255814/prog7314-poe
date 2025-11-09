@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rentwise.R
 import com.example.rentwise.adapters.MaintenanceRequestAdapter
 import com.example.rentwise.auth.LoginActivity
 import com.example.rentwise.custom_toast.CustomToast
@@ -32,8 +33,8 @@ class MaintenanceRequest : AppCompatActivity() {
     // Manages user authentication tokens and session data.
     private lateinit var tokenManger: TokenManger
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
-// This ensures the saved language is applied when the activity is created
+    // OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
@@ -93,6 +94,9 @@ class MaintenanceRequest : AppCompatActivity() {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
+
+                            CustomToast.show(this@MaintenanceRequest, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@MaintenanceRequest, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

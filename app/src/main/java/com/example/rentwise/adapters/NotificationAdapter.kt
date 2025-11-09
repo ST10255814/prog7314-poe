@@ -1,8 +1,9 @@
-package com.example.rentwise
+package com.example.rentwise.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rentwise.R
 import com.example.rentwise.data_classes.NotificationResponse
 import com.example.rentwise.databinding.NotificationItemCardBinding
 import java.time.Instant
@@ -41,7 +42,7 @@ class NotificationAdapter(
             // Displays the notification title.
             notificationTitle.text = notification.title
             // Shows the notification message content.
-            notificationMessage.text = notification.notificationMessage
+            notificationMessage.text = notification.message
             // Formats and displays the notification creation time in a user-friendly format.
             notificationTime.text = formatIsoDate(notification.createdAt)
         }

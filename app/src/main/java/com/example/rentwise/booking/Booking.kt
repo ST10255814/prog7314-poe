@@ -59,8 +59,8 @@ class Booking : AppCompatActivity() {
     private lateinit var tokenManger: TokenManger
     private lateinit var paymentStore: PaymentStore
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
-// This ensures the saved language is applied when the activity is created
+    // OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
@@ -204,6 +204,17 @@ class Booking : AppCompatActivity() {
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody ?: "Unknown error"
                     CustomToast.show(this@Booking, errorMessage, CustomToast.Companion.ToastType.ERROR)
+                    if(response.code() == 401) {
+                        tokenManger.clearToken()
+                        tokenManger.clearUser()
+                        tokenManger.clearPfp()
+                        CustomToast.show(this@Booking, getString(R.string.session_expired_message),
+                            CustomToast.Companion.ToastType.ERROR)
+                        val intent = Intent(this@Booking, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    }
                 }
             }
 
@@ -214,18 +225,6 @@ class Booking : AppCompatActivity() {
                 CustomToast.show(this@Booking, "Error: ${t.message}", CustomToast.Companion.ToastType.ERROR)
             }
         })
-    }
-
-    // Safely pull "bookingId" from a loosely-typed newBooking payload (Gson may give LinkedTreeMap) // [<------THIS WAS CHNAGED----->]
-    private fun extractBookingId(newBooking: Any?): String { // [<------THIS WAS CHNAGED----->]
-        return try {
-            when (newBooking) {
-                is Map<*, *> -> (newBooking["bookingId"] as? String) ?: ""
-                else -> ""
-            }
-        } catch (_: Throwable) {
-            ""
-        }
     }
 
     // Fetches property details from the API and binds them to the UI, handling errors and authentication.
@@ -259,6 +258,8 @@ class Booking : AppCompatActivity() {
                             tokenManger.clearToken()
                             tokenManger.clearUser()
                             tokenManger.clearPfp()
+                            CustomToast.show(this@Booking, getString(R.string.session_expired_message),
+                                CustomToast.Companion.ToastType.ERROR)
                             val intent = Intent(this@Booking, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

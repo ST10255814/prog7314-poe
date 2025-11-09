@@ -66,10 +66,6 @@ interface RentWiseApi {
     @POST("/api/{userID}/{listingID}/favourite")
     fun favouriteListing(@Path("userID") userId: String, @Path("listingID") listingId: String): Call<FavouriteListingPostResponse>
 
-    // Retrieves all notifications for the current user session.
-    @GET("/api/notifications")
-    fun getNotifications() : Call<List<NotificationResponse>>
-
     // Removes a listing from a user's favourites, using user and listing IDs, and returns the result.
     @DELETE("/api/{userID}/{listingID}/unfavourite")
     fun deleteFavouriteListing(@Path("userID") userId: String, @Path("listingID") listingId: String): Call<UnfavouriteListingResponse>
@@ -131,6 +127,11 @@ interface RentWiseApi {
     @GET("/api/{listingID}/reviews")
     fun getReviews(@Path("listingID") listingId: String): Call<List<ReviewResponse>>
 
+    // Fetches all listings that a specific user has booked.
     @GET("/api/{userID}/bookedListings")
     fun getBookedListings(@Path("userID") userId: String): Call<List<BookedListings>>
+
+    // Fetches all user's notifications.
+    @GET("/api/{userID}/notifications")
+    fun getUserNotifications(@Path("userID") userId: String): Call<List<NotificationResponse>>
 }
