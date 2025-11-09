@@ -2,226 +2,232 @@
 <resources>
 
     <string name="app_name">RentWise</string>
-    <string name="app_slogan">Dihiriso tse Bohlale. Taolo e Bonolo.</string>
+    <string name="app_slogan">Tlhophiso e bohlale ya hiro. Tsamaiso e bonolo.</string>
     <string name="footer">© 2025 RentWise</string>
     <string name="privacy_url" translatable="false"> </string>
     <string name="support_email">support@rentwise.app</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
     <string name="website_url" translatable="false"> </string>
 
-    <string name="go_back_title">Boela Morao</string>
-    <string name="loading">E a laela…</string>
-    <string name="please_wait">Ka kopo emela…</string>
+    <string name="go_back_title">Kgutla moraho</string>
+    <string name="loading">Ho jara…</string>
+    <string name="please_wait">Emetse ka kopo…</string>
     <string name="send">Romela</string>
 
-    <string name="menu">menu</string>
-    <string name="nav_booking_status">nav_booking_status</string>
-    <string name="nav_faq_chatbot">nav_faq_chatbot</string>
-    <string name="nav_logout">nav_logout</string>
+    <string name="menu">lenane</string>
+    <string name="nav_booking_status">boemo_ba_bookingo</string>
+    <string name="nav_faq_chatbot">potso_chatbot</string>
+    <string name="nav_logout">tswa</string>
     <string name="nav_maintenance_status">Boemo ba Tlhokomelo</string>
-    <string name="nav_profile_management">nav_profile_management</string>
-    <string name="nav_settings">nav_settings</string>
+    <string name="nav_profile_management">taolo_ya_profile</string>
+    <string name="nav_settings">ditokiso</string>
 
-    <string name="email_address_hint">Aterese ya Imeile</string>
-    <string name="let_s_get_you_an_account">A re o bulele akhaonto</string>
-    <string name="logging_in">E kena…</string>
+    <string name="email_address_hint">Aterese ya imeile</string>
+    <string name="let_s_get_you_an_account">Ha re u fumaneng akhaonto</string>
+    <string name="logging_in">O kena…</string>
     <string name="login_header">Kena</string>
-    <string name="login_message"><![CDATA[O se o na le akhaonto? <u>Kena</u>]]></string>
-    <string name="login_to_enjoy_rentwise">Kena ho natefelwa ke RentWise</string>
-    <string name="login_with_biometrics">Kena ka Biometrics</string>
+    <string name="login_message">U se u na le akhaonto? <u>Kena</u></string>
+    <string name="login_to_enjoy_rentwise">Kena ho natefeloa RentWise</string>
+    <string name="login_with_biometrics">Kena ka biometrics</string>
     <string name="or_condition">KAPA</string>
     <string name="password_hint">Phasewete</string>
-    <string name="creating_account">E bula akhaonto…</string>
-    <string name="register_button">Bula Akhaonto</string>
+    <string name="creating_account">Ho theha akhaonto…</string>
+    <string name="register_button">Theha Akhaonto</string>
     <string name="register_subtitle">e betere ka akhaonto</string>
-    <string name="register_text"><![CDATA[Ha o na akhaonto? <u>Ngodisa</u>]]></string>
+    <string name="register_text">Ha o na akhaonto? <u>Ingodise</u></string>
     <string name="sign_in_with_google">Kena ka Google</string>
-    <string name="welcome_message">Rea o amohela</string>
+    <string name="welcome_message">Rea u amohela</string>
 
     <string name="address_area">Sebaka sa Aterese</string>
-    <string name="book_now">Beha Hona Jwale</string>
+    <string name="amenities">Ditsebediso</string>
+    <string name="amenity">Tsebediso</string>
+    <string name="book_now">Bukela Hona Joale</string>
     <string name="favourite">Ratehang</string>
     <string name="per_night">Ka Bosiu</string>
-    <string name="photos">Difoto</string>
+    <string name="photos">Ditshwantsho</string>
     <string name="price">Theko</string>
     <string name="property">Thepa</string>
-    <string name="rent">Hirisa</string>
+    <string name="rent">Hira</string>
 
-    <string name="call">Letsa</string>
+    <string name="call">Letsetsa</string>
     <string name="chat">Buisana</string>
-    <string name="leave_a_review">Tloha Tlhahlobo</string>
-    <string name="review_prompt">Boiphihlelo ba hao bo bile jwang?</string>
+    <string name="leave_a_review">Tloha tlhahlobo</string>
+    <string name="review_prompt">Boiphihlelo ba hao bo ne bo le jwang?</string>
     <string name="submit_review">Romela Tlhahlobo</string>
-    <string name="updating_favourites">E ntjhafatsa tse ratehang…</string>
-    <string name="write_your_review_optional">Ngola tlhahlobo ya hao (ha e bohlokwa)</string>
-    <string name="loading_property">E laela thepa…</string>
+    <string name="updating_favourites">Ho ntjhafatsa tse ratwang…</string>
+    <string name="write_your_review_optional">Ngola tlhahlobo ya hao (ha ho hlokahale)</string>
+    <string name="loading_property">Ho jara thepa…</string>
 
-    <string name="back">Morao</string>
-    <string name="check_in_date">Letsatsi la ho Kena</string>
-    <string name="check_in_hint">Kgetha letsatsi la hao la ho kena</string>
-    <string name="check_out_date">Letsatsi la ho Tloha</string>
-    <string name="check_out_hint">Kgetha letsatsi la hao la ho tloha</string>
-    <string name="confirm_booking">Tiisa Pehelo</string>
+    <string name="back">Moraho</string>
+    <string name="check_in_date">Letsatsi la ho kena</string>
+    <string name="check_in_hint">Khetha letsatsi la hao la ho kena</string>
+    <string name="check_out_date">Letsatsi la ho tswa</string>
+    <string name="check_out_hint">Khetha letsatsi la hao la ho tswa</string>
+    <string name="confirm_booking">Netefatsa bukello</string>
     <string name="enter_guest_count">Kenya palo ya baeti</string>
-    <string name="new_booking">Pehelo e Ntjha</string>
+    <string name="new_booking">Bukello e Ncha</string>
     <string name="number_of_guests">Palo ya Baeti</string>
-    <string name="total_price">Theko Kaofela</string>
+    <string name="total_price">Theko ya Kakaretso</string>
 
-    <string name="attach_files">Kopanya Difaele</string>
-    <string name="choose_files">Kgetha Difaele</string>
+    <string name="attach_files">Kenya difaele</string>
+    <string name="choose_files">Khetha difaele</string>
     <string name="delete_file">Hlakola faele</string>
-    <string name="file_upload_subText">Ka kopo laelesa khopi ya ID ya hao le bopaki ba lekeno bakeng sa netefatso ke moagente.</string>
+    <string name="file_upload_subText">Ka kopo kenya kopi ya ID ya hao le bopaki ba letseno bakeng sa netefatso ke moetsi.</string>
 
-    <string name="booking_progress">Tsoelo-pele ya Pehelo</string>
-    <string name="booking_summary">Kakaretso ya Pehelo</string>
-    <string name="nothing_to_track">Ha ho letho la ho sala</string>
-    <string name="notice_to_tenants">Tsebiso ho bairekisi</string>
-    <string name="processing_booking">E sebetsana le pehelo…</string>
-    <string name="proceed_to_payment">Tswela pele ho tefo</string>
+    <string name="booking_progress">Tsoelo-pele ya bukello</string>
+    <string name="booking_summary">Kakaretso ya bukello</string>
+    <string name="nothing_to_track">Ha ho letho le ka latelwang</string>
+    <string name="notice_to_tenants">Tsebiso ho bahiri</string>
+    <string name="processing_booking">Ho sebetsana le bukello…</string>
+    <string name="proceed_to_payment">Tsoela pele ho lefa</string>
 
     <string name="card">Karete</string>
     <string name="card_number">Nomoro ya Karete</string>
     <string name="cvv">CVV</string>
-    <string name="eft_bank_transfer">EFT Phethiso ya Banka</string>
+    <string name="eft_bank_transfer">Phetiso ya banka ya EFT</string>
     <string name="mm_yy">MM/LL</string>
-    <string name="name_on_card">Lebitso ho Karete</string>
-    <string name="pay_now">Lefa Hona Jwale</string>
-    <string name="pay_on_arrival">Lefa ha o fihla</string>
-    <string name="payment_method">Mokgwa wa Tefo</string>
-    <string name="payment_portal">Lebelo la Tefo</string>
-    <string name="payment_status_not_paid">Boemo ba Tefo: Ha e a lefwa</string>
-    <string name="processing_payment">E sebetsana le tefo…</string>
+    <string name="name_on_card">Lebitso ho karete</string>
+    <string name="pay_now">Lefa Hona Joale</string>
+    <string name="pay_on_arrival">Lefa ha u fihla</string>
+    <string name="payment_method">Mokgwa wa tefo</string>
+    <string name="payment_portal">Portal ya tefo</string>
+    <string name="payment_status_not_paid">Boemo ba Tefo: Ha bo a lefwa</string>
+    <string name="processing_payment">Ho sebetsana le tefo…</string>
 
-    <string name="about">Mabapi</string>
-    <string name="about_body">RentWise e thusa bairekisi le bairekisi ho laola dinaledi, dipotso, dipehelo, tlhokomelo le puisano ka aplikeishene e le nngwe e bonolo.</string>
+    <string name="about">Ka ho</string>
+    <string name="about_body">RentWise e thusa bahiri le ba hireng ho laola dilenane, dipotso, dibukello, tlhokomelo le puisano ka app e le nngwe e bonolo.</string>
     <string name="about_package_placeholder">com.example.rentwise</string>
     <string name="about_privacy">Leano la Lekunutu</string>
     <string name="about_support">Tshehetso</string>
-    <string name="about_title">Mabapi le RentWise</string>
+    <string name="about_title">Ka ho RentWise</string>
     <string name="about_version">Mofuta %1$s</string>
     <string name="about_version_placeholder">Mofuta x.y.z</string>
-    <string name="about_website">Sebaka sa Marang-rang</string>
+    <string name="about_website">Websaete</string>
+
     <string name="help">Thuso</string>
-    <string name="help_and_support">Thuso le Tshehetso</string>
+    <string name="help_and_support">Thuso le tshehetso</string>
     <string name="language">Puo</string>
     <string name="notifications">Ditsebiso</string>
-    <string name="offline_data_sync">Ntshwafatso ya Boitsebiso e sa leng mo inthaneteng</string>
-    <string name="offline_sync">Ntshwafatso e sa leng mo inthaneteng</string>
-    <string name="settings">Ditlhophiso</string>
-    <string name="loading_settings">E laela ditlhophiso…</string>
+    <string name="offline_data_sync">Sync ya data e sa sebetseng</string>
+    <string name="offline_sync">Sync e sa sebetseng</string>
+    <string name="settings">Ditokiso</string>
+    <string name="loading_settings">Ho jara ditokiso…</string>
 
-    <string name="edit_profile_image">Fetola setshwantsho sa profaele</string>
-    <string name="fetching_profile">E hatamela profaele…</string>
+    <string name="edit_profile_image">Fetola setshwantsho sa profile</string>
+    <string name="fetching_profile">Ho nka profile…</string>
     <string name="first_name">Lebitso la Pele</string>
     <string name="enter_your_first_name">Kenya lebitso la hao la pele</string>
     <string name="email">Imeile</string>
     <string name="enter_your_email">Kenya imeile ya hao</string>
-    <string name="phone">Telefono</string>
-    <string name="enter_your_phone_number">Kenya nomoro ya hao ya telefono</string>
-    <string name="profile_image">Setshwantsho sa Profaele</string>
-    <string name="profile_settings">Ditlhophiso tsa Profaele</string>
+    <string name="phone">Mohala</string>
+    <string name="enter_your_phone_number">Kenya nomoro ya hao ya mohala</string>
+    <string name="profile_image">Setshwantsho sa Profile</string>
+    <string name="profile_settings">Ditokiso tsa Profile</string>
     <string name="save_changes">Boloka Diphetoho</string>
     <string name="surname">Lebitso la Lelapa</string>
     <string name="enter_your_surname">Kenya lebitso la hao la lelapa</string>
-    <string name="updating_profile">E ntjhafatsa profaele…</string>
+    <string name="updating_profile">Ho ntjhafatsa profile…</string>
     <string name="username">Lebitso la Mosebedisi</string>
     <string name="enter_your_username">Kenya lebitso la hao la mosebedisi</string>
     <string name="date_of_birth">Letsatsi la Tswalo</string>
-    <string name="select_your_date_of_birth">Kgetha letsatsi la hao la tswalo</string>
+    <string name="select_your_date_of_birth">Khetha letsatsi la hao la tswalo</string>
 
-    <string name="loading_properties">E laela thepa…</string>
+    <string name="loading_properties">Ho jara thepa…</string>
     <string name="search_for_properties">Batla thepa</string>
-    <string name="updating_properties">E ntjhafatsa thepa…</string>
-
-    <string name="no_favourites">Ha ho ratehang</string>
-    <string name="no_listings">Ha ho dinaledi</string>
-    <string name="no_listings_available">Ha ho dinaledi tse fumanehang hajoale.</string>
+    <string name="updating_properties">Ho ntjhafatsa thepa…</string>
+    <string name="no_favourites">Ha ho tse ratwang</string>
+    <string name="no_listings">Ha ho dilenane</string>
+    <string name="no_listings_available">Ha ho dilenane tse fumanehang hajwale.</string>
     <string name="no_maintenance_requests">Ha o na dikopo tsa tlhokomelo.</string>
     <string name="no_notifications">Ha ho ditsebiso</string>
     <string name="no_requests">Ha ho dikopo</string>
-    <string name="you_have_no_favourites">Ha o na thepa e o e ratang.</string>
+    <string name="you_have_no_favourites">Ha o na thepa e ratwang.</string>
     <string name="you_have_no_notifications">Ha o na ditsebiso.</string>
+    <string name="placeholder_heating">Ho futhumatsa</string>
+    <string name="placeholder_wifi">WiFi</string>
+    <string name="placeholder_parking">Paka</string>
 
     <string name="ask_a_question">Botsa potso</string>
-    <string name="faq_chat_bot">Roboto ya Puisano ya Dipotso tse Botswang</string>
+    <string name="faq_chat_bot">Potso chatbot</string>
 
-    <string name="loading_requests">E laela dikopo…</string>
+    <string name="loading_requests">Ho jara dikopo…</string>
     <string name="maintenance_request">Kopo ya Tlhokomelo</string>
     <string name="my_maintenance_requests">Dikopo tsa ka tsa Tlhokomelo</string>
 
-    <string name="attach_supporting_docs">Kopanya ditokomane tse tshehetsang</string>
+    <string name="attach_supporting_docs">Kenya ditokomane tse tshehetsang</string>
     <string name="description">Tlhaloso</string>
     <string name="description_hint">Hlalosa bothata ka botlalo</string>
     <string name="issue_title">Sehlooho sa Bothata</string>
-    <string name="issue_title_hint">Kenya sehlooho se khuts\'oane sa bothata</string>
+    <string name="issue_title_hint">Kenya sehlooho se khutshwane sa bothata</string>
     <string name="location_unit">Sebaka / Yuniti</string>
-    <string name="maintenance_file_upload">Laelesa difoto kapa difaele tse amanang le bothata</string>
-    <string name="past_requests">Dikopo tsa Mehleng e Fetileng</string>
-    <string name="populating_property_dropdown">E laela lenaneo la thepa…</string>
+    <string name="maintenance_file_upload">Kenya ditshwantsho kapa difaele tse amanang le bothata</string>
+    <string name="past_requests">Dikopo tse Fetileng</string>
+    <string name="populating_property_dropdown">Ho jara lenane la thepa…</string>
     <string name="priority">Bohlokwa</string>
-    <string name="submitting_ticket">E romela tikete…</string>
+    <string name="submitting_ticket">Ho romela thikete…</string>
     <string name="submit_request">Romela Kopo</string>
-    <string name="no_past_maintenance_requests">Ha o na dikopo tsa tlhokomelo tsa mehleng e fetileng.</string>
-    <string name="loading_past_requests">E laela dikopo tsa mehleng e fetileng…</string>
+    <string name="no_past_maintenance_requests">Ha o na dikopo tsa tlhokomelo tse fetileng.</string>
+    <string name="loading_past_requests">Ho jara dikopo tse fetileng…</string>
+    <string name="amenity_icon">Aekone ya ditsebediso</string>
+    <string name="amenity_icon_content_description">Aekone ya ditsebediso</string>
+    <string name="loading_wishlist">Ho jara lenane la dinyakwa…</string>
+    <string name="my_wishlist">Lenane la ka la Dinyakwa</string>
 
-    <string name="loading_wishlist">E laela lenaneo la ditakatso…</string>
-    <string name="my_wishlist">Lenaneo la ka la Ditakatso</string>
-
-    <string name="loading_notifications">E laela ditsebiso…</string>
+    <string name="loading_notifications">Ho jara ditsebiso…</string>
     <string name="placeholder_notification_message">Molaetsa wa tsebiso</string>
-    <string name="placeholder_notification_time">Hajoale feela</string>
+    <string name="placeholder_notification_time">Hona joale</string>
     <string name="placeholder_notification_title">Sehlooho sa tsebiso</string>
 
-    <string name="placeholder_assigned">E abelilwe</string>
-    <string name="placeholder_broken_tap">Tapa e robehileng</string>
-    <string name="placeholder_caretaker_note">Tlhahisoleseling ya mohlokomedi</string>
+    <string name="placeholder_assigned">E abelwe</string>
+    <string name="placeholder_broken_tap">Pompi e robehileng</string>
+    <string name="placeholder_caretaker_note">Nota ya mohlokomedi</string>
     <string name="placeholder_follow_ups">Tlatsetso</string>
     <string name="placeholder_high_priority">Bohlokwa bo phahameng</string>
-    <string name="placeholder_pending">E emetse</string>
-    <string name="placeholder_request_id">ID ya Kopo</string>
-    <string name="placeholder_submitted_date">Letsatsi la ho romelwa</string>
-    <string name="placeholder_tap_leaking">Tapa e dulang</string>
+    <string name="placeholder_pending">E eme</string>
+    <string name="placeholder_request_id">ID ya kopo</string>
+    <string name="placeholder_submitted_date">Letsatsi la ho romela</string>
+    <string name="placeholder_tap_leaking">Pompi e lutlang</string>
     <string name="placeholder_unit">Yuniti</string>
 
     <string name="placeholder_price">Theko</string>
     <string name="placeholder_property_address">Aterese ya thepa</string>
     <string name="placeholder_property_title">Sehlooho sa thepa</string>
-    <string name="placeholder_rating">Tekolo</string>
-    <string name="placeholder_rating_count">Palo ya diteko</string>
+    <string name="placeholder_rating">Tekanyo</string>
+    <string name="placeholder_rating_count">Palo ya tekanyo</string>
     <string name="placeholder_rooms">Diphaposi</string>
 
-    <string name="placeholder_property_amount_card">Katleho</string>
+    <string name="placeholder_property_amount_card">Chelete</string>
     <string name="placeholder_property_duration_card">ka kgwedi</string>
     <string name="placeholder_property_location_card">Sebaka</string>
     <string name="placeholder_property_title_card">Sehlooho sa thepa</string>
-    <string name="footer_tracking_note">Dintlhafatso tsa tshekatsheko di nchafatswa ka nako ya sebele. Haeba ntlhafatso e nka nako e feta e sa lebellwang, ka kopo ikopanye le sehlopha sa rona sa tshehetso.</string>
-    <string name="list_item_placeholder">Kgetha kgetho</string>
-    <string name="refresh_text"><u>Nchafatsa ho bona dintlhafatso</u></string>
+    <string name="footer_tracking_note">Dintlafatso tsa ho latela di nchafatswa ka nako ya nnete. Haeba ntlafatso e nka nako e telele ho feta kamoo ho lebeluwe, ka kopo ikopanye le sehlopha sa rona sa tshehetso.</string>
+    <string name="list_item_placeholder">Khetha kgetho</string>
+    <string name="refresh_text"><u>Nchafatsa ho bona dintlafatso</u></string>
     <string name="south_africa">Afrika Borwa</string>
     <string name="step_label">Mohato</string>
 
-    <string name="booking_id_label">ID ya Pehelo: %1$s</string>
-    <string name="step_progress_format">Mohato %1$d ho %2$d: %3$s</string>
+    <string name="booking_id_label">ID ya Bukello: %1$s</string>
+    <string name="step_progress_format">Mohato %1$d ho ya ho %2$d: %3$s</string>
 
-    <string name="status_pending">E emetse</string>
+    <string name="status_pending">E eme</string>
     <string name="status_under_review">E hlahlojwa</string>
     <string name="status_awaiting_decision">E emetse qeto ya ho qetela</string>
     <string name="status_approved">E amohetswe</string>
-    <string name="status_rejected">E hanawe</string>
-    <string name="status_active">E sebedisang</string>
+    <string name="status_rejected">E hanilwe</string>
+    <string name="status_active">E sebetsa</string>
     <string name="status_outcome">Sephetho</string>
 
-    <string name="profile_management">Taolo ya Profaele</string>
-    <string name="faq_chatbot">Roboto ya Puisano ya Dipotso</string>
-    <string name="booking_status">Boemo ba Pehelo</string>
+    <string name="profile_management">Taolo ya Profile</string>
+    <string name="faq_chatbot">Potso Chatbot</string>
+    <string name="booking_status">Boemo ba Bukello</string>
     <string name="maintenance_request_status">Boemo ba Kopo ya Tlhokomelo</string>
     <string name="log_out">Tswa</string>
 
     <string-array name="language_options">
-        <item>Seisemane</item>
-        <item>Seburu</item>
+        <item>Sekgowa</item>
+        <item>Afrikaans</item>
         <item>Sesotho</item>
-        <item>Isizulu</item>
+        <item>IsiZulu</item>
     </string-array>
 
     <string-array name="location_options">
@@ -246,9 +252,9 @@
         <item>Hodimo</item>
     </string-array>
 
-    <string name="no_title">Ha ho Sehlooho</string>
-    <string name="no_address">Ha ho Aterese</string>
-    <string name="price_na">Theko N/A</string>
+    <string name="no_title">Ha ho sehlooho</string>
+    <string name="no_address">Ha ho aterese</string>
+    <string name="price_na">Theko ha e Fumaneha</string>
     <string name="rating_count_fmt">(%1$d)</string>
     <string name="currency_rand_amount">R%1$.0f</string>
     <string name="currency_rand_amount_decimal">R%1$.1f</string>
@@ -257,84 +263,84 @@
 
     <string name="placeholder_location">Sebaka</string>
     <string name="placeholder_property_description">Tlhaloso ya thepa</string>
-    <string name="placeholder_landlord_name">Mong-rente</string>
+    <string name="placeholder_landlord_name">Mohiri</string>
     <string name="placeholder_landlord_hours">10:00AM - 2:00PM</string>
 
-    <string name="no_phone_available">Ha ho nomoro ya telefono</string>
-    <string name="no_contact_method">Ha ho mokgwa wa ho kopana le mong-rente</string>
-    <string name="landlord">Mong-rente</string>
-    <string name="sms_template">Dumela %1$s, ke kgahlane ka lenaneo la hao.</string>
-    <string name="mail_subject">Potso mabapi le thepa ya hao</string>
-    <string name="mail_body">Dumela %1$s,\n\nKe kgahlane ka lenaneo la hao.</string>
-    <string name="property_loaded">Thepa e laetswe</string>
+    <string name="no_phone_available">Ha ho nomoro ya mohala</string>
+    <string name="no_contact_method">Ha ho mokgwa wa puisano o fumanweng bakeng sa mohiri</string>
+    <string name="landlord">Mohiri</string>
+    <string name="sms_template">Dumela %1$s, ke kgahlehile lenane la hao.</string>
+    <string name="mail_subject">Potso ka thepa ya hao</string>
+    <string name="mail_body">Dumela %1$s,\n\nKe kgahlehile lenane la hao.</string>
+    <string name="property_loaded">Thepa e jaretswe</string>
 
     <string name="privacy_policy_title">Leano la Lekunutu</string>
     <string name="privacy_policy"><![CDATA[
-<b>Letsatsi:</b> 20 October 2025<br/><br/>
+<b>Letsatsi:</b> 20 Mphalane 2025<br/><br/>
 
 <b>Selelekela</b><br/>
-Rea o amohela ho <b>RentWise</b>. Lekunutu la hao le bohlokwa ho rona. Leano lena la Lekunutu le hlalosa kamoo re kgobokanyetsang, re sebedisang, re bolokelang le ho sireletsa tlhahisoleseding ya hao ha o sebedisa aplikeishene.<br/><br/>
+Rea u amohela ho <b>RentWise</b>. Lekunutu la hao le bohlokwa ho rona. Leano lena la Lekunutu le hlalosa kamoo re bokellang, re sebelisang, re bolokang le ho sireletsa lintlha tsa hao ha u sebedisa app ena.<br/><br/>
 
-<b>1. Tlhahisoleseding eo re e kgobokanyetsang</b><br/>
-• Dintlha tsa motho: lebitso, imeile, nomoro ya telefono le setshwantsho sa profaele.<br/>
-• Ketso ya ho hirisa: dinaledi tseo o di shebang, o di bolokelang kapa o di behang.<br/>
-• Boitsebiso ba sebaka (feela ka tumello) ho ntlafatsa bohlokwa ba patlo.<br/><br/>
+<b>1. Lintlha tseo re di bokellang</b><br/>
+• Lintlha tsa motho: lebitso, imeile, nomoro ya mohala le setshwantsho sa profile.<br/>
+• Mesebetsi ya hiro: dilenane tseo u di bonang, u di bolokang kapa u di bekelang.<br/>
+• Data ya sebaka e sa tlwaelehang (feela ka tumello) ho ntlafatsa ho tshwana ha patlo.<br/><br/>
 
-<b>2. Kamoo re sebedisang tlhahisoleseding ya hao</b><br/>
-Re sebedisa tlhahisoleseding ya hao ho:<br/>
-• Laola akhaonto ya hao le ho nolofatsa dipehelo.<br/>
+<b>2. Kamoo re sebelisang lintlha tsa hao</b><br/>
+Re sebedisa lintlha tsa hao ho:<br/>
+• Laola akhaonto ya hao le ho nolofatsa dibukello.<br/>
 • Ntlafatsa boleng le ho tshepahala ha ditshebeletso tsa rona.<br/>
-• O romelela dintlhafatso tsa dipehelo le ditsebiso tseo o ngodisitseng ho tsona.<br/><br/>
+• U romella dintlafatso tsa bukello le ditsebiso tseo u ingodiseleng tsona.<br/><br/>
 
-<b>3. Tshireletso ya Boitsebiso</b><br/>
-Re sebedisa diseva tse sireletsehileng le ho lokisa (ho kenyeletsa <b>AES-256</b>) ho sireletsa boitsebiso ba hao mme re latela mekgwa e metle ho thibela phihlello e sa dumellwang.<br/><br/>
+<b>3. Tshireletso ya Data</b><br/>
+Re sebedisa di-server tse sireletsehileng le encryption (ho kenyelletsa <b>AES-256</b>) ho sireletsa data ya hao mme re latela mekgwa e metle ho thibela phihlello e sa dumelwang.<br/><br/>
 
-<b>4. Karolelano ya Tlhahisoleseding ya hao</b><br/>
-Ha re rekise boitsebiso ba hao. Re arolelana boitsebiso bo lekanyeditsweng feela le:<br/>
-• Beng ba thepa/batsamaisi (ho nolofatsa logistics ya dipehelo).<br/>
-• Bafani ba ditshebeletso ba tsheptjwang (mohlala, ditefo, tlhokomelo) tlasa ditlamo tse thata.<br/><br/>
+<b>4. Arolelano ya lintlha tsa hao</b><br/>
+Ha re rekise data ya hao. Re arolelana data e lekaneng feela le:<br/>
+• Ba beng ba thepa/batsamaisi (ho nolofalletsa logistics ya bukello).<br/>
+• Bafani ba ditshebeletso ba tsheptjwang (mohlala, ditefo, tlhokomelo) tlasa diqeto tse thata.<br/><br/>
 
 <b>5. Ditokelo tsa hao</b><br/>
-O ka ntlhafatsa kapa o hlakole tlhahisoleseding ya hao aplikeisheng nako efe kapa efe. Haeba o hlakola aplikeishene, boitsebiso ba sebaka (di-token, dikgetho) bo hlakollwa ka bo-itona.<br/><br/>
+U ka ntjhafatsa kapa hlakola lintlha tsa hao app-eng nako efe kapa efe. Haeba u hlakola app, data ya lehae (di-token, dikgetho) e hlakollwa ka bo yona.<br/><br/>
 
-<b>6. Ikopanye le rona</b><br/>
-Bakeng sa dipotso kapa dikeletso:<br/>
+<b>6. Re kopane</b><br/>
+Bakeng sa dipotso kapa matshwenyeho:<br/>
 📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
 🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
 
-<b>E ntlhaditsweng la ho qetela:</b> 20 October 2025
+<b>E nchafatswe ka ho qetela:</b> 20 Mphalane 2025
 ]]></string>
     <string name="bot_avatar" translatable="false">bot_avatar</string>
 
-    <string name="toast_to_be_implemented">E tla kenngwa tshebetsong hang ka mora</string>
+    <string name="toast_to_be_implemented">Ho kenngwa tshebetsong nako e nngwe</string>
     <string name="toast_no_active_user">Ha ho mosebedisi ya sebetsang. Ka kopo kena.</string>
-    <string name="toast_logged_out_successfully">O tsohile ka katleho</string>
-    <string name="toast_maintenance_requests_fetched">Dikopo tsa tlhokomelo di hatamilwe</string>
-    <string name="toast_wishlist_loaded">Lenaneo la ditakatso le laetswe</string>
+    <string name="toast_logged_out_successfully">Tswa ka katleho</string>
+    <string name="toast_maintenance_requests_fetched">Dikopo tsa tlhokomelo di nkilwe</string>
+    <string name="toast_wishlist_loaded">Lenane la dinyakwa le jaretswe</string>
     <string name="toast_please_fill_all_fields">Ka kopo tlatsa masimo ohle</string>
-    <string name="toast_description_too_short">Tlhaloso e lokela ho ba bonyane ditlhaku tse 25</string>
-    <string name="toast_attach_at_least_one_file">Ka kopo kopanya faele e le nngwe feela</string>
-    <string name="toast_biometric_enabled">Biometric e nolofalitswe bakeng sa ho kena kapele</string>
+    <string name="toast_description_too_short">Tlhaloso e lokela ho ba bonyane mangolo a 25</string>
+    <string name="toast_attach_at_least_one_file">Ka kopo kenya bonyane faele e le nngwe</string>
+    <string name="toast_biometric_enabled">Biometric e kenetswe bakeng sa ho kena kapele</string>
     <string name="toast_login_successful">Ho kena ho atlehile!</string>
     <string name="toast_authentication_error">Phoso ya netefatso: %1$s</string>
-    <string name="toast_authentication_failed">Netefatso e hlokofetse</string>
-    <string name="toast_decryption_failed">Decryption e hlokofetse - boitsebiso bo ka ba bo senyehile</string>
-    <string name="toast_decryption_format_error">Decryption e hlokofetse - phoso ya sebopeho sa boitsebiso</string>
-    <string name="toast_key_error">Phoso ya senotlelo - ka kopo nolofalletsa ho kena ha biometric hape</string>
-    <string name="toast_biometric_operation_failed">Ts\'ebetso ya biometric e hlokofetse</string>
-    <string name="toast_failed_to_restore_session">Ho hlokofetswe ho tsosolosa seshene</string>
-    <string name="toast_no_biometric_credentials">Ha ho ditumellano tse bolokeditsweng ka biometric</string>
-    <string name="toast_no_active_session">Ha ho seshene e sebetsang. Ka kopo kena ka letsoho</string>
-    <string name="toast_unable_to_enable_biometric">Ha ho khone ho nolofalletsa ho kena ha biometric</string>
-    <string name="toast_biometric_key_error">Phoso ya senotlelo sa biometric - ka kopo kena hape</string>
-    <string name="toast_unable_to_use_biometric">Ha ho khone ho sebedisa ho kena ha biometric</string>
-    <string name="toast_no_biometric_credentials_manual">Ha ho ditumellano tse bolokeditsweng ka biometric. Ka kopo kena ka letsoho.</string>
-    <string name="toast_unable_to_open_enrollment">Ha ho khone ho bula ngodiso ya biometric. Ka kopo beha biometric ka letsoho ho Ditlhophiso.</string>
-    <string name="toast_failed_google_token">Ho hlokofetswe ho fumana Google ID Token</string>
-    <string name="toast_google_signin_failed">Ho kena ha Google ho hlokofetse</string>
-    <string name="toast_invalid_server_response">Karabo e sa dumellwang ya seva</string>
-    <string name="toast_empty_response_body">Karabo e se nang letho</string>
-    <string name="toast_invalid_credentials">Ditumellano tse sa dumellwang</string>
+    <string name="toast_authentication_failed">Netefatso e hloleile</string>
+    <string name="toast_decryption_failed">Ho bula sephiri ho hloleile - data e ka ba e senyehile</string>
+    <string name="toast_decryption_format_error">Ho bula sephiri ho hloleile - phoso ya sebopeho sa data</string>
+    <string name="toast_key_error">Phoso ya senotlolo - ka kopo kgahlisa hape ho kena ha biometric</string>
+    <string name="toast_biometric_operation_failed">Tsebetso ya biometric e hloleile</string>
+    <string name="toast_failed_to_restore_session">Ho hloleha ho khutlisa seboka</string>
+    <string name="toast_no_biometric_credentials">Ha ho mangolo a fumaneha a bolokilweng ka biometric</string>
+    <string name="toast_no_active_session">Ha ho seboka se sebetsang. Ka kopo kena ka matsoho</string>
+    <string name="toast_unable_to_enable_biometric">Ho sa kgona ho kgahlisa ho kena ka biometric</string>
+    <string name="toast_biometric_key_error">Phoso ya senotlolo sa biometric - ka kopo kena hape</string>
+    <string name="toast_unable_to_use_biometric">Ho sa kgona ho sebedisa ho kena ka biometric</string>
+    <string name="toast_no_biometric_credentials_manual">Ha ho mangolo a fumaneha a bolokilweng ka biometric. Ka kopo kena ka matsoho</string>
+    <string name="toast_unable_to_open_enrollment">Ho sa kgona ho bula ngoliso ya biometric. Ka kopo beha biometrics ka matsoho ho Ditokiso.</string>
+    <string name="toast_failed_google_token">Ho hloleha ho fumana Google ID Token</string>
+    <string name="toast_google_signin_failed">Ho kena ka Google ho hlolehe</string>
+    <string name="toast_invalid_server_response">Karabo e fosahetseng ya seva</string>
+    <string name="toast_empty_response_body">Mmele wa karabo o se nang letho</string>
+    <string name="toast_invalid_credentials">Mangolo a Fosahetseng</string>
     <string name="toast_unknown_error">Phoso e sa tsejoeng</string>
     <string name="toast_error_prefix">Phoso: %1$s</string>
 

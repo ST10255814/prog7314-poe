@@ -176,6 +176,7 @@
     <string name="placeholder_price">Price</string>
     <string name="placeholder_property_address">Property address</string>
     <string name="placeholder_property_title">Property title</string>
+
     <string name="placeholder_rating">Rating</string>
     <string name="placeholder_rating_count">Rating count</string>
     <string name="placeholder_rooms">Rooms</string>
@@ -184,6 +185,10 @@
     <string name="placeholder_property_duration_card">per month</string>
     <string name="placeholder_property_location_card">Location</string>
     <string name="placeholder_property_title_card">Property title</string>
+
+    <string name="placeholder_heating">Heating</string>
+    <string name="placeholder_wifi">WiFi</string>
+    <string name="placeholder_parking">Parking</string>
     <string name="footer_tracking_note">Tracking updates are refreshed in real time. If an update takes longer than expected, please contact our support team.</string>
     <string name="list_item_placeholder">Select an option</string>
     <string name="refresh_text"><u>Refresh to see updates</u></string>

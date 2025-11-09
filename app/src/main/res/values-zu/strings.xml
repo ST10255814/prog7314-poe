@@ -2,98 +2,100 @@
 <resources>
 
     <string name="app_name">RentWise</string>
-    <string name="app_slogan">Ukuqasha okuhlakaniphile. Ukuphathwa okulula.</string>
+    <string name="app_slogan">Ukuqasha okuhlakaniphile. Ukuphatha okulula.</string>
     <string name="footer">© 2025 RentWise</string>
     <string name="privacy_url" translatable="false"> </string>
     <string name="support_email">support@rentwise.app</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
     <string name="website_url" translatable="false"> </string>
 
-    <string name="go_back_title">Buyela Emuva</string>
+    <string name="go_back_title">Buyela emuva</string>
     <string name="loading">Iyalayisha…</string>
     <string name="please_wait">Sicela ulinde…</string>
     <string name="send">Thumela</string>
 
     <string name="menu">imenyu</string>
-    <string name="nav_booking_status">isimo sokubhuka</string>
-    <string name="nav_faq_chatbot">imibuzo evamile ne-chatbot</string>
+    <string name="nav_booking_status">isimo_sokubhuka</string>
+    <string name="nav_faq_chatbot">imibuzo_chatbot</string>
     <string name="nav_logout">phuma</string>
-    <string name="nav_maintenance_status">Isimo Sokunakekelwa</string>
-    <string name="nav_profile_management">ukuphathwa kwephrofayela</string>
+    <string name="nav_maintenance_status">Isimo Sokunakekela</string>
+    <string name="nav_profile_management">ukulawula_iphrofayili</string>
     <string name="nav_settings">izilungiselelo</string>
 
-    <string name="email_address_hint">Ikheli le-imeyili</string>
-    <string name="let_s_get_you_an_account">Ake sikwenzele i-akhawunti</string>
+    <string name="email_address_hint">Ikheli le-imeyli</string>
+    <string name="let_s_get_you_an_account">Ake sikutholele i-akhawunti</string>
     <string name="logging_in">Iyangena…</string>
-    <string name="login_header">Ngena Ngemvume</string>
+    <string name="login_header">Ngena</string>
     <string name="login_message">Usunayo i-akhawunti? <u>Ngena</u></string>
     <string name="login_to_enjoy_rentwise">Ngena ukuze ujabulele i-RentWise</string>
-    <string name="login_with_biometrics">Ngena nge-Biometrics</string>
+    <string name="login_with_biometrics">Ngena nge-biometrics</string>
     <string name="or_condition">NOMA</string>
     <string name="password_hint">Iphasiwedi</string>
-    <string name="creating_account">Kudaliwa i-akhawunti…</string>
-    <string name="register_button">Dala i-Akhawunti</string>
+    <string name="creating_account">Iyakha i-akhawunti…</string>
+    <string name="register_button">Yakha i-Akhawunti</string>
     <string name="register_subtitle">ingcono nge-akhawunti</string>
     <string name="register_text">Awunayo i-akhawunti? <u>Bhalisa</u></string>
     <string name="sign_in_with_google">Ngena nge-Google</string>
-    <string name="welcome_message">Siyakwamukela</string>
+    <string name="welcome_message">Sawubona</string>
 
-    <string name="address_area">Indawo yekheli</string>
+    <string name="address_area">Indawo Yekheli</string>
+    <string name="amenities">Izinsiza</string>
+    <string name="amenity">Isinsiza</string>
     <string name="book_now">Bhuka Manje</string>
-    <string name="favourite">Intandokazi</string>
+    <string name="favourite">Othandwayo</string>
     <string name="per_night">Ngobusuku</string>
     <string name="photos">Izithombe</string>
     <string name="price">Intengo</string>
-    <string name="property">Ipropathi</string>
+    <string name="property">Impahla</string>
     <string name="rent">Qasha</string>
 
     <string name="call">Shayela</string>
     <string name="chat">Xoxa</string>
-    <string name="leave_a_review">Shiya Ukubuyekezwa</string>
+    <string name="leave_a_review">Shiya ukubuyekezwa</string>
     <string name="review_prompt">Kwakunjani ukuzizwisa kwakho?</string>
     <string name="submit_review">Thumela Ukubuyekezwa</string>
-    <string name="updating_favourites">Kubuyekezwa izintandokazi…</string>
-    <string name="write_your_review_optional">Bhala ukubuyekezwa kwakho (ongakhetha ukukwenza)</string>
-    <string name="loading_property">Kulayishwa ipropathi…</string>
+    <string name="updating_favourites">Iyabuyekeza izintandokazi…</string>
+    <string name="write_your_review_optional">Bhala ukubuyekezwa kwakho (okukhethekayo)</string>
+    <string name="loading_property">Iyalayisha impahla…</string>
 
     <string name="back">Emuva</string>
-    <string name="check_in_date">Usuku Lokungena</string>
+    <string name="check_in_date">Usuku lokungena</string>
     <string name="check_in_hint">Khetha usuku lwakho lokungena</string>
-    <string name="check_out_date">Usuku Lokuphuma</string>
+    <string name="check_out_date">Usuku lokuphuma</string>
     <string name="check_out_hint">Khetha usuku lwakho lokuphuma</string>
-    <string name="confirm_booking">Qinisekisa Ukubhuka</string>
+    <string name="confirm_booking">Qinisekisa ukubhuka</string>
     <string name="enter_guest_count">Faka inombolo yezivakashi</string>
     <string name="new_booking">Ukubhuka Okusha</string>
     <string name="number_of_guests">Inombolo Yezivakashi</string>
-    <string name="total_price">Intengo Yonke</string>
+    <string name="total_price">Intengo Ephelele</string>
 
-    <string name="attach_files">Namathisela Amafayela</string>
-    <string name="choose_files">Khetha Amafayela</string>
+    <string name="attach_files">Namathisela amafayela</string>
+    <string name="choose_files">Khetha amafayela</string>
     <string name="delete_file">Susa ifayela</string>
-    <string name="file_upload_subText">Sicela ulayishe ikhophi ye-ID yakho nobufakazi bemali engenayo ukuze kuqinisekiswe umenzeli.</string>
+    <string name="file_upload_subText">Sicela ulayishe ikhophi ye-ID yakho nobufakazi bengeniso ukuze kuqinisekiswe umenzeli.</string>
 
-    <string name="booking_progress">Inqubekelaphambili Yokubhuka</string>
+    <string name="booking_progress">Inqubekela Yokubhuka</string>
     <string name="booking_summary">Isifinyezo Sokubhuka</string>
-    <string name="nothing_to_track">Akukho okulandelwayo okwamanje</string>
+    <string name="nothing_to_track">Akukho okufanele ukulandelwe</string>
     <string name="notice_to_tenants">Isaziso kubaqashi</string>
-    <string name="processing_booking">Kucutshungulwa ukubhuka…</string>
-    <string name="proceed_to_payment">Qhubeka ekukhokheni</string>
+    <string name="processing_booking">Iyasebenza ukubhuka…</string>
+    <string name="proceed_to_payment">Qhubeka nokukhokha</string>
 
     <string name="card">Ikhadi</string>
     <string name="card_number">Inombolo Yekhadi</string>
-    <string name="cvv">I-CVV</string>
-    <string name="eft_bank_transfer">Ukudlulisa Kwamabhanga kwe-EFT</string>
-    <string name="mm_yy">MM/YY</string>
-    <string name="name_on_card">Igama Elikhongolose</string>
+    <string name="cvv">CVV</string>
+    <string name="eft_bank_transfer">Ukudlulisela kwamabanga kwe-EFT</string>
+    <string name="mm_yy">MM/UU</string>
+    <string name="name_on_card">Igama elikhadini</string>
     <string name="pay_now">Khokha Manje</string>
-    <string name="pay_on_arrival">Khokha Uma Ufika</string>
-    <string name="payment_method">Indlela Yokukhokha</string>
-    <string name="payment_portal">Isango Lokukhokha</string>
-    <string name="payment_status_not_paid">Isimo Sokukhokha: Akukhokhiwe</string>
-    <string name="processing_payment">Kucutshungulwa ukukhokha…</string>
+    <string name="pay_on_arrival">Khokha uma ufika</string>
+    <string name="payment_method">Indlela yokukhokha</string>
+    <string name="payment_portal">Isango lokukhokha</string>
+    <string name="payment_status_not_paid">Isimo Sokukhokha: Akukhokhi</string>
+    <string name="processing_payment">Iyasebenza ukukhokha…</string>
 
     <string name="about">Mayelana</string>
-    <string name="about_body">I-RentWise isiza abaqashi nabaninikazi izindlu ukuphatha izinhla, imibuzo, ukubhuka, ukunakekelwa, nokuxhumana ohlelweni olulodwa olulula.</string>
+    <string name="about_body">I-RentWise isiza abaqashi nabaqashi ukuthi baphathe uhlu, imibuzo, ukubhuka, ukunakekela kanye nokuxhumana ku-app eyodwa elula.</string>
     <string name="about_package_placeholder">com.example.rentwise</string>
     <string name="about_privacy">Inqubomgomo Yobumfihlo</string>
     <string name="about_support">Ukusekela</string>
@@ -101,127 +103,132 @@
     <string name="about_version">Inguqulo %1$s</string>
     <string name="about_version_placeholder">Inguqulo x.y.z</string>
     <string name="about_website">Iwebhusayithi</string>
+
     <string name="help">Usizo</string>
-    <string name="help_and_support">Usizo Nokusekela</string>
+    <string name="help_and_support">Usizo nokusekelwa</string>
     <string name="language">Ulimi</string>
     <string name="notifications">Izaziso</string>
-    <string name="offline_data_sync">Ukuvumelanisa Idatha Ungekho Ku-inthanethi</string>
-    <string name="offline_sync">Ukuvumelanisa Ungekho Ku-inthanethi</string>
+    <string name="offline_data_sync">Ukuvumelanisa idatha engekho ku-intanethi</string>
+    <string name="offline_sync">Ukuvumelanisa okungenaku-intanethi</string>
     <string name="settings">Izilungiselelo</string>
-    <string name="loading_settings">Kulayishwa izilungiselelo…</string>
+    <string name="loading_settings">Iyalayisha izilungiselelo…</string>
 
-    <string name="edit_profile_image">Hlela Isithombe Sephrofayela</string>
-    <string name="fetching_profile">Kuthathwa iphrofayela…</string>
+    <string name="edit_profile_image">Hlela isithombe sephrofayili</string>
+    <string name="fetching_profile">Iyathola iphrofayili…</string>
     <string name="first_name">Igama Lokuqala</string>
     <string name="enter_your_first_name">Faka igama lakho lokuqala</string>
-    <string name="email">I-imeyili</string>
-    <string name="enter_your_email">Faka i-imeyili yakho</string>
+    <string name="email">I-imeyli</string>
+    <string name="enter_your_email">Faka i-imeyli yakho</string>
     <string name="phone">Ifoni</string>
     <string name="enter_your_phone_number">Faka inombolo yakho yefoni</string>
-    <string name="profile_image">Isithombe Sephrofayela</string>
-    <string name="profile_settings">Izilungiselelo Zephrofayela</string>
-    <string name="save_changes">Gcina Izinguquko</string>
+    <string name="profile_image">Isithombe Sephrofayili</string>
+    <string name="profile_settings">Izilungiselelo Zephrofayili</string>
+    <string name="save_changes">Londoloza Izinguquko</string>
     <string name="surname">Isibongo</string>
     <string name="enter_your_surname">Faka isibongo sakho</string>
-    <string name="updating_profile">Kubuyekezwa iphrofayela…</string>
+    <string name="updating_profile">Iyabuyekeza iphrofayili…</string>
     <string name="username">Igama Lomsebenzisi</string>
     <string name="enter_your_username">Faka igama lakho lomsebenzisi</string>
     <string name="date_of_birth">Usuku Lokuzalwa</string>
     <string name="select_your_date_of_birth">Khetha usuku lwakho lokuzalwa</string>
 
-    <string name="loading_properties">Kulayishwa amapropathi…</string>
-    <string name="search_for_properties">Sesha amapropathi</string>
-    <string name="updating_properties">Kubuyekezwa amapropathi…</string>
-
+    <string name="loading_properties">Iyalayisha izakhiwo…</string>
+    <string name="search_for_properties">Sesha izakhiwo</string>
+    <string name="updating_properties">Iyabuyekeza izakhiwo…</string>
     <string name="no_favourites">Azikho izintandokazi</string>
     <string name="no_listings">Azikho izinhla</string>
-    <string name="no_listings_available">Azikho izinhla ezikhona okwamanje.</string>
-    <string name="no_maintenance_requests">Awunazicelo zokunakekelwa okwamanje.</string>
+    <string name="no_listings_available">Azikho izinhla ezitholakalayo manje.</string>
+    <string name="no_maintenance_requests">Awunazicelo zokunakekela.</string>
     <string name="no_notifications">Azikho izaziso</string>
     <string name="no_requests">Azikho izicelo</string>
-    <string name="you_have_no_favourites">Awunayo amapropathi antandokazi okwamanje.</string>
-    <string name="you_have_no_notifications">Awunazaziso okwamanje.</string>
+    <string name="you_have_no_favourites">Awunazakhiwo ozithandayo.</string>
+    <string name="you_have_no_notifications">Awunazaziso.</string>
 
     <string name="ask_a_question">Buza umbuzo</string>
-    <string name="faq_chat_bot">I-FAQ Chat Bot</string>
+    <string name="faq_chat_bot">Imibuzo chatbot</string>
 
-    <string name="loading_requests">Kulayishwa izicelo…</string>
-    <string name="maintenance_request">Isicelo Sokunakekelwa</string>
-    <string name="my_maintenance_requests">Izicelo Zami Zokunakekelwa</string>
+    <string name="loading_requests">Iyalayisha izicelo…</string>
+    <string name="maintenance_request">Isicelo Sokunakekela</string>
+    <string name="my_maintenance_requests">Izicelo Zami Zokunakekela</string>
 
-    <string name="attach_supporting_docs">Namathisela amadokhumenti asekelayo</string>
+    <string name="attach_supporting_docs">Namathisela amadokhumenti asekelewayo</string>
     <string name="description">Incazelo</string>
-    <string name="description_hint">Chaza inkinga ngokuphelele</string>
+    <string name="description_hint">Chaza inkinga ngokugcwele</string>
     <string name="issue_title">Isihloko Senkinga</string>
     <string name="issue_title_hint">Faka isihloko esifushane senkinga</string>
     <string name="location_unit">Indawo / Iyunithi</string>
     <string name="maintenance_file_upload">Layisha izithombe noma amafayela ahlobene nenkinga</string>
     <string name="past_requests">Izicelo Zangaphambilini</string>
-    <string name="populating_property_dropdown">Kulayishwa uhlu lwamapropathi…</string>
+    <string name="populating_property_dropdown">Iyalayisha uhlu lwezakhiwo…</string>
     <string name="priority">Okubalulekile</string>
-    <string name="submitting_ticket">Kuthunywe ithikithi…</string>
+    <string name="submitting_ticket">Iyathumela ithikithi…</string>
     <string name="submit_request">Thumela Isicelo</string>
-    <string name="no_past_maintenance_requests">Awunazicelo zokunakekelwa zangaphambilini.</string>
-    <string name="loading_past_requests">Kulayishwa izicelo zangaphambilini…</string>
-
-    <string name="loading_wishlist">Kulayishwa uhlu lwezifiso…</string>
+    <string name="no_past_maintenance_requests">Awunazicelo zokunakekela zangaphambilini.</string>
+    <string name="loading_past_requests">Iyalayisha izicelo zangaphambilini…</string>
+    <string name="amenity_icon">Isithonjana sezinsiza</string>
+    <string name="amenity_icon_content_description">Isithonjana sezinsiza</string>
+    <string name="loading_wishlist">Iyalayisha uhlu lwezifiso…</string>
     <string name="my_wishlist">Uhlu Lwami Lwezifiso</string>
 
-    <string name="loading_notifications">Kulayishwa izaziso…</string>
+    <string name="loading_notifications">Iyalayisha izaziso…</string>
     <string name="placeholder_notification_message">Umlayezo wesaziso</string>
-    <string name="placeholder_notification_time">Manje nje</string>
+    <string name="placeholder_notification_time">Khona manje</string>
     <string name="placeholder_notification_title">Isihloko sesaziso</string>
 
     <string name="placeholder_assigned">Kunikezwe</string>
-    <string name="placeholder_broken_tap">Ithephu ephukile</string>
-    <string name="placeholder_caretaker_note">Inothi yokunakekela</string>
-    <string name="placeholder_follow_ups">Okulandelayo</string>
+    <string name="placeholder_broken_tap">Itephu eliphukile</string>
+    <string name="placeholder_caretaker_note">Inothi yomphathi</string>
+    <string name="placeholder_follow_ups">Ukulandelela</string>
     <string name="placeholder_high_priority">Okubaluleke kakhulu</string>
     <string name="placeholder_pending">Kulindile</string>
-    <string name="placeholder_request_id">I-ID Yesicelo</string>
-    <string name="placeholder_submitted_date">Usuku okuthunywe ngalo</string>
-    <string name="placeholder_tap_leaking">Ithephu liyavuza</string>
+    <string name="placeholder_request_id">I-ID yesicelo</string>
+    <string name="placeholder_submitted_date">Usuku lokunikezwa</string>
+    <string name="placeholder_tap_leaking">Itephu elivuzayo</string>
     <string name="placeholder_unit">Iyunithi</string>
 
     <string name="placeholder_price">Intengo</string>
-    <string name="placeholder_property_address">Ikheli lepropathi</string>
-    <string name="placeholder_property_title">Isihloko sepropathi</string>
+    <string name="placeholder_property_address">Ikheli lezakhiwo</string>
+    <string name="placeholder_property_title">Isihloko sezakhiwo</string>
     <string name="placeholder_rating">Isilinganiso</string>
-    <string name="placeholder_rating_count">Isibalo sesilinganiso</string>
+    <string name="placeholder_rating_count">Inombolo yesilinganiso</string>
     <string name="placeholder_rooms">Amagumbi</string>
+    <string name="placeholder_heating">Ukushisa</string>
+    <string name="placeholder_wifi">i-WiFi</string>
+    <string name="placeholder_parking">Ukupaka</string>
 
-    <string name="placeholder_property_amount_card">Inani</string>
+
+    <string name="placeholder_property_amount_card">Imali</string>
     <string name="placeholder_property_duration_card">ngenyanga</string>
     <string name="placeholder_property_location_card">Indawo</string>
-    <string name="placeholder_property_title_card">Isihloko sepropathi</string>
-    <string name="footer_tracking_note">Izibuyekezo zokulandelela zivuselelwa ngesikhathi sangempela. Uma isibuyekezo sithatha isikhathi eside kunokulindelwe, sicela uxhumane neqembu lethu lokusekela.</string>
+    <string name="placeholder_property_title_card">Isihloko sezakhiwo</string>
+    <string name="footer_tracking_note">Izibuyekezo zokulandelela zibuyekezwa ngesikhathi sangempela. Uma isibuyekezo sithatha isikhathi eside kunalokho obekulindelwe, sicela uxhumane neqembu lethu lokusekela.</string>
     <string name="list_item_placeholder">Khetha inketho</string>
     <string name="refresh_text"><u>Vuselela ukubona izibuyekezo</u></string>
     <string name="south_africa">iNingizimu Afrika</string>
     <string name="step_label">Isinyathelo</string>
 
-    <string name="booking_id_label">I-ID Yokubhuka: %1$s</string>
-    <string name="step_progress_format">Isinyathelo %1$d kwangu-%2$d: %3$s</string>
+    <string name="booking_id_label">I-ID yokubhuka: %1$s</string>
+    <string name="step_progress_format">Isinyathelo %1$d kwanggu %2$d: %3$s</string>
 
     <string name="status_pending">Kulindile</string>
-    <string name="status_under_review">Kubuyekezwayo</string>
-    <string name="status_awaiting_decision">Kulindwa isinqumo sokugcina</string>
-    <string name="status_approved">Kugunyaziwe</string>
-    <string name="status_rejected">Kwenqatshiwe</string>
-    <string name="status_active">Kusebenza</string>
+    <string name="status_under_review">Kubuyekezwa</string>
+    <string name="status_awaiting_decision">Kulindele isinqumo sokugcina</string>
+    <string name="status_approved">Kuvunyiwe</string>
+    <string name="status_rejected">Kwenqatshelwe</string>
+    <string name="status_active">Kuyasebenza</string>
     <string name="status_outcome">Umphumela</string>
 
-    <string name="profile_management">Ukuphathwa Kwephrofayela</string>
-    <string name="faq_chatbot">I-FAQ Chatbot</string>
+    <string name="profile_management">Ukulawula Iphrofayili</string>
+    <string name="faq_chatbot">Imibuzo Chatbot</string>
     <string name="booking_status">Isimo Sokubhuka</string>
-    <string name="maintenance_request_status">Isimo Sesicelo Sokunakekelwa</string>
+    <string name="maintenance_request_status">Isimo Sesicelo Sokunakekela</string>
     <string name="log_out">Phuma</string>
 
     <string-array name="language_options">
         <item>IsiNgisi</item>
         <item>IsiBhunu</item>
-        <item>IsiSotho</item>
-        <item>IsiZulu</item>
+        <item>Sesotho</item>
+        <item>isiZulu</item>
     </string-array>
 
     <string-array name="location_options">
@@ -234,20 +241,20 @@
     </string-array>
 
     <string-array name="price_options">
-        <item>Noma yikuphi</item>
+        <item>Noma yini</item>
         <item>R0-R5k</item>
         <item>R5k-R10k</item>
         <item>R10k+</item>
     </string-array>
 
     <string-array name="priority_levels">
-        <item>Kancane</item>
-        <item>Maphakathi</item>
-        <item>Okuphezulu</item>
+        <item>Kuphansi</item>
+        <item>Phakathi</item>
+        <item>Phezulu</item>
     </string-array>
 
     <string name="no_title">Asinasihloko</string>
-    <string name="no_address">Asinasikheli</string>
+    <string name="no_address">Asinawo ikheli</string>
     <string name="price_na">Intengo Ayitholakali</string>
     <string name="rating_count_fmt">(%1$d)</string>
     <string name="currency_rand_amount">R%1$.0f</string>
@@ -256,85 +263,85 @@
     <string name="error_prefix">%1$s</string>
 
     <string name="placeholder_location">Indawo</string>
-    <string name="placeholder_property_description">Incazelo yepropathi</string>
-    <string name="placeholder_landlord_name">Umnikazi</string>
+    <string name="placeholder_property_description">Incazelo yezakhiwo</string>
+    <string name="placeholder_landlord_name">Umninindlu</string>
     <string name="placeholder_landlord_hours">10:00AM - 2:00PM</string>
 
-    <string name="no_phone_available">Ayikho inombolo yefoni etholakalayo</string>
-    <string name="no_contact_method">Ayikho indlela yokuxhumana nomnikazi etholakalayo</string>
-    <string name="landlord">Umnikazi</string>
-    <string name="sms_template">Sawubona %1$s, nginentshisekelo ngohlu lwakho.</string>
-    <string name="mail_subject">Umbuzo mayelana nepropathi yakho</string>
-    <string name="mail_body">Sawubona %1$s,\n\nNginentshisekelo ngohlu lwakho.</string>
-    <string name="property_loaded">Ipropathi ilayishiwe</string>
+    <string name="no_phone_available">Ayikho inombolo yefoni</string>
+    <string name="no_contact_method">Ayikho indlela yokuxhumana etholakele yomninindlu</string>
+    <string name="landlord">Umninindlu</string>
+    <string name="sms_template">Sawubona %1$s, ngiyajabula ngohlu lwakho.</string>
+    <string name="mail_subject">Umbuzo ngempahla yakho</string>
+    <string name="mail_body">Sawubona %1$s,\n\nNgiyajabula ngohlu lwakho.</string>
+    <string name="property_loaded">Impahla ilayishiwe</string>
 
     <string name="privacy_policy_title">Inqubomgomo Yobumfihlo</string>
     <string name="privacy_policy"><![CDATA[
-<b>Usuku:</b> 20 October 2025<br/><br/>
+<b>Usuku:</b> 20 Oktober 2025<br/><br/>
 
 <b>Isingeniso</b><br/>
-Siyakwamukela ku-<b>RentWise</b>. Ubumfihlo bakho bubalulekile kithi. Le Nqubomgomo Yobumfihlo ichaza ukuthi siqoqa kanjani, sisebenzise kanjani, sigcine kanjani, futhi sivikele kanjani ulwazi lwakho uma usebenzisa uhlelo lokusebenza.<br/><br/>
+Siyakwamukela ku <b>RentWise</b>. Ubumfihlo bakho bubalulekile kithi. Le nqubo yamasu yobumfihlo ichaza indlela esiqoqa ngayo, esisebenzise ngayo, esilondoloze ngayo futhi esivikela ngayo ulwazi lwakho uma usebenzisa uhlelo lokusebenza.<br/><br/>
 
-<b>1. Ulwazi Esiluqoqayo</b><br/>
-• Imininingwane yomuntu siqu: igama, i-imeyili, inombolo yefoni, nesithombe sephrofayela.<br/>
-• Umsebenzi wokuqasha: uhlu olubukayo, olugcinayo, noma olubhukayo.<br/>
-• Idatha yendawo ekhethekayo (kuphela ngemvume) ukuthuthukisa ukufaneleka kokusesha.<br/><br/>
+<b>1. Ulwazi esiluqoqayo</b><br/>
+• Imininingwane yomuntu siqu: igama, i-imeyli, inombolo yefoni nesithombe sephrofayili.<br/>
+• Umsebenzi wokuqasha: uhlu olubukayo, olulondolozayo noma olubhukayo.<br/>
+• Idatha yendawo ekhethekayo (kuphela ngemvume) ukwenza ngcono ukufana kosesho.<br/><br/>
 
-<b>2. Ukuthi Silusebenzisa Kanjani Ulwazi Lwakho</b><br/>
+<b>2. Indlela esisebenzisa ngayo ulwazi lwakho</b><br/>
 Sisebenzisa ulwazi lwakho ukuze:<br/>
-• Siphathe i-akhawunti yakho futhi siququzelele ukubhuka.<br/>
-• Sithuthukise ikhwalithi nokuthembeka kwamandla ethu.<br/>
+• Siphatha i-akhawunti yakho futhi sinikeze ukubhuka.<br/>
+• Sithuthukise ikhwalithi nokuthembeka kwezinsiza zethu.<br/>
 • Sikuthumelele izibuyekezo zokubhuka nezaziso ozibhalise kuzo.<br/><br/>
 
-<b>3. Ukuvikeleka Kwedatha</b><br/>
-Sisebenzisa amaseva avikelekile ne-encryption (kufaka phakathi i-<b>AES-256</b>) ukuvikela idatha yakho futhi silandela izindlela ezinhle zokuvimbela ukufinyelela okungagunyaziwe.<br/><br/>
+<b>3. Ukuphepha Kwedatha</b><br/>
+Sisebenzisa amaseva avikelekile nokubethelwa kwangaphakathi (okubandakanya <b>AES-256</b>) ukuvikela idatha yakho futhi silandele izindlela ezinhle zokuvimbela ukufinyelela okungagunyaziwe.<br/><br/>
 
-<b>4. Ukwabelana Ngolwazi Lwakho</b><br/>
-Asithengisi idatha yakho. Sabelana ngedatha elinganiselwe kuphela nale:<br/>
-• Abanikazi/abaphathi bamapropathi (ukuze bavumele i-logistics yokubhuka).<br/>
-• Abahlinzeki bendandlula abathembekile (isb. izinkokhelo, ukunakekelwa) ngaphansi kwezibophezelo ezinzima.<br/><br/>
+<b>4. Ukwabelana ngolwazi lwakho</b><br/>
+Asithengisi idatha yakho. Sabelana ngedatha elinganiselwe kuphela no:<br/>
+• Abanikazi bezakhiwo/abaphathi (ukwenza kube lula ukubhuka ukukhongoloswa).<br/>
+• Abanikezi bezinsiza abathembekile (isibonelo, izinkokhelo, ukunakekela) ngaphansi kwamikhawulo eqinile.<br/><br/>
 
-<b>5. Amalungelo Akho</b><br/>
-Ungabuyekeza noma ususe ulwazi lwakho ohlangothini nganoma yisiphi isikhathi. Uma ukhipha uhlelo lokusebenza, idatha yendawo (amathokheni, okuthandwayo) isuliwe ngokuzenzakalayo.<br/><br/>
+<b>5. Amalungelo akho</b><br/>
+Ungabuyekeza noma ususe ulwazi lwakho kuhlelo lokusebenza nganoma yisiphi isikhathi. Uma ususa uhlelo lokusebenza, idatha yendawo (amatokeni, izikhetho) isuwe ngokuzenzakalelayo.<br/><br/>
 
-<b>6. Sixhumane Nathi</b><br/>
-Ukuze ubaze imibuzo noma ukukhathazeka:<br/>
+<b>6. Xhumana nathi</b><br/>
+Ngemibuzwana noma ukukhathazeka:<br/>
 📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
 🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
 
-<b>Kubuyekeziwe Kokokugcina:</b> 20 October 2025
+<b>Kugcina ukubuyekezwa:</b> 20 Oktober 2025
 ]]></string>
     <string name="bot_avatar" translatable="false">bot_avatar</string>
 
-    <string name="toast_to_be_implemented">Kuzofakwa esikhathini esizayo</string>
-    <string name="toast_no_active_user">Ayikho impabanga esebenzayo etholakalayo. Sicela ungene.</string>
-    <string name="toast_logged_out_successfully">Uphume ngempumelelo</string>
-    <string name="toast_maintenance_requests_fetched">Izicelo zokunakekelwa zithathiwe</string>
+    <string name="toast_to_be_implemented">Kuzokwenziwa ngolunye usuku</string>
+    <string name="toast_no_active_user">Awukho umsebenzisi osebenzayo otholiwe. Sicela ungene.</string>
+    <string name="toast_logged_out_successfully">Kuphume ngempumelelo</string>
+    <string name="toast_maintenance_requests_fetched">Izicelo zokunakekela zitholiwe</string>
     <string name="toast_wishlist_loaded">Uhlu lwezifiso lulayishiwe</string>
-    <string name="toast_please_fill_all_fields">Sicela ugcwalise wonke amasimu</string>
-    <string name="toast_description_too_short">Incazelo kufanele ibe namanani okungenani angu-25</string>
+    <string name="toast_please_fill_all_fields">Sicela ugcwalise zonke izinkambu</string>
+    <string name="toast_description_too_short">Incazelo kufanele ibe okungenani izinhlamvu ezingu-25</string>
     <string name="toast_attach_at_least_one_file">Sicela unamathisele okungenani ifayela elilodwa</string>
-    <string name="toast_biometric_enabled">I-Biometric ivulelwe ukungena ngokushesha</string>
-    <string name="toast_login_successful">Ukungena Kuphumelele!</string>
+    <string name="toast_biometric_enabled">I-Biometric inikwe amandla ukuze ungene ngokushesha</string>
+    <string name="toast_login_successful">Ukungena kuphumelele!</string>
     <string name="toast_authentication_error">Iphutha lokuqinisekisa: %1$s</string>
     <string name="toast_authentication_failed">Ukuqinisekisa kuhlulekile</string>
-    <string name="toast_decryption_failed">I-Decryption ihlulekile - idatha ingase yonakale</string>
-    <string name="toast_decryption_format_error">I-Decryption ihlulekile - iphutha lesakhiwo sedatha</string>
-    <string name="toast_key_error">Iphutha lekhiye - sicela uvumele ukungena kwe-biometric futhi</string>
+    <string name="toast_decryption_failed">Ukususa imfihlo kuhlulekile - idatha ingase ibe yonakele</string>
+    <string name="toast_decryption_format_error">Ukususa imfihlo kuhlulekile - iphutha lefomathi yedatha</string>
+    <string name="toast_key_error">Iphutha lokhiye - sicela uvumele futhi ukungena nge-biometric</string>
     <string name="toast_biometric_operation_failed">Umsebenzi we-biometric uhlulekile</string>
-    <string name="toast_failed_to_restore_session">Kwehluleka ukubuyisela iseshini</string>
-    <string name="toast_no_biometric_credentials">Azikho iziqu ezigcinwe nge-biometric ezitholakalayo</string>
-    <string name="toast_no_active_session">Ayikho iseshini esebenzayo. Sicela ungene mathupha</string>
-    <string name="toast_unable_to_enable_biometric">Ayikwazi ukuvula ukungena kwe-biometric</string>
-    <string name="toast_biometric_key_error">Iphutha lekhiye le-biometric - sicela ungene futhi</string>
-    <string name="toast_unable_to_use_biometric">Ayikwazi ukusebenzisa ukungena kwe-biometric</string>
-    <string name="toast_no_biometric_credentials_manual">Azikho iziqu ezigcinwe nge-biometric ezitholakalayo. Sicela ungene mathupha.</string>
-    <string name="toast_unable_to_open_enrollment">Ayikwazi ukuvula ukubhalisa kwe-biometric. Sicela usethe i-biometrics mathupha ezilungiselelweni.</string>
-    <string name="toast_failed_google_token">Kwehluleka ukuthola i-Google ID Token</string>
-    <string name="toast_google_signin_failed">Ukungena kwe-Google kuhlulekile</string>
-    <string name="toast_invalid_server_response">Impendulo yeseva engeyona</string>
-    <string name="toast_empty_response_body">Umzimba wempendulo ongenalutho</string>
-    <string name="toast_invalid_credentials">Iziqu Ezingeyona</string>
+    <string name="toast_failed_to_restore_session">Kuhluleke ukubuyisela iseshini</string>
+    <string name="toast_no_biometric_credentials">Awekho amagama okufanele atholiwe alondolozwe nge-biometric</string>
+    <string name="toast_no_active_session">Ayikho iseshini esebenzayo. Sicela ungene ngesandla</string>
+    <string name="toast_unable_to_enable_biometric">Akukwazi ukuvumela ukungena nge-biometric</string>
+    <string name="toast_biometric_key_error">Iphutha lokhiye lwe-biometric - sicela ungene futhi</string>
+    <string name="toast_unable_to_use_biometric">Akukwazi ukusebenzisa ukungena nge-biometric</string>
+    <string name="toast_no_biometric_credentials_manual">Awekho amagama okufanele atholiwe alondolozwe nge-biometric. Sicela ungene ngesandla</string>
+    <string name="toast_unable_to_open_enrollment">Akukwazi ukuvula ukubhalisa kwe-biometric. Sicela ulungiselele i-biometrics ngesandla eziLungiselelweni.</string>
+    <string name="toast_failed_google_token">Kuhluleke ukuthola i-Google ID Token</string>
+    <string name="toast_google_signin_failed">Ukungena nge-Google kuhlulekile</string>
+    <string name="toast_invalid_server_response">Impendulo yeseva engalungile</string>
+    <string name="toast_empty_response_body">Umzimba wempendulo ongenasilutho</string>
+    <string name="toast_invalid_credentials">Amagama Okufanele Angalungile</string>
     <string name="toast_unknown_error">Iphutha elingaziwa</string>
     <string name="toast_error_prefix">Iphutha: %1$s</string>
 
