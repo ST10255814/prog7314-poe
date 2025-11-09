@@ -31,7 +31,7 @@ class ChatRepository {
 
                 // Constructs the chat request with the specified model and the prepared message list.
                 val request = ChatRequest.ChatRequest(
-                    model = "nvidia/nemotron-nano-9b-v2:free",
+                    model = "nvidia/nemotron-nano-12b-v2-vl:free",
                     messages = fullMessages
                 )
 
