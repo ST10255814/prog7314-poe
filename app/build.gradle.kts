@@ -17,6 +17,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // BuildConfig field for OpenRouter API key (use gradle.properties to avoid committing secrets)
+        buildConfigField("String", "OPENROUTER_API_KEY", "\"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\"")
     }
 
     buildTypes {
