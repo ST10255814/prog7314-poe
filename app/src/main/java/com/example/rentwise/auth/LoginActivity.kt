@@ -787,7 +787,6 @@ class LoginActivity : AppCompatActivity() {
 
 
     // Biometric encryption flows
-
     private fun startBiometricSaveTokenFlow(payloadJson: String) {
         try {
             // prepare cipher for encryption
@@ -872,7 +871,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // Biometric consent dialog and visibility helpers
-
     private fun showEnableBiometricDialog(token: String, userId: String?, pfp: String?) {
         try {
             // Only offer if hardware/enrolled and no biometric credential exists
