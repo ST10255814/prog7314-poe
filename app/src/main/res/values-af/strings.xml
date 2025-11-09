@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- =========================================================
-         App Metadata
-         ========================================================= -->
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Slim verhuring. Eenvoudige bestuur.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="privacy_url" translatable="false"></string>
+    <string name="privacy_url" translatable="false"> </string>
     <string name="support_email">support@rentwise.app</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
-    <string name="website_url" translatable="false"></string>
+    <string name="website_url" translatable="false"> </string>
 
-    <!-- =========================================================
-         Navigation / Common
-         ========================================================= -->
     <string name="go_back_title">Gaan terug</string>
     <string name="loading">Laai…</string>
     <string name="please_wait">Wag asseblief…</string>
     <string name="send">Stuur</string>
 
-    <!-- =========================================================
-         Navigation / Menu Destinations
-         ========================================================= -->
     <string name="menu">spyskaart</string>
     <string name="nav_booking_status">nav_booking_status</string>
     <string name="nav_faq_chatbot">nav_faq_chatbot</string>
@@ -31,31 +22,23 @@
     <string name="nav_profile_management">nav_profile_management</string>
     <string name="nav_settings">nav_settings</string>
 
-    <!-- =========================================================
-     Auth / Onboarding
-     ========================================================= -->
     <string name="email_address_hint">E-posadres</string>
-    <string name="let_s_get_you_an_account">Kom ons kry vir jou ’n rekening</string>
+    <string name="let_s_get_you_an_account">Kom ons kry vir jou \'n rekening</string>
     <string name="logging_in">Meld tans aan…</string>
     <string name="login_header">Meld aan</string>
-    <string name="login_message">Het jy reeds ’n rekening? <u>Meld aan</u></string>
+    <string name="login_message">Het jy reeds \'n rekening? <u>Meld aan</u></string>
     <string name="login_to_enjoy_rentwise">Meld aan om RentWise te geniet</string>
     <string name="login_with_biometrics">Teken aan met biometrie</string>
     <string name="or_condition">OF</string>
     <string name="password_hint">Wagwoord</string>
     <string name="creating_account">Skep rekening…</string>
     <string name="register_button">Skep rekening</string>
-    <string name="register_subtitle">is beter met ’n rekening</string>
-    <string name="register_text">Het jy nie ’n rekening nie? <u>Regsitreer</u></string>
+    <string name="register_subtitle">is beter met \'n rekening</string>
+    <string name="register_text">Het jy nie \'n rekening nie? <u>Regsitreer</u></string>
     <string name="sign_in_with_google">Meld aan met Google</string>
     <string name="welcome_message">Welkom</string>
 
-    <!-- =========================================================
-         Listings / Properties
-         ========================================================= -->
     <string name="address_area">Adresgebied</string>
-    <string name="amenities">Gerieflikhede</string>
-    <string name="amenity">Gerief</string>
     <string name="book_now">Bespreek nou</string>
     <string name="favourite">Gunsteling</string>
     <string name="per_night">Per nag</string>
@@ -64,21 +47,15 @@
     <string name="property">Eiendom</string>
     <string name="rent">Huur</string>
 
-    <!-- =========================================================
-     Property details: actions / reviews
-     ========================================================= -->
     <string name="call">Bel</string>
     <string name="chat">Klets</string>
-    <string name="leave_a_review">Laat ’n resensie</string>
+    <string name="leave_a_review">Laat \'n resensie</string>
     <string name="review_prompt">Hoe was jou ervaring?</string>
     <string name="submit_review">Dien resensie in</string>
     <string name="updating_favourites">Werk gunstelinge by…</string>
     <string name="write_your_review_optional">Skryf jou resensie (opsioneel)</string>
     <string name="loading_property">Laai eiendom…</string>
 
-    <!-- =========================================================
-         Booking: creation form
-         ========================================================= -->
     <string name="back">Terug</string>
     <string name="check_in_date">Inboekdatum</string>
     <string name="check_in_hint">Kies jou inboekdatum</string>
@@ -90,17 +67,11 @@
     <string name="number_of_guests">Aantal gaste</string>
     <string name="total_price">Totale prys</string>
 
-    <!-- =========================================================
-         Booking: attachments
-         ========================================================= -->
     <string name="attach_files">Heg lêers aan</string>
     <string name="choose_files">Kies lêers</string>
     <string name="delete_file">Vee lêer uit</string>
-    <string name="file_upload_subText">Laai asseblief ’n kopie van jou ID en bewys van inkomstes op vir verifiëring deur die agent.</string>
+    <string name="file_upload_subText">Laai asseblief \'n kopie van jou ID en bewys van inkomstes op vir verifiëring deur die agent.</string>
 
-    <!-- =========================================================
-         Booking: progress / status
-         ========================================================= -->
     <string name="booking_progress">Besprekingsvordering</string>
     <string name="booking_summary">Besprekingsopsomming</string>
     <string name="nothing_to_track">Nog niks om op te spoor nie</string>
@@ -108,9 +79,6 @@
     <string name="processing_booking">Verwerk bespreking…</string>
     <string name="proceed_to_payment">Gaan voort na betaling</string>
 
-    <!-- =========================================================
-         Payments
-         ========================================================= -->
     <string name="card">Kaart</string>
     <string name="card_number">Kaartnommer</string>
     <string name="cvv">CVV</string>
@@ -124,9 +92,6 @@
     <string name="payment_status_not_paid">Betalingstatus: Nie betaal nie</string>
     <string name="processing_payment">Verwerk betaling…</string>
 
-    <!-- =========================================================
-     Settings
-     ========================================================= -->
     <string name="about">Oor</string>
     <string name="about_body">RentWise help huurders en verhuurders om lyste, navrae, besprekings, onderhoud en kommunikasie in een eenvoudige toepassing te bestuur.</string>
     <string name="about_package_placeholder">com.example.rentwise</string>
@@ -145,9 +110,6 @@
     <string name="settings">Instellings</string>
     <string name="loading_settings">Laai instellings…</string>
 
-    <!-- =========================================================
-         Profile Settings (screen + fields)
-         ========================================================= -->
     <string name="edit_profile_image">Wysig profielprent</string>
     <string name="fetching_profile">Haal profiel…</string>
     <string name="first_name">Voornaam</string>
@@ -167,16 +129,10 @@
     <string name="date_of_birth">Geboortedatum</string>
     <string name="select_your_date_of_birth">Kies jou geboortedatum</string>
 
-    <!-- =========================================================
-         Home
-         ========================================================= -->
     <string name="loading_properties">Laai eiendomme…</string>
     <string name="search_for_properties">Soek vir eiendomme</string>
     <string name="updating_properties">Werk eiendomme by…</string>
 
-    <!-- =========================================================
-         Empty states
-         ========================================================= -->
     <string name="no_favourites">Geen gunstelinge</string>
     <string name="no_listings">Geen lyste</string>
     <string name="no_listings_available">Daar is tans geen lyste beskikbaar nie.</string>
@@ -186,29 +142,20 @@
     <string name="you_have_no_favourites">Jy het nog geen gunstelingeiendomme nie.</string>
     <string name="you_have_no_notifications">Jy het nog geen kennisgewings nie.</string>
 
-    <!-- =========================================================
-         FAQ Chatbot
-         ========================================================= -->
-    <string name="ask_a_question">Vra ’n vraag</string>
+    <string name="ask_a_question">Vra \'n vraag</string>
     <string name="faq_chat_bot">V&amp;A-kletsbot</string>
 
-    <!-- =========================================================
-         Maintenance (screens + lists)
-         ========================================================= -->
     <string name="loading_requests">Laai versoeke…</string>
     <string name="maintenance_request">Onderhoudsversoek</string>
     <string name="my_maintenance_requests">My onderhoudsversoeke</string>
 
-    <!-- =========================================================
-         Maintenance form
-         ========================================================= -->
     <string name="attach_supporting_docs">Heg ondersteunende dokumente aan</string>
     <string name="description">Beskrywing</string>
     <string name="description_hint">Beskryf die probleem in detail</string>
     <string name="issue_title">Probleemtitel</string>
-    <string name="issue_title_hint">Voer ’n kort titel vir die probleem in</string>
+    <string name="issue_title_hint">Voer \'n kort titel vir die probleem in</string>
     <string name="location_unit">Ligging / Eenheid</string>
-    <string name="maintenance_file_upload">Laai foto’s of lêers op wat met die probleem verband hou</string>
+    <string name="maintenance_file_upload">Laai foto\'s of lêers op wat met die probleem verband hou</string>
     <string name="past_requests">Vorige versoeke</string>
     <string name="populating_property_dropdown">Laai eiendomslys…</string>
     <string name="priority">Prioriteit</string>
@@ -217,29 +164,13 @@
     <string name="no_past_maintenance_requests">Jy het geen vorige onderhoudsversoeke nie.</string>
     <string name="loading_past_requests">Laai vorige versoeke…</string>
 
-    <!-- =========================================================
-         Amenity visuals / accessibility
-         ========================================================= -->
-    <string name="amenity_icon">Gerieflikheid-ikoon</string>
-    <string name="amenity_icon_content_description">Gerieflikheid-ikoon</string>
-
-    <!-- =========================================================
-         Wishlist
-         ========================================================= -->
     <string name="loading_wishlist">Laai wenslys…</string>
-    <string name="my_wishlist">My wenslys</string>
 
-    <!-- =========================================================
-         Notifications
-         ========================================================= -->
     <string name="loading_notifications">Laai kennisgewings…</string>
     <string name="placeholder_notification_message">Kennisgewingboodskap</string>
     <string name="placeholder_notification_time">Pas nou</string>
     <string name="placeholder_notification_title">Kennisgewingtitel</string>
 
-    <!-- =========================================================
-         Placeholders: Maintenance items
-         ========================================================= -->
     <string name="placeholder_assigned">Toegeken</string>
     <string name="placeholder_broken_tap">Gebreekte kraan</string>
     <string name="placeholder_caretaker_note">Opsigternota</string>
@@ -251,41 +182,26 @@
     <string name="placeholder_tap_leaking">Kraan lek</string>
     <string name="placeholder_unit">Eenheid</string>
 
-    <!-- =========================================================
-         Placeholders: Property card
-         ========================================================= -->
-    <string name="placeholder_heating">Verhitting</string>
-    <string name="placeholder_parking">Parkering</string>
     <string name="placeholder_price">Prys</string>
     <string name="placeholder_property_address">Eiendomsadres</string>
     <string name="placeholder_property_title">Eiendomstitel</string>
     <string name="placeholder_rating">Gradering</string>
     <string name="placeholder_rating_count">Aantal graderings</string>
     <string name="placeholder_rooms">Kamers</string>
-    <string name="placeholder_wifi">Wi‑Fi</string>
 
-    <!-- =========================================================
-         Placeholders: Wishlist card
-         ========================================================= -->
     <string name="placeholder_property_amount_card">Bedrag</string>
     <string name="placeholder_property_duration_card">per maand</string>
     <string name="placeholder_property_location_card">Ligging</string>
     <string name="placeholder_property_title_card">Eiendomstitel</string>
-
-    <!-- =========================================================
-         Misc / UI helpers
-         ========================================================= -->
-    <string name="footer_tracking_note">Opvolgopdaterings word in reële tyd verfris. As ’n opdatering langer neem as verwag, kontak asseblief ons ondersteuningspan.</string>
-    <string name="list_item_placeholder">Kies ’n opsie</string>
+    <string name="footer_tracking_note">Opvolgopdaterings word in reële tyd verfris. As \'n opdatering langer neem as verwag, kontak asseblief ons ondersteuningspan.</string>
+    <string name="list_item_placeholder">Kies \'n opsie</string>
     <string name="refresh_text"><u>Verfris om opdaterings te sien</u></string>
     <string name="south_africa">Suid-Afrika</string>
     <string name="step_label">Stap</string>
 
-    <!-- Booking Status Strings -->
     <string name="booking_id_label">Besprekings-ID: %1$s</string>
     <string name="step_progress_format">Stap %1$d van %2$d: %3$s</string>
 
-    <!-- Booking Status Names -->
     <string name="status_pending">Hangend</string>
     <string name="status_under_review">Onder hersiening</string>
     <string name="status_awaiting_decision">Wag op finale besluit</string>
@@ -293,19 +209,12 @@
     <string name="status_rejected">Afgewys</string>
     <string name="status_active">Aktief</string>
     <string name="status_outcome">Uitslag</string>
-
-    <!-- =========================================================
-     Drawer labels (clean names, no "nav_" prefix in the visible text)
-     ========================================================= -->
     <string name="profile_management">Profielbestuur</string>
     <string name="faq_chatbot">V&amp;A-kletsbot</string>
     <string name="booking_status">Besprekingsstatus</string>
     <string name="maintenance_request_status">Onderhoudsversoekstatus</string>
     <string name="log_out">Meld af</string>
 
-    <!-- =========================================================
-         Arrays
-         ========================================================= -->
     <string-array name="language_options">
         <item>Engels</item>
         <item>Afrikaans</item>
@@ -335,7 +244,6 @@
         <item>Hoog</item>
     </string-array>
 
-    <!-- Generic -->
     <string name="no_title">Geen titel</string>
     <string name="no_address">Geen adres</string>
     <string name="price_na">Prys n.v.t.</string>
@@ -345,13 +253,11 @@
     <string name="address_area_sep">%1$s · %2$s</string>
     <string name="error_prefix">%1$s</string>
 
-    <!-- Placeholders -->
     <string name="placeholder_location">Ligging</string>
     <string name="placeholder_property_description">Eiendomsbeskrywing</string>
     <string name="placeholder_landlord_name">Verhuurder</string>
     <string name="placeholder_landlord_hours">10:00VM - 2:00NM</string>
 
-    <!-- Property Details toasts and labels -->
     <string name="no_phone_available">Geen telefoonnommer beskikbaar nie</string>
     <string name="no_contact_method">Geen kontakmetode vir die verhuurder gevind nie</string>
     <string name="landlord">Verhuurder</string>
@@ -360,45 +266,6 @@
     <string name="mail_body">Hallo %1$s,\n\nEk is geïnteresseerd in u lys.</string>
     <string name="property_loaded">Eiendom gelaai</string>
 
-    <!-- Amenity labels -->
-    <string name="amenity_swimming_pool">Swembad</string>
-    <string name="amenity_gym">Gimnasium/Fiksheidsentrum</string>
-    <string name="amenity_parking">Parkering</string>
-    <string name="amenity_security_24_7">24/7 Sekuriteit</string>
-    <string name="amenity_air_conditioning">Lugversorging</string>
-    <string name="amenity_balcony">Balkon/Patio</string>
-    <string name="amenity_garden">Tuin</string>
-    <string name="amenity_laundry_room">Wasgoedkamer</string>
-    <string name="amenity_pet_friendly">Troeteldiervriendelik</string>
-    <string name="amenity_wifi">WiFi</string>
-    <string name="amenity_furnished">Gemeubileer</string>
-    <string name="amenity_kitchen_appliances">Kombuis Toestelle</string>
-    <string name="amenity_elevator">Hysbak</string>
-    <string name="amenity_playground">Speelgrond</string>
-    <string name="amenity_bbq_area">Braai-area</string>
-    <string name="amenity_storage_room">Stoorruimte</string>
-    <string name="amenity_garage">Garage</string>
-    <string name="amenity_dishwasher">Skottelgoedwasser</string>
-    <string name="amenity_washing_machine">Wasmasjien</string>
-    <string name="amenity_microwave">Mikrogolf</string>
-    <string name="amenity_refrigerator">Yskas</string>
-    <string name="amenity_tv">TV</string>
-    <string name="amenity_public_transport">Naby Openbare Vervoer</string>
-    <string name="amenity_shopping_mall">Winkelsentrum naby</string>
-    <string name="amenity_school">Skool naby</string>
-    <string name="amenity_hospital">Hospitaal naby</string>
-    <string name="amenity_fireplace">Kaggel</string>
-    <string name="amenity_study_room">Studiekamer</string>
-    <string name="amenity_backup_generator">Rugsteunkraggenerator</string>
-    <string name="amenity_water_tank">Watertenk</string>
-    <string name="amenity_cctv">CCTV-toesig</string>
-    <string name="amenity_intercom">Interkomstelsel</string>
-    <string name="amenity_cleaning_service">Skoonmaakdiens</string>
-    <string name="amenity_maintenance_service">Instandhoudingsdiens</string>
-
-    <!-- =========================================================
-         Privacy Policy
-         ========================================================= -->
     <string name="privacy_policy_title">Privaatheidsbeleid</string>
     <string name="privacy_policy"><![CDATA[
 <b>Datum:</b> 20 Oktober 2025<br/><br/>
@@ -435,4 +302,38 @@ Vir vrae of bekommernisse:<br/>
 
 <b>Laas bygewerk:</b> 20 Oktober 2025
 ]]></string>
+    <string name="bot_avatar" translatable="false">bot_avatar</string>
+
+    <string name="toast_to_be_implemented">Om later geïmplementeer te word</string>
+    <string name="toast_no_active_user">Geen aktiewe gebruiker gevind nie. Meld asseblief aan.</string>
+    <string name="toast_logged_out_successfully">Suksesvol uitgemeld</string>
+    <string name="toast_maintenance_requests_fetched">Onderhoudsversoeke opgehaal</string>
+    <string name="toast_wishlist_loaded">Wenslys gelaai</string>
+    <string name="toast_please_fill_all_fields">Vul asseblief al die velde in</string>
+    <string name="toast_description_too_short">Beskrywing moet minstens 25 karakters lank wees</string>
+    <string name="toast_attach_at_least_one_file">Heg asseblief minstens een lêer aan</string>
+    <string name="toast_biometric_enabled">Biometrie geaktiveer vir vinnige aanmelding</string>
+    <string name="toast_login_successful">Aanmelding suksesvol!</string>
+    <string name="toast_authentication_error">Verifikasie fout: %1$s</string>
+    <string name="toast_authentication_failed">Verifikasie het gefaal</string>
+    <string name="toast_decryption_failed">Dekriptering het gefaal - data mag korrup wees</string>
+    <string name="toast_decryption_format_error">Dekriptering het gefaal - data formaat fout</string>
+    <string name="toast_key_error">Sleutel fout - aktiveer asseblief biometriese aanmelding weer</string>
+    <string name="toast_biometric_operation_failed">Biometriese operasie het gefaal</string>
+    <string name="toast_failed_to_restore_session">Kon nie sessie herstel nie</string>
+    <string name="toast_no_biometric_credentials">Geen biometries-gestoorde geloofsbriewe gevind nie</string>
+    <string name="toast_no_active_session">Geen aktiewe sessie. Meld asseblief handmatig aan.</string>
+    <string name="toast_unable_to_enable_biometric">Kan nie biometriese aanmelding aktiveer nie</string>
+    <string name="toast_biometric_key_error">Biometriese sleutel fout - meld asseblief weer aan</string>
+    <string name="toast_unable_to_use_biometric">Kan nie biometriese aanmelding gebruik nie</string>
+    <string name="toast_no_biometric_credentials_manual">Geen biometries-gestoorde geloofsbriewe gevind nie. Meld asseblief handmatig aan.</string>
+    <string name="toast_unable_to_open_enrollment">Kan nie biometriese registrasie oopmaak nie. Stel asseblief biometrie handmatig op in Instellings.</string>
+    <string name="toast_failed_google_token">Kon nie Google ID Token kry nie</string>
+    <string name="toast_google_signin_failed">Google aanmelding het gefaal</string>
+    <string name="toast_invalid_server_response">Ongeldige bediener respons</string>
+    <string name="toast_empty_response_body">Leë respons inhoud</string>
+    <string name="toast_invalid_credentials">Ongeldige geloofsbriewe</string>
+    <string name="toast_unknown_error">Onbekende fout</string>
+    <string name="toast_error_prefix">Fout: %1$s</string>
+
 </resources>
