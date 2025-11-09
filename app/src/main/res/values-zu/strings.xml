@@ -195,8 +195,8 @@
     <string name="placeholder_heating">Ukushisa</string>
     <string name="placeholder_wifi">i-WiFi</string>
     <string name="placeholder_parking">Ukupaka</string>
-
-
+    <string name="update_biometric_message">Imininingwane ye-biometric ibuyekeziwe</string>
+    <string name="session_expired_message">Iseshini iphelile, sicela ungene futhi</string>
     <string name="placeholder_property_amount_card">Imali</string>
     <string name="placeholder_property_duration_card">ngenyanga</string>
     <string name="placeholder_property_location_card">Indawo</string>

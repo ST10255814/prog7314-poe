@@ -21,7 +21,8 @@
     <string name="nav_maintenance_status">Onderhoudstatus</string>
     <string name="nav_profile_management">profiel_bestuur</string>
     <string name="nav_settings">instellings</string>
-
+    <string name="update_biometric_message">Biometriese geloofsbriewe bygewerk</string>
+    <string name="session_expired_message">Sessie het verval, teken asseblief weer in</string>
     <string name="email_address_hint">E-posadres</string>
     <string name="let_s_get_you_an_account">Kom ons kry vir jou \'n rekening</string>
     <string name="logging_in">Meld tans aan…</string>

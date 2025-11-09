@@ -77,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
     private var pendingEncryptForSave = false
     private var pendingDecryptAndRestore = false
     private var tokenToEncrypt: String? = null
+    private var isUpdatingBiometricCredentials = false
 
     // OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
     // This ensures the saved language is applied when the activity is created
@@ -411,19 +412,26 @@ class LoginActivity : AppCompatActivity() {
                             )
 
                             if (token.isNotEmpty()) {
-                                // Show biometric dialog but also ensure user can proceed without it
-                                showEnableBiometricDialog(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() })
+                                // Check if biometrics was previously enabled
+                                val hasBiometricCredentials = tokenManger.getEncryptedTokenPair() != null
+
+                                if (hasBiometricCredentials) {
+                                    // Update existing biometric credentials with new token
+                                    val payload = tokenManger.createBiometricPayload(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() })
+                                    startBiometricSaveTokenFlow(payload, isUpdate = true)
+                                } else {
+                                    // First-time user - ask for consent to enable biometrics
+                                    showEnableBiometricDialog(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() })
+                                }
                             } else {
                                 CustomToast.show(this@LoginActivity, "${authResponse.message}", CustomToast.Companion.ToastType.SUCCESS)
                                 proceedToHome()
                             }
                         } else {
                             CustomToast.show(this@LoginActivity, "Invalid server response", CustomToast.Companion.ToastType.ERROR)
-                            proceedToHome() // Still proceed to avoid blocking user
                         }
                     } else {
                         CustomToast.show(this@LoginActivity, "Empty response body", CustomToast.Companion.ToastType.ERROR)
-                        proceedToHome() // Still proceed to avoid blocking user
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -482,7 +490,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 binding.fingerprintAnimation.visibility = View.GONE
             }
-            // NEW: Update visibility after enrollment check
+            // Update visibility after enrollment check
             updateFingerprintVisibility()
         } else if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -533,9 +541,16 @@ class LoginActivity : AppCompatActivity() {
                         )
 
                         if (token.isNotEmpty()) {
-                            // NEW: Ask user for consent to enable biometric quick-signin
-                            showEnableBiometricDialog(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() })
-                            return
+                            // Check for existing biometric credentials
+                            val hasBiometricCredentials = tokenManger.getEncryptedTokenPair() != null
+                            if (hasBiometricCredentials) {
+                                // Update existing biometric credentials with new token
+                                val payload = tokenManger.createBiometricPayload(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() })
+                                startBiometricSaveTokenFlow(payload, isUpdate = true)
+                            } else {
+                                // No existing biometric data - offer to enable
+                                showEnableBiometricDialog(token, userIdStr.takeIf { it.isNotEmpty() }, pfpStr.takeIf { it.isNotEmpty() } )
+                            }
                         } else {
                             // token missing -> show success message then proceed
                             CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
@@ -618,18 +633,23 @@ class LoginActivity : AppCompatActivity() {
                             val ivBase64 = Base64.encodeToString(iv, Base64.NO_WRAP)
                             // Persist encrypted payload synchronously so it's definitely stored before navigation
                             tokenManger.saveEncryptedToken(ctBase64, ivBase64, commit = true)
-                            CustomToast.show(this@LoginActivity, R.string.toast_biometric_enabled, CustomToast.Companion.ToastType.SUCCESS)
-                            // NEW: Update fingerprint visibility after saving
+
+                            // Show appropriate message based on whether this is an update or new enrollment
+                            val message = if (isUpdatingBiometricCredentials) {
+                                getString(R.string.update_biometric_message)
+                            } else {
+                                getString(R.string.toast_biometric_enabled)
+                            }
+                            CustomToast.show(this@LoginActivity, message, CustomToast.Companion.ToastType.SUCCESS)
+
+                            // Update fingerprint visibility after saving
                             updateFingerprintVisibility()
-                            // NEW: After successfully enabling biometrics, proceed to home (we waited so biometric prompt isn't dismissed)
-                            proceedToHome()
-                        } else {
-                            Log.e("BiometricSave", "crypto returned null during encrypt")
-                            // Still proceed to home so user isn't stuck
+                            // After successfully enabling biometrics, proceed to home screen
                             proceedToHome()
                         }
                         pendingEncryptForSave = false
                         tokenToEncrypt = null
+                        isUpdatingBiometricCredentials = false
                     } else if (pendingDecryptAndRestore) {
                         // decrypt stored ciphertext and restore token
                         val pair = tokenManger.getEncryptedTokenPair()
@@ -643,7 +663,7 @@ class LoginActivity : AppCompatActivity() {
                                 val (token, userId, pfp) = tokenManger.parseBiometricPayload(payload)
 
                                 // Save all data atomically so HomeScreen sees all fields immediately
-                                tokenManger.saveAllSync(token, userId, pfp) // <-- USE synchronous atomic save
+                                tokenManger.saveAllSync(token, userId, pfp)
 
                                 Log.d("BiometricRestore", "Restored credentials: userId=$userId, tokenPresent=${token != null}, pfpPresent=${pfp != null}")
 
@@ -779,58 +799,75 @@ class LoginActivity : AppCompatActivity() {
     private fun getCipher(): Cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
     private fun getSecretKey(): SecretKey {
-        val keyStore = java.security.KeyStore.getInstance(ANDROID_KEYSTORE)
+        val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE)
         keyStore.load(null)
         return keyStore.getKey(KEY_NAME, null) as SecretKey
     }
 
 
     // Biometric encryption flows
-    private fun startBiometricSaveTokenFlow(payloadJson: String) {
+    private fun startBiometricSaveTokenFlow(payloadJson: String, isUpdate: Boolean = false) {
         try {
+            // Set the update flag before starting the flow
+            isUpdatingBiometricCredentials = isUpdate
+
             // prepare cipher for encryption
             val cipher = getCipher()
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
             tokenToEncrypt = payloadJson
             pendingEncryptForSave = true
 
+            val promptInfo = if (isUpdate) {
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Update biometric credentials")
+                    .setSubtitle("Use your fingerprint to update stored credentials")
+                    .setNegativeButtonText("Cancel")
+                    .build()
+            } else {
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Confirm biometrics to enable quick sign-in")
+                    .setSubtitle("Use your fingerprint for secure quick sign-in")
+                    .setNegativeButtonText("Cancel")
+                    .build()
+            }
+
+            biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+        } catch (e: InvalidKeyException) {
+            Log.e("BiometricSave", "InvalidKeyException: ${e.message}", e)
+            handleKeyError(payloadJson, isUpdate)
+        } catch (e: Exception) {
+            Log.e("BiometricSave", "Failed to start biometric save flow: ${e.message}", e)
+            val errorMessage = if (isUpdate) "Unable to update biometric credentials" else "Unable to enable biometric sign-in"
+            CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
+            pendingEncryptForSave = false
+            tokenToEncrypt = null
+            isUpdatingBiometricCredentials = false
+            proceedToHome()
+        }
+    }
+
+    private fun handleKeyError(payloadJson: String, isUpdate: Boolean) {
+        try {
+            createBiometricKey()
+            val cipher = getCipher()
+            cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
+            tokenToEncrypt = payloadJson
+            pendingEncryptForSave = true
+
             val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Confirm biometrics to enable quick sign-in")
+                .setTitle("Confirm biometrics to ${if (isUpdate) "update" else "enable"} quick sign-in")
                 .setSubtitle("Use your fingerprint to secure quick sign-in")
                 .setNegativeButtonText("Cancel")
                 .build()
 
             biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
-        } catch (e: InvalidKeyException) {
-            Log.e("BiometricSave", "InvalidKeyException: ${e.message}", e)
-            // Key might be invalidated, try to recreate
-            try {
-                createBiometricKey()
-                val cipher = getCipher()
-                cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
-                tokenToEncrypt = payloadJson
-                pendingEncryptForSave = true
-
-                val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Confirm biometrics to enable quick sign-in")
-                    .setSubtitle("Use your fingerprint to secure quick sign-in")
-                    .setNegativeButtonText("Cancel")
-                    .build()
-
-                biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
-            } catch (e2: Exception) {
-                Log.e("BiometricSave", "Failed to recreate key: ${e2.message}", e2)
-                CustomToast.show(this@LoginActivity, "Unable to enable biometric sign-in", CustomToast.Companion.ToastType.ERROR)
-                pendingEncryptForSave = false
-                tokenToEncrypt = null
-                proceedToHome()
-            }
-        } catch (e: Exception) {
-            Log.e("BiometricSave", "Failed to start biometric save flow: ${e.message}", e)
-            CustomToast.show(this@LoginActivity, "Unable to enable biometric sign-in", CustomToast.Companion.ToastType.ERROR)
-            // If enabling biometrics failed to start, allow user to continue to the app
+        } catch (e2: Exception) {
+            Log.e("BiometricSave", "Failed to recreate key: ${e2.message}", e2)
+            val errorMessage = if (isUpdate) "Unable to update biometric credentials" else "Unable to enable biometric sign-in"
+            CustomToast.show(this@LoginActivity, errorMessage, CustomToast.Companion.ToastType.ERROR)
             pendingEncryptForSave = false
             tokenToEncrypt = null
+            isUpdatingBiometricCredentials = false
             proceedToHome()
         }
     }
@@ -873,7 +910,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showEnableBiometricDialog(token: String, userId: String?, pfp: String?) {
         try {
             // Only offer if hardware/enrolled and no biometric credential exists
-            if (!isBiometricAvailableAndEnrolled() || tokenManger.getEncryptedTokenPair() != null) {
+            if (!isBiometricAvailableAndEnrolled() && tokenManger.getEncryptedTokenPair() != null) {
                 proceedToHome()
                 return
             }
@@ -916,7 +953,7 @@ class LoginActivity : AppCompatActivity() {
     private fun updateFingerprintVisibility() {
         val pair = tokenManger.getEncryptedTokenPair()
         if (pair == null) {
-            binding.fingerprintAnimation.visibility = View.GONE
+            binding.biometricContainer.visibility = View.GONE
             Log.d("BiometricStatus", "No encrypted payload found")
             return
         }
@@ -937,19 +974,19 @@ class LoginActivity : AppCompatActivity() {
             if (!keyExists) {
                 // Encrypted payload exists but the key doesn't — clear payload
                 tokenManger.clearEncryptedToken()
-                binding.fingerprintAnimation.visibility = View.GONE
+                binding.biometricContainer.visibility = View.GONE
                 Log.w("BiometricStatus", "Encrypted payload present but key missing/invalid. Cleared stored biometric data.")
                 return
             }
 
             // At this point we have both encrypted data and the key present.
             // Do NOT attempt to decrypt here — show the fingerprint UI and let the biometric prompt handle unlocking.
-            binding.fingerprintAnimation.visibility = View.VISIBLE
+            binding.biometricContainer.visibility = View.VISIBLE
             Log.d("BiometricStatus", "Encrypted payload + keystore key found: showing fingerprint UI")
 
         } catch (e: Exception) {
             Log.e("BiometricStatus", "Error checking biometric status: ${e.message}", e)
-            binding.fingerprintAnimation.visibility = View.GONE
+            binding.biometricContainer.visibility = View.GONE
         }
     }
 

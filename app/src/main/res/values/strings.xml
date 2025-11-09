@@ -185,7 +185,8 @@
     <string name="placeholder_property_duration_card">per month</string>
     <string name="placeholder_property_location_card">Location</string>
     <string name="placeholder_property_title_card">Property title</string>
-
+    <string name="update_biometric_message">Biometric credentials updated</string>
+    <string name="session_expired_message">Session expired, please log in again.</string>
     <string name="placeholder_heating">Heating</string>
     <string name="placeholder_wifi">WiFi</string>
     <string name="placeholder_parking">Parking</string>

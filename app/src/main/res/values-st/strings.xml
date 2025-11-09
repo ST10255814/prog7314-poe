@@ -146,10 +146,10 @@
     <string name="placeholder_heating">Ho futhumatsa</string>
     <string name="placeholder_wifi">WiFi</string>
     <string name="placeholder_parking">Paka</string>
-
+    <string name="update_biometric_message">"Litsebo tsa biometric li ntjafalitsoe"</string>
     <string name="ask_a_question">Botsa potso</string>
     <string name="faq_chat_bot">Potso chatbot</string>
-
+    <string name="session_expired_message">Seboka se felile, ka kopo kena hape</string>
     <string name="loading_requests">Ho jara dikopo…</string>
     <string name="maintenance_request">Kopo ya Tlhokomelo</string>
     <string name="my_maintenance_requests">Dikopo tsa ka tsa Tlhokomelo</string>
