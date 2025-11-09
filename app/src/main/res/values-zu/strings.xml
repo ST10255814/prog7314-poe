@@ -198,7 +198,7 @@
     <string name="update_biometric_message">Imininingwane ye-biometric ibuyekeziwe</string>
     <string name="session_expired_message">Iseshini iphelile, sicela ungene futhi</string>
     <string name="placeholder_property_amount_card">Imali</string>
-    <string name="placeholder_property_duration_card">ngenyanga</string>
+    <string name="placeholder_property_duration_card">/ ubusuku ngalunye</string>
     <string name="placeholder_property_location_card">Indawo</string>
     <string name="placeholder_property_title_card">Isihloko sezakhiwo</string>
     <string name="footer_tracking_note">Izibuyekezo zokulandelela zibuyekezwa ngesikhathi sangempela. Uma isibuyekezo sithatha isikhathi eside kunalokho obekulindelwe, sicela uxhumane neqembu lethu lokusekela.</string>

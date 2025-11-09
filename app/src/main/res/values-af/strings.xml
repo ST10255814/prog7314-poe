@@ -196,7 +196,7 @@
     <string name="placeholder_rooms">Kamers</string>
 
     <string name="placeholder_property_amount_card">Bedrag</string>
-    <string name="placeholder_property_duration_card">per maand</string>
+    <string name="placeholder_property_duration_card">/ per nag</string>
     <string name="placeholder_property_location_card">Ligging</string>
     <string name="placeholder_property_title_card">Eiendomtitel</string>
     <string name="placeholder_heating">Verhitting</string>

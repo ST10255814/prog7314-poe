@@ -182,7 +182,7 @@
     <string name="placeholder_rooms">Rooms</string>
 
     <string name="placeholder_property_amount_card">Amount</string>
-    <string name="placeholder_property_duration_card">per month</string>
+    <string name="placeholder_property_duration_card">/ per night</string>
     <string name="placeholder_property_location_card">Location</string>
     <string name="placeholder_property_title_card">Property title</string>
     <string name="update_biometric_message">Biometric credentials updated</string>

@@ -45,7 +45,6 @@ class PropertyItemAdapter(
             holder.binding.tvLabel1,
             holder.binding.tvLabel2,
             holder.binding.tvLabel3,
-            holder.binding.tvLabel4
         )
 
         // Binds property details to the UI components.
@@ -76,7 +75,7 @@ class PropertyItemAdapter(
 
             // Hide all amenity chips initially, then show up to 4.
             amenitiesLabels.forEach { it.visibility = View.GONE }
-            property.amenities?.take(4)?.forEachIndexed { index, amenity ->
+            property.amenities?.take(3)?.forEachIndexed { index, amenity ->
                 amenitiesLabels[index].text = amenity
                 amenitiesLabels[index].visibility = View.VISIBLE
             }

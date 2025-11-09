@@ -197,7 +197,7 @@
     <string name="placeholder_rooms">Diphaposi</string>
 
     <string name="placeholder_property_amount_card">Chelete</string>
-    <string name="placeholder_property_duration_card">ka kgwedi</string>
+    <string name="placeholder_property_duration_card">/ ka bosiu</string>
     <string name="placeholder_property_location_card">Sebaka</string>
     <string name="placeholder_property_title_card">Sehlooho sa thepa</string>
     <string name="footer_tracking_note">Dintlafatso tsa ho latela di nchafatswa ka nako ya nnete. Haeba ntlafatso e nka nako e telele ho feta kamoo ho lebeluwe, ka kopo ikopanye le sehlopha sa rona sa tshehetso.</string>

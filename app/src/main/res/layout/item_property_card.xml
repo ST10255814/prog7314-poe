@@ -95,16 +95,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_label4"
-                    android:background="@drawable/bg_rounded_outline"
-                    android:text="@string/placeholder_parking"
-                    android:textColor="@color/black"
-                    android:padding="6dp"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <View
@@ -146,11 +136,11 @@
                     android:textColor="@color/black"
                     android:visibility="gone" />
             </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_price"
@@ -158,8 +148,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_price"
                 android:textColor="@color/darkish_blue"
+                android:layout_marginTop="10dp"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_property_duration_card"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="10dp"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="italic"
+                android:textColor="@color/darker_grey"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

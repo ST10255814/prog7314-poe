@@ -98,6 +98,7 @@ class PropertyDetails : AppCompatActivity() {
             .replace("24/7_security", "security_24_7")
             .replace("air_con", "air_conditioning")
             .replace("ac", "air_conditioning")
+            .replace("gym/fitness_center","gym")
     }
 
 
