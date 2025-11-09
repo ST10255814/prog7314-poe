@@ -60,7 +60,6 @@ class HomeScreen : AppCompatActivity() {
         // Initializes the bottom navigation buttons for quick access to main sections.
         bottomNavButtons = listOf(
             binding.navHome,
-            binding.navQuery,
             binding.navWishlist,
             binding.navNotification,
             binding.navMaintenance
@@ -129,12 +128,6 @@ class HomeScreen : AppCompatActivity() {
         binding.navHome.setOnClickListener {
             selectNavButton(binding.navHome)
             commitFragmentToContainer(HomeFragment())
-        }
-
-        // Shows an informational toast for a feature not yet implemented.
-        binding.navQuery.setOnClickListener {
-            selectNavButton(binding.navQuery)
-            CustomToast.show(this, R.string.toast_to_be_implemented, CustomToast.Companion.ToastType.INFO)
         }
 
         // Navigates to the maintenance fragment.

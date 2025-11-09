@@ -261,7 +261,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:weightSum="5">
+            android:weightSum="4">
 
             <ImageButton
                 android:id="@+id/nav_home"
@@ -271,16 +271,6 @@
                 android:background="@android:color/transparent"
                 android:padding="12dp"
                 android:src="@drawable/home_icon"
-                app:tint="@color/bottom_nav_icon_color_selector" />
-
-            <ImageButton
-                android:id="@+id/nav_query"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:padding="12dp"
-                android:src="@drawable/complaint_icon"
                 app:tint="@color/bottom_nav_icon_color_selector" />
 
             <ImageButton
