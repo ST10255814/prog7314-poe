@@ -60,7 +60,9 @@ class FAQChatBot : AppCompatActivity() {
 
                 // Automatically scrolls to the latest message for better user experience.
                 if (state.messages.isNotEmpty()) {
-                    binding.rvChatMessages.scrollToPosition(state.messages.size - 1)
+                    binding.rvChatMessages.post {
+                        binding.rvChatMessages.smoothScrollToPosition(chatAdapter.itemCount - 1)
+                    }
                 }
 
                 // Disables the send button and changes its appearance while loading.

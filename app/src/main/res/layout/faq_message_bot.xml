@@ -18,12 +18,16 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textIsSelectable="true"
             android:textColorHighlight="#CC99CCFF"
+            android:textIsSelectable="true"
             android:textSelectHandle="@drawable/custom_handle"
             android:textSelectHandleLeft="@drawable/custom_handle"
             android:textSelectHandleRight="@drawable/custom_handle"
-            android:fontFamily="@font/aldrich" />
+            android:textSize="14sp"
+            android:fontFamily="@font/aldrich"
+            android:lineSpacingExtra="6dp"
+            android:lineSpacingMultiplier="1.15"
+            android:autoLink="web"
+            android:linksClickable="true" />
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

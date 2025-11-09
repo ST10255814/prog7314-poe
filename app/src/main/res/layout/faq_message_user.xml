@@ -24,6 +24,8 @@
             android:textSelectHandleLeft="@drawable/custom_handle"
             android:textSelectHandleRight="@drawable/custom_handle"
             android:textSize="14sp"
-            android:fontFamily="@font/aldrich" />
+            android:fontFamily="@font/aldrich"
+            android:lineSpacingExtra="6dp"
+            android:lineSpacingMultiplier="1.15" />
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

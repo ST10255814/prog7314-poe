@@ -1,5 +1,7 @@
 package com.example.rentwise.adapters
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,9 +61,12 @@ class ChatAdapter : ListAdapter<ChatRequest.Message, ChatAdapter.MessageViewHold
         fun bind(message: ChatRequest.Message) {
             when (viewType) {
                 VIEW_TYPE_USER, VIEW_TYPE_AI -> {
-                    messageText?.text = message.content
+                    // Use Html.fromHtml to support bold, italic, links, etc.
+                    messageText?.text = Html.fromHtml(message.content, Html.FROM_HTML_MODE_COMPACT)
                     messageText?.visibility = View.VISIBLE
                     loadingIndicator?.visibility = View.GONE
+                    // Enable clickable links and formatting
+                    messageText?.movementMethod = LinkMovementMethod.getInstance()
                 }
                 VIEW_TYPE_LOADING -> {
                     messageText?.visibility = View.GONE
