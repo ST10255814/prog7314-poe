@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,9 +20,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // BuildConfig field for OpenRouter API key. Read from project property OPENROUTER_API_KEY if available,
-        // otherwise default to empty string. Set the property in your local gradle.properties (do not commit secrets).
-        val openRouterKey: String = (project.findProperty("OPENROUTER_API_KEY") as? String) ?: ""
+        // BuildConfig field for OpenRouter API key. Read from local.properties file
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        }
+        val openRouterKey: String = localProperties.getProperty("OPENROUTER_API_KEY") ?: ""
         buildConfigField("String", "OPENROUTER_API_KEY", "\"$openRouterKey\"")
     }
 

@@ -2,6 +2,7 @@ package com.example.rentwise.retrofit_instance
 
 import android.util.Log
 import com.example.rentwise.faq.OpenRouterApiService
+import com.example.rentwise.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,18 +15,23 @@ object OpenRouterInstance {
     // Base URL for all OpenRouter API requests, ensuring all endpoints are relative to this root.
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
 
-    // Fallback API key - valid OpenRouter key
-    private const val FALLBACK_API_KEY = "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"
-
-    // Use BuildConfig to provide the API key at build time, with fallback if BuildConfig is not generated
+    // Get API key from BuildConfig (which now properly reads from local.properties)
     private val API_KEY: String = try {
-        val buildConfigKey = com.example.rentwise.BuildConfig.OPENROUTER_API_KEY
-        // Clean the key in case BuildConfig has malformed quotes/colons
-        val cleanKey = buildConfigKey?.replace("\"", "")?.replace(":", "")?.trim()
-        if (cleanKey.isNullOrBlank() || cleanKey.contains("REPLACE_WITH")) FALLBACK_API_KEY else cleanKey
+        Log.d("OpenRouterInstance", "Reading API key from BuildConfig...")
+        val buildConfigKey = BuildConfig.OPENROUTER_API_KEY
+        Log.d("OpenRouterInstance", "BuildConfig.OPENROUTER_API_KEY length: ${buildConfigKey?.length ?: 0}")
+
+        val cleanKey = buildConfigKey?.trim() ?: ""
+        if (cleanKey.isBlank()) {
+            Log.e("OpenRouterInstance", "OPENROUTER_API_KEY is not set in local.properties. Please add it and rebuild.")
+            ""
+        } else {
+            Log.i("OpenRouterInstance", "Successfully loaded API key from BuildConfig")
+            cleanKey
+        }
     } catch (e: Exception) {
-        Log.w("OpenRouterInstance", "BuildConfig not available, using fallback API key: ${e.message}")
-        FALLBACK_API_KEY
+        Log.e("OpenRouterInstance", "Error reading OPENROUTER_API_KEY from BuildConfig: ${e.message}")
+        ""
     }
 
     // Creates and returns an implementation of the OpenRouterApiService interface, configured with custom headers and logging.
