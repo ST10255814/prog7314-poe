@@ -12,7 +12,7 @@ class ChatRequest {
     // Message model
     data class Message(
         val role: String,   // must be "system", "user", or "assistant"
-        val content: String
+        val content: String?
     )
 
     // Response model

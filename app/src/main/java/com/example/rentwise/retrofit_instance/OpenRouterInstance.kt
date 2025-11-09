@@ -1,5 +1,6 @@
 package com.example.rentwise.retrofit_instance
 
+import android.util.Log
 import com.example.rentwise.faq.OpenRouterApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,7 @@ object OpenRouterInstance {
     // Base URL for all OpenRouter API requests, ensuring all endpoints are relative to this root.
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
     // API key used for authenticating requests to the OpenRouter AI service.
-    private const val API_KEY = "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"
+    private const val API_KEY = "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"
 
     // Creates and returns an implementation of the OpenRouterApiService interface, configured with custom headers and logging.
     fun createAPI(): OpenRouterApiService {
@@ -36,6 +37,7 @@ object OpenRouterInstance {
                     .addHeader("HTTP-Referer", "app://rentwise")   // Identifies the app as the request source.
                     .addHeader("X-Title", "RentWise FAQ ChatBot")  // Custom title for API usage context.
                     .build()
+
                 chain.proceed(request)
             }
             .build()

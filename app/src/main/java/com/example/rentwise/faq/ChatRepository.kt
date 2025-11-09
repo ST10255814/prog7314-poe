@@ -1,5 +1,6 @@
 package com.example.rentwise.faq
 
+import android.util.Log
 import com.example.rentwise.data_classes.ChatRequest
 import com.example.rentwise.retrofit_instance.OpenRouterInstance
 import kotlinx.coroutines.Dispatchers
@@ -45,11 +46,21 @@ class ChatRepository {
 
                     Result.success(aiMessage)
                 } else {
-                    // Handles API errors by returning a failure result with the error details.
-                    Result.failure(Exception("API Error ${response.code()} - ${response.errorBody()?.string()}"))
+                    // Detailed logging to help debug 401 / user not found errors from OpenRouter
+                    val code = response.code()
+                    val headers = response.headers().toString()
+                    val errorBodyText = try { response.errorBody()?.string() } catch (e: Exception) { "<error reading body>" }
+
+                    Log.e("OpenRouter", "API Error code=$code")
+                    Log.e("OpenRouter", "Headers: $headers")
+                    Log.e("OpenRouter", "Error body: $errorBodyText")
+
+                    // Return a failure with details so callers can surface it
+                    Result.failure(Exception("API Error $code - $errorBodyText"))
                 }
             } catch (e: Exception) {
-                // Catches and returns any unexpected exceptions during the network operation.
+                // Catches and returns any unexpected exceptions during the network operation, and logs for debugging.
+                Log.e("OpenRouter", "Exception sending chat request", e)
                 Result.failure(e)
             }
         }

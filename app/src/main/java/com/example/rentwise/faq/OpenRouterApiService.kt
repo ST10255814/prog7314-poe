@@ -13,7 +13,7 @@ interface OpenRouterApiService {
     // Declares the HTTP headers necessary for the API call, such as content type and app identification.
     @Headers(
         "Content-Type: application/json",
-        "HTTP-Referer: app://rentwise",   // Identifies the app making the request; a custom scheme is acceptable.
+        "Referer: app://rentwise",   // Identifies the app making the request; a custom scheme is acceptable.
         "X-Title: RentWise FAQ ChatBot"   // Optionally provides the app's name for backend context.
     )
     // Defines a POST request to the /chat/completions endpoint, sending a chat request and expecting a chat response.

@@ -32,13 +32,33 @@ object RetrofitInstance {
             .writeTimeout(50, TimeUnit.SECONDS)   // Sets write timeout to 50 seconds for large payloads.
             .addInterceptor(logging)              // Adds logging interceptor for HTTP traffic.
             .addInterceptor { chain ->
-                // Adds the Authorization header with the bearer token if available.
-                val requestBuilder = chain.request().newBuilder()
+                // Build the request with Accept header and Authorization when available
+                val original = chain.request()
                 val token = tokenManager.getToken()
+                val requestBuilder = original.newBuilder()
+                    .addHeader("Accept", "application/json")
+
                 if (!token.isNullOrEmpty()) {
                     requestBuilder.addHeader("Authorization", "Bearer $token")
                 }
-                chain.proceed(requestBuilder.build())
+
+                val request = requestBuilder.build()
+
+                // Proceed with the request and inspect the response
+                val response = chain.proceed(request)
+
+                // If the server returned 401 Unauthorized, clear stored auth data so the app can redirect to login
+                if (response.code == 401) {
+                    try {
+                        tokenManager.clearToken()
+                        tokenManager.clearUser()
+                        tokenManager.clearPfp()
+                    } catch (e: Exception) {
+                        // Swallow any exceptions from token clearing to avoid breaking the interceptor
+                    }
+                }
+
+                response
             }
             .build()
 
