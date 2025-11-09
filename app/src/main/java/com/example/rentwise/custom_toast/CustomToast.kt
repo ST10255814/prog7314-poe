@@ -10,11 +10,20 @@ import android.widget.Toast
 import com.example.rentwise.R
 
 // Utility class for displaying visually distinct toast notifications with custom icons and messages.
-//Stevdza-San. 2019. Custom Toast Message/Notification | Android Studio/ [video online]
-//Available at: <https://youtu.be/H9WF3te9Gdw?si=d96yB-zNUV61zhAL> [Accessed 15 September 2025].
+//Enhanced to support both string resources and direct strings for proper internationalization.
 class CustomToast {
 
     companion object {
+
+        // Displays a custom toast with a message from string resource
+        fun show(context: Context, messageResId: Int, type: ToastType, vararg formatArgs: Any) {
+            val message = if (formatArgs.isNotEmpty()) {
+                context.getString(messageResId, *formatArgs)
+            } else {
+                context.getString(messageResId)
+            }
+            show(context, message, type)
+        }
 
         // Displays a custom toast with a specific message and icon based on the notification type.
         fun show(context: Context, message: String, type: ToastType) {

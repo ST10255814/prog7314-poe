@@ -134,7 +134,7 @@ class HomeScreen : AppCompatActivity() {
         // Shows an informational toast for a feature not yet implemented.
         binding.navQuery.setOnClickListener {
             selectNavButton(binding.navQuery)
-            CustomToast.show(this, "To be implemented another time", CustomToast.Companion.ToastType.INFO)
+            CustomToast.show(this, R.string.toast_to_be_implemented, CustomToast.Companion.ToastType.INFO)
         }
 
         // Navigates to the maintenance fragment.
@@ -188,7 +188,7 @@ class HomeScreen : AppCompatActivity() {
             val userId = tokenManager.getUser()
             //If no userId is present, redirect to login to avoid "user not found" in ProfileSettings
             if (userId.isNullOrEmpty()) {
-                CustomToast.show(this, "No active user found. Please sign in.", CustomToast.Companion.ToastType.ERROR)
+                CustomToast.show(this, R.string.toast_no_active_user, CustomToast.Companion.ToastType.ERROR)
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
@@ -220,7 +220,7 @@ class HomeScreen : AppCompatActivity() {
             tokenManager.clearUser()
             // Removed clearEncryptedToken() to preserve biometric data
             Log.d("JWT-Token After Logout", tokenManager.getToken().toString())
-            CustomToast.show(this, "Successfully logged out", CustomToast.Companion.ToastType.SUCCESS)
+            CustomToast.show(this, R.string.toast_logged_out_successfully, CustomToast.Companion.ToastType.SUCCESS)
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

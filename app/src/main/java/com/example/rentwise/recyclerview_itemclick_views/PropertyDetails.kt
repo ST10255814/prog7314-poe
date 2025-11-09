@@ -89,66 +89,21 @@ class PropertyDetails : AppCompatActivity() {
         "bed" to R.drawable.bed_icon,
     )
 
+    // Normalizes amenity keys to handle variations in naming
+    private fun canonicalAmenityKey(rawAmenity: String): String {
+        return rawAmenity.lowercase()
+            .replace(" ", "_")
+            .replace("-", "_")
+            .replace("wi_fi", "wifi")
+            .replace("24/7_security", "security_24_7")
+            .replace("air_con", "air_conditioning")
+            .replace("ac", "air_conditioning")
+    }
+
 
     // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
-    }
-
-    // 3) Robust normalizer: maps various API spellings/synonyms to the canonical keys above
-    private fun canonicalAmenityKey(raw: String): String {
-        val s = raw.trim().lowercase()
-            .replace("&", "and")
-            .replace("/", " ")
-            .replace("-", " ")
-            .replace("\\s+".toRegex(), " ")
-
-        return when (s) {
-            "swimming pool", "pool" -> "swimming_pool"
-            "gym", "fitness center", "gym fitness center", "fitness" -> "gym"
-            "parking", "car parking" -> "parking"
-            "24 7 security", "24/7 security", "security 24 7", "security" -> "security_24_7"
-            "air conditioning", "ac", "aircon", "air con" -> "air_conditioning"
-            "balcony", "patio", "balcony patio" -> "balcony"
-            "garden", "yard" -> "garden"
-            "laundry", "laundry room", "laundry area" -> "laundry_room"
-            "pet friendly", "pets allowed", "pet friendly property" -> "pet_friendly"
-            "wifi", "wi fi", "wi-fi", "internet" -> "wifi"
-            "furnished", "fully furnished" -> "furnished"
-            "kitchen appliances", "appliances", "fitted kitchen" -> "kitchen_appliances"
-            "elevator", "lift" -> "elevator"
-            "Playground", "kids play area", "children Playground" -> "Playground"
-            "bbq area", "braai area", "barbecue area" -> "bbq_area"
-            "storage room", "store room", "storeroom" -> "storage_room"
-            "garage" -> "garage"
-            "dishwasher" -> "dishwasher"
-            "washing machine", "washer" -> "washing_machine"
-            "microwave" -> "microwave"
-            "refrigerator", "fridge" -> "refrigerator"
-            "tv", "television" -> "tv"
-            "close to public transport", "near public transport", "public transport" -> "public_transport"
-            "shopping mall nearby", "near shopping mall", "mall nearby" -> "shopping_mall"
-            "school nearby", "nearby school", "close to school" -> "school"
-            "hospital nearby", "nearby hospital", "close to hospital" -> "hospital"
-            "fire place", "fireplace" -> "fireplace"
-            "study room", "study", "office", "home office" -> "study_room"
-            "backup generator", "generator", "power backup" -> "backup_generator"
-            "water tank", "backup water", "jojo tank" -> "water_tank"
-            "cctv surveillance", "cctv", "cameras" -> "cctv"
-            "intercom system", "intercom" -> "intercom"
-            "cleaning service", "cleaning", "housekeeping" -> "cleaning_service"
-            "maintenance service", "maintenance" -> "maintenance_service"
-
-            // Your older keys (kept for backward compatibility)
-            "tv" -> "tv"
-            "wi-fi" -> "wifi"
-            "bed" -> "furnished" // legacy fallback
-            "wifi" -> "wifi"
-            "garage" -> "garage"
-            "garden" -> "garden"
-
-            else -> s.replace(" ", "_") // safe fallback (e.g., unknown becomes an underscore key)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,42 +114,44 @@ class PropertyDetails : AppCompatActivity() {
 
         tokenManger = TokenManger(applicationContext)
 
-        // Initialize amenityLabelByKey AFTER context is ready to avoid NPE from getString()
+        // Initialize amenity labels map
         amenityLabelByKey = mapOf(
-            "swimming_pool" to getString(R.string.amenity_swimming_pool),
-            "gym" to getString(R.string.amenity_gym),
-            "parking" to getString(R.string.amenity_parking),
-            "security_24_7" to getString(R.string.amenity_security_24_7),
-            "air_conditioning" to getString(R.string.amenity_air_conditioning),
-            "balcony" to getString(R.string.amenity_balcony),
-            "garden" to getString(R.string.amenity_garden),
-            "laundry_room" to getString(R.string.amenity_laundry_room),
-            "pet_friendly" to getString(R.string.amenity_pet_friendly),
-            "wifi" to getString(R.string.amenity_wifi),
-            "furnished" to getString(R.string.amenity_furnished),
-            "kitchen_appliances" to getString(R.string.amenity_kitchen_appliances),
-            "elevator" to getString(R.string.amenity_elevator),
-            "Playground" to getString(R.string.amenity_playground),
-            "bbq_area" to getString(R.string.amenity_bbq_area),
-            "storage_room" to getString(R.string.amenity_storage_room),
-            "garage" to getString(R.string.amenity_garage),
-            "dishwasher" to getString(R.string.amenity_dishwasher),
-            "washing_machine" to getString(R.string.amenity_washing_machine),
-            "microwave" to getString(R.string.amenity_microwave),
-            "refrigerator" to getString(R.string.amenity_refrigerator),
-            "tv" to getString(R.string.amenity_tv),
-            "public_transport" to getString(R.string.amenity_public_transport),
-            "shopping_mall" to getString(R.string.amenity_shopping_mall),
-            "school" to getString(R.string.amenity_school),
-            "hospital" to getString(R.string.amenity_hospital),
-            "fireplace" to getString(R.string.amenity_fireplace),
-            "study_room" to getString(R.string.amenity_study_room),
-            "backup_generator" to getString(R.string.amenity_backup_generator),
-            "water_tank" to getString(R.string.amenity_water_tank),
-            "cctv" to getString(R.string.amenity_cctv),
-            "intercom" to getString(R.string.amenity_intercom),
-            "cleaning_service" to getString(R.string.amenity_cleaning_service),
-            "maintenance_service" to getString(R.string.amenity_maintenance_service)
+            "swimming_pool" to "Swimming Pool",
+            "gym" to "Gym",
+            "parking" to "Parking",
+            "security_24_7" to "24/7 Security",
+            "air_conditioning" to "Air Conditioning",
+            "balcony" to "Balcony",
+            "garden" to "Garden",
+            "laundry_room" to "Laundry Room",
+            "pet_friendly" to "Pet Friendly",
+            "wi-fi" to "Wi-Fi",
+            "wifi" to "Wi-Fi",
+            "furnished" to "Furnished",
+            "kitchen_appliances" to "Kitchen Appliances",
+            "elevator" to "Elevator",
+            "playground" to "Playground",
+            "bbq_area" to "BBQ Area",
+            "storage_room" to "Storage Room",
+            "garage" to "Garage",
+            "dishwasher" to "Dishwasher",
+            "washing_machine" to "Washing Machine",
+            "microwave" to "Microwave",
+            "refrigerator" to "Refrigerator",
+            "tv" to "TV",
+            "public_transport" to "Public Transport",
+            "shopping_mall" to "Shopping Mall",
+            "school" to "School",
+            "hospital" to "Hospital",
+            "fireplace" to "Fireplace",
+            "study_room" to "Study Room",
+            "backup_generator" to "Backup Generator",
+            "water_tank" to "Water Tank",
+            "cctv" to "CCTV",
+            "intercom" to "Intercom",
+            "cleaning_service" to "Cleaning Service",
+            "maintenance_service" to "Maintenance Service",
+            "bed" to "Bed"
         )
 
         val listingId = compareWhichDataToBind() // Determines which property data to display.

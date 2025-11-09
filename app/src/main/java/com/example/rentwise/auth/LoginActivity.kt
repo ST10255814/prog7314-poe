@@ -60,7 +60,6 @@ import androidx.activity.result.ActivityResultLauncher
 
 // Activity responsible for handling user login, including email/password and Google SSO, with UI feedback and secure token storage.
 class LoginActivity : AppCompatActivity() {
-
     // Holds the binding instance for accessing all views in the login layout.
     private lateinit var binding: ActivityLoginBinding
     // Manages Google Sign-In client for SSO authentication.
@@ -619,7 +618,7 @@ class LoginActivity : AppCompatActivity() {
                             val ivBase64 = Base64.encodeToString(iv, Base64.NO_WRAP)
                             // Persist encrypted payload synchronously so it's definitely stored before navigation
                             tokenManger.saveEncryptedToken(ctBase64, ivBase64, commit = true)
-                            CustomToast.show(this@LoginActivity, "Biometric enabled for quick sign-in", CustomToast.Companion.ToastType.SUCCESS)
+                            CustomToast.show(this@LoginActivity, R.string.toast_biometric_enabled, CustomToast.Companion.ToastType.SUCCESS)
                             // NEW: Update fingerprint visibility after saving
                             updateFingerprintVisibility()
                             // NEW: After successfully enabling biometrics, proceed to home (we waited so biometric prompt isn't dismissed)
@@ -648,13 +647,13 @@ class LoginActivity : AppCompatActivity() {
 
                                 Log.d("BiometricRestore", "Restored credentials: userId=$userId, tokenPresent=${token != null}, pfpPresent=${pfp != null}")
 
-                                CustomToast.show(this@LoginActivity, "Login Successful!", CustomToast.Companion.ToastType.SUCCESS)
+                                CustomToast.show(this@LoginActivity, R.string.toast_login_successful, CustomToast.Companion.ToastType.SUCCESS)
                                 proceedToHome()
                             } else {
-                                CustomToast.show(this@LoginActivity, "Failed to restore session", CustomToast.Companion.ToastType.ERROR)
+                                CustomToast.show(this@LoginActivity, R.string.toast_failed_to_restore_session, CustomToast.Companion.ToastType.ERROR)
                             }
                         } else {
-                            CustomToast.show(this@LoginActivity, "No biometric-saved credentials found", CustomToast.Companion.ToastType.ERROR)
+                            CustomToast.show(this@LoginActivity, R.string.toast_no_biometric_credentials, CustomToast.Companion.ToastType.ERROR)
                         }
                         pendingDecryptAndRestore = false
                     } else {
