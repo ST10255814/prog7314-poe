@@ -2,7 +2,6 @@ package com.example.rentwise.retrofit_instance
 
 import android.util.Log
 import com.example.rentwise.faq.OpenRouterApiService
-import com.example.rentwise.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,7 +15,8 @@ object OpenRouterInstance {
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
 
     // Use BuildConfig to provide the API key at build time (do not hard-code secrets in source files for production).
-    private val API_KEY: String = BuildConfig.OPENROUTER_API_KEY ?: ""
+    // Fully qualify BuildConfig to avoid unresolved import problems in environments where the generated BuildConfig is not present.
+    private val API_KEY: String = com.example.rentwise.BuildConfig.OPENROUTER_API_KEY ?: ""
 
     // Creates and returns an implementation of the OpenRouterApiService interface, configured with custom headers and logging.
     fun createAPI(): OpenRouterApiService {
@@ -51,7 +51,7 @@ object OpenRouterInstance {
                 val request = builder.build()
 
                 // Debug: log whether Authorization header is present (only in debug builds)
-                if (BuildConfig.DEBUG) {
+                if (com.example.rentwise.BuildConfig.DEBUG) {
                     try {
                         val authHeader = request.header("Authorization")
                         if (authHeader.isNullOrEmpty()) {
