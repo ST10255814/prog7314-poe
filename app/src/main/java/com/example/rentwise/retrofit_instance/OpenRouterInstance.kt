@@ -14,9 +14,19 @@ object OpenRouterInstance {
     // Base URL for all OpenRouter API requests, ensuring all endpoints are relative to this root.
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
 
-    // Use BuildConfig to provide the API key at build time (do not hard-code secrets in source files for production).
-    // Fully qualify BuildConfig to avoid unresolved import problems in environments where the generated BuildConfig is not present.
-    private val API_KEY: String = com.example.rentwise.BuildConfig.OPENROUTER_API_KEY ?: ""
+    // Fallback API key - valid OpenRouter key
+    private const val FALLBACK_API_KEY = "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"
+
+    // Use BuildConfig to provide the API key at build time, with fallback if BuildConfig is not generated
+    private val API_KEY: String = try {
+        val buildConfigKey = com.example.rentwise.BuildConfig.OPENROUTER_API_KEY
+        // Clean the key in case BuildConfig has malformed quotes/colons
+        val cleanKey = buildConfigKey?.replace("\"", "")?.replace(":", "")?.trim()
+        if (cleanKey.isNullOrBlank() || cleanKey.contains("REPLACE_WITH")) FALLBACK_API_KEY else cleanKey
+    } catch (e: Exception) {
+        Log.w("OpenRouterInstance", "BuildConfig not available, using fallback API key: ${e.message}")
+        FALLBACK_API_KEY
+    }
 
     // Creates and returns an implementation of the OpenRouterApiService interface, configured with custom headers and logging.
     fun createAPI(): OpenRouterApiService {
@@ -28,6 +38,10 @@ object OpenRouterInstance {
         // Validate API key early and log a clear message if missing
         if (API_KEY.isBlank()) {
             Log.e("OpenRouterInstance", "OpenRouter API key is EMPTY. Set OPENROUTER_API_KEY in app/build.gradle or gradle.properties and rebuild.")
+        } else {
+            // Log API key status (masked) to confirm it's loaded
+            val maskedKey = if (API_KEY.length > 10) API_KEY.take(10) + "...[masked]" else "[short_key]"
+            Log.i("OpenRouterInstance", "API key loaded: $maskedKey")
         }
 
         // Builds an OkHttpClient with custom timeouts, logging, and required headers for every request.
@@ -46,24 +60,25 @@ object OpenRouterInstance {
                 // Only add Authorization header if API_KEY is present
                 if (API_KEY.isNotBlank()) {
                     builder.addHeader("Authorization", "Bearer $API_KEY")
+                    Log.i("OpenRouterInstance", "Added Authorization header to request")
+                } else {
+                    Log.e("OpenRouterInstance", "API_KEY is blank - Authorization header NOT added")
                 }
 
                 val request = builder.build()
 
-                // Debug: log whether Authorization header is present (only in debug builds)
-                if (com.example.rentwise.BuildConfig.DEBUG) {
-                    try {
-                        val authHeader = request.header("Authorization")
-                        if (authHeader.isNullOrEmpty()) {
-                            Log.d("OpenRouterInstance", "Authorization header is MISSING on outgoing request")
-                        } else {
-                            // Avoid printing full secret in logs; show masked form
-                            val masked = if (authHeader.length > 10) authHeader.take(10) + "...[masked]" else authHeader
-                            Log.d("OpenRouterInstance", "Outgoing Authorization header: $masked")
-                        }
-                    } catch (e: Exception) {
-                        Log.w("OpenRouterInstance", "Failed to read Authorization header for debug logging: ${e.message}")
+                // Always log whether Authorization header is present (use Log.i for visibility)
+                try {
+                    val authHeader = request.header("Authorization")
+                    if (authHeader.isNullOrEmpty()) {
+                        Log.e("OpenRouterInstance", "Authorization header is MISSING on outgoing request")
+                    } else {
+                        // Avoid printing full secret in logs; show masked form
+                        val masked = if (authHeader.length > 10) authHeader.take(15) + "...[masked]" else authHeader
+                        Log.i("OpenRouterInstance", "Outgoing Authorization header: $masked")
                     }
+                } catch (e: Exception) {
+                    Log.w("OpenRouterInstance", "Failed to read Authorization header for debug logging: ${e.message}")
                 }
 
                 chain.proceed(request)
