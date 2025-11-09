@@ -343,5 +343,6 @@ Bakeng sa dipotso kapa matshwenyeho:<br/>
     <string name="toast_invalid_credentials">Mangolo a Fosahetseng</string>
     <string name="toast_unknown_error">Phoso e sa tsejoeng</string>
     <string name="toast_error_prefix">Phoso: %1$s</string>
+    <string name="thinking_message">Ke nagana…</string>
 
 </resources>

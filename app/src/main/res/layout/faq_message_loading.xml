@@ -9,10 +9,10 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading_indicator"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:indicatorSize="32dp"
-        app:trackThickness="6dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:indicatorSize="20dp"
+        app:trackThickness="3dp"
         android:indeterminate="true"
         app:indicatorColor="@color/darkish_blue"
         app:trackColor="@color/darker_grey" />
@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thinking..."
+        android:text="@string/thinking_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black" />
 </LinearLayout>

@@ -30,6 +30,8 @@ class ChatViewModel : ViewModel() {
         // Appends the user's message to the current message list.
         val currentMsgs = _uiState.value.messages.toMutableList()
         currentMsgs.add(ChatRequest.Message("user", text))
+        // Add loading message
+        currentMsgs.add(ChatRequest.Message("loading", ""))
 
         // Updates the UI to reflect the new message and show a loading indicator.
         _uiState.value = _uiState.value.copy(
@@ -40,13 +42,15 @@ class ChatViewModel : ViewModel() {
 
         // Launches a coroutine to send the message to the AI and handle the response.
         viewModelScope.launch {
-            val result = repository.sendMessage(currentMsgs)
+            val result = repository.sendMessage(currentMsgs.filter { it.role != "loading" })
 
             result.fold(
                 onSuccess = { reply ->
-                    // Appends the AI's reply to the message list and updates the UI state.
-                    val updatedMsgs = currentMsgs.toMutableList()
-                    updatedMsgs.add(ChatRequest.Message("assistant", reply))
+                    // Remove loading message and append the AI's reply
+                    val updatedMsgs = _uiState.value.messages.toMutableList()
+                    val loadingIndex = updatedMsgs.indexOfLast { it.role == "loading" }
+                    if (loadingIndex != -1) updatedMsgs.removeAt(loadingIndex)
+                    updatedMsgs.add(ChatRequest.Message("ai", reply))
 
                     _uiState.value = _uiState.value.copy(
                         messages = updatedMsgs,
@@ -54,8 +58,12 @@ class ChatViewModel : ViewModel() {
                     )
                 },
                 onFailure = { e ->
-                    // Updates the UI state to reflect the error and stop loading.
+                    // Remove loading message and update error
+                    val updatedMsgs = _uiState.value.messages.toMutableList()
+                    val loadingIndex = updatedMsgs.indexOfLast { it.role == "loading" }
+                    if (loadingIndex != -1) updatedMsgs.removeAt(loadingIndex)
                     _uiState.value = _uiState.value.copy(
+                        messages = updatedMsgs,
                         isLoading = false,
                         error = e.message
                     )

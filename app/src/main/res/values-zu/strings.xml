@@ -344,5 +344,5 @@ Ngemibuzwana noma ukukhathazeka:<br/>
     <string name="toast_invalid_credentials">Amagama Okufanele Angalungile</string>
     <string name="toast_unknown_error">Iphutha elingaziwa</string>
     <string name="toast_error_prefix">Iphutha: %1$s</string>
-
+    <string name="thinking_message">Ucabangisisa…</string>
 </resources>

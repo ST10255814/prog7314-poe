@@ -333,5 +333,6 @@ For questions or concerns:<br/>
     <string name="toast_invalid_credentials">Invalid Credentials</string>
     <string name="toast_unknown_error">Unknown error</string>
     <string name="toast_error_prefix">Error: %1$s</string>
+    <string name="thinking_message">Thinking...</string>
 
 </resources>

@@ -344,5 +344,6 @@ Vir vrae of bekommernisse:<br/>
     <string name="toast_invalid_credentials">Ongeldige geloofsbriewe</string>
     <string name="toast_unknown_error">Onbekende fout</string>
     <string name="toast_error_prefix">Fout: %1$s</string>
+    <string name="thinking_message">Besig om te dink…</string>
 
 </resources>
