@@ -320,7 +320,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Placeholder for biometric authentication trigger (to be implemented).
+        // Placeholder for biometric authentication trigger.
         binding.fingerprintAnimation.setOnClickListener {
             startBiometricRestoreFlow()
         }
