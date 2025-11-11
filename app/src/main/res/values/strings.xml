@@ -213,7 +213,7 @@
     <string name="maintenance_request_status">Maintenance Request Status</string>
     <string name="log_out">Log out</string>
 
-    <string-array name="language_options">
+    <string-array name="language_options" translatable="false">
         <item>English</item>
         <item>Afrikaans</item>
         <item>Sotho</item>

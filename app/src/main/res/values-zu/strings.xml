@@ -224,13 +224,6 @@
     <string name="maintenance_request_status">Isimo Sesicelo Sokunakekela</string>
     <string name="log_out">Phuma</string>
 
-    <string-array name="language_options">
-        <item>IsiNgisi</item>
-        <item>IsiBhunu</item>
-        <item>Sesotho</item>
-        <item>isiZulu</item>
-    </string-array>
-
     <string-array name="location_options">
         <item>Konke</item>
         <item>JHB</item>

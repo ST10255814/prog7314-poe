@@ -224,12 +224,7 @@
     <string name="maintenance_request_status">Onderhoudsversoek status</string>
     <string name="log_out">Meld af</string>
 
-    <string-array name="language_options">
-        <item>Engels</item>
-        <item>Afrikaans</item>
-        <item>Sotho</item>
-        <item>Zoeloe</item>
-    </string-array>
+
 
     <string-array name="location_options">
         <item>Alle</item>

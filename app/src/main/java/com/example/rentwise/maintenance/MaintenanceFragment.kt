@@ -291,6 +291,11 @@ class MaintenanceFragment : Fragment() {
                         if (unitDropdown.isNotEmpty()) {
                             binding.unitDropdown.setText(unitDropdown[0].name, false)
                         }
+                        else{
+                            // Translate here
+                            // Set text to show if no bookings are available
+                            binding.unitDropdown.setText("No bookings to select from", false)
+                        }
                     }
                 }
                 else{
