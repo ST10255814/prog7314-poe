@@ -23,6 +23,7 @@ import com.example.rentwise.data_classes.FavouriteListingsResponse
 import com.example.rentwise.data_classes.ListingResponse
 import com.example.rentwise.databinding.FragmentHomeBinding
 import com.example.rentwise.recyclerview_itemclick_views.PropertyDetails
+import com.example.rentwise.settings.ProfileSettings
 import com.example.rentwise.shared_pref_config.TokenManger
 import com.example.rentwise.utils.LocaleHelper
 import org.json.JSONObject
@@ -79,6 +80,26 @@ class HomeFragment : Fragment() {
             .error(R.drawable.ic_empty)
             .placeholder(R.drawable.ic_empty)
             .into(binding.profileDisplay)
+
+        // Set onClickListener for profile icon to navigate to ProfileSettings
+        binding.profileDisplay.setOnClickListener {
+            val userId = tokenManger.getUser()
+            //If no userId is present, redirect to login to avoid "user not found" in ProfileSettings
+            if (userId.isNullOrEmpty()) {
+                CustomToast.show(requireContext(), R.string.toast_no_active_user, CustomToast.Companion.ToastType.ERROR)
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                requireActivity().finish()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(requireContext(), ProfileSettings::class.java)
+            intent.putExtra("userId", userId)
+            val pfp = tokenManger.getPfp()
+            if (!pfp.isNullOrEmpty()) intent.putExtra("pfp", pfp)
+            startActivity(intent)
+        }
 
         updateDropdowns() // Populates filter dropdowns with options.
         setUpPropertyAdapter() // Configures the RecyclerView adapter for property listings.
