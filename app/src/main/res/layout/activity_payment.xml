@@ -40,6 +40,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/circle_background"
+                    android:backgroundTint="@color/white"
                     android:contentDescription="@string/go_back_title"
                     android:padding="8dp"
                     android:src="@drawable/go_back_icon"
@@ -189,6 +190,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
+                                android:fontFamily="@font/aldrich"
+                                android:textColor="@color/black"
                                 android:maxLength="19"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,6 +211,8 @@
                                 android:id="@+id/edit_card_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/aldrich"
+                                android:textColor="@color/black"
                                 android:inputType="textPersonName"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -233,6 +238,8 @@
                                     android:id="@+id/edit_card_expiry"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/aldrich"
+                                    android:textColor="@color/black"
                                     android:inputType="text"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -256,6 +263,8 @@
                                     android:id="@+id/edit_card_cvv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/aldrich"
+                                    android:textColor="@color/black"
                                     android:inputType="numberPassword"
                                     android:maxLength="4"/>
                             </com.google.android.material.textfield.TextInputLayout>

@@ -23,8 +23,8 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var tokenManger: TokenManger
     private lateinit var paymentStore: PaymentStore
 
-    // <------THIS WAS CHANGED-----> OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
-// This ensures the saved language is applied when the activity is created
+    // OVERRIDE ATTACHBASECONTEXT TO APPLY SAVED LOCALE
+    // This ensures the saved language is applied when the activity is created
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
