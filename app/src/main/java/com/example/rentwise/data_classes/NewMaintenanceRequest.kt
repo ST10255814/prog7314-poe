@@ -10,5 +10,6 @@ data class NewMaintenanceRequest(
     val status: String?,
     val createdAt: String?,
     val caretakerId: String?,
-    val careTakerNotes: String?,
+    val caretakerNotes: String?,
+    val followUps: Int?,
 )

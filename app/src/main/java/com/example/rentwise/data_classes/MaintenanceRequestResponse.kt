@@ -9,7 +9,5 @@ data class MaintenanceRequestResponse(
     val listingDetail: ListingResponse?,
     val bookingId: String?,
     val newMaintenanceRequest: NewMaintenanceRequest?,
-    val assignedCaretaker: String?,
-    val followUps: Int?,
 )
 

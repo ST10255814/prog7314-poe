@@ -53,9 +53,9 @@ class MaintenanceRequestAdapter(
             // Shows the unique maintenance request ID.
             tvRequestId.text = "Maintenance Request ID: ${issue.newMaintenanceRequest?.maintenanceId}"
             // Displays the number of follow-up requests or "0" if none.
-            tvFollowUpRequests.text = "Follow-ups: ${issue.followUps ?: "0"}"
+            tvFollowUpRequests.text = "Follow-ups: ${issue.newMaintenanceRequest?.followUps ?: "0"}"
             // Shows caretaker notes or "No Notes" if none are provided.
-            tvCaretakerNote.text = "Caretaker Note: ${issue.newMaintenanceRequest?.careTakerNotes ?: "No Notes"}"
+            tvCaretakerNote.text = "Caretaker Note: ${issue.newMaintenanceRequest?.caretakerNotes ?: "No Notes"}"
 
             // Sets the priority text and applies a background color based on the priority level.
             tvRequestPriority.text = issue.newMaintenanceRequest?.priority ?: ""
