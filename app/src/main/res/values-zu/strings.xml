@@ -4,10 +4,10 @@
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Ukuqasha okuhlakaniphile. Ukuphatha okulula.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="privacy_url" translatable="false"> </string>
-    <string name="support_email">support@rentwise.app</string>
+    <string name="privacy_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
+    <string name="support_email">rentwiseapp.official@gmail.com</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
-    <string name="website_url" translatable="false"> </string>
+    <string name="website_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
 
     <string name="go_back_title">Buyela emuva</string>
     <string name="loading">Iyalayisha…</string>
@@ -299,8 +299,8 @@ Ungabuyekeza noma ususe ulwazi lwakho kuhlelo lokusebenza nganoma yisiphi isikha
 
 <b>6. Xhumana nathi</b><br/>
 Ngemibuzwana noma ukukhathazeka:<br/>
-📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
-🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+📧 <a href="mailto:rentwiseapp.official@gmail.com">rentwiseapp.official@gmail.com</a><br/>
+🌐 <a href="https://rentwiseproperties.onrender.com/">rentwiseproperties.onrender.com</a><br/><br/>
 
 <b>Kugcina ukubuyekezwa:</b> 20 Oktober 2025
 ]]></string>
@@ -339,4 +339,5 @@ Ngemibuzwana noma ukukhathazeka:<br/>
     <string name="toast_error_prefix">Iphutha: %1$s</string>
     <string name="thinking_message">Ucabangisisa…</string>
     <string name="chat_bot_empty_state_message">Siyakwamukela ku-AI Chat Bot! 🤖\nZizwe ukhululekile ukungibuza noma yini kusukela ezimweni ezijwayelekile kuya kwezithile. Ngilapha ukuzosiza!</string>
+    <string name="no_bookings_to_select_from">Azikho ukubhukha ongakukhetha</string>
 </resources>

@@ -4,10 +4,10 @@
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Smart Rentals. Simple Management.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="privacy_url" translatable="false"> </string>
-    <string name="support_email">support@rentwise.app</string>
-    <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
-    <string name="website_url" translatable="false"> </string>
+    <string name="privacy_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
+    <string name="support_email">rentwiseapp.official@gmail.com</string>
+    <string name="web_client_id">311041745630–0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
+    <string name="website_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
     <string name="go_back_title">Go Back</string>
     <string name="loading">Loading…</string>
     <string name="please_wait">Please wait…</string>
@@ -295,8 +295,8 @@ You can update or delete your information in the app at any time. If you uninsta
 
 <b>6. Contact Us</b><br/>
 For questions or concerns:<br/>
-📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
-🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+📧 <a href="mailto:rentwiseapp.official@gmail.com">rentwiseapp.official@gmail.com</a><br/>
+🌐 <a href="https://rentwiseproperties.onrender.com/">rentwiseproperties.onrender.com</a><br/><br/>
 
 <b>Last Updated:</b> October 20, 2025
 ]]></string>
@@ -333,7 +333,7 @@ For questions or concerns:<br/>
     <string name="toast_invalid_credentials">Invalid Credentials</string>
     <string name="toast_unknown_error">Unknown error</string>
     <string name="toast_error_prefix">Error: %1$s</string>
-    <string name="thinking_message">Thinking...</string>
+    <string name="thinking_message">Thinking…</string>
     <string name="chat_bot_empty_state_message">Welcome to the AI Chat Bot! 🤖\n Feel free to ask me anything from general questions to specific topics. I’m here to help!</string>
-
+    <string name="no_bookings_to_select_from">No bookings to select from</string>
 </resources>

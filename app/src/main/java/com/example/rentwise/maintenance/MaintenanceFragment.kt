@@ -268,10 +268,12 @@ class MaintenanceFragment : Fragment() {
                 response: retrofit2.Response<List<BookedListings>>
             ) {
                 if (!isAdded || _binding == null) return
+                hideLoadingOverlay()
+
                 if (response.isSuccessful) {
-                    hideLoadingOverlay()
                     val listings = response.body()
                     if (!listings.isNullOrEmpty()) {
+                        // Build dropdown items and adapter
                         unitDropdown = listings.mapNotNull { listing ->
                             val title = listing.title
                             val id = listing.listingId
@@ -280,27 +282,39 @@ class MaintenanceFragment : Fragment() {
                             } else null
                         }.toMutableList()
 
+                        // Prepare a list of display names for the AutoComplete adapter
+                        val names = unitDropdown.map { it.name }
+
                         val adapter = ArrayAdapter(
                             requireContext(),
                             R.layout.custom_spinner_dropdown_item,
-                            unitDropdown
+                            names
                         )
 
                         binding.unitDropdown.setAdapter(adapter)
+                        binding.unitDropdown.isEnabled = true
+                        binding.unitDropdown.isClickable = true
+                        binding.unitDropdown.isFocusable = true
 
                         if (unitDropdown.isNotEmpty()) {
                             binding.unitDropdown.setText(unitDropdown[0].name, false)
                         }
-                        else{
-                            // Translate here
-                            // Set text to show if no bookings are available
-                            binding.unitDropdown.setText("No bookings to select from", false)
-                        }
+                    } else {
+                        // No bookings available: show message and disable dropdown
+                        val msg = getString(R.string.no_bookings_to_select_from)
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            R.layout.custom_spinner_dropdown_item,
+                            listOf(msg)
+                        )
+                        binding.unitDropdown.setAdapter(adapter)
+                        binding.unitDropdown.setText(msg, false)
+                        binding.unitDropdown.isEnabled = false
+                        binding.unitDropdown.isClickable = false
+                        binding.unitDropdown.isFocusable = false
                     }
-                }
-                else{
+                } else {
                     // Handles error responses and logs out if unauthorized.
-                    hideLoadingOverlay()
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = if (errorBody != null) {
                         try {
@@ -326,16 +340,15 @@ class MaintenanceFragment : Fragment() {
                     CustomToast.show(requireContext(), errorMessage, CustomToast.Companion.ToastType.ERROR)
                 }
             }
+
             override fun onFailure(call: retrofit2.Call<List<BookedListings>>, t: Throwable) {
-                // Handles network or unexpected errors during listing fetch.
                 if (!isAdded || _binding == null) return
                 hideLoadingOverlay()
                 CustomToast.show(requireContext(), t.message.toString(), CustomToast.Companion.ToastType.ERROR)
-                Log.e("Error", t.message.toString())
+                Log.e("Maintenance", t.message.toString())
             }
         })
     }
-
     // Displays a loading overlay while listings are being fetched.
     private fun showLoadingOverlay(){
         binding.overlayLoadingProperties.visibility = View.VISIBLE

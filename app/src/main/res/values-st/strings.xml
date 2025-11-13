@@ -4,10 +4,10 @@
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Tlhophiso e bohlale ya hiro. Tsamaiso e bonolo.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="privacy_url" translatable="false"> </string>
-    <string name="support_email">support@rentwise.app</string>
+    <string name="privacy_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
+    <string name="support_email">rentwiseapp.official@gmail.com</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
-    <string name="website_url" translatable="false"> </string>
+    <string name="website_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
 
     <string name="go_back_title">Kgutla moraho</string>
     <string name="loading">Ho jara…</string>
@@ -298,8 +298,8 @@ U ka ntjhafatsa kapa hlakola lintlha tsa hao app-eng nako efe kapa efe. Haeba u 
 
 <b>6. Re kopane</b><br/>
 Bakeng sa dipotso kapa matshwenyeho:<br/>
-📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
-🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+📧 <a href="mailto:rentwiseapp.official@gmail.com">rentwiseapp.official@gmail.com</a><br/>
+🌐 <a href="https://rentwiseproperties.onrender.com/">rentwiseproperties.onrender.com</a><br/><br/>
 
 <b>E nchafatswe ka ho qetela:</b> 20 Mphalane 2025
 ]]></string>
@@ -338,5 +338,5 @@ Bakeng sa dipotso kapa matshwenyeho:<br/>
     <string name="toast_error_prefix">Phoso: %1$s</string>
     <string name="thinking_message">Ke nagana…</string>
     <string name="chat_bot_empty_state_message">Rea u amohela ho AI Chat Bot! 🤖\nIketlise ho mpotsa ntho efe kapa efe, ho tloha lipotsong tse akaretsang ho isa ho tse khethehileng. Ke mona ho thusa!</string>
-
+    <string name="no_bookings_to_select_from">Ha ho libooking tseo u ka li khethang</string>
 </resources>

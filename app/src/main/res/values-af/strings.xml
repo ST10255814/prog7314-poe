@@ -4,10 +4,10 @@
     <string name="app_name">RentWise</string>
     <string name="app_slogan">Slim verhuring. Eenvoudige bestuur.</string>
     <string name="footer">© 2025 RentWise</string>
-    <string name="privacy_url" translatable="false"> </string>
-    <string name="support_email">support@rentwise.app</string>
+    <string name="privacy_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
+    <string name="support_email">rentwiseapp.official@gmail.com</string>
     <string name="web_client_id">311041745630-0jjcrh6junuabqontqd7ev727e03ebi9.apps.googleusercontent.com</string>
-    <string name="website_url" translatable="false"> </string>
+    <string name="website_url" translatable="false">https://rentwiseproperties.onrender.com/</string>
 
     <string name="go_back_title">Gaan terug</string>
     <string name="loading">Laai…</string>
@@ -301,8 +301,8 @@ Jy kan jou inligting te eniger tyd in die app opdateer of verwyder. As jy die ap
 
 <b>6. Kontak ons</b><br/>
 Vir vrae of bekommernisse:<br/>
-📧 <a href="mailto:support@rentwise.com">support@rentwise.com</a><br/>
-🌐 <a href="https://www.rentwise.com/privacy">www.rentwise.com/privacy</a><br/><br/>
+📧 <a href="mailto:rentwiseapp.official@gmail.com">rentwiseapp.official@gmail.com</a><br/>
+🌐 <a href="https://rentwiseproperties.onrender.com/">rentwiseproperties.onrender.com</a><br/><br/>
 
 <b>Laas opdateer:</b> 20 Oktober 2025
 ]]></string>
@@ -341,5 +341,5 @@ Vir vrae of bekommernisse:<br/>
     <string name="toast_error_prefix">Fout: %1$s</string>
     <string name="thinking_message">Besig om te dink…</string>
     <string name="chat_bot_empty_state_message">Welkom by die KI Geselsbot! 🤖\nVoel vry om my alles te vra, van algemene vrae tot spesifieke onderwerpe. Ek is hier om te help!</string>
-
+    <string name="no_bookings_to_select_from">Geen besprekings om van te kies nie</string>
 </resources>
