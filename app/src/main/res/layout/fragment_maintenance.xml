@@ -171,6 +171,7 @@
                                 android:fontFamily="@font/aldrich"
                                 android:inputType="none"
                                 android:popupBackground="@color/white"
+                                android:textColor="@color/black"
                                 android:singleLine="true"
                                 android:textSize="16sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -222,6 +223,7 @@
                                 android:fontFamily="@font/aldrich"
                                 android:inputType="none"
                                 android:popupBackground="@color/white"
+                                android:textColor="@color/black"
                                 android:singleLine="true"
                                 android:textSize="16sp" />
                         </com.google.android.material.textfield.TextInputLayout>

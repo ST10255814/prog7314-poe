@@ -73,6 +73,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:layout_marginEnd="8dp"
+            app:hintTextColor="@color/black"
             android:hint="@string/address_area"
             app:hintEnabled="true">
 
@@ -96,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
+            app:hintTextColor="@color/black"
             android:hint="@string/price">
 
             <AutoCompleteTextView
@@ -107,6 +109,7 @@
                 android:scrollHorizontally="true"
                 android:inputType="none"
                 android:popupBackground="@color/white"
+                android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="14sp"/>
         </com.google.android.material.textfield.TextInputLayout>
