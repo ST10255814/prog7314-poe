@@ -12,7 +12,7 @@
 
 ---
 
-## 🚀 Release Notes – [Version X.Y.Z]
+## 🚀 Release Notes – [Version 1.0.0]
 This release brings updates and improvements to the Grad IQ application. Please see below for prerequisites, an overview of the system, and technical architecture.  
 
 ### 📋 Prerequisites  
