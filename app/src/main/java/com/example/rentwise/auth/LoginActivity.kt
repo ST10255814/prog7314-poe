@@ -614,8 +614,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    //Reference https://developer.android.com/identity/sign-in/biometric-auth#kotlin (To be implemented properly in part 3)
-    //Debug assistance from OpenAI https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57
+    // Developers Android. 2025. Show a biometric authentication dialog. Developers Android [online]
+    // Available at: <https://developer.android.com/identity/sign-in/biometric-auth#kotlin> [Accessed 5 November 2025].
+    // Debug assistance from OpenAI:
+    // OpenAI. 2025. I am getting this error when trying to use my biometrics within my application. [ChatGPT]
+    // Available at: <https://chatgpt.com/share/68cb8835-e174-8012-b4c1-3f3122ac3f57> [Accessed 5 November 2025].
     private fun initBiometricPrompt() {
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
