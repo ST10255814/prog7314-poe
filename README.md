@@ -1,4 +1,4 @@
-# Grad IQ – PROG7314 Part 2
+# Grad IQ – PROG7314 POE
 
 **Repository:** `prog7314-part2-grad_iq`  
 **Tech Stack:** Kotlin (Android), Node.js (Express, MongoDB), Render for hosting the RESTful API  
@@ -8,11 +8,11 @@
 - Thatho Mokoena
 - Mokran Ait Amara
 
-**Date:** 24 September 2025 
+**Date:** 17 November 2025 
 
 ---
 
-## 🚀 Release Notes – [Version 1.0.0]
+## 🚀 Release Notes – Version 1.0.0
 This release brings updates and improvements to the Grad IQ application. Please see below for prerequisites, an overview of the system, and technical architecture.  
 
 ### 📋 Prerequisites  
