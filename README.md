@@ -18,7 +18,7 @@ This release brings updates and improvements to the Grad IQ application. Please 
 ### 📋 Prerequisites  
 - Android Studio Meerkat +
 - SHA-1 certificate for Google SSO
-- Biometrics **(For Part 3 only)**
+- Biometrics Enrollement
 - AGP of 8.10.1
 
 ---
