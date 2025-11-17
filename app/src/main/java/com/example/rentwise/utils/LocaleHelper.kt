@@ -10,6 +10,8 @@ import java.util.Locale
 // NEW UTILITY CLASS FOR MANAGING APP LANGUAGE/LOCALE CHANGES
 // This helper class manages locale changes across the app, ensuring consistent language switching
 // Based on the functioning language change example provided
+// Lackner. P. 2021. How to Translate Your Android App to Any Language (SO EASY!) - Android Studio Tutorial.
+// [video online] Available at: <https://youtu.be/LXbpsBtIIeM?si=9MTyVNp9eDW4rN4F> [Accessed 31 October 2025].
 class LocaleHelper {
 
     companion object {
