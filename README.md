@@ -24,7 +24,7 @@ This release brings updates and improvements to the Grad IQ application. Please 
 ---
 
 ### 🆕 New & Updated Features   
-- Multilingual Support - RentWise now supports up to 4 languages which includes English, Afrikaans, Zulu and Sutho. 
+- Multilingual Support - RentWise now supports up to 4 languages which includes English, Afrikaans, Zulu and Sotho. 
 - AI Chatbot for user queries - A built-in assistant that helps users quickly get answers, guidance, and support. **(User defined 4)**
 - Biometric Authentication -  Fast and secure login using biometric login with support for various API device levels. **(User Defined 5)**
 
